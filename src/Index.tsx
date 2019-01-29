@@ -1,10 +1,13 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import {HelloWorld} from './components/HelloWorld'
-
+import { Provider } from 'react-redux'
+import App from './components/App'
+import store from './store'
 require('../scss/app.scss');
 
-ReactDOM.render(<HelloWorld
-        firstname="GLO-3112"
-        lastname="WEB"/>,
-    document.getElementById('app'));
+ReactDOM.render(
+    <Provider store={store}>
+        <App />
+    </Provider>,
+    document.getElementById('app') as HTMLElement
+);
