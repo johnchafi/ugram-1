@@ -1,6 +1,5 @@
-export const simpleAction = () => dispatch => {
-    dispatch({
-        type: 'SIMPLE_ACTION',
-        payload: 'result_of_simple_action'
-    })
-};
+import { ActionCreator } from 'redux';
+import {SimpleAction} from "../types/index";
+export const simpleAction: ActionCreator<SimpleAction> = () => ({
+    type: '@@SIMPLE_ACTION'
+});
