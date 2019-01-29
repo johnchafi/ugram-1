@@ -11,8 +11,8 @@ interface State {
 export default class AddTodoForm extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props)
-        this.state = { value: '' } // Value is empty by default
-        this._updateValue = this._updateValue.bind(this)
+        this.state = { value: '' } ;// Value is empty by default
+        this._updateValue = this._updateValue.bind(this);
         this._handleSubmit = this._handleSubmit.bind(this)
     }
 

@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux'
 import * as fromTodos from './todos'
+import * as fromAuth from "./Auth/auth";
 
 /*
  * This is the root state of the app
@@ -14,12 +15,13 @@ export interface State {
  */
 export const initialState: State = {
     todos: fromTodos.initialState
-}
+};
 
 /*
  * Root reducer of the app
  * Returned reducer will be of type Reducer<State>
  */
 export const reducer = combineReducers<State>({
-    todos: fromTodos.reducer
-})
+    todos: fromTodos.reducer,
+    auth: fromAuth.reducer
+});
