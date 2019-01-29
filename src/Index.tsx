@@ -7,5 +7,5 @@ ReactDOM.render(
     <Provider store={configureStore()}>
         <App />
     </Provider>,
-    document.getElementById('root')
+    document.getElementById('app')
 );

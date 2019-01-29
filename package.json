@@ -13,7 +13,7 @@
     "@types/node": "8.5.5",
     "@types/react": "16.0.34",
     "css-loader": "0.28.7",
-    "node-sass": "^4.7.2",
+    "node-sass": "^4.11.0",
     "sass-loader": "6.0.6",
     "style-loader": "0.19.1",
     "ts-loader": "3.2.0",
@@ -25,7 +25,7 @@
   },
   "dependencies": {
     "prop-types": "^15.6.2",
-    "react": "16.2.0",
+    "react": "^16.2.0",
     "react-dom": "16.2.0",
     "react-redux": "^6.0.0",
     "redux": "^4.0.1",
