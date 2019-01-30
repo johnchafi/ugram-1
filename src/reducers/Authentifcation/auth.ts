@@ -1,4 +1,4 @@
-import { ActionTypes, Action } from '../../actions/auth'
+import {Action } from '../../actions/Authentification/auth'
 
 
 export interface IStateAuthApp {
@@ -16,7 +16,7 @@ export const initialState: IStateAuthApp = {
  * action: Action to be handled. Since we are in todos reducer, action type is Action defined in our actions/todos file.
  */
 export function reducer(state: IStateAuthApp = initialState, action: Action) {
-    console.log("action du reducers  : " + action.type);
+    console.log("action du reducers  : " + JSON.stringify(action));
     switch (action.type) {
         default:
             return state

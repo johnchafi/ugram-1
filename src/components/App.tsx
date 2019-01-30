@@ -1,6 +1,4 @@
 import * as React from 'react'
-import AddTodo from '../containers/AddTodo'
-import Todos from '../containers/Todos'
 import {
     Collapse,
     Navbar,
@@ -13,7 +11,6 @@ import {
     DropdownToggle,
     DropdownMenu,
     DropdownItem } from 'reactstrap';
-import Auth from "../containers/Auth";
 interface Props {
 }
 interface State {
@@ -43,7 +40,7 @@ class App extends React.Component<Props,State> {
                     <Collapse isOpen={this.state.isOpen} navbar>
                         <Nav className="ml-auto" navbar>
                             <NavItem>
-                                <NavLink href="/components/">Components</NavLink>
+                                <NavLink href="/login">Components</NavLink>
                             </NavItem>
                             <NavItem>
                                 <NavLink href="https://github.com/reactstrap/reactstrap">GitHub</NavLink>
@@ -68,10 +65,6 @@ class App extends React.Component<Props,State> {
                         </Nav>
                     </Collapse>
                 </Navbar>
-                <h1>Todos</h1>
-                <Auth/>
-            <AddTodo />
-            <Todos />
             </div>
         );
     }

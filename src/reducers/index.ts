@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux'
 import * as fromTodos from './todos'
-import * as fromAuth from "./Auth/auth";
+import * as fromAuth from "./Authentifcation/auth";
 
 /*
  * This is the root state of the app
@@ -8,13 +8,15 @@ import * as fromAuth from "./Auth/auth";
  */
 export interface State {
     todos: fromTodos.State
+    auth: fromAuth.IStateAuthApp
 }
 
 /*
  * initialState of the app
  */
 export const initialState: State = {
-    todos: fromTodos.initialState
+    todos: fromTodos.initialState,
+    auth: fromAuth.initialState
 };
 
 /*
