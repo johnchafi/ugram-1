@@ -11,10 +11,7 @@ import AuthForm from "./containers/Authentifcation/AuthForm";
 ReactDOM.render(
     <Provider store={store}>
         <Router>
-            <Switch>
-                <Route path="/" component={App} />
-                <Route path="/login" component={AuthForm}/>
-            </Switch>
+            <App/>
         </Router>
     </Provider>,
     document.getElementById('app') as HTMLElement

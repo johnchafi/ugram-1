@@ -11,6 +11,8 @@ import {
     DropdownToggle,
     DropdownMenu,
     DropdownItem } from 'reactstrap';
+import {Route, Switch } from 'react-router-dom';
+import AuthForm from "../containers/Authentifcation/AuthForm";
 interface Props {
 }
 interface State {
@@ -40,7 +42,7 @@ class App extends React.Component<Props,State> {
                     <Collapse isOpen={this.state.isOpen} navbar>
                         <Nav className="ml-auto" navbar>
                             <NavItem>
-                                <NavLink href="/login">Components</NavLink>
+                                <NavLink href="/login">Login</NavLink>
                             </NavItem>
                             <NavItem>
                                 <NavLink href="https://github.com/reactstrap/reactstrap">GitHub</NavLink>
@@ -65,6 +67,9 @@ class App extends React.Component<Props,State> {
                         </Nav>
                     </Collapse>
                 </Navbar>
+                <Switch>
+                    <Route exact path='/login' component={AuthForm}/>
+                </Switch>
             </div>
         );
     }
