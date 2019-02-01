@@ -11,10 +11,6 @@ import {
     DropdownToggle,
     DropdownMenu,
     DropdownItem } from 'reactstrap';
-import AuthForm from "../containers/Authentifcation/AuthForm";
-import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
-import Users from "../containers/Users/Users";
-import Profil from "../containers/Profil/Profil";
 interface Props {
 }
 interface State {
@@ -39,7 +35,7 @@ class NavBar extends React.Component<Props,State> {
         return (
             <div>
                 <Navbar color="light" light expand="md">
-                    <NavbarBrand href="/">reactstrap</NavbarBrand>
+                    <NavbarBrand href="/">ugram</NavbarBrand>
                     <NavbarToggler onClick={this.toggle} />
                     <Collapse isOpen={this.state.isOpen} navbar>
                         <Nav className="ml-auto" navbar>
