@@ -1,8 +1,10 @@
 import * as React from 'react'
 import {Button} from "reactstrap";
 import {FormEvent} from "react";
+import User from "../../models/User";
 interface Props {
-    isAuthenticated: boolean
+    isAuthenticated: boolean,
+    user: User
     handleSubmit: (username: string, password: string) => void
 }
 interface State {
@@ -39,7 +41,7 @@ class AuthForm extends React.Component<Props,State> {
     }
     render() {
         const { username, password } = this.state;
-        const { _updateUsername, _updatePassword, _handleSubmit } = this;
+        const { _updateUsername, _updatePassword, _handleSubmit, props } = this;
         return (
             <div>
                 <form onSubmit={_handleSubmit}>

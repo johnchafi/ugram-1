@@ -6,12 +6,12 @@
  */
 
 import axios from "axios";
-import User from "../../models/User";
 import {IStateProfilApp} from "../../reducers/Profil/Profil";
+import {Dispatch} from "redux";
 
 export enum ActionTypes {
     PROFIL = 'PROFIL',
-    ERROR = 'ERROR'
+    ERROR = 'ERROR',
 }
 
 const api= axios.create({
@@ -39,7 +39,7 @@ export interface UserProfilAction { type: ActionTypes, payload: IStateProfilApp 
  */
 export function profilData(userid): any {
     setAuthorization();
-    return function(dispatch) {
+    return function(dispatch : Dispatch<IStateProfilApp>) {
         axios.get('http://api.ugram.net/users/' + userid)
             .then(function (response) {
                 // response.data;

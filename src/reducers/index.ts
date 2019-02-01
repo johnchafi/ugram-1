@@ -1,7 +1,8 @@
 import { combineReducers } from 'redux'
 import * as fromAuth from "./Authentifcation/auth";
 import * as fromProfil from "./Profil/Profil";
-
+import * as fromUsers from "./Users/Users";
+import { routerReducer} from 'react-router-redux';
 /*
  * This is the root state of the app
  * It contains every substate of the app
@@ -9,6 +10,7 @@ import * as fromProfil from "./Profil/Profil";
 export interface State {
     auth: fromAuth.IStateAuthApp
     profil: fromProfil.IStateProfilApp
+    users: fromUsers.IStateUsersApp,
 }
 
 /*
@@ -16,7 +18,8 @@ export interface State {
  */
 export const initialState: State = {
     auth: fromAuth.initialState,
-    profil: fromProfil.initialState
+    profil: fromProfil.initialState,
+    users: fromUsers.initialState,
 };
 
 /*
@@ -25,5 +28,7 @@ export const initialState: State = {
  */
 export const reducer = combineReducers<State>({
     auth: fromAuth.reducer,
-    profil: fromProfil.reducer
+    profil: fromProfil.reducer,
+    users: fromUsers.reducer,
+    routing: routerReducer,
 });

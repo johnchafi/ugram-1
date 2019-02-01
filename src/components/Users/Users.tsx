@@ -2,19 +2,17 @@ import * as React from 'react'
 import User from "../../models/User";
 export interface Props {
     isAuthenticated: boolean
-    getProfil: (string) => any
-    user : User
-    status: number,
-    userid: string
+    users: Users[],
+    getUsers: () => any
 }
 interface State {
 }
 
 
-class Profil extends React.Component<Props,State> {
+class Users extends React.Component<Props,State> {
     constructor(props : Props) {
         super(props);
-        this.props.getProfil(this.props.userid);
+        this.props.getUsers();
         this.state = {
             username: '',
             password: ''
@@ -22,13 +20,12 @@ class Profil extends React.Component<Props,State> {
     }
 
     render() {
-        const {user, status} = this.props;
         return (
             <div>
-                {JSON.stringify(user)}
+                {JSON.stringify(this.props)}
             </div>
         );
     }
 }
 
-export default Profil;
+export default Users;

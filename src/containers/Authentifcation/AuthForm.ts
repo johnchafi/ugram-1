@@ -1,10 +1,11 @@
 import { connect } from 'react-redux'
 import AuthForm from '../../components/Authentification/AuthForm'
 import {authUser} from "../../actions/Authentification/auth";
-import {getAuth} from "../../selectors/Authentification/auth";
+import {getAuth, getAuthUser} from "../../selectors/Authentification/auth";
 import {State} from "../../reducers";
 const mapStateToProps = (state: State) => ({
-    isAuthenticated: getAuth(state)
+    isAuthenticated: getAuth(state),
+    user: getAuthUser(state)
 });
 
 const mapDispatchToProps = {

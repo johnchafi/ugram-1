@@ -5,11 +5,11 @@
  * Typescript understands enum better
  */
 import axios from "axios";
-import {IStateProfilApp} from "../../reducers/Profil/Profil";
+import {IStateUsersApp} from "../../reducers/Users/Users";
 import {Dispatch} from "redux";
 
 export enum ActionTypes {
-    AUTHENTICATED = 'AUTH',
+    GET_USERS = 'GET_USERS',
     ERROR = "ERROR",
 }
 
@@ -31,24 +31,23 @@ const setAuthorization = () => {
  * Define return types of our actions
  * Every action returns a type and a payload
  */
-export interface AuthenticatedAction { type: ActionTypes.AUTHENTICATED, payload: IStateProfilApp }
+export interface AuthenticatedAction { type: ActionTypes, payload: IStateUsersApp }
 
 /*
  * Define our actions creators
  * We are returning the right Action for each function
  */
-export function authUser(): any {
+export function getAllUsers(): any {
     setAuthorization();
-    return function(dispatch : Dispatch<IStateProfilApp>) {
-        axios.get('http://api.ugram.net/users/wfortin')
+    return function(dispatch : Dispatch<IStateUsersApp>) {
+        axios.get('http://api.ugram.net/users/')
             .then(function (response) {
                 // response.data;
                 dispatch(  {
-                    type: ActionTypes.AUTHENTICATED,
+                    type: ActionTypes.GET_USERS,
                     payload: {
                         isAuthenticated: true,
-                        user: response.data,
-                        status: response.status
+                        users: response.data,
                     }
                 })
             })
@@ -57,8 +56,7 @@ export function authUser(): any {
                     type: ActionTypes.ERROR,
                     payload: {
                         isAuthenticated: false,
-                        user: null,
-                        message: error
+                        users: null,
                     }
                 })
             });
