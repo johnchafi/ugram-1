@@ -1,12 +1,11 @@
 import * as React from 'react'
-import {Button} from "reactstrap";
-import {FormEvent} from "react";
 import User from "../../models/User";
-interface Props {
+export interface Props {
     isAuthenticated: boolean
-    getProfil: () => any
+    getProfil: (string) => any
     user : User
-    status: number
+    status: number,
+    userid: string
 }
 interface State {
 }
@@ -15,7 +14,8 @@ interface State {
 class Profil extends React.Component<Props,State> {
     constructor(props : Props) {
         super(props);
-        this.props.getProfil();
+        console.log(this.props.userid);
+        this.props.getProfil(this.props.userid);
         this.state = {
             username: '',
             password: ''

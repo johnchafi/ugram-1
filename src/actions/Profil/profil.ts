@@ -37,10 +37,10 @@ export interface UserProfilAction { type: ActionTypes, payload: IStateProfilApp 
  * Define our actions creators
  * We are returning the right Action for each function
  */
-export function profilData(): any {
+export function profilData(userid): any {
     setAuthorization();
     return function(dispatch) {
-        axios.get('http://api.ugram.net/users/wfortin')
+        axios.get('http://api.ugram.net/users/' + userid)
             .then(function (response) {
                 // response.data;
                 dispatch(  {

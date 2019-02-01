@@ -1,12 +1,13 @@
 import { connect } from 'react-redux'
-import Profil from "../../components/Profil/Profil";
+import Profil, {Props} from "../../components/Profil/Profil";
 import {getIsAuthenticated, getStatusProfil, getUserProfil} from "../../selectors/Profil/Profil";
 import {State} from "../../reducers";
 import {profilData} from "../../actions/Profil/profil";
-const mapStateToProps = (state: State) => ({
+const mapStateToProps = (state: State, ownProps : Props) => ({
     user: getUserProfil(state),
     status: getStatusProfil(state),
-    isAuthenticated: getIsAuthenticated(state)
+    isAuthenticated: getIsAuthenticated(state),
+    userid: ownProps.userid,
 });
 
 const mapDispatchToProps = {
