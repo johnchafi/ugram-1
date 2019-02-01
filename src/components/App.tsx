@@ -13,6 +13,7 @@ import {
     DropdownItem } from 'reactstrap';
 import {Route, Switch } from 'react-router-dom';
 import AuthForm from "../containers/Authentifcation/AuthForm";
+import Profil from "../containers/Profil/Profil";
 interface Props {
 }
 interface State {
@@ -45,7 +46,7 @@ class App extends React.Component<Props,State> {
                                 <NavLink href="/login">Login</NavLink>
                             </NavItem>
                             <NavItem>
-                                <NavLink href="https://github.com/reactstrap/reactstrap">GitHub</NavLink>
+                                <NavLink href="/profil">Profil</NavLink>
                             </NavItem>
                             <UncontrolledDropdown nav inNavbar>
                                 <DropdownToggle nav caret>
@@ -69,6 +70,7 @@ class App extends React.Component<Props,State> {
                 </Navbar>
                 <Switch>
                     <Route exact path='/login' component={AuthForm}/>
+                    <Route exact path='/profil' component={Profil}/>
                 </Switch>
             </div>
         );

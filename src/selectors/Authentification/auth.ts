@@ -1,6 +1,6 @@
-import { IStateAuthApp } from '../../reducers/Authentifcation/auth'
+import { State } from '../../reducers'
 import { createSelector } from 'reselect'
 
-const getIsAuth = ((state: IStateAuthApp) => state.isAuthenticated);
+const getIsAuth = ((state: State) => state.auth);
 
-export const getAuth = createSelector([getIsAuth], s => s);
+export const getAuth = createSelector([getIsAuth], s => s.isAuthenticated);

@@ -1,9 +1,9 @@
 import { connect } from 'react-redux'
 import AuthForm from '../../components/Authentification/AuthForm'
-import {IStateAuthApp} from "../../reducers/Authentifcation/auth";
 import {authUser} from "../../actions/Authentification/auth";
 import {getAuth} from "../../selectors/Authentification/auth";
-const mapStateToProps = (state: IStateAuthApp) => ({
+import {State} from "../../reducers";
+const mapStateToProps = (state: State) => ({
     isAuthenticated: getAuth(state)
 });
 
