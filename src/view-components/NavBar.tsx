@@ -22,7 +22,7 @@ interface State {
 }
 
 
-class App extends React.Component<Props,State> {
+class NavBar extends React.Component<Props,State> {
     constructor(props : Props) {
         super(props);
         this.toggle = this.toggle.bind(this);
@@ -77,4 +77,4 @@ class App extends React.Component<Props,State> {
     }
 }
 
-export default App;
+export default NavBar;
