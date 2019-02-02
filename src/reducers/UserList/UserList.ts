@@ -1,10 +1,10 @@
-import {Action, ActionTypes} from '../../actions/Users/users'
-import Users from "../../components/Users/Users";
+import {Action, ActionTypes} from '../../actions/UserList/userList'
+import UserList from "../../components/UserList/UserList";
 
 
 export interface IStateUsersApp {
     isAuthenticated: boolean
-    users: Users[]
+    users: UserList[]
 }
 
 // Define our initialState
@@ -21,7 +21,6 @@ export const initialState: IStateUsersApp = {
 export function reducer(state: IStateUsersApp = initialState, action: Action) : IStateUsersApp {
     switch (action.type) {
         case ActionTypes.GET_USERS:
-            console.log("action du reducers  : " + JSON.stringify(action.payload.users));
             const {users, isAuthenticated} = action.payload;
             return {
                 ...state,

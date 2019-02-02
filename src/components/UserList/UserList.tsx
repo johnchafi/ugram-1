@@ -1,15 +1,17 @@
 import * as React from 'react'
 import User from "../../models/User";
+import UserItem from "../UserItem/UserItem";
+import {Col, Row} from "reactstrap";
 export interface Props {
     isAuthenticated: boolean
-    users: Users[],
+    users: User[],
     getUsers: () => any
 }
 interface State {
 }
 
 
-class Users extends React.Component<Props,State> {
+class UserList extends React.Component<Props,State> {
     constructor(props : Props) {
         super(props);
         this.props.getUsers();
@@ -20,12 +22,17 @@ class Users extends React.Component<Props,State> {
     }
 
     render() {
+        const{users} = this.props;
         return (
             <div>
-                {JSON.stringify(this.props.users)}
+                <Row>
+                    {users.map(function(user, i){
+                        return <UserItem user={user} key={i}/>
+                    })}
+                </Row>
             </div>
         );
     }
 }
 
-export default Users;
+export default UserList;

@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux'
 import * as fromAuth from "./Authentifcation/auth";
 import * as fromProfil from "./Profil/Profil";
-import * as fromUsers from "./Users/Users";
+import * as fromUsers from "./UserList/UserList";
 /*
  * This is the root state of the app
  * It contains every substate of the app

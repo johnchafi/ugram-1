@@ -5,7 +5,8 @@ export interface Props {
     getProfil: (string) => any
     user : User
     status: number,
-    userid: string
+    userid: string,
+    match: {params : {id: string}}
 }
 interface State {
 }
@@ -15,7 +16,7 @@ class Profil extends React.Component<Props,State> {
     constructor(props : Props) {
         super(props);
         console.log(this.props.userid);
-        this.props.getProfil(this.props.userid);
+        this.props.getProfil(this.props.match.params.id);
         this.state = {
             username: '',
             password: ''
@@ -26,7 +27,7 @@ class Profil extends React.Component<Props,State> {
         const {user, status} = this.props;
         return (
             <div>
-                {JSON.stringify(user)}
+                {JSON.stringify(this.props.user)}
             </div>
         );
     }

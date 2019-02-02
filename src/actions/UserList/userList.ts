@@ -5,7 +5,7 @@
  * Typescript understands enum better
  */
 import axios from "axios";
-import {IStateUsersApp} from "../../reducers/Users/Users";
+import {IStateUsersApp} from "../../reducers/UserList/UserList";
 import {Dispatch} from "redux";
 
 export enum ActionTypes {
@@ -47,7 +47,7 @@ export function getAllUsers(): any {
                     type: ActionTypes.GET_USERS,
                     payload: {
                         isAuthenticated: true,
-                        users: response.data,
+                        users: response.data.items,
                     }
                 })
             })
