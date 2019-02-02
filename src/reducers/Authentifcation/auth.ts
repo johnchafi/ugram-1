@@ -10,7 +10,7 @@ export interface IStateAuthApp {
 
 // Define our initialState
 export const initialState: IStateAuthApp = {
-    user: null,
+    user: new class implements User {},
     isAuthenticated: false,
     status: 0
 };

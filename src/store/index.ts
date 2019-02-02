@@ -1,6 +1,6 @@
 import  thunk from 'redux-thunk'
 import { createStore, applyMiddleware } from 'redux'
-import { State, reducer, initialState } from '../reducers'
+import { State, reducer, initialState } from '../reducers';
 
 /*
  * We're giving State interface to create store

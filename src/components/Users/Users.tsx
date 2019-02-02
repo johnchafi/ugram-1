@@ -22,7 +22,7 @@ class Users extends React.Component<Props,State> {
     render() {
         return (
             <div>
-                {JSON.stringify(this.props)}
+                {JSON.stringify(this.props.users)}
             </div>
         );
     }

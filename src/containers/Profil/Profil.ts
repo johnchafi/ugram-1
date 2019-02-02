@@ -1,17 +1,19 @@
 import { connect } from 'react-redux'
 import Profil, {Props} from "../../components/Profil/Profil";
-import {getIsAuthenticated, getStatusProfil, getUserProfil} from "../../selectors/Profil/Profil";
+import {getStatusProfil, getUserProfil} from "../../selectors/Profil/Profil";
 import {State} from "../../reducers";
 import {profilData} from "../../actions/Profil/profil";
-const mapStateToProps = (state: State, ownProps : Props) => ({
+import { withRouter } from 'react-router-dom';
+import {getAuth, getAuthUser} from "../../selectors/Authentification/auth";
+const mapStateToProps = (state: State) => ({
     user: getUserProfil(state),
     status: getStatusProfil(state),
-    isAuthenticated: getIsAuthenticated(state),
-    userid: ownProps.userid,
+    isAuthenticated: getAuth(state),
+    userid: getAuthUser(state).id,
 });
 
 const mapDispatchToProps = {
     getProfil: profilData
 };
 
-export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(Profil)
+export default withRouter(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(Profil))

@@ -29,7 +29,7 @@ export function reducer(state: IStateProfilApp = initialState, action: Action) :
                 user: user,
                 isAuthenticated: isAuthenticated,
                 status: status
-            }
+            };
         default:
             return state
     }

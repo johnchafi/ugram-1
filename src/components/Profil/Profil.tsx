@@ -14,6 +14,7 @@ interface State {
 class Profil extends React.Component<Props,State> {
     constructor(props : Props) {
         super(props);
+        console.log(this.props.userid);
         this.props.getProfil(this.props.userid);
         this.state = {
             username: '',

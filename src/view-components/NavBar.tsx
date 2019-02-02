@@ -16,6 +16,7 @@ interface Props {
 interface State {
     isOpen: boolean
 }
+import {Link} from 'react-router-dom';
 
 
 class NavBar extends React.Component<Props,State> {
@@ -40,13 +41,13 @@ class NavBar extends React.Component<Props,State> {
                     <Collapse isOpen={this.state.isOpen} navbar>
                         <Nav className="ml-auto" navbar>
                             <NavItem>
-                                <NavLink href="/login">Login</NavLink>
+                                <Link to="/login">Login</Link>
                             </NavItem>
                             <NavItem>
-                                <NavLink href="/profil">Profil</NavLink>
+                                <Link to="/profil"> Profil</Link>
                             </NavItem>
                             <NavItem>
-                                <NavLink href="/users">Les utilisateurs</NavLink>
+                                <Link to="/users">Les utilisateurs</Link>
                             </NavItem>
                             <UncontrolledDropdown nav inNavbar>
                                 <DropdownToggle nav caret>

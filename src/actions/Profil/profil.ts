@@ -11,6 +11,7 @@ import {Dispatch} from "redux";
 
 export enum ActionTypes {
     PROFIL = 'PROFIL',
+    AUTHENTICATED = 'AUTH',
     ERROR = 'ERROR',
 }
 

@@ -2,7 +2,6 @@ import { combineReducers } from 'redux'
 import * as fromAuth from "./Authentifcation/auth";
 import * as fromProfil from "./Profil/Profil";
 import * as fromUsers from "./Users/Users";
-import { routerReducer} from 'react-router-redux';
 /*
  * This is the root state of the app
  * It contains every substate of the app
@@ -22,6 +21,8 @@ export const initialState: State = {
     users: fromUsers.initialState,
 };
 
+
+
 /*
  * Root reducer of the app
  * Returned reducer will be of type Reducer<State>
@@ -30,5 +31,5 @@ export const reducer = combineReducers<State>({
     auth: fromAuth.reducer,
     profil: fromProfil.reducer,
     users: fromUsers.reducer,
-    routing: routerReducer,
 });
+
