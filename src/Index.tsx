@@ -4,10 +4,10 @@ import store from './store';
 require('../scss/app.scss');
 import 'bootstrap/dist/css/bootstrap.min.css';
 import RouterConfig from "./config/RouterConfig";
-import { BrowserRouter } from 'react-router-dom';
+import { HashRouter } from 'react-router-dom';
 ReactDOM.render(
-    <BrowserRouter>
+    <HashRouter>
         <RouterConfig store={store} />
-    </BrowserRouter>,
+    </HashRouter>,
     document.getElementById('app') as HTMLElement
 );

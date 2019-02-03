@@ -7,7 +7,8 @@ module.exports = {
         extensions: ['.ts', '.tsx', '.js', '.jsx', '.css', '.scss']
     },
     devServer: {
-        historyApiFallback: true
+        historyApiFallback: true,
+        contentBase: './',
     },
     module: {
         rules: [
@@ -23,7 +24,7 @@ module.exports = {
                     loader: 'sass-loader', options: {
                         sourceMap: true
                     }
-                }]
+                }],
             }
         ]
     }
