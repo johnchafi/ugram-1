@@ -1,7 +1,8 @@
 import * as React from 'react'
 import User from "../../models/User";
 import UserItem from "../UserItem/UserItem";
-import {Col, Row} from "reactstrap";
+import {Grid} from "@material-ui/core";
+
 export interface Props {
     isAuthenticated: boolean
     users: User[],
@@ -25,11 +26,11 @@ class UserList extends React.Component<Props,State> {
         const{users} = this.props;
         return (
             <div>
-                <Row>
-                    {users.map(function(user, i){
-                        return <UserItem user={user} key={i}/>
-                    })}
-                </Row>
+                <Grid container spacing={24}>
+                        {users.map(function(user, i){
+                            return <UserItem user={user} key={i}/>
+                        })}
+                </Grid>
             </div>
         );
     }

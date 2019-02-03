@@ -1,7 +1,8 @@
 import * as React from 'react'
-import {Button} from "reactstrap";
 import {FormEvent} from "react";
 import User from "../../models/User";
+import {Button, Input} from "@material-ui/core";
+
 interface Props {
     isAuthenticated: boolean,
     user: User
@@ -45,8 +46,8 @@ class AuthForm extends React.Component<Props,State> {
         return (
             <div>
                 <form onSubmit={_handleSubmit}>
-                    <input type="text" value={username} onChange={e => _updateUsername(e.target.value)} />
-                    <input type="password" value={password} onChange={e => _updatePassword(e.target.value)} />
+                    <Input type="text" value={username} onChange={e => _updateUsername(e.target.value)} />
+                    <Input type="password" value={password} onChange={e => _updatePassword(e.target.value)} />
                     <Button type="submit">Connexion</Button>
                 </form>
             </div>

@@ -1,14 +1,14 @@
 module.exports = {
     entry: './src/Index.tsx',
     output: {
-        filename: './dist/js/bundle.js'
+        filename: './dist/js/bundle.js',
+        publicPath: '/'
     },
     resolve: {
         extensions: ['.ts', '.tsx', '.js', '.jsx', '.css', '.scss']
     },
     devServer: {
         historyApiFallback: true,
-        contentBase: './',
     },
     module: {
         rules: [

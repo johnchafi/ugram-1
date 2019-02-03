@@ -1,33 +1,95 @@
 import * as React from 'react'
 import User from "../../models/User";
-import {Card, CardTitle, CardImg, CardBody, Col, NavItem} from "reactstrap";
+import PropTypes from 'prop-types';
+import Card from '@material-ui/core/Card';
+import CardHeader from '@material-ui/core/CardHeader';
+import CardMedia from '@material-ui/core/CardMedia';
+import CardContent from '@material-ui/core/CardContent';
+import Avatar from '@material-ui/core/Avatar';
+import Grid from '@material-ui/core/Grid';
+import IconButton from '@material-ui/core/IconButton';
+import Typography from '@material-ui/core/Typography';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
 import {Link} from 'react-router-dom';
+import {red} from "@material-ui/core/colors";
+import {withStyles} from "@material-ui/core";
 export interface Props {
-    user : User
+    user : User,
+    classes:PropTypes.object.isRequired
 }
 interface State {
 }
 
 
+const styles = theme => ({
+    card: {
+        maxWidth: 400,
+    },
+    media: {
+        height: 0,
+        paddingTop: '56.25%', // 16:9
+    },
+    actions: {
+        display: 'flex',
+    },
+    expand: {
+        transform: 'rotate(0deg)',
+        marginLeft: 'auto',
+        transition: theme.transitions.create('transform', {
+            duration: theme.transitions.duration.shortest,
+        }),
+    },
+    expandOpen: {
+        transform: 'rotate(180deg)',
+    },
+    avatar: {
+        backgroundColor: red[500],
+    },
+});
+
+
 class UserItem extends React.Component<Props,State> {
 
+    constructor(props : Props)
+    {
+        super(props);
+
+    }
+
     render() {
+        const {classes} = this.props;
         return (
-            <Col sm={3}>
-                <Card>
-                    {this.props.user.pictureUrl && <CardImg top src={this.props.user.pictureUrl} alt="Card image cap" />}
-                    {!this.props.user.pictureUrl && <CardImg top width="100%" src="https://placeholdit.imgix.net/~text?txtsize=33&txt=318%C3%97180&w=318&h=180" alt="Card image cap" />}
-                    <CardBody>
-                        <CardTitle>{this.props.user.firstName} {this.props.user.lastName}</CardTitle>
-                        <CardTitle>{this.props.user.email}</CardTitle>
-                        <CardTitle>{this.props.user.phoneNumber}</CardTitle>
-                        <Link to={'/profil/' + this.props.user.id}> Profil</Link>
-                    </CardBody>
-                </Card>
-            </Col>
+            <Grid item xs={3}>
+                <Link to={`/profil/${this.props.user.id}`}>
+                    <Card className={classes.card}>
+                        <CardHeader
+                            avatar={
+                                <Avatar aria-label="Recipe" src={this.props.user.pictureUrl}>
+
+                                </Avatar>
+                            }
+                            action={
+                                <IconButton>
+                                    <MoreVertIcon />
+                                </IconButton>
+                            }
+                            title={this.props.user.firstName + " " + this.props.user.lastName}
+                            subheader={new Date(Number(this.props.user.registrationDate)).toDateString()}
+                        />
+                        <CardMedia
+                            className={classes.media}
+                            image={this.props.user.pictureUrl|| "//"}
+                            title="Paella dish"
+                        />
+                        <CardContent>
+                            <Typography component="p">
+                            </Typography>
+                        </CardContent>
+                    </Card>
+                </Link>
+            </Grid>
 
         );
     }
 }
-
-export default UserItem;
+export default withStyles(styles)(UserItem);
