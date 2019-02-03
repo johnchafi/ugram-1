@@ -13,6 +13,7 @@ import {Link} from 'react-router-dom';
 import {red} from "@material-ui/core/colors";
 import {CardActions, withStyles} from "@material-ui/core";
 import Picture from "../../models/Picture";
+import Avatar from "../UserItem/UserItem";
 export interface Props {
     picture : Picture,
     classes:PropTypes.object.isRequired
@@ -53,7 +54,6 @@ class PictureItem extends React.Component<Props,State> {
     constructor(props : Props)
     {
         super(props);
-
     }
 
     render() {
@@ -75,15 +75,16 @@ class PictureItem extends React.Component<Props,State> {
                         image={this.props.picture.url|| "//"}
                         title="Paella dish"
                     />
-                    <CardContent>
-                        <Typography component="p">
-                        </Typography>
-                    </CardContent>
                     <CardActions className={classes.actions} disableActionSpacing>
                         <IconButton aria-label="Add to favorites">
                             <FavoriteIcon />
                         </IconButton>
                     </CardActions>
+                    <CardContent>
+                        <Typography component="p">
+                            {new Date(Number(this.props.picture.createdDate)).toDateString()}
+                        </Typography>
+                    </CardContent>
                 </Card>
             </Grid>
 

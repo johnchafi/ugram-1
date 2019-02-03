@@ -33,10 +33,32 @@ const setAuthorization = () => {
  */
 export interface AuthenticatedAction { type: ActionTypes, payload: IStatePicturesApp }
 
-/*
- * Define our actions creators
- * We are returning the right Action for each function
- */
+
+export function getAllPicturesSortByDate(): any {
+    setAuthorization();
+    return function(dispatch : Dispatch<IStatePicturesApp>) {
+        axios.get('http://api.ugram.net/pictures/')
+            .then(function (response) {
+                // response.data;
+                dispatch(  {
+                    type: ActionTypes.GET_PICTURES,
+                    payload: {
+                        isAuthenticated: true,
+                        pictures: response.data.items,
+                    }
+                })
+            })
+            .catch(function (error) {
+                dispatch( {
+                    type: ActionTypes.ERROR,
+                    payload: {
+                        isAuthenticated: false,
+                        pictures: null,
+                    }
+                })
+            });
+    }
+}
 export function getAllPicturesUser(userid: string): any {
     setAuthorization();
     return function(dispatch : Dispatch<IStatePicturesApp>) {

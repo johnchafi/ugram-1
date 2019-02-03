@@ -7,9 +7,10 @@ export interface Props {
     isAuthenticated: boolean
     pictures: Picture[],
     getPictures: (string) => any
-    userid: string,
+    getPicturesByDate: () => any
     match: {params : {id: string}}
     location:{pathname:string}
+    isHome:boolean
 }
 interface State {
 }
@@ -18,7 +19,10 @@ interface State {
 class PictureList extends React.Component<Props,State> {
     constructor(props : Props) {
         super(props);
-        this.props.getPictures(this.props.match.params.id);
+        if (!this.props.isHome)
+            this.props.getPictures(this.props.match.params.id);
+        else
+            this.props.getPicturesByDate();
         this.state = {
             username: '',
             password: ''
@@ -26,8 +30,12 @@ class PictureList extends React.Component<Props,State> {
     }
 
     componentWillReceiveProps(nextProps: Readonly<Props>, nextContext: any): void {
-        if (nextProps.location.pathname !== this.props.location.pathname)
-            this.props.getPictures(nextProps.match.params.id);
+        if (nextProps.location.pathname !== this.props.location.pathname) {
+            if (!this.props.isHome)
+                this.props.getPictures(this.props.match.params.id);
+            else
+                this.props.getPicturesByDate();
+        }
     }
 
     render() {

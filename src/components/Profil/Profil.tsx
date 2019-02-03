@@ -33,7 +33,7 @@ class Profil extends React.Component<Props,State> {
         return (
             <div>
                 {JSON.stringify(this.props.user)}
-                <PictureList/>
+                <PictureList isHome={false}/>
             </div>
         );
     }
