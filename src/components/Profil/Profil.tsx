@@ -1,11 +1,11 @@
 import * as React from 'react'
 import User from "../../models/User";
+import PictureList from "../../containers/PictureList/PictureList";
 export interface Props {
     isAuthenticated: boolean
     getProfil: (string) => any
     user : User
     status: number,
-    userid: string,
     match: {params : {id: string}}
     location:{pathname:string}
 }
@@ -33,6 +33,7 @@ class Profil extends React.Component<Props,State> {
         return (
             <div>
                 {JSON.stringify(this.props.user)}
+                <PictureList/>
             </div>
         );
     }
