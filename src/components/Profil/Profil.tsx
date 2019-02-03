@@ -7,6 +7,7 @@ export interface Props {
     status: number,
     userid: string,
     match: {params : {id: string}}
+    location:{pathname:string}
 }
 interface State {
 }
@@ -15,7 +16,7 @@ interface State {
 class Profil extends React.Component<Props,State> {
     constructor(props : Props) {
         super(props);
-        console.log(this.props.userid);
+        console.log(this.props.match.params.id);
         this.props.getProfil(this.props.match.params.id);
         this.state = {
             username: '',
@@ -23,8 +24,12 @@ class Profil extends React.Component<Props,State> {
         };
     }
 
-    render() {
-        const {user, status} = this.props;
+    componentWillReceiveProps(nextProps: Readonly<Props>, nextContext: any): void {
+        if (nextProps.location.pathname !== this.props.location.pathname)
+            this.props.getProfil(nextProps.match.params.id);
+    }
+
+    render(): React.ReactNode {
         return (
             <div>
                 {JSON.stringify(this.props.user)}

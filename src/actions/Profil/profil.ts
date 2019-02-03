@@ -39,6 +39,7 @@ export interface UserProfilAction { type: ActionTypes, payload: IStateProfilApp 
  * We are returning the right Action for each function
  */
 export function profilData(userid): any {
+    console.log(userid);
     setAuthorization();
     return function(dispatch : Dispatch<IStateProfilApp>) {
         axios.get('http://api.ugram.net/users/' + userid)

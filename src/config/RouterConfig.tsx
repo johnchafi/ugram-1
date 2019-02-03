@@ -15,7 +15,7 @@ const RouterConfig = ({store}) =>(
                 <NavBar/>
                 <Switch>
                     <Route path='/login' component={AuthForm}/>
-                    <Route path='/profil/:id' exact component={Profil} />
+                    <Route exact path='/profil/:id'  component={Profil} />
                     <Route path='/users' component={() => <Users />}/>
                 </Switch>
             </React.Fragment>
