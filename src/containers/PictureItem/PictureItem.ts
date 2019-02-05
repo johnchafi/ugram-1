@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom';
 import PictureItem, {Props} from "../../components/PictureItem/PictureItem";
 const mapStateToProps = (state: State, ownProps: Props) => ({
     picture: ownProps.picture,
+    user: ownProps.user
 });
 
 

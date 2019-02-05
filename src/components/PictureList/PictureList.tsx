@@ -1,53 +1,49 @@
 import * as React from 'react'
 import {Grid} from "@material-ui/core";
 import Picture from "../../models/Picture";
-import PictureItem from "../PictureItem/PictureItem";
+import PictureItem from "../../containers/PictureItem/PictureItem";
+import User from "../../models/User";
 
 export interface Props {
-    isAuthenticated: boolean
     pictures: Picture[],
-    getPictures: (string) => any
-    getPicturesByDate: () => any
-    match: {params : {id: string}}
-    location:{pathname:string}
     isHome:boolean
 }
 interface State {
 }
 
+const styles = theme => ({
+    root: {
+        display: 'flex',
+        flexWrap: 'wrap',
+        justifyContent: 'space-around',
+        overflow: 'hidden',
+        backgroundColor: theme.palette.background.paper,
+    },
+    gridList: {
+        width: 500,
+        height: 450,
+    },
+    icon: {
+        color: 'rgba(255, 255, 255, 0.54)',
+    },
+});
+
 
 class PictureList extends React.Component<Props,State> {
     constructor(props : Props) {
         super(props);
-        if (!this.props.isHome)
-            this.props.getPictures(this.props.match.params.id);
-        else
-            this.props.getPicturesByDate();
         this.state = {
             username: '',
             password: ''
         };
     }
 
-    componentWillReceiveProps(nextProps: Readonly<Props>, nextContext: any): void {
-        if (nextProps.location.pathname !== this.props.location.pathname) {
-            if (!this.props.isHome)
-                this.props.getPictures(this.props.match.params.id);
-            else
-                this.props.getPicturesByDate();
-        }
-    }
-
     render() {
-        const{pictures} = this.props;
+        const {pictures } = this.props;
         return (
-            <div>
-                <Grid container spacing={24}>
-                    {pictures.map(function(picture, i){
-                        return <PictureItem picture={picture} key={i}/>
-                    })}
-                </Grid>
-            </div>
+            pictures.map(function (picture, i) {
+                return <PictureItem user={picture.user} picture={picture} key={i}/>
+            })
         );
     }
 }

@@ -11,12 +11,13 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import {Link} from 'react-router-dom';
 import {red} from "@material-ui/core/colors";
-import {CardActions, withStyles} from "@material-ui/core";
+import {Avatar, CardActions, withStyles} from "@material-ui/core";
 import Picture from "../../models/Picture";
-import Avatar from "../UserItem/UserItem";
+import User from "../../models/User";
 export interface Props {
     picture : Picture,
     classes:PropTypes.object.isRequired
+    user : User
 }
 interface State {
 }
@@ -56,18 +57,30 @@ class PictureItem extends React.Component<Props,State> {
         super(props);
     }
 
+    renderAvatar()
+    {
+        if (this.props.user != null)
+            return ( <Avatar aria-label="Recipe" src={this.props.user.pictureUrl}/>)
+        else
+            return ( <Avatar aria-label="Recipe" >{this.props.picture.userId.charAt(0)}</Avatar>)
+    }
+
     render() {
         const {classes} = this.props;
         return (
             <Grid item xs={3}>
                 <Card className={classes.card}>
                     <CardHeader
+
+                        avatar={
+                           this.renderAvatar()
+                        }
                         action={
                             <IconButton>
                                 <MoreVertIcon />
                             </IconButton>
                         }
-                        title={this.props.picture.description}
+                        title={this.props.user && this.props.user.firstName + " " + this.props.user.lastName || "Moi"}
                         subheader={this.props.picture.mentions}
                     />
                     <CardMedia
@@ -81,7 +94,8 @@ class PictureItem extends React.Component<Props,State> {
                         </IconButton>
                     </CardActions>
                     <CardContent>
-                        <Typography component="p">
+                        <Typography variant="overline">
+                            {this.props.picture.description && this.props.picture.description + " / "}
                             {new Date(Number(this.props.picture.createdDate)).toDateString()}
                         </Typography>
                     </CardContent>

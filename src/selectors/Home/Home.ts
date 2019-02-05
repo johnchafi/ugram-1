@@ -1,7 +1,6 @@
 import { createSelector } from 'reselect'
 import {State} from "../../reducers";
 
-const getPicturesUser = ((state: State) => state.pictures);
+const getPicturesUser = ((state: State) => state.home);
 
 export const getPictures = createSelector([getPicturesUser], s => s.pictures);
-export const getIsAuthenticated = createSelector([getPicturesUser], s => s.isAuthenticated);

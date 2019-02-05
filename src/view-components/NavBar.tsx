@@ -44,7 +44,7 @@ class NavBar extends React.Component<Props,State> {
     render() {
         const {classes} = this.props;
         return (
-            <Grid container spacing={24}>
+            <div style={{paddingBottom:20}}>
                 <AppBar position="static">
                     <Toolbar>
                         <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
@@ -58,7 +58,7 @@ class NavBar extends React.Component<Props,State> {
                         <Link to={"/profil/wfortin"}>Profil</Link>
                     </Toolbar>
                 </AppBar>
-            </Grid>
+            </div>
         );
     }
 }

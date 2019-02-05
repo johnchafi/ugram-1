@@ -1,18 +1,21 @@
 import {Action, ActionTypes} from '../../actions/Profil/profil'
 import User from "../../models/User";
+import Picture from "../../models/Picture";
 
 
 export interface IStateProfilApp {
     isAuthenticated: boolean
     user: User,
-    status: number
+    status: number,
+    pictures: Picture[]
 }
 
 // Define our initialState
 export const initialState: IStateProfilApp = {
     isAuthenticated: false,
     user: null,
-    status: 0
+    status: 0,
+    pictures: []
 };
 
 /*
@@ -23,10 +26,11 @@ export const initialState: IStateProfilApp = {
 export function reducer(state: IStateProfilApp = initialState, action: Action) : IStateProfilApp {
     switch (action.type) {
         case ActionTypes.PROFIL:
-            const {user, isAuthenticated, status} = action.payload;
+            const {user, isAuthenticated, status, pictures} = action.payload;
             return {
                 ...state,
                 user: user,
+                pictures: pictures,
                 isAuthenticated: isAuthenticated,
                 status: status
             };

@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 import Profil, {Props} from "../../components/Profil/Profil";
-import {getStatusProfil, getUserProfil} from "../../selectors/Profil/Profil";
+import {getStatusProfil, getUserPicture, getUserProfil} from "../../selectors/Profil/Profil";
 import {State} from "../../reducers";
 import {profilData} from "../../actions/Profil/profil";
 import { withRouter } from 'react-router-dom';
@@ -10,6 +10,7 @@ const mapStateToProps = (state: State) => ({
     status: getStatusProfil(state),
     isAuthenticated: getAuth(state),
     userid: getAuthUser(state).id,
+    pictures:getUserPicture(state)
 });
 
 const mapDispatchToProps = {

@@ -6,7 +6,7 @@ import Users from "../containers/UserList/UserList";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { createHistory } from 'history';
 import { Provider } from 'react-redux';
-import Home from "../view-components/Home";
+import Home from "../containers/Home/Home";
 
 
 const RouterConfig = ({store}) =>(
@@ -14,12 +14,12 @@ const RouterConfig = ({store}) =>(
         <BrowserRouter>
             <React.Fragment>
                 <NavBar/>
-                <Switch>
-                    <Route path='/login' component={AuthForm}/>
-                    <Route exact path="/" component={Home}/>
-                    <Route path='/profil/:id/'  component={Profil} />
-                    <Route path='/users' component={() => <Users />}/>
-                </Switch>
+                    <Switch>
+                        <Route path='/login' component={AuthForm}/>
+                        <Route exact path="/" component={Home}/>
+                        <Route path='/profil/:id/'  component={Profil} />
+                        <Route path='/users' component={() => <Users />}/>
+                    </Switch>
             </React.Fragment>
         </BrowserRouter>
     </Provider>

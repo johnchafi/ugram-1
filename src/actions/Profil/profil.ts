@@ -11,6 +11,7 @@ import {Dispatch} from "redux";
 
 export enum ActionTypes {
     PROFIL = 'PROFIL',
+    FEED = 'FEED',
     AUTHENTICATED = 'AUTH',
     ERROR = 'ERROR',
 }
@@ -43,14 +44,45 @@ export function profilData(userid): any {
     setAuthorization();
     return function(dispatch : Dispatch<IStateProfilApp>) {
         axios.get('http://api.ugram.net/users/' + userid)
-            .then(function (response) {
-                // response.data;
+            .then(function (user) {
+                axios.get('http://api.ugram.net/users/' + userid + '/pictures')
+                    .then(function (response) {
+                        dispatch(  {
+                            type: ActionTypes.PROFIL,
+                            payload: {
+                                isAuthenticated: true,
+                                user: user.data,
+                                status: user.status,
+                                pictures:response.data.items
+                            }
+                        })
+                    })
+            })
+            .catch(function (error) {
+                dispatch( {
+                    type: ActionTypes.ERROR,
+                    payload: {
+                        isAuthenticated: false,
+                        user: null,
+                        message: error
+                    }
+                })
+            });
+    }
+}
+
+export function profilUser(userid): any {
+    setAuthorization();
+    return function(dispatch : Dispatch<IStateProfilApp>) {
+        axios.get('http://api.ugram.net/users/' + userid)
+            .then(function (user) {
+                console.log(user);
                 dispatch(  {
-                    type: ActionTypes.PROFIL,
+                    type: ActionTypes.FEED,
                     payload: {
                         isAuthenticated: true,
-                        user: response.data,
-                        status: response.status
+                        user: user.data,
+                        status: user.status
                     }
                 })
             })

@@ -21,7 +21,6 @@ export const initialState: IStateAuthApp = {
  * action: Action to be handled. Since we are in todos reducer, action type is Action defined in our actions/todos file.
  */
 export function reducer(state: IStateAuthApp = initialState, action: Action) : IStateAuthApp {
-    console.log(action);
     switch (action.type) {
         case ActionTypes.AUTHENTICATED:
             const {user, isAuthenticated, status} = action.payload;

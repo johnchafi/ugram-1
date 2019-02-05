@@ -1,3 +1,5 @@
+import User from "./User";
+
 export default interface Picture {
     "id": number,
     "createdDate": number,
@@ -5,5 +7,6 @@ export default interface Picture {
     "mentions": string[],
     "tags": string[],
     "url": string,
-    "userId": string
+    "userId": string,
+    user:User
 }

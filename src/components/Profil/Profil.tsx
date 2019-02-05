@@ -1,6 +1,8 @@
 import * as React from 'react'
 import User from "../../models/User";
-import PictureList from "../../containers/PictureList/PictureList";
+import Picture from "../../models/Picture";
+import PictureList from "../PictureList/PictureList";
+import {Grid} from "@material-ui/core";
 export interface Props {
     isAuthenticated: boolean
     getProfil: (string) => any
@@ -8,6 +10,7 @@ export interface Props {
     status: number,
     match: {params : {id: string}}
     location:{pathname:string}
+    pictures: Picture[]
 }
 interface State {
 }
@@ -31,10 +34,9 @@ class Profil extends React.Component<Props,State> {
 
     render(): React.ReactNode {
         return (
-            <div>
-                {JSON.stringify(this.props.user)}
-                <PictureList isHome={false}/>
-            </div>
+            <Grid container spacing={24}  justify="center">
+                <PictureList pictures={this.props.pictures} isHome={false}/>
+            </Grid>
         );
     }
 }

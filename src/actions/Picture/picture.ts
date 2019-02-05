@@ -6,10 +6,11 @@
  */
 import axios from "axios";
 import {Dispatch} from "redux";
-import {IStatePicturesApp} from "../../reducers/PictureList/PictureList";
+import {IStateHomeApp} from "../../reducers/Home/Home";
+import Picture from "../../models/Picture";
 
 export enum ActionTypes {
-    GET_PICTURES = 'GET_PICTURES',
+    GET_PICTURE_HOME = 'GET_PICTURE_HOME',
     ERROR = "ERROR",
 }
 
@@ -31,42 +32,22 @@ const setAuthorization = () => {
  * Define return types of our actions
  * Every action returns a type and a payload
  */
-export interface AuthenticatedAction { type: ActionTypes, payload: IStatePicturesApp }
+export interface AuthenticatedAction { type: ActionTypes, payload: IStateHomeApp }
 
 
 export function getAllPicturesSortByDate(): any {
     setAuthorization();
-    return function(dispatch : Dispatch<IStatePicturesApp>) {
+    return function(dispatch : Dispatch<IStateHomeApp>) {
         axios.get('http://api.ugram.net/pictures/')
-            .then(function (response) {
-                // response.data;
-                dispatch(  {
-                    type: ActionTypes.GET_PICTURES,
-                    payload: {
-                        isAuthenticated: true,
-                        pictures: response.data.items,
-                    }
-                })
-            })
-            .catch(function (error) {
-                dispatch( {
-                    type: ActionTypes.ERROR,
-                    payload: {
-                        isAuthenticated: false,
-                        pictures: null,
-                    }
-                })
-            });
-    }
-}
-export function getAllPicturesUser(userid: string): any {
-    setAuthorization();
-    return function(dispatch : Dispatch<IStatePicturesApp>) {
-        axios.get('http://api.ugram.net/users/' + userid + '/pictures')
-            .then(function (response) {
-                // response.data;
-                dispatch(  {
-                    type: ActionTypes.GET_PICTURES,
+            .then(async function (response) {
+                for (let i = 0; i < response.data.items.length; i++)
+                {
+                    await axios.get('http://api.ugram.net/users/' + response.data.items[i].userId).then((user) => {
+                        response.data.items[i].user = user.data;
+                    })
+                }
+                dispatch({
+                    type: ActionTypes.GET_PICTURE_HOME,
                     payload: {
                         isAuthenticated: true,
                         pictures: response.data.items,
