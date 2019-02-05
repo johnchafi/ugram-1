@@ -11,15 +11,25 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import {Link} from 'react-router-dom';
 import {red} from "@material-ui/core/colors";
-import {Avatar, CardActions, withStyles} from "@material-ui/core";
+import {
+    Avatar,
+    Button,
+    CardActions,
+    Popover,
+    withStyles
+} from "@material-ui/core";
 import Picture from "../../models/Picture";
 import User from "../../models/User";
 export interface Props {
     picture : Picture,
     classes:PropTypes.object.isRequired
     user : User
+    isHome:boolean
+    deletePicture : (string, number) => any
 }
 interface State {
+    anchorEl: HTMLElement
+
 }
 
 
@@ -34,12 +44,8 @@ const styles = theme => ({
     actions: {
         display: 'flex',
     },
-    expand: {
-        transform: 'rotate(0deg)',
-        marginLeft: 'auto',
-        transition: theme.transitions.create('transform', {
-            duration: theme.transitions.duration.shortest,
-        }),
+    typography: {
+        margin: theme.spacing.unit * 2,
     },
     expandOpen: {
         transform: 'rotate(180deg)',
@@ -55,51 +61,94 @@ class PictureItem extends React.Component<Props,State> {
     constructor(props : Props)
     {
         super(props);
+        this.state = {
+            anchorEl:null
+        }
     }
+
+    handleClick = event => {
+        this.setState({
+            anchorEl: event.currentTarget,
+        });
+    };
+    handleSuppress = event => {
+        this.props.deletePicture(this.props.picture.userId, this.props.picture.id);
+        this.setState({
+            anchorEl: null,
+        });
+    };
+
+
+    handleClose = () => {
+        this.setState({
+            anchorEl: null,
+        });
+    };
 
     renderAvatar()
     {
         if (this.props.user != null)
-            return ( <Avatar aria-label="Recipe" src={this.props.user.pictureUrl}/>)
+            return ( <Avatar aria-label="Recipe" src={this.props.user.pictureUrl}/>);
         else
             return ( <Avatar aria-label="Recipe" >{this.props.picture.userId.charAt(0)}</Avatar>)
     }
 
     render() {
         const {classes} = this.props;
+        const { anchorEl } = this.state;
+        const open = Boolean(anchorEl);
         return (
             <Grid item xs={3}>
                 <Card className={classes.card}>
                     <CardHeader
 
                         avatar={
-                           this.renderAvatar()
+                            this.renderAvatar()
                         }
-                        action={
-                            <IconButton>
-                                <MoreVertIcon />
+                        action={ !this.props.isHome &&
+                            <IconButton aria-owns={open ? 'simple-popper' : undefined}
+                                        aria-haspopup="true"
+                                         onClick={this.handleClick}>
+                                <MoreVertIcon/>
                             </IconButton>
                         }
-                        title={this.props.user && this.props.user.firstName + " " + this.props.user.lastName || "Moi"}
-                        subheader={this.props.picture.mentions}
+                        title={this.props.user && this.props.user.firstName + " " + this.props.user.lastName || this.props.picture.userId}
+                        subheader={new Date(Number(this.props.picture.createdDate)).toDateString()}
                     />
                     <CardMedia
                         className={classes.media}
                         image={this.props.picture.url|| "//"}
-                        title="Paella dish"
+                        title={this.props.picture.description}
                     />
+                    <CardContent>
+                    </CardContent>
                     <CardActions className={classes.actions} disableActionSpacing>
                         <IconButton aria-label="Add to favorites">
                             <FavoriteIcon />
                         </IconButton>
-                    </CardActions>
-                    <CardContent>
                         <Typography variant="overline">
-                            {this.props.picture.description && this.props.picture.description + " / "}
-                            {new Date(Number(this.props.picture.createdDate)).toDateString()}
+                            {this.props.picture.description && this.props.picture.description + this.props.picture.mentions.map(function (mention, i) {
+                                return mention;
+                            })}
                         </Typography>
-                    </CardContent>
+                    </CardActions>
                 </Card>
+                <Popover
+                    id="simple-popper"
+                    open={open}
+                    anchorEl={anchorEl}
+                    onClose={this.handleClose}
+                    anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'center',
+                    }}
+                    transformOrigin={{
+                        vertical: 'top',
+                        horizontal: 'center',
+                    }}
+                >
+                    <Button onClick={this.handleSuppress} variant="contained" color="secondary">Delete picture</Button>
+                </Popover>
             </Grid>
 
         );

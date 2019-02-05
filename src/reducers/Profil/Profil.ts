@@ -7,7 +7,8 @@ export interface IStateProfilApp {
     isAuthenticated: boolean
     user: User,
     status: number,
-    pictures: Picture[]
+    pictures: Picture[],
+    message:string
 }
 
 // Define our initialState
@@ -15,7 +16,8 @@ export const initialState: IStateProfilApp = {
     isAuthenticated: false,
     user: null,
     status: 0,
-    pictures: []
+    pictures: [],
+    message:null
 };
 
 /*
@@ -26,13 +28,24 @@ export const initialState: IStateProfilApp = {
 export function reducer(state: IStateProfilApp = initialState, action: Action) : IStateProfilApp {
     switch (action.type) {
         case ActionTypes.PROFIL:
-            const {user, isAuthenticated, status, pictures} = action.payload;
             return {
                 ...state,
-                user: user,
-                pictures: pictures,
-                isAuthenticated: isAuthenticated,
-                status: status
+                user: action.payload.user,
+                pictures: action.payload.pictures,
+                isAuthenticated: action.payload.isAuthenticated,
+                status: action.payload.status
+            };
+        case ActionTypes.FEED:
+            return {
+                ...state,
+                user: action.payload.user,
+                status: action.payload.status
+            };
+        case ActionTypes.ERROR:
+            return {
+                ...state,
+                message: action.payload.message,
+                status:action.payload.status
             };
         default:
             return state

@@ -13,7 +13,6 @@ interface State {
     isOpen: boolean
 }
 import {Link} from 'react-router-dom';
-import {Grid} from "@material-ui/core";
 
 const styles = {
     root: {

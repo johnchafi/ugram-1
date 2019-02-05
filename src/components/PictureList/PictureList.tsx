@@ -1,8 +1,6 @@
 import * as React from 'react'
-import {Grid} from "@material-ui/core";
 import Picture from "../../models/Picture";
 import PictureItem from "../../containers/PictureItem/PictureItem";
-import User from "../../models/User";
 
 export interface Props {
     pictures: Picture[],
@@ -38,11 +36,15 @@ class PictureList extends React.Component<Props,State> {
         };
     }
 
-    render() {
-        const {pictures } = this.props;
+
+    render() {d
+        const {pictures, isHome } = this.props;
         return (
-            pictures.map(function (picture, i) {
-                return <PictureItem user={picture.user} picture={picture} key={i}/>
+            pictures && pictures.map(function (picture, i) {
+                console.log(picture);
+                console.log("picture == " + JSON.stringify(picture));
+                console.log("picture.user ==" + JSON.stringify(picture.user));
+                    return <PictureItem user={picture.user} picture={picture} key={i} isHome={isHome}/>
             })
         );
     }
