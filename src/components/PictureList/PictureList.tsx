@@ -37,7 +37,7 @@ class PictureList extends React.Component<Props,State> {
     }
 
 
-    render() {d
+    render() {
         const {pictures, isHome } = this.props;
         return (
             pictures && pictures.map(function (picture, i) {
