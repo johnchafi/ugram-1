@@ -5,7 +5,7 @@
  */
 import axios from "axios";
 import {Dispatch} from "redux";
-import {IStateHomeApp} from "../../reducers/Home/Home";
+import {IStatePictureApp} from "../../reducers/Picture/Picture";
 import {profilData} from "../Profil/profil";
 import {IStateProfilApp} from "../../reducers/Profil/Profil";
 import Picture from "../../models/Picture";
@@ -13,15 +13,30 @@ import Picture from "../../models/Picture";
 export enum ActionTypes {
     GET_PICTURE_HOME = 'GET_PICTURE_HOME',
     GET_PICTURE_HOME_FINISH = 'GET_PICTURE_HOME_FINISH',
-    FINISH = "FINISH",
-    ERROR = "ERROR",
+    GET_PICTURE_PROFIL = 'GET_PICTURE_PROFIL',
+    ERROR = "ERROR"
 }
 
-export interface AuthenticatedAction { type: ActionTypes, payload: IStateHomeApp }
+export interface AuthenticatedAction { type: ActionTypes, payload: IStatePictureApp }
 
+
+
+export function getPictureForProfil(userid: string) : any {
+    return function(dispatch : Dispatch<IStatePictureApp>) {
+        axios.get('http://api.ugram.net/users/' + userid + '/pictures')
+            .then(function (response) {
+                dispatch({
+                    type: ActionTypes.GET_PICTURE_PROFIL,
+                    payload: {
+                        pictures: response.data.items,
+                    }
+                })
+            })
+    }
+}
 
 export function getAllPicturesSortByDate(): any {
-    return function(dispatch : Dispatch<IStateHomeApp>) {
+    return function(dispatch : Dispatch<IStatePictureApp>) {
         axios.get('http://api.ugram.net/pictures/')
             .then(  function (response) {
                 dispatch({
@@ -46,17 +61,21 @@ export function getAllPicturesSortByDate(): any {
 }
 
 export function getUserForPicture(pictures: Picture[]): any {
-    return function(dispatch : Dispatch<IStateHomeApp>) {
-        pictures.map(async function (picture) {
-            picture.user = await axios.get('http://api.ugram.net/users/' + picture.userId).then((user) => {
-                return user.data;
-            })
-        });
+    return async function (dispatch: Dispatch<IStatePictureApp>) {
+        let results: Picture[] = [];
+        for (let i = 0; i < pictures.length ; i++)
+        {
+            results.push(Object.assign({}, {
+                user: await axios.get('http://api.ugram.net/users/' + pictures[i].userId).then((user) => {
+                    return user.data;
+                })
+            }, pictures[i]));
+        }
         dispatch({
             type: ActionTypes.GET_PICTURE_HOME_FINISH,
             payload: {
-                pictures: pictures,
-                finish:false,
+                pictures: results,
+                finish: false,
             }
         });
     }
@@ -70,7 +89,7 @@ export function deletePicture(userId: string, pictureId: number): any {
             }
         })
             .then( function (response) {
-                return dispatch(profilData(userId));
+                return dispatch(getPictureForProfil(userId));
             })
             .catch(function (error) {
                 console.log(JSON.stringify(error));

@@ -14,7 +14,7 @@ import {red} from "@material-ui/core/colors";
 import {
     Avatar,
     Button,
-    CardActions,
+    CardActions, CircularProgress, LinearProgress,
     Popover,
     withStyles
 } from "@material-ui/core";
@@ -90,7 +90,7 @@ class PictureItem extends React.Component<Props,State> {
         if (this.props.user != null)
             return ( <Avatar aria-label="Recipe" src={this.props.user.pictureUrl}/>);
         else
-            return ( <Avatar aria-label="Recipe" >{this.props.picture.userId.charAt(0)}</Avatar>)
+            return ( <Avatar aria-label="Recipe" ><CircularProgress disableShrink /></Avatar>)
     }
 
     render() {
@@ -112,7 +112,7 @@ class PictureItem extends React.Component<Props,State> {
                                 <MoreVertIcon/>
                             </IconButton>
                         }
-                        title={this.props.user && this.props.user.firstName + " " + this.props.user.lastName || this.props.picture.userId}
+                        title={this.props.user && this.props.user.firstName + " " + this.props.user.lastName || <LinearProgress />}
                         subheader={new Date(Number(this.props.picture.createdDate)).toDateString()}
                     />
                     <CardMedia

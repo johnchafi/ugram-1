@@ -1,9 +1,11 @@
 import * as React from 'react'
 import Picture from "../../models/Picture";
 import PictureItem from "../../containers/PictureItem/PictureItem";
+import User from "../../models/User";
 
 export interface Props {
     pictures: Picture[],
+    user: User
     isHome:boolean
 }
 interface State {
@@ -30,21 +32,13 @@ const styles = theme => ({
 class PictureList extends React.Component<Props,State> {
     constructor(props : Props) {
         super(props);
-        this.state = {
-            username: '',
-            password: ''
-        };
     }
 
-
     render() {
-        const {pictures, isHome } = this.props;
+        const {pictures, isHome, user } = this.props;
         return (
             pictures && pictures.map(function (picture, i) {
-                console.log(picture);
-                console.log("picture == " + JSON.stringify(picture));
-                console.log("picture.user ==" + JSON.stringify(picture.user));
-                    return <PictureItem user={picture.user} picture={picture} key={i} isHome={isHome}/>
+                    return <PictureItem user={isHome && picture.user || !isHome && user} picture={picture} key={picture.id} isHome={isHome}/>
             })
         );
     }

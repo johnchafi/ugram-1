@@ -45,44 +45,11 @@ export function profilData(userid): any {
     return function(dispatch : Dispatch<IStateProfilApp>) {
         axios.get('http://api.ugram.net/users/' + userid)
             .then(function (user) {
-                axios.get('http://api.ugram.net/users/' + userid + '/pictures')
-                    .then(function (response) {
-                        dispatch(  {
-                            type: ActionTypes.PROFIL,
-                            payload: {
-                                isAuthenticated: true,
-                                user: user.data,
-                                status: user.status,
-                                pictures:response.data.items
-                            }
-                        })
-                    })
-            })
-            .catch(function (error) {
-                dispatch( {
-                    type: ActionTypes.ERROR,
-                    payload: {
-                        isAuthenticated: false,
-                        user: null,
-                        message: error
-                    }
-                })
-            });
-    }
-}
-
-export function profilUser(userid): any {
-    setAuthorization();
-    return function(dispatch : Dispatch<IStateProfilApp>) {
-        axios.get('http://api.ugram.net/users/' + userid)
-            .then(function (user) {
-                console.log(user);
                 dispatch(  {
-                    type: ActionTypes.FEED,
+                    type: ActionTypes.PROFIL,
                     payload: {
                         isAuthenticated: true,
                         user: user.data,
-                        status: user.status
                     }
                 })
             })

@@ -1,5 +1,5 @@
 import * as React from 'react'
-import {Grid, SnackbarContent, Snackbar} from "@material-ui/core";
+import {Grid} from "@material-ui/core";
 import Picture from "../../models/Picture";
 import PictureList from "../../containers/PictureList/PictureList";
 import { Redirect } from 'react-router';
@@ -31,13 +31,17 @@ class Home extends React.Component<Props,State> {
     componentWillReceiveProps(nextProps: Readonly<Props>, nextContext: any): void {
         if (nextProps.finish) {
             console.log(nextProps.finish);
-            this.props.overGetPics(nextProps.pictures);
+            nextProps.overGetPics(nextProps.pictures);
         }
     }
 
     render() {
         return (
-            <Grid container spacing={24}  justify="center">
+            <Grid
+                container
+                spacing={24}
+                xs={12}
+            >
                 <PictureList isHome={true}/>
             </Grid>
         );

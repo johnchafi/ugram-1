@@ -1,12 +1,14 @@
 import * as React from 'react'
 import User from "../../models/User";
 import Picture from "../../models/Picture";
-import PictureList from "../PictureList/PictureList";
+
 import {Grid, Snackbar} from "@material-ui/core";
 import MySnackbarContentWrapper from "../../view-components/MySnackBarContentWrapper";
+import PictureList from "../../containers/PictureList/PictureList";
 export interface Props {
     isAuthenticated: boolean
     getProfil: (string) => any
+    getPicture: (string) => any
     user : User
     status: number,
     match: {params : {id: string}}
@@ -24,18 +26,17 @@ class Profil extends React.Component<Props,State> {
         super(props);
         console.log(this.props.match.params.id);
         this.props.getProfil(this.props.match.params.id);
+        this.props.getPicture(this.props.match.params.id);
         this.state = {
             open: false
         };
     }
 
-    componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, prevContext: any): void {
-        console.log(prevProps.status);
-    }
-
     componentWillReceiveProps(nextProps: Readonly<Props>, nextContext: any): void {
-        if (nextProps.location.pathname !== this.props.location.pathname)
+        if (nextProps.location.pathname !== this.props.location.pathname) {
             this.props.getProfil(nextProps.match.params.id);
+            this.props.getPicture(nextProps.match.params.id);
+        }
         if (nextProps.status != 200) {
             this.setState({open: true});
             this.props.getProfil(nextProps.match.params.id);
@@ -66,7 +67,7 @@ class Profil extends React.Component<Props,State> {
                         message={this.props.message}
                     />
                 </Snackbar>
-                <PictureList pictures={this.props.pictures} isHome={false}/>
+                <PictureList isHome={false}/>
             </Grid>
         );
     }
