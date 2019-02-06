@@ -4,7 +4,7 @@ import Picture from "../../models/Picture";
 
 import {Grid, Snackbar} from "@material-ui/core";
 import MySnackbarContentWrapper from "../../view-components/MySnackBarContentWrapper";
-import PictureList from "../../containers/PictureList/PictureList";
+import PictureList from "../../containers/Picture/PictureList";
 export interface Props {
     isAuthenticated: boolean
     getProfil: (string) => any
@@ -51,7 +51,13 @@ class Profil extends React.Component<Props,State> {
 
     render(): React.ReactNode {
         return (
-            <Grid container spacing={24}  justify="center">
+            <Grid
+                container
+                spacing={24}
+                direction="column"
+                justify="center"
+                alignItems="center"
+            >
                 <Snackbar
                     anchorOrigin={{
                         vertical: 'bottom',

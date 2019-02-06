@@ -1,5 +1,5 @@
-import {Action, ActionTypes} from '../../actions/UserList/userList'
-import UserList from "../../components/UserList/UserList";
+import {Action, ActionTypes} from '../../actions/User/users'
+import UserList from "../../components/Users/UserList";
 
 
 export interface IStateUsersApp {

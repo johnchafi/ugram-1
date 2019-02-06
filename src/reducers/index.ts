@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux'
 import * as fromAuth from "./Authentifcation/auth";
 import * as fromProfil from "./Profil/Profil";
-import * as fromUsers from "./UserList/UserList";
+import * as fromUsers from "./Users/UserList";
 import * as fromHome from "./Picture/Picture";
 /*
  * This is the root state of the app

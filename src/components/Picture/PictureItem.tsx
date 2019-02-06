@@ -14,12 +14,13 @@ import {red} from "@material-ui/core/colors";
 import {
     Avatar,
     Button,
-    CardActions, CircularProgress, LinearProgress,
+    CardActions, CircularProgress, Icon, LinearProgress,
     Popover,
     withStyles
 } from "@material-ui/core";
 import Picture from "../../models/Picture";
 import User from "../../models/User";
+import UpdatePictureItem from "../../containers/Picture/EditPictureItem";
 export interface Props {
     picture : Picture,
     classes:PropTypes.object.isRequired
@@ -29,13 +30,14 @@ export interface Props {
 }
 interface State {
     anchorEl: HTMLElement
-
+    open: boolean
 }
 
 
 const styles = theme => ({
     card: {
-        maxWidth: 400,
+        minWidth: 800,
+        maxWidth: 800,
     },
     media: {
         height: 0,
@@ -62,7 +64,8 @@ class PictureItem extends React.Component<Props,State> {
     {
         super(props);
         this.state = {
-            anchorEl:null
+            anchorEl:null,
+            open:false,
         }
     }
 
@@ -78,6 +81,13 @@ class PictureItem extends React.Component<Props,State> {
         });
     };
 
+    handleEdit = event => {
+        this.setState({
+            open: !this.state.open,
+        });
+    };
+
+
 
     handleClose = () => {
         this.setState({
@@ -85,10 +95,17 @@ class PictureItem extends React.Component<Props,State> {
         });
     };
 
+
+    componentWillReceiveProps(nextProps: Readonly<Props>, nextContext: any): void {
+        this.setState({open: false});
+    }
+
     renderAvatar()
     {
-        if (this.props.user != null)
+        if (this.props.user != null && this.props.user.pictureUrl)
             return ( <Avatar aria-label="Recipe" src={this.props.user.pictureUrl}/>);
+        else if (this.props.user != null && this.props.user.id)
+            return ( <Avatar aria-label="Recipe" >{this.props.user.firstName.charAt(0)}</Avatar>);
         else
             return ( <Avatar aria-label="Recipe" ><CircularProgress disableShrink /></Avatar>)
     }
@@ -98,7 +115,7 @@ class PictureItem extends React.Component<Props,State> {
         const { anchorEl } = this.state;
         const open = Boolean(anchorEl);
         return (
-            <Grid item xs={3}>
+            <Grid item xs={12}>
                 <Card className={classes.card}>
                     <CardHeader
 
@@ -106,11 +123,11 @@ class PictureItem extends React.Component<Props,State> {
                             this.renderAvatar()
                         }
                         action={ !this.props.isHome &&
-                            <IconButton aria-owns={open ? 'simple-popper' : undefined}
-                                        aria-haspopup="true"
-                                         onClick={this.handleClick}>
-                                <MoreVertIcon/>
-                            </IconButton>
+                        <IconButton aria-owns={open ? 'simple-popper' : undefined}
+                                    aria-haspopup="true"
+                                    onClick={this.handleClick}>
+                            <MoreVertIcon/>
+                        </IconButton>
                         }
                         title={this.props.user && this.props.user.firstName + " " + this.props.user.lastName || <LinearProgress />}
                         subheader={new Date(Number(this.props.picture.createdDate)).toDateString()}
@@ -128,27 +145,30 @@ class PictureItem extends React.Component<Props,State> {
                         </IconButton>
                         <Typography variant="overline">
                             {this.props.picture.description && this.props.picture.description + this.props.picture.mentions.map(function (mention, i) {
-                                return mention;
+                                return " " + mention;
+                            }) + " // " + this.props.picture.tags.map(function (tag, i) {
+                                return "#" + tag;
                             })}
                         </Typography>
                     </CardActions>
                 </Card>
-                <Popover
-                    id="simple-popper"
-                    open={open}
-                    anchorEl={anchorEl}
-                    onClose={this.handleClose}
-                    anchorOrigin={{
-                        vertical: 'bottom',
-                        horizontal: 'center',
-                    }}
-                    transformOrigin={{
-                        vertical: 'top',
-                        horizontal: 'center',
-                    }}
-                >
-                    <Button onClick={this.handleSuppress} variant="contained" color="secondary">Delete picture</Button>
+                <Popover id="simple-popper" open={open} anchorEl={anchorEl} onClose={this.handleClose} anchorOrigin={{vertical: 'bottom', horizontal: 'center',}} transformOrigin={{vertical: 'top', horizontal: 'center',}}>
+                    <Grid container direction="column" justify="center" alignItems="center">
+                        <Grid container direction="column" justify="center" alignItems="center">
+                            <IconButton onClick={this.handleSuppress} color="secondary">
+                                <Icon color="action">
+                                    delete
+                                </Icon>
+                            </IconButton>
+                            <IconButton onClick={this.handleEdit}color="primary">
+                                <Icon color="action">
+                                    update
+                                </Icon>
+                            </IconButton>
+                        </Grid>
+                    </Grid>
                 </Popover>
+                <UpdatePictureItem open={this.state.open} picture={this.props.picture}/>
             </Grid>
 
         );

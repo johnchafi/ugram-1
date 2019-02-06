@@ -81,11 +81,40 @@ export function getUserForPicture(pictures: Picture[]): any {
     }
 }
 
+export function editPicture(picture:Picture): any {
+    console.log(picture);
+    return function(dispatch : Dispatch<IStateProfilApp>) {
+        axios.put('http://api.ugram.net/users/' + picture.userId + "/pictures/" + picture.id,  {
+            description: picture.description,
+            tags: picture.tags,
+            mentions:picture.mentions
+        },{
+            headers: {
+                Authorization: 'Bearer ' + "91935b05-358b-4f41-aa79-8d6248d63637", //the token is a variable which holds the token
+            },
+        }).then( function (response) {
+            return dispatch(getPictureForProfil(picture.userId));
+        })
+            .catch(function (error) {
+                console.log(JSON.stringify(error));
+                dispatch( {
+                    type: ActionTypes.ERROR,
+                    payload: {
+                        isAuthenticated: false,
+                        pictures: null,
+                        status:error.response.status,
+                        message: error.response.data.message
+                    }
+                })
+            });
+    }
+}
+
 export function deletePicture(userId: string, pictureId: number): any {
     return function(dispatch : Dispatch<IStateProfilApp>) {
         axios.delete('http://api.ugram.net/users/' + userId + "/pictures/" + pictureId,  {
             headers: {
-                Authorization: 'Bearer ' + "b0453abc-0284-40c1-b2be-762d97088e58" //the token is a variable which holds the token
+                Authorization: 'Bearer ' + "91935b05-358b-4f41-aa79-8d6248d63637" //the token is a variable which holds the token
             }
         })
             .then( function (response) {

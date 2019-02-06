@@ -54,7 +54,7 @@ class NavBar extends React.Component<Props,State> {
                         </Typography>
                         <Link to={"/login"}>Login</Link>
                         <Link to={"/users/"}>Utilisateurs</Link>
-                        <Link to={"/profil/wfortin"}>Profil</Link>
+                        <Link to={"/profil/team02"}>Profil</Link>
                     </Toolbar>
                 </AppBar>
             </div>

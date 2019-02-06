@@ -2,7 +2,7 @@ import * as React from 'react'
 import NavBar from "../view-components/NavBar";
 import AuthForm from "../containers/Authentifcation/AuthForm";
 import Profil from "../containers/Profil/Profil";
-import Users from "../containers/UserList/UserList";
+import Users from "../containers/Users/UserList";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { createHistory } from 'history';
 import { Provider } from 'react-redux';

@@ -1,7 +1,7 @@
 import { connect } from 'react-redux'
 import {State} from "../../reducers";
 import { withRouter } from 'react-router-dom';
-import PictureItem, {Props} from "../../components/PictureItem/PictureItem";
+import PictureItem, {Props} from "../../components/Picture/PictureItem";
 import {deletePicture} from "../../actions/Picture/picture";
 const mapStateToProps = (state: State, ownProps: Props) => ({
     picture: ownProps.picture,

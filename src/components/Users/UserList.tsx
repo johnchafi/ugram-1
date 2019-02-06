@@ -1,6 +1,6 @@
 import * as React from 'react'
 import User from "../../models/User";
-import UserItem from "../UserItem/UserItem";
+import UserItem from "./UserItem";
 import {Grid} from "@material-ui/core";
 
 export interface Props {

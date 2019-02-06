@@ -1,6 +1,6 @@
 import * as React from 'react'
 import Picture from "../../models/Picture";
-import PictureItem from "../../containers/PictureItem/PictureItem";
+import PictureItem from "../../containers/Picture/PictureItem";
 import User from "../../models/User";
 
 export interface Props {

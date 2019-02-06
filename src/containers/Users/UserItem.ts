@@ -1,7 +1,7 @@
 import { connect } from 'react-redux'
 import {State} from "../../reducers";
 import { withRouter } from 'react-router-dom';
-import UserItem, {Props} from "../../components/UserItem/UserItem";
+import UserItem, {Props} from "../../components/Users/UserItem";
 const mapStateToProps = (state: State, ownProps: Props) => ({
     user: ownProps.user,
 });

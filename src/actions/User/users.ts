@@ -5,7 +5,7 @@
  * Typescript understands enum better
  */
 import axios from "axios";
-import {IStateUsersApp} from "../../reducers/UserList/UserList";
+import {IStateUsersApp} from "../../reducers/Users/UserList";
 import {Dispatch} from "redux";
 
 export enum ActionTypes {

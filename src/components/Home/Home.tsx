@@ -1,7 +1,7 @@
 import * as React from 'react'
-import {Grid} from "@material-ui/core";
+import {CircularProgress, Grid} from "@material-ui/core";
 import Picture from "../../models/Picture";
-import PictureList from "../../containers/PictureList/PictureList";
+import PictureList from "../../containers/Picture/PictureList";
 import { Redirect } from 'react-router';
 
 export interface Props {
@@ -32,6 +32,7 @@ class Home extends React.Component<Props,State> {
         if (nextProps.finish) {
             console.log(nextProps.finish);
             nextProps.overGetPics(nextProps.pictures);
+            this.setState({isLoading:false});
         }
     }
 
@@ -40,9 +41,12 @@ class Home extends React.Component<Props,State> {
             <Grid
                 container
                 spacing={24}
-                xs={12}
+                direction="column"
+                justify="center"
+                alignItems="center"
             >
-                <PictureList isHome={true}/>
+                {this.state.isLoading && <CircularProgress />}
+                { !this.state.isLoading && <PictureList isHome={true}/>}
             </Grid>
         );
     }
