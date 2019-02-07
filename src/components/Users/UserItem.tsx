@@ -60,7 +60,7 @@ class UserItem extends React.Component<Props,State> {
     render() {
         const {classes} = this.props;
         return (
-            <Grid item xs={8} md={3} lg={3}>
+            <Grid item xs={6} md={3} lg={3}>
                 <Link to={`/profil/${this.props.user.id}`}>
                     <Card className={classes.card}>
                         <CardHeader
@@ -69,23 +69,9 @@ class UserItem extends React.Component<Props,State> {
 
                                 </Avatar>
                             }
-                            action={
-                                <IconButton>
-                                    <MoreVertIcon />
-                                </IconButton>
-                            }
                             title={this.props.user.firstName + " " + this.props.user.lastName}
                             subheader={new Date(Number(this.props.user.registrationDate)).toDateString()}
                         />
-                        <CardMedia
-                            className={classes.media}
-                            image={this.props.user.pictureUrl|| "//"}
-                            title="Paella dish"
-                        />
-                        <CardContent>
-                            <Typography component="p">
-                            </Typography>
-                        </CardContent>
                     </Card>
                 </Link>
             </Grid>

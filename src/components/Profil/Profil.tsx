@@ -132,11 +132,13 @@ class Profil extends React.Component<Props,State> {
                     <Tab label="Saved" icon={<Icon>bookmark_border_outlined</Icon>} />
                     <Tab label="Tagged" />
                 </Tabs>
-                <Grid container direction="row" justify="center" alignItems="center" spacing={24}>
+                <Grid container direction="row" justify="center">
                     <Snackbar anchorOrigin={{vertical: 'bottom', horizontal: 'left',}} open={this.state.open} autoHideDuration={6000} onClose={this.handleClose}>
                         <MySnackbarContentWrapper onClose={this.handleClose} variant="error" message={this.props.message}/>
                     </Snackbar>
-                    <PictureList isHome={false}/>
+                    <Grid container item xs={5} spacing={24}>
+                        <PictureList isHome={false}/>
+                    </Grid>
                 </Grid>
                 {this.props.user && <EditProfil open={this.state.isEditingProfil}/>}
             </React.Fragment>

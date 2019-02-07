@@ -13,8 +13,8 @@ import {red} from "@material-ui/core/colors";
 import {
     Avatar,
     Button,
-    CardActions, CircularProgress, Icon, LinearProgress,
-    Popover,
+    CardActions, CircularProgress, createStyles, Icon, LinearProgress,
+    Popover, Theme,
     withStyles
 } from "@material-ui/core";
 import Picture from "../../models/Picture";
@@ -33,14 +33,13 @@ interface State {
 }
 
 
-const styles = theme => ({
+const styles = (theme: Theme) => createStyles({
     card: {
-        minWidth: 200,
-        maxWidth: 500,
+        minWidth: 500,
     },
     media: {
         height: 0,
-        paddingTop: '56.25%', // 16:9
+        paddingTop: '100%', // 16:9
     },
     actions: {
         display: 'flex',
@@ -50,11 +49,9 @@ const styles = theme => ({
     },
     expandOpen: {
         transform: 'rotate(180deg)',
-    },
-    avatar: {
-        backgroundColor: red[500],
-    },
+    }
 });
+
 
 
 class PictureItem extends React.Component<Props,State> {
@@ -114,7 +111,7 @@ class PictureItem extends React.Component<Props,State> {
         const { anchorEl } = this.state;
         const open = Boolean(anchorEl);
         return (
-            <Grid item md={6} lg={4} xs={8}>
+            <Grid item md={8} lg={8} xs={8}>
                 <Card className={classes.card}>
                     <CardHeader avatar={this.renderAvatar()}
                         action={ !this.props.isHome &&

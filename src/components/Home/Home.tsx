@@ -41,8 +41,7 @@ class Home extends React.Component<Props,State> {
             <Grid
                 container
                 spacing={24}
-                direction="row"
-                justify="center"
+                direction="column"
                 alignItems="center"
             >
                 {this.state.isLoading && <CircularProgress />}

@@ -61,6 +61,11 @@ class EditProfil extends React.Component<Props,State> {
     };
 
 
+    componentWillReceiveProps(nextProps: Readonly<Props>, nextContext: any): void {
+        if (nextProps.profil !== this.props.profil)
+            this.setState({profil: nextProps.profil});
+    }
+
     handleChangeEmail = (event) => {
         this.state.profil.email = event.target.value;
         this.setState({profil: this.state.profil});

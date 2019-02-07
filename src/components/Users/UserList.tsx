@@ -26,7 +26,12 @@ class UserList extends React.Component<Props,State> {
         const{users} = this.props;
         return (
             <div>
-                <Grid container spacing={24}>
+                <Grid
+                    container
+                    spacing={24}
+                    direction="row"
+                    alignItems="center"
+                >
                         {users.map(function(user, i){
                             return <UserItem user={user} key={i}/>
                         })}
