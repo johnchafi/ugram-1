@@ -1,9 +1,8 @@
 import * as React from 'react'
 import Picture from "../../models/Picture";
-import PictureItem from "../../containers/Picture/PictureItem";
 import User from "../../models/User";
 import PictureItemProfil from "../../containers/Picture/PictureItemProfil";
-import {Grid} from "@material-ui/core";
+import PictureItemHome from "../../containers/Picture/PictureItemHome";
 
 export interface Props {
     pictures: Picture[],
@@ -36,12 +35,19 @@ class PictureList extends React.Component<Props,State> {
         super(props);
     }
 
+    componentWillMount(): void {
+    }
+
+    componentWillUnmount(): void {
+
+    }
+
     render() {
         const {pictures, isHome, user } = this.props;
         return (
             pictures && pictures.map(function (picture, i) {
                 if (isHome)
-                    return <PictureItem user={isHome && picture.user || !isHome && user} picture={picture} key={picture.id} isHome={isHome}/>;
+                    return <PictureItemHome user={isHome && picture.user || !isHome && user} picture={picture} key={picture.id} isHome={isHome}/>;
                 else
                     return (
                             <PictureItemProfil user={isHome && picture.user || !isHome && user} picture={picture} key={picture.id} isHome={isHome}/>)

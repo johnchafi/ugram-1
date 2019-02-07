@@ -6,12 +6,14 @@ export interface IStatePictureApp {
     isAuthenticated: boolean
     pictures: Picture[],
     finish: boolean
+    pageNumber: number
 }
 
 export const initialState: IStatePictureApp = {
     isAuthenticated: false,
-    pictures: null,
-    finish:false
+    pictures: [],
+    finish:false,
+    pageNumber:0
 };
 export function reducer(state: IStatePictureApp = initialState, action: Action) : IStatePictureApp {
     console.log(action.type);
@@ -21,6 +23,7 @@ export function reducer(state: IStatePictureApp = initialState, action: Action) 
                     finish:action.payload.finish,
                     pictures: action.payload.pictures,
                     isAuthenticated: action.payload.isAuthenticated,
+                    pageNumber: action.payload.pageNumber
                 });
         case ActionTypes.ERROR:
             return {
@@ -36,6 +39,8 @@ export function reducer(state: IStatePictureApp = initialState, action: Action) 
                 pictures: action.payload.pictures,
                 isAuthenticated: action.payload.isAuthenticated,
             });
+        case ActionTypes.RESET:
+            return initialState;
         default:
             return state
     }

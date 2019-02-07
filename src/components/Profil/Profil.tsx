@@ -35,6 +35,7 @@ export interface Props extends WithStyles<typeof styles>{
     isAuthenticated: boolean
     getProfil: (string) => any
     getPicture: (string) => any
+    reset: () => any
     user : User
     status: number,
     match: {params : {id: string}}
@@ -56,13 +57,16 @@ class Profil extends React.Component<Props,State> {
     constructor(props : Props) {
         super(props);
         console.log(this.props.match.params.id);
-        this.props.getProfil(this.props.match.params.id);
-        this.props.getPicture(this.props.match.params.id);
         this.state = {
             open: false,
             isEditingProfil: false,
             value:0
         };
+    }
+
+    componentWillMount(): void {
+        this.props.getProfil(this.props.match.params.id);
+        this.props.getPicture(this.props.match.params.id);
     }
 
     componentWillReceiveProps(nextProps: Readonly<Props>, nextContext: any): void {
@@ -86,11 +90,6 @@ class Profil extends React.Component<Props,State> {
     handleChange = (event, value) : void => {
         this.setState({ value });
     };
-
-    handleChangeIndex = (index) : void => {
-        this.setState({ value: index });
-    };
-
     handleEditingProfil = () : void => {
         this.setState({isEditingProfil: true})
     };

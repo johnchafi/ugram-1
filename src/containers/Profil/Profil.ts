@@ -6,7 +6,7 @@ import {profilData} from "../../actions/Profil/profil";
 import { withRouter } from 'react-router-dom';
 import {getAuth, getAuthUser} from "../../selectors/Authentification/auth";
 import {getPictures} from "../../selectors/Picture/Picture";
-import {getPictureForProfil} from "../../actions/Picture/picture";
+import {getPictureForProfil, reset} from "../../actions/Picture/picture";
 const mapStateToProps = (state: State) => ({
     user: getUserProfil(state),
     status: getStatusProfil(state),
@@ -18,7 +18,8 @@ const mapStateToProps = (state: State) => ({
 
 const mapDispatchToProps = {
     getProfil: profilData,
-    getPicture: getPictureForProfil
+    getPicture: getPictureForProfil,
+    reset: reset
 };
 
 export default withRouter(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(Profil))

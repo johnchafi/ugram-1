@@ -46,6 +46,7 @@ export interface Props extends WithStyles<typeof styles>{
 }
 interface State {
     picture: Picture
+    open: boolean
 }
 
 
@@ -57,6 +58,7 @@ class EditPictureItem extends React.Component<Props,State> {
         super(props);
         this.state = {
             picture: this.props.picture,
+            open: this.props.open
         }
     }
 
@@ -98,10 +100,19 @@ class EditPictureItem extends React.Component<Props,State> {
     handleEditPicture = event => {
         this.props.editPicture(this.state.picture);
     };
+
+    handleCloseEdit = event => {
+        this.setState({open: false})
+    };
+
+    componentWillReceiveProps(nextProps: Readonly<Props>, nextContext: any): void {
+        this.setState({open: true});
+    }
+
     render() {
         return (
             <div>
-                <Modal aria-labelledby="simple-modal-title" aria-describedby="simple-modal-description" open={this.props.open}>
+                <Modal aria-labelledby="simple-modal-title" aria-describedby="simple-modal-description" open={this.state.open} onClose={this.handleCloseEdit}>
                     <div style={getModalStyle()} className={this.props.classes.paper}>
                         <Grid container direction="column" justify="center" alignItems="center">
                             <Grid xs={12} item>

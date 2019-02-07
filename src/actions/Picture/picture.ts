@@ -3,22 +3,24 @@
  * We're using Typescript's enum
  * Typescript understands enum better
  */
-import axios from "axios";
+import axios from 'axios';
 import {Dispatch} from "redux";
 import {IStatePictureApp} from "../../reducers/Picture/Picture";
 import {IStateProfilApp} from "../../reducers/Profil/Profil";
 import Picture from "../../models/Picture";
 
+let CancelToken = axios.CancelToken;
+let call1 = CancelToken.source();
+let call2 = CancelToken.source();
+
 export enum ActionTypes {
     GET_PICTURE_HOME = 'GET_PICTURE_HOME',
     GET_PICTURE_HOME_FINISH = 'GET_PICTURE_HOME_FINISH',
     GET_PICTURE_PROFIL = 'GET_PICTURE_PROFIL',
+    RESET = 'RESET',
     ERROR = "ERROR"
 }
-
 export interface AuthenticatedAction { type: ActionTypes, payload: IStatePictureApp }
-
-
 
 export function getPictureForProfil(userid: string) : any {
     /**@todo api*/
@@ -35,17 +37,23 @@ export function getPictureForProfil(userid: string) : any {
     }
 }
 
-export function getAllPicturesSortByDate(): any {
+export function getAllPicturesSortByDate(pageNumber: number, pictures: Picture[]): any {
     /**@todo api*/
     return function(dispatch : Dispatch<IStatePictureApp>) {
-        axios.get('http://api.ugram.net/pictures/')
+        let results: Picture[] = [];
+        axios.get('http://api.ugram.net/pictures/?page=' + pageNumber, {cancelToken:call1.token})
             .then(  function (response) {
+                pictures.map(function (picture : Picture) {results.push(Object.assign({}, picture))}.bind(results));
+                response.data.items.map(function (picture : Picture) {results.push(Object.assign({}, picture))}.bind(results));
+                if (response.data.totalPages > pageNumber)
+                    pageNumber = pageNumber + 1;
                 dispatch({
                     type: ActionTypes.GET_PICTURE_HOME,
                     payload: {
                         isAuthenticated: true,
-                        finish:true,
-                        pictures: response.data.items,
+                        finish: true,
+                        pictures: results,
+                        pageNumber: pageNumber
                     }
                 });
             })
@@ -60,26 +68,43 @@ export function getAllPicturesSortByDate(): any {
             })
     }
 }
+export function reset(): any {
+    /**@todo api*/
+    call1.cancel();
+    call2.cancel();
+    call1 = CancelToken.source();
+    call2 = CancelToken.source();
+    return function (dispatch: Dispatch<IStatePictureApp>) {
+        dispatch({
+            type: ActionTypes.RESET
+        });
+    }
+}
 
 export function getUserForPicture(pictures: Picture[]): any {
     /**@todo api*/
     return async function (dispatch: Dispatch<IStatePictureApp>) {
         let results: Picture[] = [];
+        let stop : boolean = false;
         for (let i = 0; i < pictures.length ; i++)
         {
             results.push(Object.assign({}, {
-                user: await axios.get('http://api.ugram.net/users/' + pictures[i].userId).then((user) => {
+                user: await axios.get('http://api.ugram.net/users/' + pictures[i].userId, {cancelToken:call2.token}).then((user) => {
                     return user.data;
+                }).catch(error => {
+                    if (axios.isCancel(error))
+                        stop = true;
                 })
             }, pictures[i]));
         }
-        dispatch({
-            type: ActionTypes.GET_PICTURE_HOME_FINISH,
-            payload: {
-                pictures: results,
-                finish: false,
-            }
-        });
+        if (!stop)
+            dispatch({
+                type: ActionTypes.GET_PICTURE_HOME_FINISH,
+                payload: {
+                    pictures: results,
+                    finish: false,
+                }
+            });
     }
 }
 

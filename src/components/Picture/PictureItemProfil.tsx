@@ -107,12 +107,12 @@ class PictureItemProfil extends React.Component<Props,State> {
                     <Card className={classes.card}>
                         <CardMedia className={classes.media} image={this.props.picture.url|| "//"} title={this.props.picture.description}/>
                     </Card>
-                    <Modal aria-labelledby="simple-modal-title" aria-describedby="simple-modal-description" open={this.state.open} onClose={this.handleCloseEdit}>
-                        <div style={getModalStyle()} className={this.props.classes.paper}>
-                            <PictureItem user={this.props.user} picture={this.props.picture} isHome={false}/>
-                        </div>
-                    </Modal>
                 </Button>
+                <Modal aria-labelledby="simple-modal-title" aria-describedby="simple-modal-description" open={this.state.open} onClose={this.handleCloseEdit}>
+                    <div style={getModalStyle()} className={this.props.classes.paper}>
+                        <PictureItem user={this.props.user} picture={this.props.picture} isHome={false}/>
+                    </div>
+                </Modal>
             </Grid>
         );
     }

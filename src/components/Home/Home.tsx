@@ -5,14 +5,15 @@ import PictureList from "../../containers/Picture/PictureList";
 import { Redirect } from 'react-router';
 
 export interface Props {
-    getPicturesByDate: () => any
+    getPicturesByDate: (number, picture : Picture[]) => any
     overGetPics:(picture: Picture[]) => any,
+    reset:() => any,
     pictures: Picture[],
+    pageNumber: number
     finish:boolean
-    history: any
 }
 interface State {
-    isLoading: boolean
+    isLoading: boolean,
 }
 
 
@@ -25,7 +26,7 @@ class Home extends React.Component<Props,State> {
     }
 
     componentWillMount(): void {
-        this.props.getPicturesByDate();
+        this.props.getPicturesByDate(this.props.pageNumber, []);
     }
 
     componentWillReceiveProps(nextProps: Readonly<Props>, nextContext: any): void {
@@ -34,7 +35,26 @@ class Home extends React.Component<Props,State> {
             nextProps.overGetPics(nextProps.pictures);
             this.setState({isLoading:false});
         }
+        else
+            document.addEventListener('scroll', this.trackScrolling);
     }
+
+    isBottom(el) {
+        return el.getBoundingClientRect().bottom <= window.innerHeight;
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener('scroll', this.trackScrolling);
+        this.props.reset();
+    }
+
+    trackScrolling = () => {
+        const wrappedElement = document.getElementById('home');
+        if (!this.state.isLoading && this.isBottom(wrappedElement)) {
+            this.props.getPicturesByDate(this.props.pageNumber, this.props.pictures);
+            document.removeEventListener('scroll', this.trackScrolling);
+        }
+    };
 
     render() {
         return (
@@ -43,6 +63,7 @@ class Home extends React.Component<Props,State> {
                 spacing={24}
                 direction="column"
                 alignItems="center"
+                id="home"
             >
                 {this.state.isLoading && <CircularProgress />}
                 { !this.state.isLoading && <PictureList isHome={true}/>}

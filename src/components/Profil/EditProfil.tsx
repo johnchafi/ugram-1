@@ -37,6 +37,7 @@ export interface Props extends WithStyles<typeof styles>{
 }
 interface State {
     profil: User,
+    open :boolean
 }
 
 
@@ -48,6 +49,7 @@ class EditProfil extends React.Component<Props,State> {
         super(props);
         this.state = {
             profil: this.props.profil,
+            open: this.props.open
         }
     }
 
@@ -85,25 +87,12 @@ class EditProfil extends React.Component<Props,State> {
     render() {
         return (
             <div>
-                <Modal aria-labelledby="simple-modal-title" aria-describedby="simple-modal-description" open={this.props.open}>
+                <Modal aria-labelledby="simple-modal-title" aria-describedby="simple-modal-description" open={this.props.open} onClose={this.close}>
                     <div style={getModalStyle()} className={this.props.classes.paper}>
                         <Grid container direction="column" justify="center" alignItems="center">
-                            <Grid xs={12} item>
-                                <Grid container direction="row" justify="center" alignItems="center">
-                                    <Grid xs={8} item>
-                                        <Typography variant="h6" id="modal-title">
-                                            Edit profil
-                                        </Typography>
-                                    </Grid>
-                                    <Grid xs={2} item>
-                                        <IconButton onClick={(e) => this.close(e)}>
-                                            <Icon color="secondary">
-                                                close
-                                            </Icon>
-                                        </IconButton>
-                                    </Grid>
-                                </Grid>
-                            </Grid>
+                            <Typography variant="h6" id="modal-title">
+                                Edit profil
+                            </Typography>
                             <Grid xs={12} item>
                                 <FormControl>
                                     <TextField  margin="normal" label="Prénom" defaultValue={this.state.profil.firstName} onChange={(e) => this.handleChangeFirstName(e)}> </TextField>
