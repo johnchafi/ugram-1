@@ -23,6 +23,7 @@ interface State {
 
 const styles = theme => ({
     card: {
+        minWidth:200,
         maxWidth: 400,
     },
     media: {
@@ -59,7 +60,7 @@ class UserItem extends React.Component<Props,State> {
     render() {
         const {classes} = this.props;
         return (
-            <Grid item xs={3}>
+            <Grid item xs={8} md={3} lg={3}>
                 <Link to={`/profil/${this.props.user.id}`}>
                     <Card className={classes.card}>
                         <CardHeader

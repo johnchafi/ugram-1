@@ -39,6 +39,11 @@ export function reducer(state: IStateProfilApp = initialState, action: Action) :
                 message: action.payload.message,
                 status:action.payload.status
             };
+        case ActionTypes.CLOSE_EDIT_PROFIL:
+            return {
+                ...state,
+                user: action.payload.user
+            };
         default:
             return state
     }

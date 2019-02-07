@@ -35,7 +35,7 @@ interface State {
 
 const styles = theme => ({
     card: {
-        minWidth: 500,
+        minWidth: 200,
         maxWidth: 500,
     },
     media: {
@@ -114,13 +114,9 @@ class PictureItem extends React.Component<Props,State> {
         const { anchorEl } = this.state;
         const open = Boolean(anchorEl);
         return (
-            <Grid item xs={4}>
+            <Grid item md={6} lg={4} xs={8}>
                 <Card className={classes.card}>
-                    <CardHeader
-
-                        avatar={
-                            this.renderAvatar()
-                        }
+                    <CardHeader avatar={this.renderAvatar()}
                         action={ !this.props.isHome &&
                         <IconButton aria-owns={open ? 'simple-popper' : undefined}
                                     aria-haspopup="true"
@@ -131,11 +127,7 @@ class PictureItem extends React.Component<Props,State> {
                         title={this.props.user && this.props.user.firstName + " " + this.props.user.lastName || <LinearProgress />}
                         subheader={new Date(Number(this.props.picture.createdDate)).toDateString()}
                     />
-                    <CardMedia
-                        className={classes.media}
-                        image={this.props.picture.url|| "//"}
-                        title={this.props.picture.description}
-                    />
+                    <CardMedia className={classes.media} image={this.props.picture.url|| "//"} title={this.props.picture.description}/>
                     <CardActions className={classes.actions} disableActionSpacing>
                         <IconButton aria-label="Add to favorites">
                             <FavoriteIcon />
@@ -143,9 +135,7 @@ class PictureItem extends React.Component<Props,State> {
                         <Typography variant="overline">
                             {this.props.picture.description && this.props.picture.description + this.props.picture.mentions.map(function (mention, i) {
                                 return " " + mention;
-                            }) + " // " + this.props.picture.tags.map(function (tag, i) {
-                                return "#" + tag;
-                            })}
+                            }) + " // " + this.props.picture.tags.map(function (tag, i) {return "#" + tag;})}
                         </Typography>
                     </CardActions>
                 </Card>

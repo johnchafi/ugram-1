@@ -6,7 +6,6 @@
 import axios from "axios";
 import {Dispatch} from "redux";
 import {IStatePictureApp} from "../../reducers/Picture/Picture";
-import {profilData} from "../Profil/profil";
 import {IStateProfilApp} from "../../reducers/Profil/Profil";
 import Picture from "../../models/Picture";
 
@@ -22,6 +21,7 @@ export interface AuthenticatedAction { type: ActionTypes, payload: IStatePicture
 
 
 export function getPictureForProfil(userid: string) : any {
+    /**@todo api*/
     return function(dispatch : Dispatch<IStatePictureApp>) {
         axios.get('http://api.ugram.net/users/' + userid + '/pictures')
             .then(function (response) {
@@ -36,6 +36,7 @@ export function getPictureForProfil(userid: string) : any {
 }
 
 export function getAllPicturesSortByDate(): any {
+    /**@todo api*/
     return function(dispatch : Dispatch<IStatePictureApp>) {
         axios.get('http://api.ugram.net/pictures/')
             .then(  function (response) {
@@ -61,6 +62,7 @@ export function getAllPicturesSortByDate(): any {
 }
 
 export function getUserForPicture(pictures: Picture[]): any {
+    /**@todo api*/
     return async function (dispatch: Dispatch<IStatePictureApp>) {
         let results: Picture[] = [];
         for (let i = 0; i < pictures.length ; i++)
@@ -82,7 +84,7 @@ export function getUserForPicture(pictures: Picture[]): any {
 }
 
 export function editPicture(picture:Picture): any {
-    console.log(picture);
+    /**@todo api*/
     return function(dispatch : Dispatch<IStateProfilApp>) {
         axios.put('http://api.ugram.net/users/' + picture.userId + "/pictures/" + picture.id,  {
             description: picture.description,
@@ -111,6 +113,7 @@ export function editPicture(picture:Picture): any {
 }
 
 export function deletePicture(userId: string, pictureId: number): any {
+    /**@todo api*/
     return function(dispatch : Dispatch<IStateProfilApp>) {
         axios.delete('http://api.ugram.net/users/' + userId + "/pictures/" + pictureId,  {
             headers: {

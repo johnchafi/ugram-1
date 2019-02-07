@@ -12,21 +12,6 @@ export enum ActionTypes {
     GET_USERS = 'GET_USERS',
     ERROR = "ERROR",
 }
-
-
-const api= axios.create({
-    baseURL: 'http://api.ugram.net'
-});
-
-const setAuthorization = () => {
-
-    api.interceptors.request.use((config) => {
-        config.headers.Authorization = 'Bearer ' + "b0453abc-0284-40c1-b2be-762d97088e58";
-        return config;
-    });
-
-};
-
 /*
  * Define return types of our actions
  * Every action returns a type and a payload
@@ -38,7 +23,7 @@ export interface AuthenticatedAction { type: ActionTypes, payload: IStateUsersAp
  * We are returning the right Action for each function
  */
 export function getAllUsers(): any {
-    setAuthorization();
+    /**@todo api*/
     return function(dispatch : Dispatch<IStateUsersApp>) {
         axios.get('http://api.ugram.net/users/')
             .then(function (response) {

@@ -16,8 +16,8 @@ import {
 import MySnackbarContentWrapper from "../../view-components/MySnackBarContentWrapper";
 import PictureList from "../../containers/Picture/PictureList";
 import {Tab} from "@material-ui/core";
-import {CardMedia, PropTypes, withStyles} from "@material-ui/core/es";
-import Paper from "@material-ui/core/es/Paper";
+import {withStyles} from "@material-ui/core/es";
+import EditProfil from "../../containers/Profil/EditProfil";
 
 const styles = theme => createStyles({
     root: {
@@ -46,6 +46,7 @@ export interface Props extends WithStyles<typeof styles>{
 }
 interface State {
     open:boolean
+    isEditingProfil: boolean,
     value: number
 }
 
@@ -59,6 +60,7 @@ class Profil extends React.Component<Props,State> {
         this.props.getPicture(this.props.match.params.id);
         this.state = {
             open: false,
+            isEditingProfil: false,
             value:0
         };
     }
@@ -68,55 +70,50 @@ class Profil extends React.Component<Props,State> {
             this.props.getProfil(nextProps.match.params.id);
             this.props.getPicture(nextProps.match.params.id);
         }
+        this.setState({isEditingProfil:false});
         if (nextProps.status != 200) {
             this.setState({open: true});
             this.props.getProfil(nextProps.match.params.id);
         }
     }
-    handleClose = (event, reason) => {
+    handleClose = (event, reason) : void => {
         if (reason === 'clickaway') {
             return;
         }
         this.setState({ open: false });
     };
 
-    handleChange = (event, value) => {
+    handleChange = (event, value) : void => {
         this.setState({ value });
     };
 
-    handleChangeIndex = index => {
+    handleChangeIndex = (index) : void => {
         this.setState({ value: index });
+    };
+
+    handleEditingProfil = () : void => {
+        this.setState({isEditingProfil: true})
     };
 
     render(): React.ReactNode {
         const {classes, theme} = this.props;
         return (
             <React.Fragment>
-                <Grid
-                    container
-                    direction="row"
-                    justify="center"
-                    alignItems="center"
-                >
-                    <Grid item xs={1}>
-                        <Avatar className={classes.bigAvatar}
-                                src={this.props.user && this.props.user.pictureUrl}
-                        />
+                <Grid container direction="row" justify="center" alignItems="center">
+                    <Grid item xs={3} md={1} lg={1}>
+                        <Avatar className={classes.bigAvatar} src={this.props.user && this.props.user.pictureUrl}/>
                     </Grid>
                     <Grid item xs={3}>
-                        <Grid
-                            container
-                            direction="row"
-                        >
-                            <Grid item xs={4}>
-                        <Typography component="h1" variant="h4">
-                            {this.props.user && this.props.user.id}
-                        </Typography>
+                        <Grid container direction="row">
+                            <Grid item xs={12} md={6} lg={6}>
+                                <Typography component="h1" variant="h4">
+                                    {this.props.user && this.props.user.id}
+                                </Typography>
                             </Grid>
-                            <Grid item xs={6}>
-                        <Button  variant="outlined">
-                            Edit Profile
-                        </Button>
+                            <Grid item xs={12} md={6} lg={6}>
+                                <Button onClick={this.handleEditingProfil} variant="outlined">
+                                    Edit Profile
+                                </Button>
                             </Grid>
                         </Grid>
                         <Typography variant="subtitle1">
@@ -135,30 +132,13 @@ class Profil extends React.Component<Props,State> {
                     <Tab label="Saved" icon={<Icon>bookmark_border_outlined</Icon>} />
                     <Tab label="Tagged" />
                 </Tabs>
-                <Grid
-                    container
-                    direction="row"
-                    justify="center"
-                    alignItems="center"
-                    spacing={24}
-                >
-                    <Snackbar
-                        anchorOrigin={{
-                            vertical: 'bottom',
-                            horizontal: 'left',
-                        }}
-                        open={this.state.open}
-                        autoHideDuration={6000}
-                        onClose={this.handleClose}
-                    >
-                        <MySnackbarContentWrapper
-                            onClose={this.handleClose}
-                            variant="error"
-                            message={this.props.message}
-                        />
+                <Grid container direction="row" justify="center" alignItems="center" spacing={24}>
+                    <Snackbar anchorOrigin={{vertical: 'bottom', horizontal: 'left',}} open={this.state.open} autoHideDuration={6000} onClose={this.handleClose}>
+                        <MySnackbarContentWrapper onClose={this.handleClose} variant="error" message={this.props.message}/>
                     </Snackbar>
                     <PictureList isHome={false}/>
                 </Grid>
+                {this.props.user && <EditProfil open={this.state.isEditingProfil}/>}
             </React.Fragment>
         );
     }
