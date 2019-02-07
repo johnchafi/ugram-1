@@ -41,7 +41,7 @@ class Home extends React.Component<Props,State> {
             <Grid
                 container
                 spacing={24}
-                direction="column"
+                direction="row"
                 justify="center"
                 alignItems="center"
             >

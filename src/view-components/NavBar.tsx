@@ -13,6 +13,8 @@ interface State {
     isOpen: boolean
 }
 import {Link} from 'react-router-dom';
+import {Divider, Grid, Hidden, Icon, InputAdornment, TextField} from "@material-ui/core";
+import {Search} from "@material-ui/icons";
 
 const styles = {
     root: {
@@ -44,17 +46,23 @@ class NavBar extends React.Component<Props,State> {
         const {classes} = this.props;
         return (
             <div style={{paddingBottom:20}}>
-                <AppBar position="static">
+                <AppBar position="sticky" color="default" elevation={0}>
                     <Toolbar>
-                        <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
-                            <MenuIcon />
-                        </IconButton>
-                        <Typography variant="h6" color="inherit" className={classes.grow}>
-                            <Link to={"/"}>UGRAM</Link>
-                        </Typography>
-                        <Link to={"/login"}>Login</Link>
-                        <Link to={"/users/"}>Utilisateurs</Link>
-                        <Link to={"/profil/team02"}>Profil</Link>
+                        <Grid container alignItems="center">
+                            <Grid item xs>
+                                <Grid container alignItems="center">
+                                    <Link to={"/"}>UGRAM</Link>
+                                    <Divider />
+                                </Grid>
+                            </Grid>
+                            <Grid item>
+                                <Grid container justify="flex-end">
+                                    <Link to={"/users/"}><Icon >explore_outlined</Icon></Link>
+                                    <Icon >favorite_border_rounded</Icon>
+                                    <Link to={"/profil/team02"}><Icon>person_outlined</Icon></Link>
+                                </Grid>
+                            </Grid>
+                        </Grid>
                     </Toolbar>
                 </AppBar>
             </div>

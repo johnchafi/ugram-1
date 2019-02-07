@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardMedia from '@material-ui/core/CardMedia';
-import CardContent from '@material-ui/core/CardContent';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
@@ -36,8 +35,8 @@ interface State {
 
 const styles = theme => ({
     card: {
-        minWidth: 800,
-        maxWidth: 800,
+        minWidth: 500,
+        maxWidth: 500,
     },
     media: {
         height: 0,
@@ -115,7 +114,7 @@ class PictureItem extends React.Component<Props,State> {
         const { anchorEl } = this.state;
         const open = Boolean(anchorEl);
         return (
-            <Grid item xs={12}>
+            <Grid item xs={4}>
                 <Card className={classes.card}>
                     <CardHeader
 
@@ -137,8 +136,6 @@ class PictureItem extends React.Component<Props,State> {
                         image={this.props.picture.url|| "//"}
                         title={this.props.picture.description}
                     />
-                    <CardContent>
-                    </CardContent>
                     <CardActions className={classes.actions} disableActionSpacing>
                         <IconButton aria-label="Add to favorites">
                             <FavoriteIcon />

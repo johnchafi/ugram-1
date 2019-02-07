@@ -2,10 +2,36 @@ import * as React from 'react'
 import User from "../../models/User";
 import Picture from "../../models/Picture";
 
-import {Grid, Snackbar} from "@material-ui/core";
+import {
+    Avatar,
+    Button, Card, CardContent, createStyles,
+    Grid,
+    Icon,
+    IconButton,
+    Snackbar,
+    Tabs,
+    Theme,
+    Typography, WithStyles, withTheme
+} from "@material-ui/core";
 import MySnackbarContentWrapper from "../../view-components/MySnackBarContentWrapper";
 import PictureList from "../../containers/Picture/PictureList";
-export interface Props {
+import {Tab} from "@material-ui/core";
+import {CardMedia, PropTypes, withStyles} from "@material-ui/core/es";
+import Paper from "@material-ui/core/es/Paper";
+
+const styles = theme => createStyles({
+    root: {
+        flexGrow: 1,
+    },
+    bigAvatar: {
+        margin: 10,
+        width: 60,
+        height: 60,
+    },
+});
+
+
+export interface Props extends WithStyles<typeof styles>{
     isAuthenticated: boolean
     getProfil: (string) => any
     getPicture: (string) => any
@@ -15,10 +41,14 @@ export interface Props {
     location:{pathname:string}
     pictures: Picture[],
     message:string,
+    classes: any
+    theme: any
 }
 interface State {
     open:boolean
+    value: number
 }
+
 
 
 class Profil extends React.Component<Props,State> {
@@ -28,7 +58,8 @@ class Profil extends React.Component<Props,State> {
         this.props.getProfil(this.props.match.params.id);
         this.props.getPicture(this.props.match.params.id);
         this.state = {
-            open: false
+            open: false,
+            value:0
         };
     }
 
@@ -49,34 +80,88 @@ class Profil extends React.Component<Props,State> {
         this.setState({ open: false });
     };
 
+    handleChange = (event, value) => {
+        this.setState({ value });
+    };
+
+    handleChangeIndex = index => {
+        this.setState({ value: index });
+    };
+
     render(): React.ReactNode {
+        const {classes, theme} = this.props;
         return (
-            <Grid
-                container
-                spacing={24}
-                direction="column"
-                justify="center"
-                alignItems="center"
-            >
-                <Snackbar
-                    anchorOrigin={{
-                        vertical: 'bottom',
-                        horizontal: 'left',
-                    }}
-                    open={this.state.open}
-                    autoHideDuration={6000}
-                    onClose={this.handleClose}
+            <React.Fragment>
+                <Grid
+                    container
+                    direction="row"
+                    justify="center"
+                    alignItems="center"
                 >
-                    <MySnackbarContentWrapper
+                    <Grid item xs={1}>
+                        <Avatar className={classes.bigAvatar}
+                                src={this.props.user && this.props.user.pictureUrl}
+                        />
+                    </Grid>
+                    <Grid item xs={3}>
+                        <Grid
+                            container
+                            direction="row"
+                        >
+                            <Grid item xs={4}>
+                        <Typography component="h1" variant="h4">
+                            {this.props.user && this.props.user.id}
+                        </Typography>
+                            </Grid>
+                            <Grid item xs={6}>
+                        <Button  variant="outlined">
+                            Edit Profile
+                        </Button>
+                            </Grid>
+                        </Grid>
+                        <Typography variant="subtitle1">
+                            <b>{this.props.pictures && this.props.pictures.length}</b> posts
+                        </Typography>
+                        <Typography variant="subtitle2">
+                            {this.props.user && this.props.user.firstName + " " + this.props.user.lastName}
+                        </Typography>
+                        <Typography variant="overline">Date registration : {this.props.user && new Date(Number(this.props.user.registrationDate)).toDateString()}</Typography>
+                        <Typography variant="overline">Email : {this.props.user && this.props.user.email}</Typography>
+                    </Grid>
+                </Grid>
+                <Tabs value={this.state.value} centered onChange={this.handleChange}>
+                    <Tab label="Posts" icon={<Icon>grid_on_outlined</Icon>} />
+                    <Tab label="IGTV" icon={<Icon>live_tv</Icon>} />
+                    <Tab label="Saved" icon={<Icon>bookmark_border_outlined</Icon>} />
+                    <Tab label="Tagged" />
+                </Tabs>
+                <Grid
+                    container
+                    direction="row"
+                    justify="center"
+                    alignItems="center"
+                    spacing={24}
+                >
+                    <Snackbar
+                        anchorOrigin={{
+                            vertical: 'bottom',
+                            horizontal: 'left',
+                        }}
+                        open={this.state.open}
+                        autoHideDuration={6000}
                         onClose={this.handleClose}
-                        variant="error"
-                        message={this.props.message}
-                    />
-                </Snackbar>
-                <PictureList isHome={false}/>
-            </Grid>
+                    >
+                        <MySnackbarContentWrapper
+                            onClose={this.handleClose}
+                            variant="error"
+                            message={this.props.message}
+                        />
+                    </Snackbar>
+                    <PictureList isHome={false}/>
+                </Grid>
+            </React.Fragment>
         );
     }
 }
 
-export default Profil;
+export default withStyles(styles, { withTheme: true })(Profil);
