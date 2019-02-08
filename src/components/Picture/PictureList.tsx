@@ -29,6 +29,7 @@ class PictureList extends React.Component<Props,State> {
         const {pictures, isHome, user } = this.props;
         return (
             pictures && pictures.map(function (picture, i) {
+
                 if (isHome)
                     return (<PictureItemHome user={isHome && picture.user || !isHome && user} picture={picture} key={picture.id} isHome={isHome}/>);
                 else

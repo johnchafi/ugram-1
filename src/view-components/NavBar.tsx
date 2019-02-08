@@ -45,27 +45,31 @@ class NavBar extends React.Component<Props,State> {
     render() {
         const {classes} = this.props;
         return (
-            <div style={{paddingBottom:20}}>
-                <AppBar position="sticky" color="default" elevation={0}>
-                    <Toolbar>
-                        <Grid container alignItems="center">
-                            <Grid item xs>
+            <Grid container>
+                <Grid item xs={12} md={12} lg={12}>
+                    <div style={{paddingBottom:20}}>
+                        <AppBar position="sticky" color="default" elevation={0}>
+                            <Toolbar>
                                 <Grid container alignItems="center">
-                                    <Link to={"/"}>UGRAM</Link>
-                                    <Divider />
+                                    <Grid item xs>
+                                        <Grid container alignItems="center">
+                                            <Link to={"/"}>UGRAM</Link>
+                                            <Divider />
+                                        </Grid>
+                                    </Grid>
+                                    <Grid item>
+                                        <Grid container justify="flex-end">
+                                            <Link to={"/users/"}><Icon >explore_outlined</Icon></Link>
+                                            <Icon >favorite_border_rounded</Icon>
+                                            <Link to={"/profil/team02"}><Icon>person_outlined</Icon></Link>
+                                        </Grid>
+                                    </Grid>
                                 </Grid>
-                            </Grid>
-                            <Grid item>
-                                <Grid container justify="flex-end">
-                                    <Link to={"/users/"}><Icon >explore_outlined</Icon></Link>
-                                    <Icon >favorite_border_rounded</Icon>
-                                    <Link to={"/profil/team02"}><Icon>person_outlined</Icon></Link>
-                                </Grid>
-                            </Grid>
-                        </Grid>
-                    </Toolbar>
-                </AppBar>
-            </div>
+                            </Toolbar>
+                        </AppBar>
+                    </div>
+                </Grid>
+            </Grid>
         );
     }
 }

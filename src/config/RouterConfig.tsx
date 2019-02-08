@@ -7,13 +7,14 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { createHistory } from 'history';
 import { Provider } from 'react-redux';
 import Home from "../containers/Home/Home";
+import {Grid} from "@material-ui/core";
 
 
 const RouterConfig = ({store}) =>(
     <Provider store={store}>
         <BrowserRouter>
             <React.Fragment>
-                <NavBar/>
+                    <NavBar/>
                     <Switch>
                         <Route path='/login' component={AuthForm}/>
                         <Route exact path="/" component={Home}/>

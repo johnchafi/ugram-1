@@ -152,8 +152,15 @@ class Profil extends React.Component<Props,State> {
                     <Snackbar anchorOrigin={{vertical: 'bottom', horizontal: 'left',}} open={this.state.open} autoHideDuration={6000} onClose={this.handleClose}>
                         <MySnackbarContentWrapper onClose={this.handleClose} variant="error" message={this.props.message}/>
                     </Snackbar>
-                    <Grid container item xs={5} spacing={24} id="profil">
-                        <PictureList isHome={false}/>
+                    <Grid   container
+                            direction="row"
+                            justify="center"
+                            alignItems="baseline" id="profil" >
+                        <Grid item xs={8} md={6} lg={6}>
+                            <Grid container direction="row" spacing={8}>
+                                <PictureList isHome={false}/>
+                            </Grid>
+                        </Grid>
                     </Grid>
                 </Grid>
                 {this.props.user && <EditProfil open={this.state.isEditingProfil}/>}

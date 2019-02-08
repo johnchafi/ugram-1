@@ -24,10 +24,11 @@ interface State {
 
 const styles = (theme: Theme) => createStyles({
     card: {
-        minWidth: 500,
     },
     media: {
         height: 0,
+        minWidth: 500,
+        maxWidth: 500,
         paddingTop: '100%', // 16:9
     },
     actions: {
@@ -69,7 +70,7 @@ class PictureItemHome extends React.Component<Props,State> {
     render() {
         const {classes} = this.props;
         return (
-            <Grid item md={8} lg={8} xs={8}>
+            <Grid item md={12} lg={12} xs={12}>
                 <Card className={classes.card}>
                     <CardHeader className={classes.cardHeader} avatar={this.renderAvatar()}
                                 title={this.props.user && this.props.user.firstName + " " + this.props.user.lastName || <LinearProgress />}
@@ -80,15 +81,16 @@ class PictureItemHome extends React.Component<Props,State> {
                         <IconButton aria-label="Add to favorites">
                             <FavoriteIcon />
                         </IconButton>
-                        <Typography variant="overline">
-                            {this.props.picture.description && this.props.picture.description + this.props.picture.mentions.map(function (mention, i) {
-                                return " " + mention;
-                            }) + " // " + this.props.picture.tags.map(function (tag, i) {return "#" + tag;})}
-                        </Typography>
+                        <Grid item xs zeroMinWidth>
+                            <Typography variant="overline">
+                                {this.props.picture.description && this.props.picture.description + this.props.picture.mentions.map(function (mention, i) {
+                                    return " " + mention;
+                                }) + " // " + this.props.picture.tags.map(function (tag, i) {return "#" + tag;})}
+                            </Typography>
+                        </Grid>
                     </CardActions>
                 </Card>
             </Grid>
-
         );
     }
 }

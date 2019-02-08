@@ -90,10 +90,8 @@ class PictureItemProfil extends React.Component<Props,State> {
 
     render() {
         const {classes} = this.props;
-        const { anchorEl } = this.state;
-        const open = Boolean(anchorEl);
         return (
-            <Grid xs={12} md={6} lg={4} item>
+            <Grid item xs={12} md={6} lg={4}>
                 <Button onClick={this.handleOpenEdit}>
                     <Card className={classes.card}>
                         <CardMedia className={classes.media} image={this.props.picture.url|| "//"} title={this.props.picture.description}/>
