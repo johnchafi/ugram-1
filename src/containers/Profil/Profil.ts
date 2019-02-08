@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import Profil, {Props} from "../../components/Profil/Profil";
+import Profil from "../../components/Profil/Profil";
 import {getMessageError, getStatusProfil, getUserProfil} from "../../selectors/Profil/Profil";
 import {State} from "../../reducers";
 import {profilData} from "../../actions/Profil/profil";

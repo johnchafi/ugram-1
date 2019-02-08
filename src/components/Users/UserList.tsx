@@ -1,7 +1,7 @@
 import * as React from 'react'
 import User from "../../models/User";
-import UserItem from "./UserItem";
 import {Grid} from "@material-ui/core";
+import UserItem from "../../containers/Users/UserItem";
 
 export interface Props {
     isAuthenticated: boolean

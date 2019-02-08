@@ -4,14 +4,12 @@ import Picture from "../../models/Picture";
 
 import {
     Avatar,
-    Button, Card, CardContent, createStyles,
+    Button, createStyles,
     Grid,
     Icon,
-    IconButton,
     Snackbar,
     Tabs,
-    Theme,
-    Typography, WithStyles, withTheme
+    Typography, WithStyles
 } from "@material-ui/core";
 import MySnackbarContentWrapper from "../../view-components/MySnackBarContentWrapper";
 import PictureList from "../../containers/Picture/PictureList";
@@ -69,7 +67,6 @@ class Profil extends React.Component<Props,State> {
         this.props.getProfil(this.props.match.params.id);
         this.props.getPicture(this.props.match.params.id, 0, []);
     }
-
 
     isBottom(el) {
         return el.getBoundingClientRect().bottom <= window.innerHeight;

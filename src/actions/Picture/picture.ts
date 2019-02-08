@@ -8,6 +8,7 @@ import {Dispatch} from "redux";
 import {IStatePictureApp} from "../../reducers/Picture/Picture";
 import {IStateProfilApp} from "../../reducers/Profil/Profil";
 import Picture from "../../models/Picture";
+import User from "../../models/User";
 
 let CancelToken = axios.CancelToken;
 let call1 = CancelToken.source();
@@ -106,17 +107,26 @@ export function getUserForPicture(pictures: Picture[]): any {
     return async function (dispatch: Dispatch<IStatePictureApp>) {
         let results: Picture[] = [];
         let stop : boolean = false;
-        for (let i = 0; i < pictures.length ; i++)
-        {
-            results.push(Object.assign({}, {
-                user: await axios.get('http://api.ugram.net/users/' + pictures[i].userId, {cancelToken:call2.token}).then((user) => {
-                    return user.data;
-                }).catch(error => {
-                    if (axios.isCancel(error))
-                        stop = true;
-                })
-            }, pictures[i]));
-        }
+        let users : User[] = [];
+        users = await axios.get('http://api.ugram.net/users/').then(function (response) {
+            return response.data.items;
+        }).catch(error => {
+            if (axios.isCancel(error))
+                stop = true;
+        });
+        console.log(users);
+        pictures.map(function (picture : Picture) {
+            for (let i = 0; i < users.length && !stop; i++) {
+                if (!picture.user && users[i].id == picture.userId) {
+                    results.push(Object.assign({}, {user: users[i]}, picture));
+                    return ;
+                }
+                else if (picture.user) {
+                    results.push(Object.assign({}, picture));
+                    return ;
+                }
+            }
+        }.bind(results));
         if (!stop)
             dispatch({
                 type: ActionTypes.GET_PICTURE_HOME_FINISH,
@@ -182,10 +192,4 @@ export function deletePicture(userId: string, pictureId: number): any {
             });
     }
 }
-
-/*
- * Define the Action type
- * It can be one of the types defining in our action/todos file
- * It will be useful to tell typescript about our types in our reducer
- */
 export type Action = AuthenticatedAction

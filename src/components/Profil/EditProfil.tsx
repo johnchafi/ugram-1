@@ -1,8 +1,5 @@
 import * as React from 'react'
-import Picture from "../../models/Picture";
 import {Button, createStyles, FormControl, Grid, Modal, TextField, Theme, Typography, WithStyles, withStyles} from "@material-ui/core";
-import Icon from '@material-ui/core/Icon';
-import IconButton from '@material-ui/core/IconButton';
 import User from "../../models/User";
 
 

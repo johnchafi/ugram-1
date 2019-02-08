@@ -1,28 +1,16 @@
 
-/*
- * We're defining every action name constant here
- * We're using Typescript's enum
- * Typescript understands enum better
- */
 
 import axios from "axios";
 import {IStateProfilApp} from "../../reducers/Profil/Profil";
 import {Dispatch} from "redux";
 import User from "../../models/User";
-import {getPictureForProfil} from "../Picture/picture";
 
 export enum ActionTypes {
     PROFIL = 'PROFIL',
-    FEED = 'FEED',
-    AUTHENTICATED = 'AUTH',
     CLOSE_EDIT_PROFIL= 'CLOSE_EDIT_PROFIL',
     ERROR = 'ERROR',
 }
 
-/*
- * Define return types of our actions
- * Every action returns a type and a payload
- */
 export interface UserProfilAction { type: ActionTypes, payload: IStateProfilApp }
 
 /*
@@ -33,7 +21,7 @@ export interface UserProfilAction { type: ActionTypes, payload: IStateProfilApp 
 
 export function closeEdit(user : User) : any {
     /**@todo api*/
-    return function (dispatch: Dispatch<IStateProfilApp>) {
+    return function (dispatch: Dispatch<UserProfilAction>) {
         dispatch(  {
             type: ActionTypes.CLOSE_EDIT_PROFIL,
             payload: {
@@ -45,7 +33,7 @@ export function closeEdit(user : User) : any {
 
 export function editUser(user: User) : any {
     /**@todo api*/
-    return function (dispatch: Dispatch<IStateProfilApp>) {
+    return function (dispatch: Dispatch<UserProfilAction>) {
         axios.put('http://api.ugram.net/users/' + user.id, {
             email: user.email,
             firstName: user.firstName,
@@ -75,7 +63,7 @@ export function editUser(user: User) : any {
 }
 
 export function profilData(userid): any {
-    return function(dispatch : Dispatch<IStateProfilApp>) {
+    return function(dispatch : Dispatch<UserProfilAction>) {
         axios.get('http://api.ugram.net/users/' + userid)
             .then(function (user) {
                 dispatch(  {

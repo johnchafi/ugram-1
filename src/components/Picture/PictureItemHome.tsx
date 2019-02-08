@@ -7,19 +7,10 @@ import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import FavoriteIcon from '@material-ui/icons/Favorite';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
 import {Link} from 'react-router-dom';
-import {red} from "@material-ui/core/colors";
-import {
-    Avatar,
-    Button,
-    CardActions, CircularProgress, createStyles, Icon, LinearProgress,
-    Popover, Theme,
-    withStyles
-} from "@material-ui/core";
+import {Avatar, CardActions, CircularProgress, createStyles, LinearProgress, Theme, withStyles} from "@material-ui/core";
 import Picture from "../../models/Picture";
 import User from "../../models/User";
-import UpdatePictureItem from "../../containers/Picture/EditPictureItem";
 export interface Props {
     picture : Picture,
     classes:PropTypes.object.isRequired
@@ -47,6 +38,9 @@ const styles = (theme: Theme) => createStyles({
     },
     expandOpen: {
         transform: 'rotate(180deg)',
+    },
+    cardHeader: {
+        "text-overflow": "ellipsis"
     }
 });
 
@@ -77,7 +71,7 @@ class PictureItemHome extends React.Component<Props,State> {
         return (
             <Grid item md={8} lg={8} xs={8}>
                 <Card className={classes.card}>
-                    <CardHeader avatar={this.renderAvatar()}
+                    <CardHeader className={classes.cardHeader} avatar={this.renderAvatar()}
                                 title={this.props.user && this.props.user.firstName + " " + this.props.user.lastName || <LinearProgress />}
                                 subheader={new Date(Number(this.props.picture.createdDate)).toDateString()}
                     />

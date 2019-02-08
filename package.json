@@ -35,6 +35,7 @@
     "connected-react-router": "^6.2.2",
     "faxios": "^0.6.4",
     "material-ui": "^1.0.0-beta.47",
+    "material-ui-image": "^3.1.0",
     "popper.js": "^1.14.7",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",

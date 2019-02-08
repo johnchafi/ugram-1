@@ -1,23 +1,14 @@
 import * as React from 'react'
 import PropTypes from 'prop-types';
 import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
 import CardMedia from '@material-ui/core/CardMedia';
 import Grid from '@material-ui/core/Grid';
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
 import {Link} from 'react-router-dom';
-import {
-    Avatar, Button,
-    CardActions, CircularProgress, createStyles, Icon, LinearProgress, Modal,
-    Popover, Theme,
+import {Button, createStyles, Modal, Theme,
     withStyles
 } from "@material-ui/core";
 import Picture from "../../models/Picture";
 import User from "../../models/User";
-import EditPictureItem from "../../containers/Picture/EditPictureItem";
 import PictureItem from "../../containers/Picture/PictureItem";
 export interface Props {
     picture : Picture,
