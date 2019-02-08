@@ -1,20 +1,14 @@
 import * as React from 'react'
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
+import {WithStyles, withStyles} from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
-interface Props {
-    classes: PropTypes.object.isRequired
+interface Props extends WithStyles<typeof styles> {
 }
 interface State {
     isOpen: boolean
 }
 import {Link} from 'react-router-dom';
-import {Divider, Grid, Hidden, Icon, InputAdornment, TextField} from "@material-ui/core";
-import {Search} from "@material-ui/icons";
+import {Divider, Grid, Icon} from "@material-ui/core";
 
 const styles = {
     root: {

@@ -1,8 +1,3 @@
-/*
- * We're defining every action name constant here
- * We're using Typescript's enum
- * Typescript understands enum better
- */
 import axios from 'axios';
 import {Dispatch} from "redux";
 import {IStatePictureApp} from "../../reducers/Picture/Picture";

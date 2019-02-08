@@ -1,5 +1,4 @@
 import * as React from 'react'
-import PropTypes from 'prop-types';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardMedia from '@material-ui/core/CardMedia';
@@ -8,13 +7,21 @@ import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import {Link} from 'react-router-dom';
-import {Avatar, CardActions, CircularProgress, createStyles, LinearProgress, Theme, withStyles} from "@material-ui/core";
+import {
+    Avatar,
+    CardActions,
+    CircularProgress,
+    createStyles,
+    LinearProgress,
+    Theme,
+    WithStyles,
+    withStyles
+} from "@material-ui/core";
 import Picture from "../../models/Picture";
 import '../../../scss/app.scss';
 import User from "../../models/User";
-export interface Props {
+export interface Props extends WithStyles<typeof styles>{
     picture : Picture,
-    classes:PropTypes.object.isRequired
     user : User
     isHome:boolean
     deletePicture : (string, number) => any
@@ -69,7 +76,7 @@ class PictureItemHome extends React.Component<Props,State> {
     render() {
         const {classes} = this.props;
         return (
-            <Grid item md={12} lg={12} xs={12}>
+            <Grid item md={12} lg={12} xs={12} className="card">
                 <Card>
                     <CardHeader className={classes.cardHeader} avatar={this.renderAvatar()}
                                 title={this.props.user && this.props.user.firstName + " " + this.props.user.lastName || <LinearProgress />}

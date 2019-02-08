@@ -1,16 +1,14 @@
 import * as React from 'react'
 import User from "../../models/User";
-import PropTypes from 'prop-types';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import Avatar from '@material-ui/core/Avatar';
 import Grid from '@material-ui/core/Grid';
 import {Link} from 'react-router-dom';
 import {red} from "@material-ui/core/colors";
-import {withStyles} from "@material-ui/core";
-export interface Props {
+import {WithStyles, withStyles} from "@material-ui/core";
+export interface Props extends WithStyles<typeof styles>{
     user : User,
-    classes:PropTypes.object.isRequired
 }
 interface State {
 }

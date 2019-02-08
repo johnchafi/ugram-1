@@ -1,8 +1,20 @@
 @import "titles";
 
 .media-card {
-  width: 500px;
-  padding-top: 100%;
+  width: 100%;
+  padding-top: 56.5%;
+  height: 0;
+}
+
+.div-home {
+  max-width: 480px !important;
+  width: 100% !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+.card {
+  width: 100%;
+  padding: auto;
 }
 @media screen and (max-width: 320px) {
   .media-card {

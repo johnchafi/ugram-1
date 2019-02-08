@@ -1,18 +1,18 @@
 import * as React from 'react'
-import PropTypes from 'prop-types';
 import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
 import Grid from '@material-ui/core/Grid';
 import {Link} from 'react-router-dom';
-import {Button, createStyles, Modal, Theme,
+import {
+    Button, createStyles, Modal, Theme, WithStyles,
     withStyles
 } from "@material-ui/core";
 import Picture from "../../models/Picture";
 import User from "../../models/User";
 import PictureItem from "../../containers/Picture/PictureItem";
-export interface Props {
+
+export interface Props extends WithStyles<typeof styles>{
     picture : Picture,
-    classes:PropTypes.object.isRequired
     user : User
     isHome:boolean
     deletePicture : (string, number) => any

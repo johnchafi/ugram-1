@@ -63,6 +63,7 @@ class Home extends React.Component<Props,State> {
                 direction="column"
                 alignItems="center"
                 id="home"
+                className="div-home"
             >
                 {this.state.isLoading && <CircularProgress />}
                 { !this.state.isLoading && <PictureList isHome={true}/>}
