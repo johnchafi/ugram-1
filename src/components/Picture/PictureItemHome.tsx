@@ -10,6 +10,7 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import {Link} from 'react-router-dom';
 import {Avatar, CardActions, CircularProgress, createStyles, LinearProgress, Theme, withStyles} from "@material-ui/core";
 import Picture from "../../models/Picture";
+import '../../../scss/app.scss';
 import User from "../../models/User";
 export interface Props {
     picture : Picture,
@@ -23,8 +24,6 @@ interface State {
 
 
 const styles = (theme: Theme) => createStyles({
-    card: {
-    },
     media: {
         height: 0,
         minWidth: 500,
@@ -71,12 +70,12 @@ class PictureItemHome extends React.Component<Props,State> {
         const {classes} = this.props;
         return (
             <Grid item md={12} lg={12} xs={12}>
-                <Card className={classes.card}>
+                <Card>
                     <CardHeader className={classes.cardHeader} avatar={this.renderAvatar()}
                                 title={this.props.user && this.props.user.firstName + " " + this.props.user.lastName || <LinearProgress />}
                                 subheader={new Date(Number(this.props.picture.createdDate)).toDateString()}
                     />
-                    <CardMedia className={classes.media} image={this.props.picture.url|| "//"} title={this.props.picture.description}/>
+                    <CardMedia className="media-card" image={this.props.picture.url|| "//"} title={this.props.picture.description}/>
                     <CardActions className={classes.actions} disableActionSpacing>
                         <IconButton aria-label="Add to favorites">
                             <FavoriteIcon />

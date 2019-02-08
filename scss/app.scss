@@ -1,1 +1,12 @@
 @import "titles";
+
+.media-card {
+  width: 500px;
+  padding-top: 100%;
+}
+@media screen and (max-width: 320px) {
+  .media-card {
+    max-width: 100%;
+    width: 300px;
+  }
+}
