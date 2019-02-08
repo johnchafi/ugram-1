@@ -26,12 +26,11 @@ class Home extends React.Component<Props,State> {
     }
 
     componentWillMount(): void {
-        this.props.getPicturesByDate(this.props.pageNumber, []);
+        this.props.getPicturesByDate(0, []);
     }
 
     componentWillReceiveProps(nextProps: Readonly<Props>, nextContext: any): void {
         if (nextProps.finish) {
-            console.log(nextProps.finish);
             nextProps.overGetPics(nextProps.pictures);
             this.setState({isLoading:false});
         }
@@ -44,8 +43,8 @@ class Home extends React.Component<Props,State> {
     }
 
     componentWillUnmount() {
-        document.removeEventListener('scroll', this.trackScrolling);
         this.props.reset();
+        document.removeEventListener('scroll', this.trackScrolling);
     }
 
     trackScrolling = () => {

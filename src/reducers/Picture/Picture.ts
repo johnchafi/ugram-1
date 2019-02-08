@@ -16,7 +16,6 @@ export const initialState: IStatePictureApp = {
     pageNumber:0
 };
 export function reducer(state: IStatePictureApp = initialState, action: Action) : IStatePictureApp {
-    console.log(action.type);
     switch (action.type) {
         case ActionTypes.GET_PICTURE_HOME:
             return Object.assign({}, state, {
@@ -37,6 +36,7 @@ export function reducer(state: IStatePictureApp = initialState, action: Action) 
         case ActionTypes.GET_PICTURE_PROFIL:
             return Object.assign({}, state, {
                 pictures: action.payload.pictures,
+                pageNumber: action.payload.pageNumber,
                 isAuthenticated: action.payload.isAuthenticated,
             });
         case ActionTypes.RESET:

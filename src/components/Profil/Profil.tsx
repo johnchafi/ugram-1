@@ -33,11 +33,12 @@ const styles = theme => createStyles({
 
 export interface Props extends WithStyles<typeof styles>{
     isAuthenticated: boolean
-    getProfil: (string) => any
-    getPicture: (string) => any
+    getProfil: (userId: string) => any
+    getPicture: (userId : string, pageNumber : number, pictures: Picture[]) => any
     reset: () => any
     user : User
     status: number,
+    pageNumber: number
     match: {params : {id: string}}
     location:{pathname:string}
     pictures: Picture[],
@@ -66,19 +67,38 @@ class Profil extends React.Component<Props,State> {
 
     componentWillMount(): void {
         this.props.getProfil(this.props.match.params.id);
-        this.props.getPicture(this.props.match.params.id);
+        this.props.getPicture(this.props.match.params.id, 0, []);
     }
+
+
+    isBottom(el) {
+        return el.getBoundingClientRect().bottom <= window.innerHeight;
+    }
+
+    componentWillUnmount() {
+        this.props.reset();
+        document.removeEventListener('scroll', this.trackScrolling);
+    }
+
+    trackScrolling = () => {
+        const wrappedElement = document.getElementById('profil');
+        if (this.isBottom(wrappedElement)) {
+            this.props.getPicture(this.props.match.params.id, this.props.pageNumber, this.props.pictures);
+            document.removeEventListener('scroll', this.trackScrolling);
+        }
+    };
 
     componentWillReceiveProps(nextProps: Readonly<Props>, nextContext: any): void {
         if (nextProps.location.pathname !== this.props.location.pathname) {
             this.props.getProfil(nextProps.match.params.id);
-            this.props.getPicture(nextProps.match.params.id);
+            this.props.getPicture(nextProps.match.params.id, this.props.pageNumber, this.props.pictures);
         }
         this.setState({isEditingProfil:false});
         if (nextProps.status != 200) {
             this.setState({open: true});
             this.props.getProfil(nextProps.match.params.id);
         }
+        document.addEventListener('scroll', this.trackScrolling);
     }
     handleClose = (event, reason) : void => {
         if (reason === 'clickaway') {
@@ -135,7 +155,7 @@ class Profil extends React.Component<Props,State> {
                     <Snackbar anchorOrigin={{vertical: 'bottom', horizontal: 'left',}} open={this.state.open} autoHideDuration={6000} onClose={this.handleClose}>
                         <MySnackbarContentWrapper onClose={this.handleClose} variant="error" message={this.props.message}/>
                     </Snackbar>
-                    <Grid container item xs={5} spacing={24}>
+                    <Grid container item xs={5} spacing={24} id="profil">
                         <PictureList isHome={false}/>
                     </Grid>
                 </Grid>

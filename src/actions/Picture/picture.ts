@@ -12,6 +12,7 @@ import Picture from "../../models/Picture";
 let CancelToken = axios.CancelToken;
 let call1 = CancelToken.source();
 let call2 = CancelToken.source();
+let picturesOfUser = CancelToken.source();
 
 export enum ActionTypes {
     GET_PICTURE_HOME = 'GET_PICTURE_HOME',
@@ -22,15 +23,21 @@ export enum ActionTypes {
 }
 export interface AuthenticatedAction { type: ActionTypes, payload: IStatePictureApp }
 
-export function getPictureForProfil(userid: string) : any {
+export function getPictureForProfil(userid: string, pageNumber: number, pictures: Picture[]) : any {
     /**@todo api*/
     return function(dispatch : Dispatch<IStatePictureApp>) {
-        axios.get('http://api.ugram.net/users/' + userid + '/pictures')
+        let results: Picture[] = [];
+        axios.get('http://api.ugram.net/users/' + userid + '/pictures?page=' + pageNumber, {cancelToken:picturesOfUser.token})
             .then(function (response) {
+                pictures.map(function (picture : Picture) {results.push(Object.assign({}, picture))}.bind(results));
+                response.data.items.map(function (picture : Picture) {results.push(Object.assign({}, picture))}.bind(results));
+                if (response.data.totalPages > pageNumber)
+                    pageNumber = pageNumber + 1;
                 dispatch({
                     type: ActionTypes.GET_PICTURE_PROFIL,
                     payload: {
-                        pictures: response.data.items,
+                        pictures: results,
+                        pageNumber: pageNumber
                     }
                 })
             })
@@ -58,6 +65,7 @@ export function getAllPicturesSortByDate(pageNumber: number, pictures: Picture[]
                 });
             })
             .catch(function (error) {
+                console.log(error);
                 dispatch( {
                     type: ActionTypes.ERROR,
                     payload: {
@@ -68,6 +76,18 @@ export function getAllPicturesSortByDate(pageNumber: number, pictures: Picture[]
             })
     }
 }
+
+export function resetProfil(): any {
+    /**@todo api*/
+    picturesOfUser.cancel();
+    picturesOfUser = CancelToken.source();
+    return function (dispatch: Dispatch<IStatePictureApp>) {
+        dispatch({
+            type: ActionTypes.RESET,
+        });
+    }
+}
+
 export function reset(): any {
     /**@todo api*/
     call1.cancel();
@@ -120,7 +140,7 @@ export function editPicture(picture:Picture): any {
                 Authorization: 'Bearer ' + "91935b05-358b-4f41-aa79-8d6248d63637", //the token is a variable which holds the token
             },
         }).then( function (response) {
-            return dispatch(getPictureForProfil(picture.userId));
+            return dispatch(getPictureForProfil(picture.userId, 0, []));
         })
             .catch(function (error) {
                 console.log(JSON.stringify(error));
@@ -146,7 +166,7 @@ export function deletePicture(userId: string, pictureId: number): any {
             }
         })
             .then( function (response) {
-                return dispatch(getPictureForProfil(userId));
+                return dispatch(getPictureForProfil(userId, 0, []));
             })
             .catch(function (error) {
                 console.log(JSON.stringify(error));
