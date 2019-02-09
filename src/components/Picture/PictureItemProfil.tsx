@@ -55,12 +55,6 @@ const styles = (theme: Theme) => createStyles({
     expandOpen: {
         transform: 'rotate(180deg)',
     },
-    paper: {
-        position: 'absolute',
-        width: theme.spacing.unit * 55,
-        padding: theme.spacing.unit * 6,
-        outline: 'none',
-    },
 });
 
 
@@ -98,7 +92,7 @@ class PictureItemProfil extends React.Component<Props,State> {
                     </Card>
                 </Button>
                 <Modal aria-labelledby="simple-modal-title" aria-describedby="simple-modal-description" open={this.state.open} onClose={this.handleCloseEdit}>
-                    <div style={getModalStyle()} className={this.props.classes.paper}>
+                    <div style={getModalStyle()} className="div-profil">
                         <PictureItem user={this.props.user} picture={this.props.picture} isHome={false}/>
                     </div>
                 </Modal>

@@ -2,16 +2,26 @@
 
 .media-card {
   width: 100%;
-  padding-top: 56.5%;
-  height: 0;
+  max-height: 800px;
 }
 
 .div-home {
-  max-width: 480px !important;
+  max-width: 600px !important;
   width: 100% !important;
   margin-left: auto !important;
   margin-right: auto !important;
 }
+
+.div-profil {
+  max-width: 600px !important;
+  width: 100% !important;
+  max-height: 100%;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  position: absolute;
+  outline: none;
+}
+
 .card {
   width: 100%;
   padding: auto;
@@ -21,4 +31,8 @@
     max-width: 100%;
     width: 300px;
   }
+  .div-profil {
+    width: 300px !important;
+  }
+
 }

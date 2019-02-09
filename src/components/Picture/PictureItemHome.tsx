@@ -82,7 +82,7 @@ class PictureItemHome extends React.Component<Props,State> {
                                 title={this.props.user && this.props.user.firstName + " " + this.props.user.lastName || <LinearProgress />}
                                 subheader={new Date(Number(this.props.picture.createdDate)).toDateString()}
                     />
-                    <CardMedia className="media-card" image={this.props.picture.url|| "//"} title={this.props.picture.description}/>
+                    <img className="media-card" src={this.props.picture.url|| "//"} alt={this.props.picture.description}/>
                     <CardActions className={classes.actions} disableActionSpacing>
                         <IconButton aria-label="Add to favorites">
                             <FavoriteIcon />

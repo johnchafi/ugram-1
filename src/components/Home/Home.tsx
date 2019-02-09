@@ -59,7 +59,7 @@ class Home extends React.Component<Props,State> {
         return (
             <Grid
                 container
-                spacing={8}
+                spacing={24}
                 direction="column"
                 alignItems="center"
                 id="home"

@@ -107,8 +107,8 @@ class PictureItem extends React.Component<Props,State> {
         const { anchorEl } = this.state;
         const open = Boolean(anchorEl);
         return (
-            <Grid item md={8} lg={8} xs={8}>
-                <Card className={classes.card}>
+            <Grid item>
+                <Card className="card">
                     <CardHeader avatar={this.renderAvatar()}
                         action={ !this.props.isHome &&
                         <IconButton aria-owns={open ? 'simple-popper' : undefined}
@@ -120,7 +120,7 @@ class PictureItem extends React.Component<Props,State> {
                         title={this.props.user && this.props.user.firstName + " " + this.props.user.lastName || <LinearProgress />}
                         subheader={new Date(Number(this.props.picture.createdDate)).toDateString()}
                     />
-                    <CardMedia className={classes.media} image={this.props.picture.url|| "//"} title={this.props.picture.description}/>
+                    <img className="media-card" src={this.props.picture.url|| "//"} alt={this.props.picture.description}/>
                     <CardActions className={classes.actions} disableActionSpacing>
                         <IconButton aria-label="Add to favorites">
                             <FavoriteIcon />
@@ -140,7 +140,7 @@ class PictureItem extends React.Component<Props,State> {
                                     delete
                                 </Icon>
                             </IconButton>
-                            <IconButton onClick={this.handleEdit}color="primary">
+                            <IconButton onClick={this.handleEdit} color="primary">
                                 <Icon color="action">
                                     edit
                                 </Icon>
