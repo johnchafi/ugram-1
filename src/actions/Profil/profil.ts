@@ -64,7 +64,7 @@ export function editUser(user: User) : any {
 
 export function profilData(userid): any {
     return function(dispatch : Dispatch<UserProfilAction>) {
-        axios.get('http://api.ugram.net/users/' + userid)
+        return axios.get('http://api.ugram.net/users/' + userid)
             .then(function (user) {
                 dispatch(  {
                     type: ActionTypes.PROFIL,

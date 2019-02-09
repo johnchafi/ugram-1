@@ -23,7 +23,7 @@ export function getPictureForProfil(userid: string, pageNumber: number, pictures
     /**@todo api*/
     return function(dispatch : Dispatch<IStatePictureApp>) {
         let results: Picture[] = [];
-        axios.get('http://api.ugram.net/users/' + userid + '/pictures?page=' + pageNumber, {cancelToken:picturesOfUser.token})
+        return axios.get('http://api.ugram.net/users/' + userid + '/pictures?page=' + pageNumber, {cancelToken:picturesOfUser.token})
             .then(function (response) {
                 pictures.map(function (picture : Picture) {results.push(Object.assign({}, picture))}.bind(results));
                 response.data.items.map(function (picture : Picture) {results.push(Object.assign({}, picture))}.bind(results));
