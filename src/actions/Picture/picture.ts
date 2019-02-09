@@ -44,7 +44,7 @@ export function getAllPicturesSortByDate(pageNumber: number, pictures: Picture[]
     /**@todo api*/
     return function(dispatch : Dispatch<IStatePictureApp>) {
         let results: Picture[] = [];
-        axios.get('http://api.ugram.net/pictures/?page=' + pageNumber, {cancelToken:call1.token})
+        return axios.get('http://api.ugram.net/pictures/?page=' + pageNumber, {cancelToken:call1.token})
             .then(  function (response) {
                 pictures.map(function (picture : Picture) {results.push(Object.assign({}, picture))}.bind(results));
                 response.data.items.map(function (picture : Picture) {results.push(Object.assign({}, picture))}.bind(results));
