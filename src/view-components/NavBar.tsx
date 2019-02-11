@@ -56,6 +56,7 @@ class NavBar extends React.Component<Props,State> {
                                             <Link to={"/users/"}><Icon >explore_outlined</Icon></Link>
                                             <Icon >favorite_border_rounded</Icon>
                                             <Link to={"/profil/team02"}><Icon>person_outlined</Icon></Link>
+                                            <Link to={"/upload"}>Upload</Link>
                                         </Grid>
                                     </Grid>
                                 </Grid>
