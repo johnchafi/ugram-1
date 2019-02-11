@@ -51,7 +51,6 @@ export function editUser(user: User) : any {
                 dispatch({
                     type: ActionTypes.ERROR,
                     payload: {
-                        isAuthenticated: false,
                         pictures: null,
                         status: error.response.status,
                         message: error.response.data.message
@@ -69,7 +68,6 @@ export function profilData(userid): any {
                 dispatch(  {
                     type: ActionTypes.PROFIL,
                     payload: {
-                        isAuthenticated: true,
                         user: user.data,
                     }
                 })
@@ -78,7 +76,6 @@ export function profilData(userid): any {
                 dispatch( {
                     type: ActionTypes.ERROR,
                     payload: {
-                        isAuthenticated: false,
                         user: null,
                         message: error
                     }

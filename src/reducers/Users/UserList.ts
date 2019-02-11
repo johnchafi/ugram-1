@@ -21,11 +21,10 @@ export const initialState: IStateUsersApp = {
 export function reducer(state: IStateUsersApp = initialState, action: Action) : IStateUsersApp {
     switch (action.type) {
         case ActionTypes.GET_USERS:
-            const {users, isAuthenticated} = action.payload;
+            const {users} = action.payload;
             return {
                 ...state,
                 users: users,
-                isAuthenticated: isAuthenticated,
             };
         default:
             return state

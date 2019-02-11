@@ -27,6 +27,7 @@ export interface Props extends WithStyles<typeof styles>{
     deletePicture : (string, number) => any
 }
 interface State {
+    didLoad:boolean
 }
 
 
@@ -57,10 +58,10 @@ class PictureItemHome extends React.Component<Props,State> {
 
     constructor(props : Props) {
         super(props);
-    }
 
-    componentWillReceiveProps(nextProps: Readonly<Props>, nextContext: any): void {
-        this.setState({open: false});
+        this.state = {
+            didLoad:false
+        }
     }
 
     renderAvatar()
@@ -73,6 +74,12 @@ class PictureItemHome extends React.Component<Props,State> {
             return ( <Avatar aria-label="Recipe" ><CircularProgress disableShrink /></Avatar>)
     }
 
+    onLoad = () => {
+        this.setState({
+            didLoad: true
+        })
+    }
+
     render() {
         const {classes} = this.props;
         return (
@@ -82,7 +89,7 @@ class PictureItemHome extends React.Component<Props,State> {
                                 title={this.props.user && this.props.user.firstName + " " + this.props.user.lastName || <LinearProgress />}
                                 subheader={new Date(Number(this.props.picture.createdDate)).toDateString()}
                     />
-                    <img className="media-card" src={this.props.picture.url|| "//"} alt={this.props.picture.description}/>
+                    <img className="media-card" src={this.state.didLoad ? this.props.picture.url : "https://via.placeholder.com/600/f5f5f5"} alt={this.props.picture.description} onLoad={this.onLoad}/>
                     <CardActions className={classes.actions} disableActionSpacing>
                         <IconButton aria-label="Add to favorites">
                             <FavoriteIcon />
