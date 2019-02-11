@@ -1,18 +1,17 @@
 import * as React from 'react'
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
-import CardMedia from '@material-ui/core/CardMedia';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import {Link} from 'react-router-dom';
 import {
-    Avatar,
+    Avatar, Button,
     CardActions,
     CircularProgress,
     createStyles,
-    LinearProgress,
+    LinearProgress, Modal,
     Theme,
     WithStyles,
     withStyles
@@ -20,6 +19,7 @@ import {
 import Picture from "../../models/Picture";
 import '../../../scss/app.scss';
 import User from "../../models/User";
+import PictureItem from "../../containers/Picture/PictureItem";
 export interface Props extends WithStyles<typeof styles>{
     picture : Picture,
     user : User
@@ -27,7 +27,8 @@ export interface Props extends WithStyles<typeof styles>{
     deletePicture : (string, number) => any
 }
 interface State {
-    didLoad:boolean
+    didLoad:boolean,
+    open: boolean
 }
 
 
@@ -52,6 +53,19 @@ const styles = (theme: Theme) => createStyles({
     }
 });
 
+function getModalStyle() {
+    const top = 50;
+    const left = 50;
+
+    return {
+        top: `${top}%`,
+        left: `${left}%`,
+        transform: `translate(-${top}%, -${left}%)`,
+    };
+}
+
+
+
 
 
 class PictureItemHome extends React.Component<Props,State> {
@@ -60,7 +74,8 @@ class PictureItemHome extends React.Component<Props,State> {
         super(props);
 
         this.state = {
-            didLoad:false
+            didLoad:false,
+            open:false
         }
     }
 
@@ -74,17 +89,26 @@ class PictureItemHome extends React.Component<Props,State> {
             return ( <Avatar aria-label="Recipe" ><CircularProgress disableShrink /></Avatar>)
     }
 
+    handleCloseEdit = event => {
+        this.setState({open: false});
+    };
+
+
     onLoad = () => {
         this.setState({
             didLoad: true
         })
-    }
+    };
+
+    handleOpenEdit = event => {
+        this.setState({open: true});
+    };
 
     render() {
         const {classes} = this.props;
         return (
             <Grid item md={12} lg={12} xs={12} className="card">
-                <Card>
+                <Card onClick={this.handleOpenEdit}>
                     <CardHeader className={classes.cardHeader} avatar={this.renderAvatar()}
                                 title={this.props.user && this.props.user.firstName + " " + this.props.user.lastName || <LinearProgress />}
                                 subheader={new Date(Number(this.props.picture.createdDate)).toDateString()}
@@ -103,6 +127,11 @@ class PictureItemHome extends React.Component<Props,State> {
                         </Grid>
                     </CardActions>
                 </Card>
+                <Modal aria-labelledby="simple-modal-title" aria-describedby="simple-modal-description" open={this.state.open} onClose={this.handleCloseEdit}>
+                    <div style={getModalStyle()} className="div-profil">
+                        <PictureItem user={this.props.user} picture={this.props.picture} isHome={true}/>
+                    </div>
+                </Modal>
             </Grid>
         );
     }
