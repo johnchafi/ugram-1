@@ -1,7 +1,6 @@
-
-import axios from "axios";
 import {IStateUsersApp} from "../../reducers/Users/UserList";
 import {Dispatch} from "redux";
+import { sdk } from "../../sdk/ugram";
 
 export enum ActionTypes {
     GET_USERS = 'GET_USERS',
@@ -10,9 +9,8 @@ export enum ActionTypes {
 export interface AuthenticatedAction { type: ActionTypes, payload: IStateUsersApp }
 
 export function getAllUsers(): any {
-    /**@todo api*/
     return function(dispatch : Dispatch<IStateUsersApp>) {
-        axios.get('http://api.ugram.net/users/')
+        sdk.getUsers()
             .then(function (response) {
                 // response.data;
                 dispatch(  {

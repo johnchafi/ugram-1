@@ -1,7 +1,7 @@
 {
-  "name": "glo-3112-react-starter",
-  "version": "0.0.0",
-  "description": "",
+  "name": "ugram-team-2",
+  "version": "1.0.0",
+  "description": "Instagram like application for GLO3112",
   "main": "index.js",
   "scripts": {
     "build": "webpack -p --progress",
@@ -9,13 +9,12 @@
     "test": "node_modules/.bin/jest",
     "verbose": "true"
   },
-  "author": "wfortin & vseguin",
+  "author": "Arthur Klein & Henri Longle & Sebastien Bruere & Maxime Leroy",
   "license": "MIT",
   "devDependencies": {
     "@types/node": "8.5.5",
     "@types/react": "16.0.34",
     "css-loader": "0.28.7",
-    "fsevents": "^1.2.4",
     "html-webpack-harddisk-plugin": "^1.0.1",
     "node-sass": "^4.11.0",
     "sass-loader": "6.0.6",
