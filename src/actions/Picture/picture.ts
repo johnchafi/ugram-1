@@ -33,7 +33,8 @@ export function getPictureForProfil(userid: string, pageNumber: number, pictures
                     type: ActionTypes.GET_PICTURE_PROFIL,
                     payload: {
                         pictures: results,
-                        pageNumber: pageNumber
+                        pageNumber: pageNumber,
+                        totalEntries: response.data.totalEntries
                     }
                 })
             })
@@ -53,7 +54,6 @@ export function getAllPicturesSortByDate(pageNumber: number, pictures: Picture[]
                 dispatch({
                     type: ActionTypes.GET_PICTURE_HOME,
                     payload: {
-                        isAuthenticated: true,
                         finish: true,
                         pictures: results,
                         pageNumber: pageNumber
@@ -65,7 +65,6 @@ export function getAllPicturesSortByDate(pageNumber: number, pictures: Picture[]
                 dispatch( {
                     type: ActionTypes.ERROR,
                     payload: {
-                        isAuthenticated: false,
                         pictures: null,
                     }
                 })
@@ -152,7 +151,6 @@ export function editPicture(picture:Picture): any {
                 dispatch( {
                     type: ActionTypes.ERROR,
                     payload: {
-                        isAuthenticated: false,
                         pictures: null,
                         status:error.response.status,
                         message: error.response.data.message
@@ -178,7 +176,6 @@ export function deletePicture(userId: string, pictureId: number): any {
                 dispatch( {
                     type: ActionTypes.ERROR,
                     payload: {
-                        isAuthenticated: false,
                         pictures: null,
                         status:error.response.status,
                         message: error.response.data.message

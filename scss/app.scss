@@ -2,7 +2,7 @@
 
 .media-card {
   width: 100%;
-  max-height: 800px;
+  max-height: 600px;
 }
 
 .div-home {
@@ -10,6 +10,12 @@
   width: 100% !important;
   margin-left: auto !important;
   margin-right: auto !important;
+}
+
+.avatar {
+  margin: 10px;
+  width: 60px !important;
+  height: 60px !important;
 }
 
 .div-profil {

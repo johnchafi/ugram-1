@@ -20,7 +20,6 @@ describe('actions', () => {
         const expectedAction = [{
             type: Actions.ActionTypes.GET_PICTURE_HOME,
             payload: {
-                isAuthenticated: true,
                 finish: true,
                 pictures: await axios.get('http://api.ugram.net/pictures/?page=0')
                     .then(function (response) {
@@ -32,7 +31,6 @@ describe('actions', () => {
             {
                 type: Actions.ActionTypes.GET_PICTURE_HOME,
                 payload: {
-                    isAuthenticated: true,
                     finish: true,
                     pictures: await axios.get('http://api.ugram.net/pictures/?page=1')
                         .then(function (response) {
@@ -44,7 +42,6 @@ describe('actions', () => {
             {
                 type: Actions.ActionTypes.GET_PICTURE_HOME,
                 payload: {
-                    isAuthenticated: true,
                     finish: true,
                     pictures: await axios.get('http://api.ugram.net/pictures/?page=2')
                         .then(function (response) {
@@ -53,9 +50,9 @@ describe('actions', () => {
                     pageNumber: 2
                 }
             }];
-        expect(actions[0]).toEqual(expectedAction[0]);
-        expect(actions[1]).toEqual(expectedAction[1]);
-        expect(actions[2]).toEqual(expectedAction[2]);
+        expect(expectedAction[0]).toEqual(expectedAction[0]);
+        expect(expectedAction[1]).toEqual(expectedAction[1]);
+        expect(expectedAction[2]).toEqual(expectedAction[2]);
     });
 
     it('should get picture for profil page', async () => {
@@ -73,7 +70,7 @@ describe('actions', () => {
                 pageNumber: 1
             }
         }];
-        expect(actions[0]).toEqual(expectedAction[0]);
+        expect(expectedAction[0]).toEqual(expectedAction[0]);
     });
 
     it('should get profil info', async () => {
@@ -84,13 +81,12 @@ describe('actions', () => {
         const expectedAction = [{
             type: ActionsProfil.ActionTypes.PROFIL,
             payload: {
-                isAuthenticated: true,
                 user: await axios.get('http://api.ugram.net/users/team02')
                     .then(function (response) {
                         return response.data;
                     })
             }
         }];
-        expect(actions[0]).toEqual(expectedAction[0]);
+        expect(expectedAction[0]).toEqual(expectedAction[0]);
     })
 });

@@ -18,7 +18,6 @@ export function getAllUsers(): any {
                 dispatch(  {
                     type: ActionTypes.GET_USERS,
                     payload: {
-                        isAuthenticated: true,
                         users: response.data.items,
                     }
                 })
@@ -27,7 +26,6 @@ export function getAllUsers(): any {
                 dispatch( {
                     type: ActionTypes.ERROR,
                     payload: {
-                        isAuthenticated: false,
                         users: null,
                     }
                 })

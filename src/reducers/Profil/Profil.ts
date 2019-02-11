@@ -9,15 +9,17 @@ export interface IStateProfilApp {
     status: number,
     pictures: Picture[],
     message:string
+    totalEntries: number
 }
 
 // Define our initialState
 export const initialState: IStateProfilApp = {
     isAuthenticated: false,
-    user: null,
+    user: {},
     status: 200,
     pictures: [],
-    message:null
+    message:null,
+    totalEntries: 0
 };
 
 /*
