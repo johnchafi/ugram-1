@@ -1,6 +1,6 @@
 import * as Actions from '../src/actions/Picture/picture';
 import * as ActionsProfil from '../src/actions/Profil/profil';
-import axios from "axios";
+import { sdk } from "../src/sdk/ugram";
 import { registerMiddlewares } from 'redux-actions-assertions';
 import configureMockStore from "redux-mock-store";
 import thunk from "redux-thunk";
@@ -21,7 +21,7 @@ describe('actions', () => {
             type: Actions.ActionTypes.GET_PICTURE_HOME,
             payload: {
                 finish: true,
-                pictures: await axios.get('http://api.ugram.net/pictures/?page=0')
+                pictures: await sdk.getPictures(0)
                     .then(function (response) {
                         return response.data.items
                     }),
@@ -32,7 +32,7 @@ describe('actions', () => {
                 type: Actions.ActionTypes.GET_PICTURE_HOME,
                 payload: {
                     finish: true,
-                    pictures: await axios.get('http://api.ugram.net/pictures/?page=1')
+                    pictures: await sdk.getPictures(1)
                         .then(function (response) {
                             return response.data.items
                         }),
@@ -43,7 +43,7 @@ describe('actions', () => {
                 type: Actions.ActionTypes.GET_PICTURE_HOME,
                 payload: {
                     finish: true,
-                    pictures: await axios.get('http://api.ugram.net/pictures/?page=2')
+                    pictures: await sdk.getPictures(2)
                         .then(function (response) {
                             return response.data.items
                         }),
@@ -63,7 +63,7 @@ describe('actions', () => {
         const expectedAction = [{
             type: Actions.ActionTypes.GET_PICTURE_PROFIL,
             payload: {
-                pictures: await axios.get('http://api.ugram.net/users/team02/pictures/?page=0')
+                pictures: await sdk.getPicturesByUser('team02', 0)
                     .then(function (response) {
                         return response.data.items
                     }),
@@ -81,7 +81,7 @@ describe('actions', () => {
         const expectedAction = [{
             type: ActionsProfil.ActionTypes.PROFIL,
             payload: {
-                user: await axios.get('http://api.ugram.net/users/team02')
+                user: await sdk.getUser('team02')
                     .then(function (response) {
                         return response.data;
                     })
