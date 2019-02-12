@@ -49,6 +49,7 @@ class Profil extends React.Component<Props,State> {
 
     componentWillReceiveProps(nextProps: Readonly<Props>, nextContext: any): void {
         if (nextProps.location.pathname !== this.props.location.pathname) {
+            this.props.closeMessage();
             this.props.getProfil(nextProps.match.params.id);
             this.props.getPicture(nextProps.match.params.id, 0, []);
         }
