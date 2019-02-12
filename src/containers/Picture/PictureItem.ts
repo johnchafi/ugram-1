@@ -10,7 +10,6 @@ const mapStateToProps = (state: State, ownProps: Props) => ({
 });
 
 const mapDispatchToProps = {
-    deletePicture: deletePicture,
 };
 
 
