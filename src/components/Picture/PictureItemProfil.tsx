@@ -70,10 +70,6 @@ class PictureItemProfil extends React.Component<Props,State> {
         }
     }
 
-    componentWillReceiveProps(nextProps: Readonly<Props>, nextContext: any): void {
-        this.setState({open: false});
-    }
-
     handleCloseEdit = event => {
         this.setState({open: false});
     };
@@ -81,6 +77,11 @@ class PictureItemProfil extends React.Component<Props,State> {
     handleOpenEdit = event => {
         this.setState({open: true});
     };
+
+    componentWillReceiveProps(nextProps: Readonly<Props>, nextContext: any): void {
+        if (this.props.picture !== nextProps.picture)
+            this.setState({open:false});
+    }
 
     render() {
         const {classes} = this.props;

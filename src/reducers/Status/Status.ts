@@ -30,6 +30,11 @@ export function reducer(state: IStateStatusApp = initialState, action: Action) :
                 variant: action.payload.variant,
                 open: true
             });
+        case ActionTypes.CLOSE:
+            return Object.assign({}, state, {
+                open: false,
+                status: 200
+            });
         default:
             return state
     }
