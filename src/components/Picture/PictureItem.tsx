@@ -17,6 +17,7 @@ import {
 import Picture from "../../models/Picture";
 import User from "../../models/User";
 import UpdatePictureItem from "../../containers/Picture/EditPictureItem";
+
 export interface Props extends WithStyles<typeof styles>{
     picture : Picture,
     user : User
@@ -148,7 +149,7 @@ class PictureItem extends React.Component<Props,State> {
                         </Grid>
                     </Grid>
                 </Popover>
-                <UpdatePictureItem open={this.state.open} picture={this.props.picture}/>
+                {!this.props.isHome && <UpdatePictureItem open={this.state.open} picture={this.props.picture}/>}
             </Grid>
 
         );

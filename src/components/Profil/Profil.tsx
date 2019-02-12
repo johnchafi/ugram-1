@@ -105,15 +105,12 @@ class Profil extends React.Component<Props,State> {
 
                 <Tabs value={this.state.slideIndex} centered onChange={this.handleChangeTabs}>
                     <Tab label="Posts" icon={<Icon>grid_on_outlined</Icon>} />
-                    <Tab label="IGTV" icon={<Icon>live_tv</Icon>} />
+                    <Tab label="Upload" icon={<Icon>cloud_upload</Icon>} />
                     <Tab label="Saved" icon={<Icon>bookmark_border_outlined</Icon>} />
                     <Tab label="Tagged" />
                 </Tabs>
                 {this.state.slideIndex === 0 &&
                 <Grid container direction="row" justify="center">
-                    <Snackbar anchorOrigin={{vertical: 'bottom', horizontal: 'left',}} open={this.props.open} autoHideDuration={6000} onClose={this.handleClose}>
-                        <MySnackbarContentWrapper onClose={this.handleClose} variant={this.props.variant} message={this.props.message}/>
-                    </Snackbar>
                     <Grid   container
                             direction="row"
                             justify="center"
@@ -140,6 +137,9 @@ class Profil extends React.Component<Props,State> {
                 {this.props.user && <EditProfil open={this.state.isEditingProfil}/>}
 
 
+                <Snackbar anchorOrigin={{vertical: 'bottom', horizontal: 'left',}} open={this.props.open} autoHideDuration={6000} onClose={this.handleClose}>
+                    <MySnackbarContentWrapper onClose={this.handleClose} variant={this.props.variant} message={this.props.message}/>
+                </Snackbar>
             </React.Fragment>
         );
     }

@@ -7,6 +7,7 @@ import {
 import Picture from "../../models/Picture";
 import User from "../../models/User";
 import UploadModel from "../../models/Upload";
+import PictureItem from "../../containers/Picture/PictureItem";
 
 export interface Props extends WithStyles<typeof styles>{
     user: User,
@@ -14,7 +15,9 @@ export interface Props extends WithStyles<typeof styles>{
 }
 interface State {
     upload: UploadModel,
-    file: File
+    file: File,
+    fileUrl: string,
+    picture : Picture
 }
 
 
@@ -26,26 +29,55 @@ const styles = (theme: Theme) => createStyles({
 
 class Upload extends React.Component<Props,State> {
 
-    constructor(props : Props)
-    {
+    constructor(props : Props) {
         super(props);
 
         this.state = {
+            fileUrl: "",
             upload: {
-                description:"",
-                mentions:[],
-                tags:[],
+                description: "",
+                mentions: [],
+                tags: [],
             },
-            file: null
+            file: null,
+            picture: {
+                createdDate: 0,
+                description: "",
+                file: null,
+                id: 0,
+                mentions: [],
+                tags: [],
+                url: "",
+                user: {},
+                userId: ""
+            }
+
         }
     }
 
     handleChangeDescription = (event) => {
-        this.state.upload.description = event.target.value;
-        this.setState({upload: this.state.upload});
+        this.setState({
+            picture: {
+                ...this.state.picture,
+                description: event.target.value
+            },
+            upload: {
+                ...this.state.upload,
+                description: event.target.value
+            }
+        });
     };
     handleUploadFile = (file) => {
-        this.setState({file: file[0]});
+        this.state.picture.url = URL.createObjectURL(file[0]);
+        console.log(this.state.picture.url);
+
+        this.setState({
+            picture: {
+                ...this.state.picture,
+                url: URL.createObjectURL(file[0])
+            },
+            file: file[0]
+        });
     };
     handleUploadPicture = () => {
         this.props.uploadPicture(this.props.user.id, this.state.file, this.state.upload);
@@ -59,18 +91,35 @@ class Upload extends React.Component<Props,State> {
             <Grid item>
                 <FormControl>
                     <Grid container direction="row" justify="center" alignItems="center">
-                        <Grid container item xs={3}>
-                            <TextField
-                                id="standard-name"
-                                label="Description"
-                                onChange={(e) => this.handleChangeDescription(e)}
-                                margin="normal"
-                            />
-                            <input type='file' onChange={(e) => this.handleUploadFile(e.target.files)} />
+                        <Grid container direction="row" justify="center" alignItems="center">
+                        <TextField
+                            label="Description"
+                            onChange={(e) => this.handleChangeDescription(e)}
+                        />
                         </Grid>
-                        <Grid container item xs={3}>
-                            <Button color="primary" variant="contained" onClick={this.handleUploadPicture} >submit</Button>
+                        <Grid container direction="row" justify="center" alignItems="center">
+                        <TextField
+                            label="Mentions"
+                            onChange={(e) => this.handleChangeDescription(e)}
+                        />
                         </Grid>
+                        <Grid container direction="row" justify="center" alignItems="center">
+                        <TextField
+                            label="Tags"
+                            onChange={(e) => this.handleChangeDescription(e)}
+                        />
+                        </Grid>
+                        <input type='file' onChange={(e) => this.handleUploadFile(e.target.files)} />
+                    </Grid>
+                    <Grid container direction="row" justify="center" alignItems="center">
+
+
+                        <PictureItem user={this.props.user} picture={this.state.picture} isHome={true}/>
+
+
+                    </Grid>
+                    <Grid container direction="row" justify="center" alignItems="center">
+                        <Button color="primary" variant="contained" onClick={this.handleUploadPicture} >submit</Button>
                     </Grid>
                 </FormControl>
             </Grid>
