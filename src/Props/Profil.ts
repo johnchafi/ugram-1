@@ -15,4 +15,6 @@ export default interface Props {
     pictures: Picture[],
     totalEntries: number
     message:string
+    variant:string
+    open: boolean
 }

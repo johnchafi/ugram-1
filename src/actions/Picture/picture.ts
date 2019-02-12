@@ -6,7 +6,7 @@ import Picture from "../../models/Picture";
 import UploadModel from "../../models/Upload";
 import User from "../../models/User";
 import { sdk } from '../../sdk/ugram';
-import Upload from "../../models/Upload";
+import {errorStatus, successStatus} from "../Status/status";
 
 export enum ActionTypes {
     GET_PICTURE_HOME = 'GET_PICTURE_HOME',
@@ -14,7 +14,8 @@ export enum ActionTypes {
     GET_PICTURE_PROFIL = 'GET_PICTURE_PROFIL',
     UPLOAD_PICTURE_PROFIL_SUCCESS = 'UPLOAD_PICTURE_PROFIL_SUCCESS',
     RESET = 'RESET',
-    ERROR = "ERROR"
+    ERROR = "ERROR",
+    EDIT_PICTURE = 'EDIT_PICTURE'
 }
 export interface AuthenticatedAction { type: ActionTypes, payload: IStatePictureApp }
 
@@ -139,18 +140,11 @@ export function editPicture(picture:Picture): any {
             tags: picture.tags,
             mentions:picture.mentions
         }).then( function (response) {
+            dispatch(successStatus(response.status, "Image éditée avec succès"));
             return dispatch(getPictureForProfil(picture.userId, 0, []));
         })
             .catch(function (error) {
-                console.log(JSON.stringify(error));
-                dispatch( {
-                    type: ActionTypes.ERROR,
-                    payload: {
-                        pictures: null,
-                        status:error.response.status,
-                        message: error.response.data.message
-                    }
-                })
+                return (dispatch(errorStatus(error.response.status, error.response.data.message)));
             });
     }
 }
@@ -159,18 +153,11 @@ export function deletePicture(userId: string, pictureId: number): any {
     return function(dispatch : Dispatch<IStateProfilApp>) {
         sdk.deletePictureByUser(userId, pictureId)
             .then( function (response) {
+                dispatch(successStatus(response.status, "Image supprimée avec succès"));
                 return dispatch(getPictureForProfil(userId, 0, []));
             })
             .catch(function (error) {
-                console.log(JSON.stringify(error));
-                dispatch( {
-                    type: ActionTypes.ERROR,
-                    payload: {
-                        pictures: null,
-                        status:error.response.status,
-                        message: error.response.data.message
-                    }
-                })
+                return dispatch(errorStatus(error.response.status, error.response.data.message));
             });
     }
 }

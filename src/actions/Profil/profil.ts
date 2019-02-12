@@ -2,6 +2,7 @@ import {IStateProfilApp} from "../../reducers/Profil/Profil";
 import {Dispatch} from "redux";
 import User from "../../models/User";
 import { sdk } from "../../sdk/ugram";
+import {errorStatus, successStatus} from "../Status/status";
 
 export enum ActionTypes {
     PROFIL = 'PROFIL',
@@ -34,19 +35,13 @@ export function editUser(user: User) : any {
             firstName: user.firstName,
             lastName: user.lastName,
             phoneNumber: user.phoneNumber
-        }).then(function () {
+        }).then(function (response) {
+            dispatch(successStatus(response.status, "Profil modifié avec succès"));
             return dispatch(profilData(user.id));
         })
             .catch(function (error) {
                 console.log(JSON.stringify(error));
-                dispatch({
-                    type: ActionTypes.ERROR,
-                    payload: {
-                        pictures: null,
-                        status: error.response.status,
-                        message: error.response.data.message
-                    }
-                })
+                return (dispatch(errorStatus(error.response.status, error.response.data.message)));
             });
 
     }

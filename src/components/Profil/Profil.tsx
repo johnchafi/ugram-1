@@ -9,9 +9,9 @@ import Props from "../../Props/Profil";
 import Upload from "../../containers/Picture/Upload";
 
 interface State {
-    open:boolean
     isEditingProfil: boolean,
     value: number
+    open: boolean
 }
 
 
@@ -21,9 +21,9 @@ class Profil extends React.Component<Props,State> {
         super(props);
         console.log(this.props.match.params.id);
         this.state = {
-            open: false,
             isEditingProfil: false,
-            value:0
+            value:0,
+            open: this.props.open
         };
     }
 
@@ -55,17 +55,18 @@ class Profil extends React.Component<Props,State> {
             this.props.getPicture(nextProps.match.params.id, this.props.pageNumber, this.props.pictures);
         }
         this.setState({isEditingProfil:false});
+        console.log(nextProps);
+        this.setState({open:nextProps.open});
         if (nextProps.status != 200) {
-            this.setState({open: true});
             this.props.getProfil(nextProps.match.params.id);
         }
         document.addEventListener('scroll', this.trackScrolling);
     }
     handleClose = (event, reason) : void => {
+        this.setState({open:false});
         if (reason === 'clickaway') {
             return;
         }
-        this.setState({ open: false });
     };
 
     handleChange = (event, value) : void => {
@@ -113,7 +114,7 @@ class Profil extends React.Component<Props,State> {
                 </Tabs>
                 <Grid container direction="row" justify="center">
                     <Snackbar anchorOrigin={{vertical: 'bottom', horizontal: 'left',}} open={this.state.open} autoHideDuration={6000} onClose={this.handleClose}>
-                        <MySnackbarContentWrapper onClose={this.handleClose} variant="error" message={this.props.message}/>
+                        <MySnackbarContentWrapper onClose={this.handleClose} variant={this.props.variant} message={this.props.message}/>
                     </Snackbar>
                     <Grid   container
                             direction="row"
