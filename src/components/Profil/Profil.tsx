@@ -1,49 +1,13 @@
 import * as React from 'react'
-import User from "../../models/User";
-import Picture from "../../models/Picture";
 
-import {
-    Avatar,
-    Button, createStyles,
-    Grid,
-    Icon,
-    Snackbar,
-    Tabs,
-    Typography, WithStyles
-} from "@material-ui/core";
+import {Avatar, Button, Grid, Icon, Snackbar, Tabs, Typography} from "@material-ui/core";
 import MySnackbarContentWrapper from "../../view-components/MySnackBarContentWrapper";
 import PictureList from "../../containers/Picture/PictureList";
 import {Tab} from "@material-ui/core";
-import {withStyles} from "@material-ui/core/es";
 import EditProfil from "../../containers/Profil/EditProfil";
+import Props from "../../Props/Profil";
+import Upload from "../../containers/Picture/Upload";
 
-const styles = theme => createStyles({
-    root: {
-        flexGrow: 1,
-    },
-    bigAvatar: {
-        margin: 10,
-        width: 60,
-        height: 60,
-    },
-});
-
-
-export interface Props extends WithStyles<typeof styles>{
-    isAuthenticated: boolean
-    getProfil: (userId: string) => any
-    getPicture: (userId : string, pageNumber : number, pictures: Picture[]) => any
-    reset: () => any
-    user : User
-    status: number,
-    pageNumber: number
-    match: {params : {id: string}}
-    location:{pathname:string}
-    pictures: Picture[],
-    message:string,
-    classes: any
-    theme: any
-}
 interface State {
     open:boolean
     isEditingProfil: boolean,
@@ -112,12 +76,11 @@ class Profil extends React.Component<Props,State> {
     };
 
     render(): React.ReactNode {
-        const {classes, theme} = this.props;
         return (
             <React.Fragment>
                 <Grid container direction="row" justify="center" alignItems="center">
                     <Grid item xs={3} md={1} lg={1}>
-                        <Avatar className={classes.bigAvatar} src={this.props.user && this.props.user.pictureUrl}/>
+                        <Avatar className="avatar" src={this.props.user && this.props.user.pictureUrl}/>
                     </Grid>
                     <Grid item xs={3}>
                         <Grid container direction="row">
@@ -133,7 +96,7 @@ class Profil extends React.Component<Props,State> {
                             </Grid>
                         </Grid>
                         <Typography variant="subtitle1">
-                            <b>{this.props.pictures && this.props.pictures.length}</b> posts
+                            <b>{this.props.totalEntries}</b> posts
                         </Typography>
                         <Typography variant="subtitle2">
                             {this.props.user && this.props.user.firstName + " " + this.props.user.lastName}
@@ -164,9 +127,11 @@ class Profil extends React.Component<Props,State> {
                     </Grid>
                 </Grid>
                 {this.props.user && <EditProfil open={this.state.isEditingProfil}/>}
+                <Upload />
+
             </React.Fragment>
         );
     }
 }
 
-export default withStyles(styles, { withTheme: true })(Profil);
+export default (Profil);

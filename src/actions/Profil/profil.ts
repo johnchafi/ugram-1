@@ -1,9 +1,7 @@
-
-
-import axios from "axios";
 import {IStateProfilApp} from "../../reducers/Profil/Profil";
 import {Dispatch} from "redux";
 import User from "../../models/User";
+import { sdk } from "../../sdk/ugram";
 
 export enum ActionTypes {
     PROFIL = 'PROFIL',
@@ -18,9 +16,7 @@ export interface UserProfilAction { type: ActionTypes, payload: IStateProfilApp 
  * We are returning the right Action for each function
  */
 
-
 export function closeEdit(user : User) : any {
-    /**@todo api*/
     return function (dispatch: Dispatch<UserProfilAction>) {
         dispatch(  {
             type: ActionTypes.CLOSE_EDIT_PROFIL,
@@ -32,17 +28,12 @@ export function closeEdit(user : User) : any {
 }
 
 export function editUser(user: User) : any {
-    /**@todo api*/
     return function (dispatch: Dispatch<UserProfilAction>) {
-        axios.put('http://api.ugram.net/users/' + user.id, {
+        sdk.editUser(user.id, {
             email: user.email,
             firstName: user.firstName,
             lastName: user.lastName,
             phoneNumber: user.phoneNumber
-        }, {
-            headers: {
-                Authorization: 'Bearer ' + "91935b05-358b-4f41-aa79-8d6248d63637",
-            },
         }).then(function () {
             return dispatch(profilData(user.id));
         })
@@ -51,7 +42,6 @@ export function editUser(user: User) : any {
                 dispatch({
                     type: ActionTypes.ERROR,
                     payload: {
-                        isAuthenticated: false,
                         pictures: null,
                         status: error.response.status,
                         message: error.response.data.message
@@ -64,12 +54,11 @@ export function editUser(user: User) : any {
 
 export function profilData(userid): any {
     return function(dispatch : Dispatch<UserProfilAction>) {
-        return axios.get('http://api.ugram.net/users/' + userid)
+        return sdk.getUser(userid)
             .then(function (user) {
                 dispatch(  {
                     type: ActionTypes.PROFIL,
                     payload: {
-                        isAuthenticated: true,
                         user: user.data,
                     }
                 })
@@ -78,7 +67,6 @@ export function profilData(userid): any {
                 dispatch( {
                     type: ActionTypes.ERROR,
                     payload: {
-                        isAuthenticated: false,
                         user: null,
                         message: error
                     }

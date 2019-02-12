@@ -1,17 +1,9 @@
 import * as React from 'react'
 import {CircularProgress, Grid} from "@material-ui/core";
-import Picture from "../../models/Picture";
 import PictureList from "../../containers/Picture/PictureList";
 import { Redirect } from 'react-router';
+import Props from "../../Props/Home";
 
-export interface Props {
-    getPicturesByDate: (number, picture : Picture[]) => any
-    overGetPics:(picture: Picture[]) => any,
-    reset:() => any,
-    pictures: Picture[],
-    pageNumber: number
-    finish:boolean
-}
 interface State {
     isLoading: boolean,
 }
@@ -57,14 +49,7 @@ class Home extends React.Component<Props,State> {
 
     render() {
         return (
-            <Grid
-                container
-                spacing={24}
-                direction="column"
-                alignItems="center"
-                id="home"
-                className="div-home"
-            >
+            <Grid container spacing={24} direction="column" alignItems="center" id="home" className="div-home">
                 {this.state.isLoading && <CircularProgress />}
                 { !this.state.isLoading && <PictureList isHome={true}/>}
             </Grid>

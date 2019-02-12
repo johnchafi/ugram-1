@@ -1,6 +1,6 @@
-import axios from "axios";
 import {IStateProfilApp} from "../../reducers/Profil/Profil";
 import {Dispatch} from "redux";
+import { sdk } from "../../sdk/ugram";
 
 export enum ActionTypes {
     AUTHENTICATED = 'AUTH',
@@ -10,9 +10,8 @@ export enum ActionTypes {
 export interface AuthenticatedAction { type: ActionTypes.AUTHENTICATED, payload: IStateProfilApp }
 
 export function authUser(): any {
-    /**@todo api*/
     return function(dispatch : Dispatch<IStateProfilApp>) {
-        axios.get('http://api.ugram.net/users/wfortin')
+        sdk.getUser('wfortin')
             .then(function (response) {
                 // response.data;
                 dispatch(  {

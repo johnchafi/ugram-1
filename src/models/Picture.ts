@@ -8,5 +8,6 @@ export default interface Picture {
     "tags": string[],
     "url": string,
     "userId": string,
-    user:User
+    user: User,
+    file: File
 }
