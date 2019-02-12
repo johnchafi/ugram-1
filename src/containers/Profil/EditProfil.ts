@@ -6,7 +6,6 @@ import {withRouter} from 'react-router-dom';
 import EditProfil, {Props} from "../../components/Profil/EditProfil";
 const mapStateToProps = (state: State, ownProps: Props) => ({
     profil: getUserProfil(state),
-    open: ownProps.open
 });
 
 const mapDispatchToProps = {

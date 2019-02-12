@@ -68,10 +68,6 @@ class Profil extends React.Component<Props,State> {
             slideIndex: value,
         });
     };
-    handleEditingProfil = () : void => {
-        this.setState({isEditingProfil: true})
-    };
-
     render(): React.ReactNode {
         return (
             <React.Fragment>
@@ -87,9 +83,7 @@ class Profil extends React.Component<Props,State> {
                                 </Typography>
                             </Grid>
                             <Grid item xs={12} md={6} lg={6}>
-                                <Button onClick={this.handleEditingProfil} variant="outlined">
-                                    Edit Profile
-                                </Button>
+                                <EditProfil/>
                             </Grid>
                         </Grid>
                         <Typography variant="subtitle1">
@@ -134,9 +128,6 @@ class Profil extends React.Component<Props,State> {
                 <Grid container direction="row" justify="center">
                     TAGGED
                 </Grid>}
-                {this.props.user && <EditProfil open={this.state.isEditingProfil}/>}
-
-
                 <Snackbar anchorOrigin={{vertical: 'bottom', horizontal: 'left',}} open={this.props.open} autoHideDuration={6000} onClose={this.handleClose}>
                     <MySnackbarContentWrapper onClose={this.handleClose} variant={this.props.variant} message={this.props.message}/>
                 </Snackbar>

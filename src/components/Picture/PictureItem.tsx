@@ -139,7 +139,7 @@ class PictureItem extends React.Component<Props,State> {
                             <IconButton onClick={this.handleSuppress} color="secondary">
                                 <Icon color="action">
                                     delete
-                                </Icon>
+                                </Icon>s
                             </IconButton>
                             <IconButton onClick={this.handleEdit} color="primary">
                                 <Icon color="action">
