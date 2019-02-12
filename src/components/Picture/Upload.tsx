@@ -48,9 +48,6 @@ class Upload extends React.Component<Props,State> {
         this.setState({file: file[0]});
     };
     handleUploadPicture = () => {
-        //console.log(this.props.user.id);
-        //console.log(this.state.file);
-        //console.log(this.state.upload);
         this.props.uploadPicture(this.props.user.id, this.state.file, this.state.upload);
     };
 

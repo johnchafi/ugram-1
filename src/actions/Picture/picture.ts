@@ -6,6 +6,7 @@ import Picture from "../../models/Picture";
 import UploadModel from "../../models/Upload";
 import User from "../../models/User";
 import { sdk } from '../../sdk/ugram';
+import Upload from "../../models/Upload";
 
 export enum ActionTypes {
     GET_PICTURE_HOME = 'GET_PICTURE_HOME',
@@ -68,8 +69,8 @@ export function getAllPicturesSortByDate(pageNumber: number, pictures: Picture[]
     }
 }
 
-export function uploadPicture(userId : string, picture : Picture, model : UploadModel): any {
-    sdk.uploadPictureByUser(userId, picture, model);
+export function uploadPicture(userId : string, file : File, model : UploadModel): any {
+    sdk.uploadPictureByUser(userId, file, model);
 
     return function (dispatch: Dispatch<IStatePictureApp>) {
         dispatch({
