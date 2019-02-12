@@ -57,7 +57,7 @@ class EditPictureItem extends React.Component<Props,State> {
     {
         super(props);
         this.state = {
-            picture: this.props.picture,
+            picture: {... this.props.picture},
             open: this.props.open
         }
     }
@@ -102,7 +102,7 @@ class EditPictureItem extends React.Component<Props,State> {
     };
 
     handleCloseEdit = event => {
-        this.setState({open: false})
+        this.setState({open: false});
     };
 
     componentWillReceiveProps(nextProps: Readonly<Props>, nextContext: any): void {

@@ -11,7 +11,6 @@ import Upload from "../../containers/Picture/Upload";
 interface State {
     isEditingProfil: boolean,
     value: number
-    open: boolean
 }
 
 
@@ -23,7 +22,6 @@ class Profil extends React.Component<Props,State> {
         this.state = {
             isEditingProfil: false,
             value:0,
-            open: this.props.open
         };
     }
 
@@ -52,21 +50,16 @@ class Profil extends React.Component<Props,State> {
     componentWillReceiveProps(nextProps: Readonly<Props>, nextContext: any): void {
         if (nextProps.location.pathname !== this.props.location.pathname) {
             this.props.getProfil(nextProps.match.params.id);
-            this.props.getPicture(nextProps.match.params.id, this.props.pageNumber, this.props.pictures);
+            this.props.getPicture(nextProps.match.params.id, 0, []);
         }
         this.setState({isEditingProfil:false});
-        console.log(nextProps);
-        this.setState({open:nextProps.open});
-        if (nextProps.status != 200) {
-            this.props.getProfil(nextProps.match.params.id);
-        }
         document.addEventListener('scroll', this.trackScrolling);
     }
     handleClose = (event, reason) : void => {
-        this.setState({open:false});
         if (reason === 'clickaway') {
             return;
         }
+        this.props.closeMessage();
     };
 
     handleChange = (event, value) : void => {
@@ -113,7 +106,7 @@ class Profil extends React.Component<Props,State> {
                     <Tab label="Tagged" />
                 </Tabs>
                 <Grid container direction="row" justify="center">
-                    <Snackbar anchorOrigin={{vertical: 'bottom', horizontal: 'left',}} open={this.state.open} autoHideDuration={6000} onClose={this.handleClose}>
+                    <Snackbar anchorOrigin={{vertical: 'bottom', horizontal: 'left',}} open={this.props.open} autoHideDuration={6000} onClose={this.handleClose}>
                         <MySnackbarContentWrapper onClose={this.handleClose} variant={this.props.variant} message={this.props.message}/>
                     </Snackbar>
                     <Grid   container

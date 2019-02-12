@@ -5,6 +5,7 @@ import {Dispatch} from "redux";
 export enum ActionTypes {
     SUCCESS = 'SUCCESS',
     ERROR = 'ERROR',
+    CLOSE = 'CLOSE',
 }
 export interface StatusAction { type: ActionTypes, payload: IStateStatusApp }
 export type Action = StatusAction
@@ -21,6 +22,16 @@ export function errorStatus(status: number, message: string)
         }
     };
 }
+
+export function closeStatus()
+{
+    return function (dispatch: Dispatch<IStateStatusApp>) {
+        dispatch({
+            type: ActionTypes.CLOSE,
+        });
+    }
+}
+
 
 export function successStatus(status: number, message: string)
 {

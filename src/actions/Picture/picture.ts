@@ -71,11 +71,12 @@ export function getAllPicturesSortByDate(pageNumber: number, pictures: Picture[]
 }
 
 export function uploadPicture(userId : string, file : File, model : UploadModel): any {
-    sdk.uploadPictureByUser(userId, file, model);
-
     return function (dispatch: Dispatch<IStatePictureApp>) {
-        dispatch({
-            type: ActionTypes.UPLOAD_PICTURE_PROFIL_SUCCESS,
+        sdk.uploadPictureByUser(userId, file, model).then(response => {
+            dispatch(successStatus(response.status, "Image ajoutée avec succès"));
+            return dispatch(getPictureForProfil(userId, 0, []));
+        }).catch(error => {
+            return (dispatch(errorStatus(error.response.status, error.response.data.message)));
         });
     }
 }
@@ -144,7 +145,7 @@ export function editPicture(picture:Picture): any {
             return dispatch(getPictureForProfil(picture.userId, 0, []));
         })
             .catch(function (error) {
-                return (dispatch(errorStatus(error.response.status, error.response.data.message)));
+                return dispatch(errorStatus(error.response.status, error.response.data.message));
             });
     }
 }

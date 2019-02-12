@@ -10,9 +10,10 @@ import {
 import {State} from "../../reducers";
 import {profilData} from "../../actions/Profil/profil";
 import { withRouter } from 'react-router-dom';
-import {getAuth, getAuthUser} from "../../selectors/Authentification/auth";
+import {getAuthUser} from "../../selectors/Authentification/auth";
 import {getNumberOfPost, getPageNumber, getPictures} from "../../selectors/Picture/Picture";
 import {getPictureForProfil, resetProfil} from "../../actions/Picture/picture";
+import {closeStatus} from "../../actions/Status/status";
 const mapStateToProps = (state: State) => ({
     user: getUserProfil(state),
     status: getStatusProfil(state),
@@ -28,7 +29,8 @@ const mapStateToProps = (state: State) => ({
 const mapDispatchToProps = {
     getProfil: profilData,
     getPicture: getPictureForProfil,
-    reset: resetProfil
+    reset: resetProfil,
+    closeMessage: closeStatus
 };
 
 export default withRouter(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(Profil))
