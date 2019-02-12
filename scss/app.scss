@@ -32,6 +32,10 @@
   width: 100%;
   padding: auto;
 }
+
+.logo {
+  max-width: 100px;
+}
 @media screen and (max-width: 320px) {
   .media-card {
     max-width: 100%;

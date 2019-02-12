@@ -74,7 +74,8 @@ module.exports = {
                         sourceMap: true
                     },
                 }],
-            }
+            },
+            {test: /\.(jpe?g|gif|png|svg)$/, loader: "file-loader?name=./static/img/[name].[ext]"}
         ]
     }
 };

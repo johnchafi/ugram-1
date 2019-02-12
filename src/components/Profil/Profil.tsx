@@ -10,11 +10,9 @@ import Upload from "../../containers/Picture/Upload";
 
 interface State {
     isEditingProfil: boolean,
-    value: number
+    slideIndex: number
     open: boolean
 }
-
-
 
 class Profil extends React.Component<Props,State> {
     constructor(props : Props) {
@@ -22,7 +20,7 @@ class Profil extends React.Component<Props,State> {
         console.log(this.props.match.params.id);
         this.state = {
             isEditingProfil: false,
-            value:0,
+            slideIndex:0,
             open: this.props.open
         };
     }
@@ -69,8 +67,10 @@ class Profil extends React.Component<Props,State> {
         }
     };
 
-    handleChange = (event, value) : void => {
-        this.setState({ value });
+    handleChangeTabs = (event, value) : void => {
+        this.setState({
+            slideIndex: value,
+        });
     };
     handleEditingProfil = () : void => {
         this.setState({isEditingProfil: true})
@@ -106,12 +106,14 @@ class Profil extends React.Component<Props,State> {
                         <Typography variant="overline">Email : {this.props.user && this.props.user.email}</Typography>
                     </Grid>
                 </Grid>
-                <Tabs value={this.state.value} centered onChange={this.handleChange}>
+
+                <Tabs value={this.state.slideIndex} centered onChange={this.handleChangeTabs}>
                     <Tab label="Posts" icon={<Icon>grid_on_outlined</Icon>} />
                     <Tab label="IGTV" icon={<Icon>live_tv</Icon>} />
                     <Tab label="Saved" icon={<Icon>bookmark_border_outlined</Icon>} />
                     <Tab label="Tagged" />
                 </Tabs>
+                {this.state.slideIndex === 0 &&
                 <Grid container direction="row" justify="center">
                     <Snackbar anchorOrigin={{vertical: 'bottom', horizontal: 'left',}} open={this.state.open} autoHideDuration={6000} onClose={this.handleClose}>
                         <MySnackbarContentWrapper onClose={this.handleClose} variant={this.props.variant} message={this.props.message}/>
@@ -126,9 +128,21 @@ class Profil extends React.Component<Props,State> {
                             </Grid>
                         </Grid>
                     </Grid>
-                </Grid>
+                </Grid>}
+                {this.state.slideIndex === 1 &&
+                <Grid container direction="row" justify="center">
+                    <Upload />
+                </Grid>}
+                {this.state.slideIndex === 2 &&
+                <Grid container direction="row" justify="center">
+                    SAVED
+                </Grid>}
+                {this.state.slideIndex === 3 &&
+                <Grid container direction="row" justify="center">
+                    TAGGED
+                </Grid>}
                 {this.props.user && <EditProfil open={this.state.isEditingProfil}/>}
-                <Upload />
+
 
             </React.Fragment>
         );
