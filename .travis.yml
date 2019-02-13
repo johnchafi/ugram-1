@@ -1,7 +1,7 @@
 language: node_js
 node_js:
  - node
-before_deploy: "echo 'building app' && npm run-script build; rm -Rf dist/dist; echo 'installing awscli' && pip install --user awscli ;~/.local/bin/aws s3 rm --recursive s3://ugram-team02"
+before_deploy: "echo 'deleting dist file'; rm -Rf dist/dist"
 deploy:
   provider: s3
   skip_cleanup: true
@@ -14,4 +14,3 @@ deploy:
   acl: public_read
   on:
     repo: GLO3112-H19/ugram-team-2
-after_deploy: "rm -Rf dist"
