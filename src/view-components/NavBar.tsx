@@ -2,6 +2,7 @@ import * as React from 'react'
 import {WithStyles, withStyles} from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
+
 interface Props extends WithStyles<typeof styles> {
 }
 interface State {
@@ -21,6 +22,9 @@ const styles = {
         marginLeft: -12,
         marginRight: 20,
     },
+    logo : {
+        maxWidth: "200px"
+    }
 };
 
 class NavBar extends React.Component<Props,State> {
@@ -47,7 +51,9 @@ class NavBar extends React.Component<Props,State> {
                                 <Grid container alignItems="center">
                                     <Grid item xs>
                                         <Grid container alignItems="center">
-                                            <Link to={"/"}>UGRAM</Link>
+                                            <Link to={"/"}>
+                                                <img className={"logo"} src="https://s3.ca-central-1.amazonaws.com/ugram-team2/48358316_354791461966737_3622340340448493568_n.png?fbclid=IwAR0KMw4EJyh2G5jIgBk6MAXIpJcoxxk4SYacVVbpeEmeJqKuoJOilw_0xa8" alt="Logo UGRAM" />
+                                            </Link>
                                             <Divider />
                                         </Grid>
                                     </Grid>

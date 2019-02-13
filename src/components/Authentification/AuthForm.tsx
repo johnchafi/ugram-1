@@ -17,20 +17,17 @@ interface State {
 class AuthForm extends React.Component<Props,State> {
     constructor(props : Props) {
         super(props);
-        this._handleSubmit = this._handleSubmit.bind(this);
-        this._updateUsername = this._updateUsername.bind(this);
-        this._updatePassword = this._updatePassword.bind(this);
         this.state = {
             username: '',
             password: ''
         };
     }
 
-    _updateUsername(username: string) {
-        this.setState({ username: username });
+    _updateUsername(event) {
+        this.setState({ username: event.target.value });
     }
-    _updatePassword(password: string) {
-        this.setState({ password: password });
+    _updatePassword(event) {
+        this.setState({ password: event.target.value  });
     }
 
 
@@ -45,9 +42,9 @@ class AuthForm extends React.Component<Props,State> {
         const { _updateUsername, _updatePassword, _handleSubmit, props } = this;
         return (
             <div>
-                <form onSubmit={_handleSubmit}>
-                    <Input type="text" value={username} onChange={e => _updateUsername(e.target.value)} />
-                    <Input type="password" value={password} onChange={e => _updatePassword(e.target.value)} />
+                <form onSubmit={e => _handleSubmit(e)}>
+                    <Input type="text" value={username} onChange={e => _updateUsername(e)} />
+                    <Input type="password" value={password} onChange={e => _updatePassword(e)} />
                     <Button type="submit">Connexion</Button>
                 </form>
             </div>

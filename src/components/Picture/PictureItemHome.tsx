@@ -17,7 +17,6 @@ import {
     withStyles
 } from "@material-ui/core";
 import Picture from "../../models/Picture";
-import '../../../scss/app.scss';
 import User from "../../models/User";
 import PictureItem from "../../containers/Picture/PictureItem";
 export interface Props extends WithStyles<typeof styles>{
@@ -113,7 +112,7 @@ class PictureItemHome extends React.Component<Props,State> {
                                 title={this.props.user && this.props.user.firstName + " " + this.props.user.lastName || <LinearProgress />}
                                 subheader={new Date(Number(this.props.picture.createdDate)).toDateString()}
                     />
-                    <img className="media-card" src={this.state.didLoad ? this.props.picture.url : "https://via.placeholder.com/600/f5f5f5"} alt={this.props.picture.description} onLoad={this.onLoad}/>
+                    <img className="media-card" src={this.state.didLoad ? this.props.picture.url : "https://via.placeholder.com/500/f5f5f5"} alt={this.props.picture.description} onLoad={this.onLoad}/>
                     <CardActions className={classes.actions} disableActionSpacing>
                         <IconButton aria-label="Add to favorites">
                             <FavoriteIcon />
@@ -128,7 +127,7 @@ class PictureItemHome extends React.Component<Props,State> {
                     </CardActions>
                 </Card>
                 <Modal aria-labelledby="simple-modal-title" aria-describedby="simple-modal-description" open={this.state.open} onClose={this.handleCloseEdit}>
-                    <div style={getModalStyle()} className="div-profil">
+                    <div className="div-profil modal">
                         <PictureItem user={this.props.user} picture={this.props.picture} isHome={true}/>
                     </div>
                 </Modal>

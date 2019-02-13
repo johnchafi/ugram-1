@@ -40,6 +40,8 @@ export function reducer(state: IStatePictureApp = initialState, action: Action) 
                 pageNumber: action.payload.pageNumber,
                 totalEntries:action.payload.totalEntries
             });
+        case ActionTypes.UPLOAD_PICTURE_PROFIL_SUCCESS:
+            return state;
         case ActionTypes.RESET:
             return initialState;
         default:

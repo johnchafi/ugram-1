@@ -28,9 +28,7 @@ const styles = (theme: Theme) => createStyles({
 
 export interface Props extends WithStyles<typeof styles>{
     editUser: (User) => any
-    close: (User) => any
     profil: User
-    open: boolean
 }
 interface State {
     profil: User,
@@ -46,7 +44,7 @@ class EditProfil extends React.Component<Props,State> {
         super(props);
         this.state = {
             profil: this.props.profil,
-            open: this.props.open
+            open: false
         }
     }
 
@@ -75,16 +73,25 @@ class EditProfil extends React.Component<Props,State> {
         this.setState({profil: this.state.profil});
     };
     handleChangeProfil = (event) => {
+        this.setState({open: false});
         this.props.editUser(this.state.profil);
     };
     close = (event) => {
-        this.props.close(this.props.profil);
+        this.setState({open: false})
     };
+
+    handleEditingProfil = () : void => {
+        this.setState({open: true})
+    };
+
 
     render() {
         return (
             <div>
-                <Modal aria-labelledby="simple-modal-title" aria-describedby="simple-modal-description" open={this.props.open} onClose={this.close}>
+                <Button onClick={this.handleEditingProfil} variant="outlined">
+                    Edit Profile
+                </Button>
+                <Modal aria-labelledby="simple-modal-title" aria-describedby="simple-modal-description" open={this.state.open} onClose={this.close}>
                     <div style={getModalStyle()} className={this.props.classes.paper}>
                         <Grid container direction="column" justify="center" alignItems="center">
                             <Typography variant="h6" id="modal-title">

@@ -5,7 +5,7 @@ import {
     createStyles,
     FormControl,
     Grid,
-    Modal,
+    Modal, Popover,
     TextField,
     Theme,
     Typography,
@@ -14,18 +14,8 @@ import {
 } from "@material-ui/core";
 import Icon from '@material-ui/core/Icon';
 import IconButton from '@material-ui/core/IconButton';
-
-
-function getModalStyle() {
-    const top = 50;
-    const left = 50;
-
-    return {
-        top: `${top}%`,
-        left: `${left}%`,
-        transform: `translate(-${top}%, -${left}%)`,
-    };
-}
+import MoreVertIcon from '@material-ui/icons/MoreVert';
+import * as cloneDeep from 'lodash/cloneDeep';
 
 const styles = (theme: Theme) => createStyles({
     paper: {
@@ -36,17 +26,34 @@ const styles = (theme: Theme) => createStyles({
         padding: theme.spacing.unit * 4,
         outline: 'none',
     },
+    card: {
+        minWidth: 500,
+    },
+    media: {
+        height: 0,
+        paddingTop: '100%', // 16:9
+    },
+    actions: {
+        display: 'flex',
+    },
+    typography: {
+        margin: theme.spacing.unit * 2,
+    },
+    expandOpen: {
+        transform: 'rotate(180deg)',
+    }
 });
 
 
 export interface Props extends WithStyles<typeof styles>{
     editPicture: (Picture) => any
     picture: Picture
-    open: boolean
+    deletePicture : (string, number) => any
 }
 interface State {
     picture: Picture
     open: boolean
+    anchorEl: HTMLElement
 }
 
 
@@ -57,8 +64,9 @@ class EditPictureItem extends React.Component<Props,State> {
     {
         super(props);
         this.state = {
-            picture: this.props.picture,
-            open: this.props.open
+            picture: cloneDeep({... this.props.picture}),
+            anchorEl:null,
+            open: false
         }
     }
 
@@ -102,18 +110,68 @@ class EditPictureItem extends React.Component<Props,State> {
     };
 
     handleCloseEdit = event => {
-        this.setState({open: false})
+        this.setState({open: false});
     };
 
     componentWillReceiveProps(nextProps: Readonly<Props>, nextContext: any): void {
         this.setState({open: true});
     }
 
+    handleClick = event => {
+        this.setState({
+            anchorEl: event.currentTarget,
+        });
+    };
+
+    handleClose = () => {
+        this.setState({
+            anchorEl: null,
+        });
+    };
+
+
+    handleSuppress = event => {
+        this.props.deletePicture(this.props.picture.userId, this.props.picture.id);
+        this.setState({
+            anchorEl: null,
+        });
+    };
+
+    handleEdit = event => {
+        this.setState({
+            open: !this.state.open,
+        });
+    };
+
+
     render() {
+        const { anchorEl } = this.state;
+        const open = Boolean(anchorEl);
         return (
             <div>
+                <IconButton aria-owns={open ? 'simple-popper' : undefined}
+                            aria-haspopup="true"
+                            onClick={this.handleClick}>
+                    <MoreVertIcon/>
+                </IconButton>
+                <Popover id="simple-popper" open={open} anchorEl={anchorEl} onClose={this.handleClose} anchorOrigin={{vertical: 'bottom', horizontal: 'center',}} transformOrigin={{vertical: 'top', horizontal: 'center',}}>
+                    <Grid container direction="column" justify="center" alignItems="center">
+                        <Grid container direction="column" justify="center" alignItems="center">
+                            <IconButton onClick={this.handleSuppress} color="secondary">
+                                <Icon color="action">
+                                    delete
+                                </Icon>
+                            </IconButton>
+                            <IconButton onClick={this.handleEdit} color="primary">
+                                <Icon color="action">
+                                    edit
+                                </Icon>
+                            </IconButton>
+                        </Grid>
+                    </Grid>
+                </Popover>
                 <Modal aria-labelledby="simple-modal-title" aria-describedby="simple-modal-description" open={this.state.open} onClose={this.handleCloseEdit}>
-                    <div style={getModalStyle()} className={this.props.classes.paper}>
+                    <div  className={this.props.classes.paper + " modal"}>
                         <Grid container direction="column" justify="center" alignItems="center">
                             <Grid xs={12} item>
                                 <Typography variant="h6" id="modal-title">

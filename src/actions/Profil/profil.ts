@@ -2,30 +2,15 @@ import {IStateProfilApp} from "../../reducers/Profil/Profil";
 import {Dispatch} from "redux";
 import User from "../../models/User";
 import { sdk } from "../../sdk/ugram";
+import {errorStatus, successStatus} from "../Status/status";
 
 export enum ActionTypes {
     PROFIL = 'PROFIL',
-    CLOSE_EDIT_PROFIL= 'CLOSE_EDIT_PROFIL',
     ERROR = 'ERROR',
 }
 
 export interface UserProfilAction { type: ActionTypes, payload: IStateProfilApp }
 
-/*
- * Define our actions creators
- * We are returning the right Action for each function
- */
-
-export function closeEdit(user : User) : any {
-    return function (dispatch: Dispatch<UserProfilAction>) {
-        dispatch(  {
-            type: ActionTypes.CLOSE_EDIT_PROFIL,
-            payload: {
-                user: JSON.parse(JSON.stringify(user))
-            }
-        })
-    }
-}
 
 export function editUser(user: User) : any {
     return function (dispatch: Dispatch<UserProfilAction>) {
@@ -34,19 +19,13 @@ export function editUser(user: User) : any {
             firstName: user.firstName,
             lastName: user.lastName,
             phoneNumber: user.phoneNumber
-        }).then(function () {
+        }).then(function (response) {
+            dispatch(successStatus(response.status, "Profil modifié avec succès"));
             return dispatch(profilData(user.id));
         })
             .catch(function (error) {
                 console.log(JSON.stringify(error));
-                dispatch({
-                    type: ActionTypes.ERROR,
-                    payload: {
-                        pictures: null,
-                        status: error.response.status,
-                        message: error.response.data.message
-                    }
-                })
+                return (dispatch(errorStatus(error.response.status, error.response.data.message)));
             });
 
     }

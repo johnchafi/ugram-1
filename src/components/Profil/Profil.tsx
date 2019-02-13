@@ -6,23 +6,22 @@ import PictureList from "../../containers/Picture/PictureList";
 import {Tab} from "@material-ui/core";
 import EditProfil from "../../containers/Profil/EditProfil";
 import Props from "../../Props/Profil";
+import Upload from "../../containers/Picture/Upload";
 
 interface State {
-    open:boolean
     isEditingProfil: boolean,
-    value: number
+    slideIndex: number
+    open: boolean
 }
-
-
 
 class Profil extends React.Component<Props,State> {
     constructor(props : Props) {
         super(props);
         console.log(this.props.match.params.id);
         this.state = {
-            open: false,
             isEditingProfil: false,
-            value:0
+            slideIndex:0,
+            open: this.props.open
         };
     }
 
@@ -50,30 +49,25 @@ class Profil extends React.Component<Props,State> {
 
     componentWillReceiveProps(nextProps: Readonly<Props>, nextContext: any): void {
         if (nextProps.location.pathname !== this.props.location.pathname) {
+            this.props.closeMessage();
             this.props.getProfil(nextProps.match.params.id);
-            this.props.getPicture(nextProps.match.params.id, this.props.pageNumber, this.props.pictures);
+            this.props.getPicture(nextProps.match.params.id, 0, []);
         }
         this.setState({isEditingProfil:false});
-        if (nextProps.status != 200) {
-            this.setState({open: true});
-            this.props.getProfil(nextProps.match.params.id);
-        }
         document.addEventListener('scroll', this.trackScrolling);
     }
     handleClose = (event, reason) : void => {
         if (reason === 'clickaway') {
             return;
         }
-        this.setState({ open: false });
+        this.props.closeMessage();
     };
 
-    handleChange = (event, value) : void => {
-        this.setState({ value });
+    handleChangeTabs = (event, value) : void => {
+        this.setState({
+            slideIndex: value,
+        });
     };
-    handleEditingProfil = () : void => {
-        this.setState({isEditingProfil: true})
-    };
-
     render(): React.ReactNode {
         return (
             <React.Fragment>
@@ -89,9 +83,7 @@ class Profil extends React.Component<Props,State> {
                                 </Typography>
                             </Grid>
                             <Grid item xs={12} md={6} lg={6}>
-                                <Button onClick={this.handleEditingProfil} variant="outlined">
-                                    Edit Profile
-                                </Button>
+                                <EditProfil/>
                             </Grid>
                         </Grid>
                         <Typography variant="subtitle1">
@@ -104,28 +96,38 @@ class Profil extends React.Component<Props,State> {
                         <Typography variant="overline">Email : {this.props.user && this.props.user.email}</Typography>
                     </Grid>
                 </Grid>
-                <Tabs value={this.state.value} centered onChange={this.handleChange}>
+
+                <Tabs value={this.state.slideIndex} centered onChange={this.handleChangeTabs}>
                     <Tab label="Posts" icon={<Icon>grid_on_outlined</Icon>} />
-                    <Tab label="IGTV" icon={<Icon>live_tv</Icon>} />
+                    <Tab label="Upload" icon={<Icon>cloud_upload</Icon>} />
                     <Tab label="Saved" icon={<Icon>bookmark_border_outlined</Icon>} />
                     <Tab label="Tagged" />
                 </Tabs>
+                {this.state.slideIndex === 0 &&
                 <Grid container direction="row" justify="center">
-                    <Snackbar anchorOrigin={{vertical: 'bottom', horizontal: 'left',}} open={this.state.open} autoHideDuration={6000} onClose={this.handleClose}>
-                        <MySnackbarContentWrapper onClose={this.handleClose} variant="error" message={this.props.message}/>
-                    </Snackbar>
-                    <Grid   container
-                            direction="row"
-                            justify="center"
-                            alignItems="baseline" id="profil" >
+                    <Grid container direction="row" justify="center" alignItems="baseline" id="profil" >
                         <Grid item xs={8} md={6} lg={6}>
                             <Grid container direction="row" spacing={8}>
                                 <PictureList isHome={false}/>
                             </Grid>
                         </Grid>
                     </Grid>
-                </Grid>
-                {this.props.user && <EditProfil open={this.state.isEditingProfil}/>}
+                </Grid>}
+                {this.state.slideIndex === 1 &&
+                <Grid container direction="row" justify="center">
+                    <Upload />
+                </Grid>}
+                {this.state.slideIndex === 2 &&
+                <Grid container direction="row" justify="center">
+                    SAVED
+                </Grid>}
+                {this.state.slideIndex === 3 &&
+                <Grid container direction="row" justify="center">
+                    TAGGED
+                </Grid>}
+                <Snackbar anchorOrigin={{vertical: 'bottom', horizontal: 'left',}} open={this.props.open} autoHideDuration={6000} onClose={this.handleClose}>
+                    <MySnackbarContentWrapper onClose={this.handleClose} variant={this.props.variant} message={this.props.message}/>
+                </Snackbar>
             </React.Fragment>
         );
     }

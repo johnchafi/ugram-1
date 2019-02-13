@@ -6,9 +6,7 @@ import Picture from "../../models/Picture";
 export interface IStateProfilApp {
     isAuthenticated: boolean
     user: User,
-    status: number,
     pictures: Picture[],
-    message:string
     totalEntries: number
 }
 
@@ -16,9 +14,7 @@ export interface IStateProfilApp {
 export const initialState: IStateProfilApp = {
     isAuthenticated: false,
     user: {},
-    status: 200,
     pictures: [],
-    message:null,
     totalEntries: 0
 };
 
@@ -33,18 +29,6 @@ export function reducer(state: IStateProfilApp = initialState, action: Action) :
             return {
                 ...state,
                 user: action.payload.user,
-                status: 200
-            };
-        case ActionTypes.ERROR:
-            return {
-                ...state,
-                message: action.payload.message,
-                status:action.payload.status
-            };
-        case ActionTypes.CLOSE_EDIT_PROFIL:
-            return {
-                ...state,
-                user: action.payload.user
             };
         default:
             return state

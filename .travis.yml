@@ -1,3 +1,14 @@
 language: node_js
 node_js:
-  - "node"
+- node
+deploy:
+  detect_encoding: true
+  provider: s3
+  access_key_id: AKIAIGZV535NQG5WZZDA
+  secret_access_key:
+    secure: Tb984zVS8V/4vwi4fmqhKR/qi/k0KT/lzp6MlFIS/9q8hLsPSKvUswnbflfatSwS+vVay7w4nwqgavYtNdpSmxTJN0AmJ5S79UheZP5VCl1SOCJvX0G/twRPyPrJCaz6N+885FHLJcFTk/A+S1bVzkFuOKWSMC4yVtBKxrikax1aUc3076noHBoZQhLPbm0152Griol4Go8DBF0gccbYf+o7yrrtdpV56a+3z7gvV3UMqgcw0Aay1PnnYwiWUD3q7ZpzzAqMwsOEC4oEkODfMlIXznj4jvRfrmdKi34TxxJxKrzt7YahxmsbuBS4ENSFvX1sc73SWGf+q4koigh+YS+uiy9q0MjFCzA0R5tJhK8Am1e0GhqFpWQCluEZ7f4UDE8xnUdRWUChFKnpaSHqBnrzuP9GxWzkeLcfh254pNlSIpcgjIdX5+lrk5jFPyDamR0uedaNlmtammfrEXdaWkpfmi671SvgNna/W1f41Fkq/JKCNvYcuCfrVZlX1hH+5MeR17rSFXy4iAWLSV2Vp0fHxW/RLe64DxI7WbiKCO/aMeLekq+cHtM9pY8/pToWx5VRqBZITxChvY5ZK9Vy+bdqjjJNbhnVlOTiap/BSwR5Ih3/w+ANyydDwCakuRhtKIWdUxOUBwWcXvy7YKWs88gQy++zPaG5W59+z/B02+A=
+  bucket: team-02
+  local-dir: dist
+  acl: ''
+  on:
+    repo: GLO3112-H19/ugram-team-2
