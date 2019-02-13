@@ -1,10 +1,9 @@
 language: node_js
 node_js:
-  - node
-before_deploy: "echo 'building app' && npm run-script build; rm -Rf dist/dist; echo 'installing awscli' && pip install --user awscli"
+ - node
+before_deploy: "echo 'building app' && npm run-script build; rm -Rf dist/dist; echo 'installing awscli' && pip install --user awscli ;~/.local/bin/aws s3 rb s3://ugram-team02 --force "
 deploy:
-provider: script
-  script: ~/.local/bin/aws s3 rb s3://ugram-team02 --force
+  provider: s3
   skip_cleanup: true
   access_key_id: AKIAIGZV535NQG5WZZDA
   secret_access_key:
