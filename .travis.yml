@@ -1,7 +1,7 @@
 language: node_js
 node_js:
  - node
-before_deploy: "echo 'deleting dist file'; rm -Rf dist/dist"
+before_deploy: "echo 'building and deleting dist file'; npm run-script build ; rm -Rf dist/dist"
 deploy:
   provider: s3
   skip_cleanup: true
