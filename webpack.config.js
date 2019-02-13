@@ -2,6 +2,7 @@ const webpack = require("webpack");
 
 const TerserPlugin = require('terser-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CompressionPlugin = require('compression-webpack-plugin');
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
 
 
@@ -25,26 +26,7 @@ module.exports = {
             terserOptions: {
                 ecma: 6,
             },
-        })],
-        runtimeChunk: 'single',
-        splitChunks: {
-            chunks: 'all',
-            maxInitialRequests: Infinity,
-            minSize: 0,
-            cacheGroups: {
-                vendor: {
-                    test: /[\\/]node_modules[\\/]/,
-                    name(module) {
-                        // get the name. E.g. node_modules/packageName/not/this/part.js
-                        // or node_modules/packageName
-                        const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
-
-                        // npm package names are URL-safe, but some servers don't like @ symbols
-                        return `npm.${packageName.replace('@', '')}`;
-                    },
-                },
-            },
-        },
+        })]
     },
     plugins: [
         new webpack.HotModuleReplacementPlugin(),
@@ -57,7 +39,20 @@ module.exports = {
             filename: "./index.html",
             alwaysWriteToDisk: true
         }),
-        new HtmlWebpackHarddiskPlugin()
+        new webpack.DefinePlugin({ // <-- key to reducing React's size
+            'process.env': {
+                'NODE_ENV': JSON.stringify('production')
+            }
+        }),
+        new HtmlWebpackHarddiskPlugin(),
+        new webpack.optimize.AggressiveMergingPlugin(),
+        new CompressionPlugin({
+            filename: "[path].gz[query]",
+            algorithm: "gzip",
+            test: /\.js$|\.css$|\.html$/,
+            threshold: 10240,
+            minRatio: 0.8
+        }),
     ],
     module: {
         rules: [
