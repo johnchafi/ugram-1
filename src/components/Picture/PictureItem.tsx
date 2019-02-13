@@ -23,8 +23,6 @@ export interface Props extends WithStyles<typeof styles>{
     isHome:boolean
 }
 interface State {
-    anchorEl: HTMLElement
-    open: boolean
 }
 
 
@@ -41,14 +39,6 @@ class PictureItem extends React.Component<Props,State> {
     constructor(props : Props)
     {
         super(props);
-        this.state = {
-            anchorEl:null,
-            open:false,
-        }
-    }
-
-    componentWillReceiveProps(nextProps: Readonly<Props>, nextContext: any): void {
-        this.setState({open: false});
     }
 
     renderAvatar()
@@ -63,8 +53,6 @@ class PictureItem extends React.Component<Props,State> {
 
     render() {
         const {classes} = this.props;
-        const { anchorEl } = this.state;
-        const open = Boolean(anchorEl);
         return (
             <Grid item>
                 <Card className="card">
@@ -87,7 +75,6 @@ class PictureItem extends React.Component<Props,State> {
                         </Typography>
                     </CardActions>
                 </Card>
-                {!this.props.isHome && <UpdatePictureItem open={this.state.open} picture={this.props.picture}/>}
             </Grid>
 
         );

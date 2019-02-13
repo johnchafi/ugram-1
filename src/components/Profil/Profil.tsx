@@ -105,10 +105,7 @@ class Profil extends React.Component<Props,State> {
                 </Tabs>
                 {this.state.slideIndex === 0 &&
                 <Grid container direction="row" justify="center">
-                    <Grid   container
-                            direction="row"
-                            justify="center"
-                            alignItems="baseline" id="profil" >
+                    <Grid container direction="row" justify="center" alignItems="baseline" id="profil" >
                         <Grid item xs={8} md={6} lg={6}>
                             <Grid container direction="row" spacing={8}>
                                 <PictureList isHome={false}/>
