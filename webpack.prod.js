@@ -46,28 +46,7 @@ module.exports = {
             threshold: 10240,
             minRatio: 0.8
         }),
-        new HtmlWebpackChangeAssetsExtensionPlugin(),
-        new S3Plugin({
-            s3Options: {
-                accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-                secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-            },
-            include: /.*\.(html|gz)/,
-            s3UploadOptions: {
-                Bucket: 'ugram-team02',
-                ContentEncoding(fileName) {
-                    if (/\.gz/.test(fileName))
-                        return 'gzip'
-                },
-
-                ContentType(fileName) {
-                    if (/\.js/.test(fileName))
-                        return 'application/javascript'
-                    else
-                        return 'text/html'
-                }
-            }
-        })
+        new HtmlWebpackChangeAssetsExtensionPlugin()
     ],
     module: {
         rules: [

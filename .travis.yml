@@ -2,6 +2,7 @@ language: node_js
 node_js:
 - node
 deploy:
+  detect_encoding: true
   provider: s3
   access_key_id: AKIAIGZV535NQG5WZZDA
   secret_access_key:
