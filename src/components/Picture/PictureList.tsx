@@ -12,13 +12,6 @@ class PictureList extends React.Component<Props,State> {
         super(props);
     }
 
-    componentWillMount(): void {
-    }
-
-    componentWillUnmount(): void {
-
-    }
-
     render() {
         const {pictures, isHome, user } = this.props;
         return (

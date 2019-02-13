@@ -93,7 +93,7 @@ class PictureItemProfil extends React.Component<Props,State> {
                     </Card>
                 </Button>
                 <Modal aria-labelledby="simple-modal-title" aria-describedby="simple-modal-description" open={this.state.open} onClose={this.handleCloseEdit}>
-                    <div style={getModalStyle()} className="div-profil">
+                    <div className="div-profil modal">
                         <PictureItem user={this.props.user} picture={this.props.picture} isHome={false}/>
                     </div>
                 </Modal>

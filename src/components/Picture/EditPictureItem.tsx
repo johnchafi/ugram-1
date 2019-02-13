@@ -15,18 +15,7 @@ import {
 import Icon from '@material-ui/core/Icon';
 import IconButton from '@material-ui/core/IconButton';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-
-
-function getModalStyle() {
-    const top = 50;
-    const left = 50;
-
-    return {
-        top: `${top}%`,
-        left: `${left}%`,
-        transform: `translate(-${top}%, -${left}%)`,
-    };
-}
+import * as cloneDeep from 'lodash/cloneDeep';
 
 const styles = (theme: Theme) => createStyles({
     paper: {
@@ -75,7 +64,7 @@ class EditPictureItem extends React.Component<Props,State> {
     {
         super(props);
         this.state = {
-            picture: {... this.props.picture},
+            picture: cloneDeep({... this.props.picture}),
             anchorEl:null,
             open: false
         }
@@ -182,7 +171,7 @@ class EditPictureItem extends React.Component<Props,State> {
                     </Grid>
                 </Popover>
                 <Modal aria-labelledby="simple-modal-title" aria-describedby="simple-modal-description" open={this.state.open} onClose={this.handleCloseEdit}>
-                    <div style={getModalStyle()} className={this.props.classes.paper}>
+                    <div  className={this.props.classes.paper + " modal"}>
                         <Grid container direction="column" justify="center" alignItems="center">
                             <Grid xs={12} item>
                                 <Typography variant="h6" id="modal-title">

@@ -28,7 +28,6 @@ const styles = (theme: Theme) => createStyles({
 
 export interface Props extends WithStyles<typeof styles>{
     editUser: (User) => any
-    close: (User) => any
     profil: User
 }
 interface State {

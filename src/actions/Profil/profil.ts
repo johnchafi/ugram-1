@@ -6,27 +6,11 @@ import {errorStatus, successStatus} from "../Status/status";
 
 export enum ActionTypes {
     PROFIL = 'PROFIL',
-    CLOSE_EDIT_PROFIL= 'CLOSE_EDIT_PROFIL',
     ERROR = 'ERROR',
 }
 
 export interface UserProfilAction { type: ActionTypes, payload: IStateProfilApp }
 
-/*
- * Define our actions creators
- * We are returning the right Action for each function
- */
-
-export function closeEdit(user : User) : any {
-    return function (dispatch: Dispatch<UserProfilAction>) {
-        dispatch(  {
-            type: ActionTypes.CLOSE_EDIT_PROFIL,
-            payload: {
-                user: JSON.parse(JSON.stringify(user))
-            }
-        })
-    }
-}
 
 export function editUser(user: User) : any {
     return function (dispatch: Dispatch<UserProfilAction>) {

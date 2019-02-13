@@ -5,6 +5,13 @@
   max-height: 600px;
 }
 
+
+.modal {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
 .div-home {
   max-width: 600px !important;
   width: 100% !important;

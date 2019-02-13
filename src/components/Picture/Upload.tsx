@@ -2,14 +2,14 @@ import * as React from 'react'
 import Grid from '@material-ui/core/Grid';
 import {Link} from 'react-router-dom';
 import {
-    Button, createStyles, FormControl, TextField, Theme, WithStyles, withStyles
+    Button, FormControl, TextField
 } from "@material-ui/core";
 import Picture from "../../models/Picture";
 import User from "../../models/User";
 import UploadModel from "../../models/Upload";
 import PictureItem from "../../containers/Picture/PictureItem";
 
-export interface Props extends WithStyles<typeof styles>{
+export interface Props{
     user: User,
     uploadPicture: (userId: string, file : File, model : UploadModel) => any
 }
@@ -19,11 +19,6 @@ interface State {
     fileUrl: string,
     picture : Picture
 }
-
-
-const styles = (theme: Theme) => createStyles({
-
-});
 
 
 
@@ -112,11 +107,7 @@ class Upload extends React.Component<Props,State> {
                         <input type='file' onChange={(e) => this.handleUploadFile(e.target.files)} />
                     </Grid>
                     <Grid container direction="row" justify="center" alignItems="center">
-
-
                         <PictureItem user={this.props.user} picture={this.state.picture} isHome={true}/>
-
-
                     </Grid>
                     <Grid container direction="row" justify="center" alignItems="center">
                         <Button color="primary" variant="contained" onClick={this.handleUploadPicture} >submit</Button>
@@ -127,4 +118,4 @@ class Upload extends React.Component<Props,State> {
         );
     }
 }
-export default withStyles(styles)(Upload);
+export default (Upload);

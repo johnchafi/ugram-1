@@ -8,13 +8,11 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import {Link} from 'react-router-dom';
 import {
     Avatar,
-    CardActions, CircularProgress, createStyles, Icon, LinearProgress,
-    Popover, Theme, WithStyles,
+    CardActions, CircularProgress, createStyles, LinearProgress, WithStyles,
     withStyles
 } from "@material-ui/core";
 import Picture from "../../models/Picture";
 import User from "../../models/User";
-import UpdatePictureItem from "../../containers/Picture/EditPictureItem";
 import EditPictureItem from "../../containers/Picture/EditPictureItem";
 
 export interface Props extends WithStyles<typeof styles>{
