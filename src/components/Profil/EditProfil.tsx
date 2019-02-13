@@ -1,7 +1,7 @@
 import * as React from 'react'
 import {Button, createStyles, FormControl, Grid, Modal, TextField, Theme, Typography, WithStyles, withStyles} from "@material-ui/core";
 import User from "../../models/User";
-
+import SettingIcon from '@material-ui/icons/Settings';
 
 function getModalStyle() {
     const top = 50;
@@ -88,14 +88,15 @@ class EditProfil extends React.Component<Props,State> {
     render() {
         return (
             <div>
-                <Button onClick={this.handleEditingProfil} variant="outlined">
-                    Edit Profile
+                <Button onClick={this.handleEditingProfil} variant="outlined"   disableRipple>
+                    Modifier le profil
+                    <SettingIcon/>
                 </Button>
                 <Modal aria-labelledby="simple-modal-title" aria-describedby="simple-modal-description" open={this.state.open} onClose={this.close}>
                     <div style={getModalStyle()} className={this.props.classes.paper}>
                         <Grid container direction="column" justify="center" alignItems="center">
                             <Typography variant="h6" id="modal-title">
-                                Edit profil
+                                Modifier le profil
                             </Typography>
                             <Grid xs={12} item>
                                 <FormControl>
@@ -104,8 +105,8 @@ class EditProfil extends React.Component<Props,State> {
                                     <TextField  margin="normal" label="Email" defaultValue={this.state.profil.email} onChange={(e) => this.handleChangeEmail(e)}> </TextField>
                                     <TextField  margin="normal" label="Téléphone" defaultValue={this.state.profil.phoneNumber} onChange={(e) => this.handleChangePhoneNumber(e)}> </TextField>
                                     <Grid container direction="row" justify="center" alignItems="center">
-                                        <Grid container item xs={3}>
-                                            <Button color="primary" variant="contained" onClick={this.handleChangeProfil} >edit
+                                        <Grid container item xs={12}>
+                                            <Button color="primary" variant="contained" onClick={this.handleChangeProfil} >Sauvegarder
                                             </Button>
                                         </Grid>
                                     </Grid>
