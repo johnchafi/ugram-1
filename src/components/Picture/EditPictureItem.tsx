@@ -175,7 +175,7 @@ class EditPictureItem extends React.Component<Props,State> {
                         <Grid container direction="column" justify="center" alignItems="center">
                             <Grid xs={12} item>
                                 <Typography variant="h6" id="modal-title">
-                                    Edit picture
+                                    Modifier la photo
                                 </Typography>
                             </Grid>
                             <Grid xs={12} item>
@@ -211,15 +211,15 @@ class EditPictureItem extends React.Component<Props,State> {
                                                     </Icon>
                                                 </Button>
                                             </Grid>
-                                            <Grid container item xs={6}>
-                                                <Button color="primary" variant="contained" onClick={this.handleAddMentions} >mentions
+                                            <Grid container item xs={4}>
+                                                <Button color="primary" variant="contained" onClick={this.handleAddMentions} >Mentions
                                                     <Icon color="action">
                                                         add_circle
                                                     </Icon>
                                                 </Button>
                                             </Grid>
-                                            <Grid container item xs={3}>
-                                                <Button color="primary" variant="contained" onClick={this.handleEditPicture} >edit
+                                            <Grid container item xs={5}>
+                                                <Button color="primary" variant="contained" onClick={this.handleEditPicture} >Sauvegarder
                                                 </Button>
                                             </Grid>
                                         </Grid>
