@@ -71,63 +71,59 @@ class Profil extends React.Component<Props,State> {
     render(): React.ReactNode {
         return (
             <React.Fragment>
-                <Grid container direction="row" justify="center" alignItems="center">
-                    <Grid item xs={3} md={1} lg={1}>
-                        <Avatar className="avatar" src={this.props.user && this.props.user.pictureUrl}/>
-                    </Grid>
-                    <Grid item xs={3}>
-                        <Grid container direction="row">
-                            <Grid item xs={12} md={6} lg={6}>
+                <div style={{maxWidth:935 , margin:"auto"}}>
+                    <Grid container direction="row" justify="center" alignItems="center" >
+                        <Grid item xs={4}>
+                            <Avatar style={{ margin: 'auto' }} className="avatar" src={this.props.user && this.props.user.pictureUrl}/>
+                        </Grid>
+                        <Grid item xs={8}>
+                            <Grid container alignItems="center">
                                 <Typography component="h1" variant="h4">
                                     {this.props.user && this.props.user.id}
                                 </Typography>
-                            </Grid>
-                            <Grid item xs={12} md={6} lg={6}>
                                 <EditProfil/>
                             </Grid>
+                            <div style={{margin:20}}>
+                                <Grid container spacing={40}>
+                                    <Typography variant="subtitle1">
+                                        <b>{this.props.totalEntries}</b> posts
+                                    </Typography>
+                                </Grid>
+                            </div>
+                            <Typography variant="subtitle2">
+                                {this.props.user && this.props.user.firstName + " " + this.props.user.lastName}
+                            </Typography>
+                            <Typography variant="overline">Date registration : {this.props.user && new Date(Number(this.props.user.registrationDate)).toDateString()}</Typography>
+                            <Typography variant="overline">Email : {this.props.user && this.props.user.email}</Typography>
                         </Grid>
-                        <Typography variant="subtitle1">
-                            <b>{this.props.totalEntries}</b> posts
-                        </Typography>
-                        <Typography variant="subtitle2">
-                            {this.props.user && this.props.user.firstName + " " + this.props.user.lastName}
-                        </Typography>
-                        <Typography variant="overline">Date registration : {this.props.user && new Date(Number(this.props.user.registrationDate)).toDateString()}</Typography>
-                        <Typography variant="overline">Email : {this.props.user && this.props.user.email}</Typography>
                     </Grid>
-                </Grid>
 
-                <Tabs value={this.state.slideIndex} centered onChange={this.handleChangeTabs}>
-                    <Tab label="Posts" icon={<Icon>grid_on_outlined</Icon>} />
-                    <Tab label="Upload" icon={<Icon>cloud_upload</Icon>} />
-                    <Tab label="Saved" icon={<Icon>bookmark_border_outlined</Icon>} />
-                    <Tab label="Tagged" />
-                </Tabs>
-                {this.state.slideIndex === 0 &&
-                <Grid container direction="row" justify="center">
-                    <Grid container direction="row" justify="center" alignItems="baseline" id="profil" >
-                        <Grid item xs={8} md={6} lg={6}>
-                            <Grid container direction="row" spacing={8}>
-                                <PictureList isHome={false}/>
-                            </Grid>
-                        </Grid>
-                    </Grid>
-                </Grid>}
-                {this.state.slideIndex === 1 &&
-                <Grid container direction="row" justify="center">
-                    <Upload />
-                </Grid>}
-                {this.state.slideIndex === 2 &&
-                <Grid container direction="row" justify="center">
-                    SAVED
-                </Grid>}
-                {this.state.slideIndex === 3 &&
-                <Grid container direction="row" justify="center">
-                    TAGGED
-                </Grid>}
-                <Snackbar anchorOrigin={{vertical: 'bottom', horizontal: 'left',}} open={this.props.open} autoHideDuration={6000} onClose={this.handleClose}>
-                    <MySnackbarContentWrapper onClose={this.handleClose} variant={this.props.variant} message={this.props.message}/>
-                </Snackbar>
+                    <Tabs value={this.state.slideIndex} centered onChange={this.handleChangeTabs}>
+                        <Tab label="Posts" icon={<Icon>grid_on_outlined</Icon>} />
+                        <Tab label="Upload" icon={<Icon>cloud_upload</Icon>} />
+                        <Tab label="Saved" icon={<Icon>bookmark_border_outlined</Icon>} />
+                        <Tab label="Tagged" />
+                    </Tabs>
+                    {this.state.slideIndex === 0 &&
+                    <Grid container spacing={32} id="profil" >
+                        <PictureList isHome={false}/>
+                    </Grid>}
+                    {this.state.slideIndex === 1 &&
+                    <Grid container direction="row" justify="center">
+                        <Upload />
+                    </Grid>}
+                    {this.state.slideIndex === 2 &&
+                    <Grid container direction="row" justify="center">
+                        SAVED
+                    </Grid>}
+                    {this.state.slideIndex === 3 &&
+                    <Grid container direction="row" justify="center">
+                        TAGGED
+                    </Grid>}
+                    <Snackbar anchorOrigin={{vertical: 'bottom', horizontal: 'left',}} open={this.props.open} autoHideDuration={6000} onClose={this.handleClose}>
+                        <MySnackbarContentWrapper onClose={this.handleClose} variant={this.props.variant} message={this.props.message}/>
+                    </Snackbar>
+                </div>
             </React.Fragment>
         );
     }

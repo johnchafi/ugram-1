@@ -16,6 +16,10 @@ import Icon from '@material-ui/core/Icon';
 import IconButton from '@material-ui/core/IconButton';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import * as cloneDeep from 'lodash/cloneDeep';
+import Dialog from "@material-ui/core/Dialog";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogActions from "@material-ui/core/DialogActions";
 
 const styles = (theme: Theme) => createStyles({
     paper: {
@@ -170,65 +174,49 @@ class EditPictureItem extends React.Component<Props,State> {
                         </Grid>
                     </Grid>
                 </Popover>
-                <Modal aria-labelledby="simple-modal-title" aria-describedby="simple-modal-description" open={this.state.open} onClose={this.handleCloseEdit}>
-                    <div  className={this.props.classes.paper + " modal"}>
-                        <Grid container direction="column" justify="center" alignItems="center">
-                            <Grid xs={12} item>
-                                <Typography variant="h6" id="modal-title">
-                                    Modifier la photo
-                                </Typography>
-                            </Grid>
-                            <Grid xs={12} item>
-                                <FormControl>
-                                    <TextField  margin="normal" label="Description" defaultValue={this.state.picture.description} onChange={(e) => this.handleChangeDescription(e)}> </TextField>
-                                    {this.state.picture.tags.map(function (tag, key) {
-                                        return  (
-                                            <Grid key={key}>
-                                                <TextField margin="normal" label="Mot-clés" defaultValue={tag} onChange={(e) => this.handleChangeTag(e, key)}/>
-                                                <IconButton onClick={(e) => this.handleDeleteTags(e, key)}>
-                                                    <Icon color="secondary">
-                                                        restore_from_trash</Icon>
-                                                </IconButton>
-                                            </Grid>)
-                                    }.bind(this))}
-                                    {this.state.picture.mentions.map(function (mentions, key) {
-                                        return  (
-                                            <Grid key={key}>
-                                                <TextField label="Mentions"  margin="normal" defaultValue={mentions} onChange={(e) => this.handleChangeMention(e, key)}/>
-                                                <IconButton onClick={(e) => this.handleDeleteMentions(e, key)}>
-                                                    <Icon color="secondary">
-                                                        restore_from_trash
-                                                    </Icon>
-                                                </IconButton>
-                                            </Grid>)
-                                    }.bind(this))}
-                                    <Grid container direction="row" justify="center" alignItems="center">
-                                        <Grid container spacing={8}>
-                                            <Grid container item xs={3}>
-                                                <Button color="primary" variant="contained" onClick={this.handleAddTags}>#
-                                                    <Icon color="action">
-                                                        add_circle
-                                                    </Icon>
-                                                </Button>
-                                            </Grid>
-                                            <Grid container item xs={4}>
-                                                <Button color="primary" variant="contained" onClick={this.handleAddMentions} >Mentions
-                                                    <Icon color="action">
-                                                        add_circle
-                                                    </Icon>
-                                                </Button>
-                                            </Grid>
-                                            <Grid container item xs={5}>
-                                                <Button color="primary" variant="contained" onClick={this.handleEditPicture} >Sauvegarder
-                                                </Button>
-                                            </Grid>
-                                        </Grid>
-                                    </Grid>
-                                </FormControl>
-                            </Grid>
-                        </Grid>
-                    </div>
-                </Modal>
+                <Dialog   aria-labelledby="form-dialog-title" open={this.state.open} onClose={this.handleCloseEdit}>
+                    <DialogTitle id="form-dialog-title">
+                        Modifier la photo
+                    </DialogTitle>
+                    <DialogContent>
+                        <TextField  margin="normal" label="Description" defaultValue={this.state.picture.description} onChange={(e) => this.handleChangeDescription(e)} fullWidth/>
+                        {this.state.picture.tags.map(function (tag, key) {
+                            return  (
+                                <Grid key={key}>
+                                    <TextField margin="normal" label="Mot-clés" defaultValue={tag} onChange={(e) => this.handleChangeTag(e, key)}/>
+                                    <IconButton onClick={(e) => this.handleDeleteTags(e, key)}>
+                                        <Icon color="secondary">
+                                            restore_from_trash</Icon>
+                                    </IconButton>
+                                </Grid>)
+                        }.bind(this))}
+                        {this.state.picture.mentions.map(function (mentions, key) {
+                            return  (
+                                <Grid key={key}>
+                                    <TextField label="Mentions"  margin="normal" defaultValue={mentions} onChange={(e) => this.handleChangeMention(e, key)}/>
+                                    <IconButton onClick={(e) => this.handleDeleteMentions(e, key)}>
+                                        <Icon color="secondary">
+                                            restore_from_trash
+                                        </Icon>
+                                    </IconButton>
+                                </Grid>)
+                        }.bind(this))}
+                        <DialogActions>
+                            <Button color="primary" variant="contained" onClick={this.handleAddTags}>#
+                                <Icon color="action">
+                                    add_circle
+                                </Icon>
+                            </Button>
+                            <Button color="primary" variant="contained" onClick={this.handleAddMentions} >Mentions
+                                <Icon color="action">
+                                    add_circle
+                                </Icon>
+                            </Button>
+                            <Button color="primary" variant="contained" onClick={this.handleEditPicture} >Sauvegarder
+                            </Button>
+                        </DialogActions>
+                    </DialogContent>
+                </Dialog>
             </div>
         );
     }

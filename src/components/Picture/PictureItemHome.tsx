@@ -7,11 +7,11 @@ import Typography from '@material-ui/core/Typography';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import {Link} from 'react-router-dom';
 import {
-    Avatar, Button,
+    Avatar,
     CardActions,
     CircularProgress,
     createStyles,
-    LinearProgress, Modal,
+    LinearProgress,
     Theme,
     WithStyles,
     withStyles
@@ -19,6 +19,7 @@ import {
 import Picture from "../../models/Picture";
 import User from "../../models/User";
 import PictureItem from "../../containers/Picture/PictureItem";
+import Dialog from "@material-ui/core/Dialog";
 export interface Props extends WithStyles<typeof styles>{
     picture : Picture,
     user : User
@@ -126,11 +127,9 @@ class PictureItemHome extends React.Component<Props,State> {
                         </Grid>
                     </CardActions>
                 </Card>
-                <Modal aria-labelledby="simple-modal-title" aria-describedby="simple-modal-description" open={this.state.open} onClose={this.handleCloseEdit}>
-                    <div className="div-profil modal">
+                <Dialog onClose={this.handleCloseEdit} scroll="body" open={this.state.open}>
                         <PictureItem user={this.props.user} picture={this.props.picture} isHome={true}/>
-                    </div>
-                </Modal>
+                </Dialog>
             </Grid>
         );
     }

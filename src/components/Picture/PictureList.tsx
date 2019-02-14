@@ -1,7 +1,7 @@
 import * as React from 'react'
 import PictureItemProfil from "../../containers/Picture/PictureItemProfil";
 import PictureItemHome from "../../containers/Picture/PictureItemHome";
-import Props from "../Profil/PictureList";
+import Props from "../../Props/PictureList";
 
 interface State {
 }

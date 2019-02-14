@@ -10,6 +10,8 @@ import {
 import Picture from "../../models/Picture";
 import User from "../../models/User";
 import PictureItem from "../../containers/Picture/PictureItem";
+import Dialog from '@material-ui/core/Dialog';
+import DialogContent from "@material-ui/core/DialogContent";
 
 export interface Props extends WithStyles<typeof styles>{
     picture : Picture,
@@ -86,17 +88,13 @@ class PictureItemProfil extends React.Component<Props,State> {
     render() {
         const {classes} = this.props;
         return (
-            <Grid item xs={12} md={6} lg={4}>
+            <Grid item xs={4}>
                 <Button onClick={this.handleOpenEdit}>
-                    <Card className={classes.card}>
-                        <CardMedia className={classes.media} image={this.props.picture.url|| "//"} title={this.props.picture.description}/>
-                    </Card>
+                        <img style={{ width:280, height: 280 }} src={this.props.picture.url|| "//"} alt={this.props.picture.description}/>
                 </Button>
-                <Modal aria-labelledby="simple-modal-title" aria-describedby="simple-modal-description" open={this.state.open} onClose={this.handleCloseEdit}>
-                    <div className="div-profil modal">
-                        <PictureItem user={this.props.user} picture={this.props.picture} isHome={false}/>
-                    </div>
-                </Modal>
+                <Dialog onClose={this.handleCloseEdit} scroll="body" open={this.state.open}>
+                    <PictureItem user={this.props.user} picture={this.props.picture} isHome={false}/>
+                </Dialog>
             </Grid>
         );
     }
