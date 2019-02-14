@@ -1,32 +1,28 @@
 import * as React from 'react'
-import {Button, createStyles, FormControl, Grid, Modal, TextField, Theme, Typography, WithStyles, withStyles} from "@material-ui/core";
+import {
+    Button,
+    createStyles,
+    Divider,
+    FormControl,
+    Grid, Icon,
+    Modal,
+    TextField,
+    Theme,
+    Typography,
+    WithStyles,
+    withStyles
+} from "@material-ui/core";
 import User from "../../models/User";
 import SettingIcon from '@material-ui/icons/Settings';
+import Dialog from "@material-ui/core/Dialog";
+import AppBar from "@material-ui/core/AppBar";
+import CloseIcon from '@material-ui/icons/Close';
+import IconButton from "@material-ui/core/IconButton";
+import Toolbar from "@material-ui/core/Toolbar";
+import DialogContent from "@material-ui/core/DialogContent";
+import FormGroup from "@material-ui/core/FormGroup";
 
-function getModalStyle() {
-    const top = 50;
-    const left = 50;
-
-    return {
-        top: `${top}%`,
-        left: `${left}%`,
-        transform: `translate(-${top}%, -${left}%)`,
-    };
-}
-
-const styles = (theme: Theme) => createStyles({
-    paper: {
-        position: 'absolute',
-        width: theme.spacing.unit * 50,
-        backgroundColor: theme.palette.background.paper,
-        boxShadow: theme.shadows[5],
-        padding: theme.spacing.unit * 4,
-        outline: 'none',
-    },
-});
-
-
-export interface Props extends WithStyles<typeof styles>{
+export interface Props{
     editUser: (User) => any
     profil: User
 }
@@ -88,35 +84,35 @@ class EditProfil extends React.Component<Props,State> {
     render() {
         return (
             <div>
-                <Button onClick={this.handleEditingProfil} variant="outlined"   disableRipple>
+                <Button style={{marginLeft: 10 }} onClick={this.handleEditingProfil} variant="outlined"   disableRipple>
                     Modifier le profil
                     <SettingIcon/>
                 </Button>
-                <Modal aria-labelledby="simple-modal-title" aria-describedby="simple-modal-description" open={this.state.open} onClose={this.close}>
-                    <div style={getModalStyle()} className={this.props.classes.paper}>
-                        <Grid container direction="column" justify="center" alignItems="center">
-                            <Typography variant="h6" id="modal-title">
-                                Modifier le profil
+                <Dialog fullScreen open={this.state.open} onClose={this.close}>
+                    <AppBar position="relative" color="default" elevation={0}>
+                        <Toolbar>
+                            <IconButton color="inherit" onClick={this.close} aria-label="Close">
+                                <CloseIcon />
+                            </IconButton>
+                            <Typography variant="h6" color="inherit" style={{flex:1}}>
+                                Mon profil
                             </Typography>
-                            <Grid xs={12} item>
-                                <FormControl>
-                                    <TextField  margin="normal" label="Prénom" defaultValue={this.state.profil.firstName} onChange={(e) => this.handleChangeFirstName(e)}> </TextField>
-                                    <TextField  margin="normal" label="Nom" defaultValue={this.state.profil.lastName} onChange={(e) => this.handleChangeLastName(e)}> </TextField>
-                                    <TextField  margin="normal" label="Email" defaultValue={this.state.profil.email} onChange={(e) => this.handleChangeEmail(e)}> </TextField>
-                                    <TextField  margin="normal" label="Téléphone" defaultValue={this.state.profil.phoneNumber} onChange={(e) => this.handleChangePhoneNumber(e)}> </TextField>
-                                    <Grid container direction="row" justify="center" alignItems="center">
-                                        <Grid container item xs={12}>
-                                            <Button color="primary" variant="contained" onClick={this.handleChangeProfil} >Sauvegarder
-                                            </Button>
-                                        </Grid>
-                                    </Grid>
-                                </FormControl>
-                            </Grid>
-                        </Grid>
-                    </div>
-                </Modal>
+                            <Button color="primary" variant="contained" onClick={this.handleChangeProfil} >Sauvegarder
+                            </Button>
+                        </Toolbar>
+                    </AppBar>
+                    <DialogContent>
+                        <FormGroup row>
+                            <TextField  margin="dense" label="Prénom" defaultValue={this.state.profil.firstName} onChange={(e) => this.handleChangeFirstName(e)} fullWidth/>
+                            <TextField  margin="dense" label="Nom" defaultValue={this.state.profil.lastName} onChange={(e) => this.handleChangeLastName(e)} fullWidth/>
+                            <TextField  margin="dense" label="Email" type="email" defaultValue={this.state.profil.email} onChange={(e) => this.handleChangeEmail(e)} fullWidth/>
+                            <TextField  margin="dense" label="Téléphone" type="tel" defaultValue={this.state.profil.phoneNumber} onChange={(e) => this.handleChangePhoneNumber(e)} fullWidth/>
+                        </FormGroup>
+                    </DialogContent>
+
+                </Dialog>
             </div>
         );
     }
 }
-export default withStyles(styles)(EditProfil);
+export default (EditProfil);
