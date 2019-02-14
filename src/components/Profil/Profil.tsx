@@ -105,7 +105,7 @@ class Profil extends React.Component<Props,State> {
                         <Tab label="Tagged" />
                     </Tabs>
                     {this.state.slideIndex === 0 &&
-                    <Grid container spacing={32} id="profil" >
+                    <Grid container spacing={24} id="profil" >
                         <PictureList isHome={false}/>
                     </Grid>}
                     {this.state.slideIndex === 1 &&

@@ -89,9 +89,7 @@ class PictureItemProfil extends React.Component<Props,State> {
         const {classes} = this.props;
         return (
             <Grid item xs={4}>
-                <Button onClick={this.handleOpenEdit}>
-                        <img style={{ width:280, height: 280 }} src={this.props.picture.url|| "//"} alt={this.props.picture.description}/>
-                </Button>
+                <img onClick={this.handleOpenEdit} style={{ width:'100%', maxHeight:280 }} src={this.props.picture.url|| "//"} alt={this.props.picture.description}/>
                 <Dialog onClose={this.handleCloseEdit} scroll="body" open={this.state.open}>
                     <PictureItem user={this.props.user} picture={this.props.picture} isHome={false}/>
                 </Dialog>
