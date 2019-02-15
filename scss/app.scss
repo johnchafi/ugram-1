@@ -56,24 +56,36 @@ body {
   line-height: 1em;
   margin: 8px 0 15px;
 }
-.uploadButton {
-  margin-top: 20px;
-  p {
-    display: inline-block;
-    font-size: 0.75rem;
-    text-align: left;
-    margin-right: 10px;
-    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
-    line-height: 1em;
+
+
+.formUpload {
+  margin-top: 30px !important;
+  margin-bottom: 30px !important;
+  &:hover {
+    cursor: pointer;
   }
-  span {
-    font-size: 62px !important;
-    vertical-align: middle;
+  button {
+    margin-bottom: 20px !important;
+  }
+  .uploadButton {
+    margin-top: 20px;
+    p {
+      display: inline-block;
+      font-size: 0.75rem;
+      text-align: left;
+      margin-right: 10px;
+      font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+      line-height: 1em;
+    }
+    span {
+      font-size: 62px !important;
+      vertical-align: middle;
+    }
   }
 }
-.uploadButton:hover {
-  cursor: pointer;
-}
+
+
+
 @media screen and (max-width: 320px) {
   .media-card {
     max-width: 100%;

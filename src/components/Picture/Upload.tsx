@@ -134,7 +134,7 @@ class Upload extends React.Component<Props,State> {
     render() {
         return (
             <Grid item>
-                <FormControl>
+                <FormControl className={"formUpload"}>
                     <Grid container direction="row" justify="center" alignItems="center">
                         <Grid container direction="row" justify="center" alignItems="center">
                         <TextField error={this.state.errorDescription !== null} helperText={this.state.errorDescription} label="Description" onChange={(e) => this.handleChangeDescription(e)}/>
