@@ -1,8 +1,7 @@
 import * as React from 'react'
-import Grid from '@material-ui/core/Grid';
 import {Link} from 'react-router-dom';
 import {
-    Button, FormControl, TextField
+    Button, FormControl, Icon, TextField, Grid
 } from "@material-ui/core";
 import Picture from "../../models/Picture";
 import User from "../../models/User";
@@ -17,7 +16,9 @@ interface State {
     upload: UploadModel,
     file: File,
     fileUrl: string,
-    picture : Picture
+    picture : Picture,
+    errorDescription: string,
+    errorImage: string
 }
 
 
@@ -29,6 +30,8 @@ class Upload extends React.Component<Props,State> {
 
         this.state = {
             fileUrl: "",
+            errorDescription: null,
+            errorImage: null,
             upload: {
                 description: "",
                 mentions: [],
@@ -50,7 +53,49 @@ class Upload extends React.Component<Props,State> {
         }
     }
 
+    validate(picture: Picture = null) : number {
+        let nbErrors : number = 0;
+
+        if (picture.url.length === 0) {
+            this.setState({errorImage: "Merci de fournir une image"});
+            nbErrors++;
+        }
+        else {
+            this.setState({errorImage: null});
+        }
+
+        if (picture.description.length === 0) {
+            this.setState({errorDescription: "Merci d'indiquer une description"});
+            nbErrors++;
+        }
+        else {
+            this.setState({errorDescription: null});
+        }
+        return nbErrors;
+    }
+
+    handleChangeMentions = (event) => {
+        this.setState({
+            picture: {
+                ...this.state.picture,
+                mentions: event.target.value.split(',')
+            }
+        });
+    };
+
+    handleChangeTags = (event) => {
+        this.setState({
+            picture: {
+                ...this.state.picture,
+                tags: event.target.value.split(',')
+            }
+        });
+    };
+
     handleChangeDescription = (event) => {
+
+
+
         this.setState({
             picture: {
                 ...this.state.picture,
@@ -75,7 +120,11 @@ class Upload extends React.Component<Props,State> {
         });
     };
     handleUploadPicture = () => {
-        this.props.uploadPicture(this.props.user.id, this.state.file, this.state.upload);
+        let errors = this.validate(this.state.picture);
+
+        if (errors === 0) {
+            this.props.uploadPicture(this.props.user.id, this.state.file, this.state.upload);
+        }
     };
 
     componentWillReceiveProps(nextProps: Readonly<Props>, nextContext: any): void {
@@ -87,30 +136,38 @@ class Upload extends React.Component<Props,State> {
                 <FormControl>
                     <Grid container direction="row" justify="center" alignItems="center">
                         <Grid container direction="row" justify="center" alignItems="center">
-                        <TextField
-                            label="Description"
-                            onChange={(e) => this.handleChangeDescription(e)}
-                        />
+                        <TextField error={this.state.errorDescription !== null} helperText={this.state.errorDescription} label="Description" onChange={(e) => this.handleChangeDescription(e)}/>
                         </Grid>
                         <Grid container direction="row" justify="center" alignItems="center">
-                        <TextField
-                            label="Mentions"
-                            onChange={(e) => this.handleChangeDescription(e)}
-                        />
+                        <TextField label="Mentions" onChange={(e) => this.handleChangeMentions(e)}/>
                         </Grid>
                         <Grid container direction="row" justify="center" alignItems="center">
-                        <TextField
-                            label="Tags"
-                            onChange={(e) => this.handleChangeDescription(e)}
-                        />
+                        <TextField label="Tags" onChange={(e) => this.handleChangeTags(e)}/>
                         </Grid>
-                        <input type='file' onChange={(e) => this.handleUploadFile(e.target.files)} />
+                        <Grid container direction="row" justify="center" alignItems="center">
+                            <label className={"uploadButton"}>
+                                <p>Téléverser une image</p>
+                                <Icon>cloud_upload</Icon>
+
+                                <input type='file'
+                                       onChange={(e) => this.handleUploadFile(e.target.files)} style={{ display: 'none'}}/>
+                            </label>
+                            {
+                                this.state.errorImage &&
+                            <Grid className={"error"} container direction="row" justify="center" alignItems="center">
+                                Merci de fournir une image à téléverser
+                            </Grid>
+                            }
+                        </Grid>
+                        <Grid container direction="row" justify="center" alignItems="center">
+                            <Button color="primary" variant="contained" onClick={this.handleUploadPicture} >Valider</Button>
+                        </Grid>
                     </Grid>
                     <Grid container direction="row" justify="center" alignItems="center">
-                        <PictureItem user={this.props.user} picture={this.state.picture} isHome={true}/>
-                    </Grid>
-                    <Grid container direction="row" justify="center" alignItems="center">
-                        <Button color="primary" variant="contained" onClick={this.handleUploadPicture} >submit</Button>
+                        {
+                            this.state.picture.url != "" &&
+                            <PictureItem user={this.props.user} picture={this.state.picture} isHome={true}/>
+                        }
                     </Grid>
                 </FormControl>
             </Grid>

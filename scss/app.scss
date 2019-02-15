@@ -46,6 +46,34 @@ body {
 .logo {
   max-width: 100px;
 }
+
+.error {
+  color: #f44336;
+  font-size: 0.75rem;
+  text-align: left;
+  min-height: 1em;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  line-height: 1em;
+  margin: 8px 0 15px;
+}
+.uploadButton {
+  margin-top: 20px;
+  p {
+    display: inline-block;
+    font-size: 0.75rem;
+    text-align: left;
+    margin-right: 10px;
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    line-height: 1em;
+  }
+  span {
+    font-size: 62px !important;
+    vertical-align: middle;
+  }
+}
+.uploadButton:hover {
+  cursor: pointer;
+}
 @media screen and (max-width: 320px) {
   .media-card {
     max-width: 100%;
