@@ -82,7 +82,7 @@ class Upload extends React.Component<Props,State> {
             },
             upload: {
                 ...this.state.upload,
-                mentions: event.target.value
+                mentions: event.target.value.replace(/\s+/g,' ').trim().split(' ')
             }
         });
     };
@@ -95,7 +95,7 @@ class Upload extends React.Component<Props,State> {
             },
             upload: {
                 ...this.state.upload,
-                tags: event.target.value
+                tags: event.target.value.replace(/\s+/g,' ').trim().split(' ')
             }
         });
     };
@@ -137,27 +137,25 @@ class Upload extends React.Component<Props,State> {
                 <FormControl className={"formUpload"}>
                     <Grid container direction="row" justify="center" alignItems="center">
                         <Grid container direction="row" justify="center" alignItems="center">
-                        <TextField error={this.state.errorDescription !== null} helperText={this.state.errorDescription} label="Description" onChange={(e) => this.handleChangeDescription(e)}/>
+                            <TextField error={this.state.errorDescription !== null} helperText={this.state.errorDescription} label="Description" onChange={(e) => this.handleChangeDescription(e)}/>
                         </Grid>
                         <Grid container direction="row" justify="center" alignItems="center">
-                        <TextField label="Mentions" onChange={(e) => this.handleChangeMentions(e)}/>
+                            <TextField label="Mentions" onChange={(e) => this.handleChangeMentions(e)}/>
                         </Grid>
                         <Grid container direction="row" justify="center" alignItems="center">
-                        <TextField label="Tags" onChange={(e) => this.handleChangeTags(e)}/>
+                            <TextField label="Tags" onChange={(e) => this.handleChangeTags(e)}/>
                         </Grid>
                         <Grid container direction="row" justify="center" alignItems="center">
                             <label className={"uploadButton"}>
                                 <p>Téléverser une image</p>
                                 <Icon>cloud_upload</Icon>
-
-                                <input type='file'
-                                       onChange={(e) => this.handleUploadFile(e.target.files)} style={{ display: 'none'}}/>
+                                <input type='file' onChange={(e) => this.handleUploadFile(e.target.files)} style={{ display: 'none'}}/>
                             </label>
                             {
                                 this.state.errorImage &&
-                            <Grid className={"error"} container direction="row" justify="center" alignItems="center">
-                                Merci de fournir une image à téléverser
-                            </Grid>
+                                <Grid className={"error"} container direction="row" justify="center" alignItems="center">
+                                    Merci de fournir une image à téléverser
+                                </Grid>
                             }
                         </Grid>
                         <Grid container direction="row" justify="center" alignItems="center">

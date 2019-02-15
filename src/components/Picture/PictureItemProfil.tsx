@@ -45,7 +45,9 @@ class PictureItemProfil extends React.Component<Props,State> {
     render() {
         return (
             <Grid item xs={4} className="pictureProfil">
-                <img onClick={this.handleOpenEdit} style={{ width:'100%', height:'100%'}} src={this.props.picture.url|| "//"} alt={this.props.picture.description}/>
+                <Grid style={{display:'inline-block',height:'100%', verticalAlign:'middle'}}>
+                    <img onClick={this.handleOpenEdit} style={{ width:'100%', verticalAlign:'middle'}} src={this.props.picture.url|| "//"} alt={this.props.picture.description}/>
+                </Grid>
                 <Dialog onClose={this.handleCloseEdit} scroll="body" open={this.state.open}>
                     <PictureItem user={this.props.user} picture={this.props.picture} isHome={false}/>
                 </Dialog>
