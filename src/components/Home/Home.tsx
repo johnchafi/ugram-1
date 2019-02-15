@@ -26,12 +26,9 @@ class Home extends React.Component<Props,State> {
             nextProps.overGetPics(nextProps.pictures);
             this.setState({isLoading:false});
         }
-        else
+        else {
             document.addEventListener('scroll', this.trackScrolling);
-    }
-
-    isBottom(el) {
-        return el.getBoundingClientRect().bottom <= window.innerHeight;
+        }
     }
 
     componentWillUnmount() {
@@ -39,9 +36,10 @@ class Home extends React.Component<Props,State> {
         document.removeEventListener('scroll', this.trackScrolling);
     }
 
-    trackScrolling = () => {
-        const wrappedElement = document.getElementById('home');
-        if (!this.state.isLoading && this.isBottom(wrappedElement)) {
+    trackScrolling = (event) => {
+        const node = event.target;
+        const bottom = node.scrollHeight - node.scrollTop === node.clientHeight;
+        if (bottom) {
             this.props.getPicturesByDate(this.props.pageNumber, this.props.pictures);
             document.removeEventListener('scroll', this.trackScrolling);
         }
@@ -49,9 +47,9 @@ class Home extends React.Component<Props,State> {
 
     render() {
         return (
-            <Grid container spacing={24} direction="column" alignItems="center" id="home" className="div-home">
+            <Grid  container spacing={24} direction="column" alignItems="center"  className="div-home">
                 {this.state.isLoading && <CircularProgress />}
-                { !this.state.isLoading && <PictureList isHome={true}/>}
+                { !this.state.isLoading && <PictureList isHome={true} ref={this.trackScrolling}/>}
             </Grid>
         );
     }
