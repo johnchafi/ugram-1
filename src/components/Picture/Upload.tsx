@@ -53,12 +53,12 @@ class Upload extends React.Component<Props,State> {
         }
     }
 
-    validate(picture: Picture = null) : number {
-        let nbErrors : number = 0;
+    validate(picture: Picture = null) : boolean {
+        let error = true;
 
         if (picture.url.length === 0) {
             this.setState({errorImage: "Merci de fournir une image"});
-            nbErrors++;
+            error = false;
         }
         else {
             this.setState({errorImage: null});
@@ -66,19 +66,19 @@ class Upload extends React.Component<Props,State> {
 
         if (picture.description.length === 0) {
             this.setState({errorDescription: "Merci d'indiquer une description"});
-            nbErrors++;
+            error = false;
         }
         else {
             this.setState({errorDescription: null});
         }
-        return nbErrors;
+        return error;
     }
 
     handleChangeMentions = (event) => {
         this.setState({
             picture: {
                 ...this.state.picture,
-                mentions: event.target.value.replace(/^\s+|\s+$/g, '').split(' ')
+                mentions: event.target.value.replace(/\s+/g,' ').trim().split(' ')
             },
             upload: {
                 ...this.state.upload,
@@ -91,7 +91,7 @@ class Upload extends React.Component<Props,State> {
         this.setState({
             picture: {
                 ...this.state.picture,
-                tags: event.target.value.replace(/^\s+|\s+$/g, '').split(' ')
+                tags: event.target.value.replace(/\s+/g,' ').trim().split(' ')
             },
             upload: {
                 ...this.state.upload,
@@ -124,11 +124,8 @@ class Upload extends React.Component<Props,State> {
         });
     };
     handleUploadPicture = () => {
-        let errors = this.validate(this.state.picture);
-
-        if (errors === 0) {
+        if (this.validate(this.state.picture))
             this.props.uploadPicture(this.props.user.id, this.state.file, this.state.upload);
-        }
     };
 
     componentWillReceiveProps(nextProps: Readonly<Props>, nextContext: any): void {
