@@ -5,6 +5,7 @@ import Picture from "../../models/Picture";
 import User from "../../models/User";
 import PictureItem from "../../containers/Picture/PictureItem";
 import Dialog from '@material-ui/core/Dialog';
+import {url} from "inspector";
 
 export interface Props{
     picture : Picture,
@@ -44,10 +45,7 @@ class PictureItemProfil extends React.Component<Props,State> {
 
     render() {
         return (
-            <Grid item xs={4} className="pictureProfil">
-                <Grid style={{display:'inline-block',height:'100%', verticalAlign:'middle'}}>
-                    <img onClick={this.handleOpenEdit} style={{ width:'100%', verticalAlign:'middle'}} src={this.props.picture.url|| "//"} alt={this.props.picture.description}/>
-                </Grid>
+            <Grid item xs={4} onClick={this.handleOpenEdit} className="pictureProfil" style={{backgroundImage: "url(" + this.props.picture.url + ")"}}>
                 <Dialog onClose={this.handleCloseEdit} scroll="body" open={this.state.open}>
                     <PictureItem user={this.props.user} picture={this.props.picture} isHome={false}/>
                 </Dialog>
