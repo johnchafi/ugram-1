@@ -111,7 +111,7 @@ class PictureItemHome extends React.Component<Props,State> {
                 <Card onClick={this.handleOpenEdit}>
                     <CardHeader className={classes.cardHeader} avatar={this.renderAvatar()}
                                 title={this.props.user && this.props.user.firstName + " " + this.props.user.lastName || <LinearProgress />}
-                                subheader={new Date(Number(this.props.picture.createdDate)).toDateString()}
+                                subheader={new Date(Number(this.props.picture.createdDate)).toDateString() + " - " + this.props.picture.description}
                     />
                     <img className="media-card" src={this.state.didLoad ? this.props.picture.url : "https://via.placeholder.com/500/f5f5f5"} alt={this.props.picture.description} onLoad={this.onLoad}/>
                     <CardActions className={classes.actions} disableActionSpacing>
@@ -119,10 +119,8 @@ class PictureItemHome extends React.Component<Props,State> {
                             <FavoriteIcon />
                         </IconButton>
                         <Grid item xs zeroMinWidth>
-                            <Typography variant="overline">
-                                {this.props.picture.description && this.props.picture.description + this.props.picture.mentions.map(function (mention, i) {
-                                    return " " + mention;
-                                }) + " // " + this.props.picture.tags.map(function (tag, i) {return "#" + tag;})}
+                            <Typography className={"subtext"} variant="overline">
+                                {this.props.picture.mentions.join(" ") + " // " + this.props.picture.tags.join(" #")}
                             </Typography>
                         </Grid>
                     </CardActions>

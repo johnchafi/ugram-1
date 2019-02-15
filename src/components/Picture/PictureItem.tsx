@@ -55,11 +55,11 @@ class PictureItem extends React.Component<Props,State> {
             <Grid item className={"Picture"}>
                 <Card className="card">
                     <CardHeader avatar={this.renderAvatar()}
-                        action={ !this.props.isHome &&
-                            <EditPictureItem picture={this.props.picture}/>
-                        }
-                        title={this.props.user && this.props.user.firstName + " " + this.props.user.lastName || <LinearProgress />}
-                        subheader={new Date(Number(this.props.picture.createdDate)).toDateString()}
+                                action={ !this.props.isHome &&
+                                <EditPictureItem picture={this.props.picture}/>
+                                }
+                                title={this.props.user && this.props.user.firstName + " " + this.props.user.lastName || <LinearProgress />}
+                                subheader={new Date(Number(this.props.picture.createdDate)).toDateString() + " - " + this.props.picture.description}
                     />
                     <img className="media-card" src={this.props.picture.url|| "//"} alt={this.props.picture.description}/>
                     <CardActions className={classes.actions} disableActionSpacing>
@@ -67,9 +67,7 @@ class PictureItem extends React.Component<Props,State> {
                             <FavoriteIcon />
                         </IconButton>
                         <Typography className={"subtext"} variant="overline">
-                            {this.props.picture.description && this.props.picture.description + this.props.picture.mentions.map(function (mention, i) {
-                                return " " + mention;
-                            }) + " // " + this.props.picture.tags.map(function (tag, i) {return "#" + tag;})}
+                            {this.props.picture.mentions.join(" ") + " // " + this.props.picture.tags.join(" #")}
                         </Typography>
                     </CardActions>
                 </Card>

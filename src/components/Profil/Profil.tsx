@@ -35,18 +35,13 @@ class Profil extends React.Component<Props,State> {
         document.removeEventListener('scroll', this.trackScrolling);
     }
 
-    isBottom(el) {
-        return el.getBoundingClientRect().bottom <= window.innerHeight;
-    }
-
-    componentDidMount() {
-        document.addEventListener('scroll', this.trackScrolling);
+    isBottomProfil(el) {
+        return el.getBoundingClientRect().bottom <= window.innerHeight + 100;
     }
 
     trackScrolling = () => {
         const wrappedElement = document.getElementById('app');
-        if (this.isBottom(wrappedElement)) {
-            console.log('header bottom reached');
+        if (this.isBottomProfil(wrappedElement)) {
             this.props.getPicture(this.props.match.params.id, this.props.pageNumber, this.props.pictures);
             document.removeEventListener('scroll', this.trackScrolling);
         }

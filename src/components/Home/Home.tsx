@@ -26,9 +26,8 @@ class Home extends React.Component<Props,State> {
             nextProps.overGetPics(nextProps.pictures);
             this.setState({isLoading:false});
         }
-        else {
+        else
             document.addEventListener('scroll', this.trackScrolling);
-        }
     }
 
     componentWillUnmount() {
@@ -36,11 +35,7 @@ class Home extends React.Component<Props,State> {
         document.removeEventListener('scroll', this.trackScrolling);
     }
     isBottom(el) {
-        return el.getBoundingClientRect().bottom <= window.innerHeight;
-    }
-
-    componentDidMount() {
-        document.addEventListener('scroll', this.trackScrolling);
+        return el.getBoundingClientRect().bottom <= window.innerHeight  + 100;
     }
 
     trackScrolling = () => {
