@@ -35,11 +35,18 @@ class Home extends React.Component<Props,State> {
         this.props.reset();
         document.removeEventListener('scroll', this.trackScrolling);
     }
+    isBottom(el) {
+        return el.getBoundingClientRect().bottom <= window.innerHeight;
+    }
 
-    trackScrolling = (event) => {
-        const node = event.target;
-        const bottom = node.scrollHeight - node.scrollTop === node.clientHeight;
-        if (bottom) {
+    componentDidMount() {
+        document.addEventListener('scroll', this.trackScrolling);
+    }
+
+    trackScrolling = () => {
+        const wrappedElement = document.getElementById('app');
+        if (this.isBottom(wrappedElement)) {
+            console.log('header bottom reached');
             this.props.getPicturesByDate(this.props.pageNumber, this.props.pictures);
             document.removeEventListener('scroll', this.trackScrolling);
         }
@@ -49,7 +56,7 @@ class Home extends React.Component<Props,State> {
         return (
             <Grid  container spacing={24} direction="column" alignItems="center"  className="div-home">
                 {this.state.isLoading && <CircularProgress />}
-                { !this.state.isLoading && <PictureList isHome={true} ref={this.trackScrolling}/>}
+                { !this.state.isLoading && <PictureList isHome={true}/>}
             </Grid>
         );
     }
