@@ -31,10 +31,12 @@ class PictureItemProfil extends React.Component<Props,State> {
     }
 
     handleCloseEdit = event => {
+        console.log("je passe la")
         this.setState({open: false});
     };
 
     handleOpenEdit = event => {
+        console.log("je passe la bas")
         this.setState({open: true});
     };
 
@@ -45,7 +47,8 @@ class PictureItemProfil extends React.Component<Props,State> {
 
     render() {
         return (
-            <Grid item xs={4} onClick={this.handleOpenEdit} className="pictureProfil" style={{backgroundImage: "url(" + this.props.picture.url + ")"}}>
+            <Grid item xs={4}>
+                <Grid  onClick={this.handleOpenEdit} className="pictureProfil" style={{backgroundImage: "url(" + this.props.picture.url + ")"}}/>
                 <Dialog onClose={this.handleCloseEdit} scroll="body" open={this.state.open}>
                     <PictureItem user={this.props.user} picture={this.props.picture} isHome={false}/>
                 </Dialog>
