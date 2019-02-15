@@ -126,10 +126,8 @@ class Upload extends React.Component<Props,State> {
     handleUploadPicture = () => {
         let errors = this.validate(this.state.picture);
 
-        console.log(this.state.picture);
-
         if (errors === 0) {
-            //this.props.uploadPicture(this.props.user.id, this.state.file, this.state.upload);
+            this.props.uploadPicture(this.props.user.id, this.state.file, this.state.upload);
         }
     };
 
