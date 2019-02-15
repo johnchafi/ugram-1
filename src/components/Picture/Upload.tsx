@@ -79,6 +79,10 @@ class Upload extends React.Component<Props,State> {
             picture: {
                 ...this.state.picture,
                 mentions: event.target.value.split(',')
+            },
+            upload: {
+                ...this.state.upload,
+                mentions: event.target.value
             }
         });
     };
@@ -88,14 +92,15 @@ class Upload extends React.Component<Props,State> {
             picture: {
                 ...this.state.picture,
                 tags: event.target.value.split(',')
+            },
+            upload: {
+                ...this.state.upload,
+                tags: event.target.value
             }
         });
     };
 
     handleChangeDescription = (event) => {
-
-
-
         this.setState({
             picture: {
                 ...this.state.picture,

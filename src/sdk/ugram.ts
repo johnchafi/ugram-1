@@ -61,8 +61,8 @@ export class sdk {
 
         fileUpload.append('file', file);
         fileUpload.append('description', model.description);
-        fileUpload.append('tags', JSON.stringify(model.tags));
-        fileUpload.append('mentions', JSON.stringify(model.mentions));
+        fileUpload.append('tags', model.tags.toString());
+        fileUpload.append('mentions', model.mentions.toString());
 
         return axios.post('http://api.ugram.net/users/' + userId + "/pictures/",
             fileUpload, {
