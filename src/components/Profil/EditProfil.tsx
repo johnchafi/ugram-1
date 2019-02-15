@@ -29,6 +29,10 @@ export interface Props{
 interface State {
     profil: User,
     open :boolean
+    errorMail: string
+    errorTel: string,
+    errorFirstName: string,
+    errorLastName: string
 }
 
 
@@ -40,17 +44,60 @@ class EditProfil extends React.Component<Props,State> {
         super(props);
         this.state = {
             profil: this.props.profil,
-            open: false
+            open: false,
+            errorMail : null,
+            errorTel : null,
+            errorFirstName : null,
+            errorLastName : null
         }
     }
+
+    validate(lastName: string = null, email : string = null, firstName: string = null, tel : number = null) : number {
+        let nbErrors : number = 0;
+
+        let emailReg : RegExp =  new RegExp("[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}");
+        let numberReg : RegExp = new RegExp("^[0-9-+s()]*$");
+        if (!emailReg.test(email)) {
+            this.setState({errorMail: "Email incorrect"});
+            nbErrors++;
+        }
+        else {
+            this.setState({errorMail: null});
+        }
+        if (!numberReg.test(tel.toString())) {
+            this.setState({errorTel: "Numéro de téléphone incorrect"});
+            nbErrors++;
+        }
+        else {
+            this.setState({errorTel: null});
+        }
+        if (firstName.length === 0) {
+            this.setState({errorFirstName: "Prénom incorrect"});
+            nbErrors++;
+        }
+        else {
+            this.setState({errorFirstName: null});
+        }
+        if (lastName.length === 0) {
+            this.setState({errorLastName: "Nom incorrect"});
+            nbErrors++;
+        }
+        else {
+            this.setState({errorLastName: null});
+        }
+        return nbErrors;
+    }
+
 
     handleChangeFirstName = (event) => {
         this.state.profil.firstName = event.target.value;
         this.setState({profil: this.state.profil});
+        this.validate(this.state.profil.lastName, this.state.profil.email, this.state.profil.firstName, this.state.profil.phoneNumber);
     };
     handleChangeLastName = (event) => {
         this.state.profil.lastName = event.target.value;
         this.setState({profil: this.state.profil});
+        this.validate(this.state.profil.lastName, this.state.profil.email, this.state.profil.firstName, this.state.profil.phoneNumber);
     };
 
 
@@ -62,15 +109,21 @@ class EditProfil extends React.Component<Props,State> {
     handleChangeEmail = (event) => {
         this.state.profil.email = event.target.value;
         this.setState({profil: this.state.profil});
+        this.validate(this.state.profil.lastName, this.state.profil.email, this.state.profil.firstName, this.state.profil.phoneNumber);
     };
 
     handleChangePhoneNumber = (event) => {
         this.state.profil.phoneNumber = event.target.value;
         this.setState({profil: this.state.profil});
+        this.validate(this.state.profil.lastName, this.state.profil.email, this.state.profil.firstName, this.state.profil.phoneNumber);
     };
     handleChangeProfil = (event) => {
-        this.setState({open: false});
-        this.props.editUser(this.state.profil);
+       let errors = this.validate(this.state.profil.lastName, this.state.profil.email, this.state.profil.firstName, this.state.profil.phoneNumber);
+
+        if (errors === 0) {
+            this.props.editUser(this.state.profil);
+            this.setState({open: false});
+        }
     };
     close = (event) => {
         this.setState({open: false})
@@ -103,10 +156,10 @@ class EditProfil extends React.Component<Props,State> {
                     </AppBar>
                     <DialogContent>
                         <FormGroup row>
-                            <TextField  margin="dense" label="Prénom" defaultValue={this.state.profil.firstName} onChange={(e) => this.handleChangeFirstName(e)} fullWidth/>
-                            <TextField  margin="dense" label="Nom" defaultValue={this.state.profil.lastName} onChange={(e) => this.handleChangeLastName(e)} fullWidth/>
-                            <TextField  margin="dense" label="Email" type="email" defaultValue={this.state.profil.email} onChange={(e) => this.handleChangeEmail(e)} fullWidth/>
-                            <TextField  margin="dense" label="Téléphone" type="tel" defaultValue={this.state.profil.phoneNumber} onChange={(e) => this.handleChangePhoneNumber(e)} fullWidth/>
+                            <TextField  error={this.state.errorFirstName !== null} helperText={this.state.errorFirstName} margin="dense" label="Prénom" defaultValue={this.state.profil.firstName} onChange={(e) => this.handleChangeFirstName(e)} fullWidth/>
+                            <TextField  error={this.state.errorLastName !== null} helperText={this.state.errorLastName} margin="dense" label="Nom" defaultValue={this.state.profil.lastName} onChange={(e) => this.handleChangeLastName(e)} fullWidth/>
+                            <TextField  error={this.state.errorMail !== null} helperText={this.state.errorMail} margin="dense" label="Email" type="email" defaultValue={this.state.profil.email} onChange={(e) => this.handleChangeEmail(e)} fullWidth/>
+                            <TextField  error={this.state.errorTel !== null} helperText={this.state.errorTel} margin="dense" label="Téléphone" type="tel" defaultValue={this.state.profil.phoneNumber} onChange={(e) => this.handleChangePhoneNumber(e)} fullWidth/>
                         </FormGroup>
                     </DialogContent>
 
