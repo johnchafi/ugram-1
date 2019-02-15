@@ -70,10 +70,16 @@ class Profil extends React.Component<Props,State> {
     };
 
     getPrettyDate() {
-        let date = 
+        let date = new Date(Number(this.props.user.registrationDate));
 
+        let monthNames = [
+            "Janvier", "Fevrier", "Mars",
+            "Avril", "Mai", "Juin", "Juillet",
+            "Aout", "Septembre", "Octobre",
+            "Novembre", "Decembre"
+        ];
 
-        return new Date(Number(this.props.user.registrationDate)).toDateString();
+        return date.getDate() + ' ' + monthNames[date.getMonth()] + ' ' + date.getFullYear();
     }
     render(): React.ReactNode {
         return (
@@ -100,7 +106,7 @@ class Profil extends React.Component<Props,State> {
                             <Typography variant="subtitle2">
                                 {this.props.user && this.props.user.firstName + " " + this.props.user.lastName}
                             </Typography>
-                            <Typography className={"el"} variant="overline">Inscrit depuis : {this.props.user && this.getPrettyDate()}</Typography>
+                            <Typography className={"el"} variant="overline">Inscrit depuis le {this.props.user && this.getPrettyDate()}</Typography>
                             <Typography className={"el"} variant="overline">Email : {this.props.user && this.props.user.email}</Typography>
                         </Grid>
                     </Grid>
