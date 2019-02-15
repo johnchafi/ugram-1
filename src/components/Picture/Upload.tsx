@@ -78,7 +78,7 @@ class Upload extends React.Component<Props,State> {
         this.setState({
             picture: {
                 ...this.state.picture,
-                mentions: event.target.value.split(' ')
+                mentions: event.target.value.replace(/^\s+|\s+$/g, '').split(' ')
             },
             upload: {
                 ...this.state.upload,
@@ -91,7 +91,7 @@ class Upload extends React.Component<Props,State> {
         this.setState({
             picture: {
                 ...this.state.picture,
-                tags: event.target.value.split(' ')
+                tags: event.target.value.replace(/^\s+|\s+$/g, '').split(' ')
             },
             upload: {
                 ...this.state.upload,
@@ -114,7 +114,6 @@ class Upload extends React.Component<Props,State> {
     };
     handleUploadFile = (file) => {
         this.state.picture.url = URL.createObjectURL(file[0]);
-        console.log(this.state.picture.url);
 
         this.setState({
             picture: {
@@ -127,8 +126,10 @@ class Upload extends React.Component<Props,State> {
     handleUploadPicture = () => {
         let errors = this.validate(this.state.picture);
 
+        console.log(this.state.picture);
+
         if (errors === 0) {
-            this.props.uploadPicture(this.props.user.id, this.state.file, this.state.upload);
+            //this.props.uploadPicture(this.props.user.id, this.state.file, this.state.upload);
         }
     };
 
