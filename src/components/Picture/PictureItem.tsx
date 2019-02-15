@@ -52,7 +52,7 @@ class PictureItem extends React.Component<Props,State> {
     render() {
         const {classes} = this.props;
         return (
-            <Grid item>
+            <Grid item className={"Picture"}>
                 <Card className="card">
                     <CardHeader avatar={this.renderAvatar()}
                         action={ !this.props.isHome &&
@@ -66,7 +66,7 @@ class PictureItem extends React.Component<Props,State> {
                         <IconButton aria-label="Add to favorites">
                             <FavoriteIcon />
                         </IconButton>
-                        <Typography variant="overline">
+                        <Typography className={"subtext"} variant="overline">
                             {this.props.picture.description && this.props.picture.description + this.props.picture.mentions.map(function (mention, i) {
                                 return " " + mention;
                             }) + " // " + this.props.picture.tags.map(function (tag, i) {return "#" + tag;})}
