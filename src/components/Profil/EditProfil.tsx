@@ -137,8 +137,7 @@ class EditProfil extends React.Component<Props,State> {
     render() {
         return (
             <div>
-                <Button style={{marginLeft: 10 }} onClick={this.handleEditingProfil} variant="outlined"   disableRipple>
-                    Modifier le profil
+                <Button style={{marginLeft: 10 }} onClick={this.handleEditingProfil}   disableRipple>
                     <SettingIcon/>
                 </Button>
                 <Dialog fullScreen open={this.state.open} onClose={this.close}>

@@ -57,7 +57,7 @@ class NavBar extends React.Component<Props,State> {
                                             <Divider />
                                         </Grid>
                                     </Grid>
-                                    <Grid item>
+                                    <Grid item className={"header-nav"}>
                                         <Grid container justify="flex-end">
                                             <Link to={"/users/"}><Icon >explore_outlined</Icon></Link>
                                             <Icon >favorite_border_rounded</Icon>

@@ -73,11 +73,18 @@ class Profil extends React.Component<Props,State> {
             slideIndex: value,
         });
     };
+
+    getPrettyDate() {
+        let date = 
+
+
+        return new Date(Number(this.props.user.registrationDate)).toDateString();
+    }
     render(): React.ReactNode {
         return (
             <React.Fragment>
                 <div style={{maxWidth:935 , margin:"auto"}}>
-                    <Grid container direction="row" justify="center" alignItems="center" >
+                    <Grid container direction="row" justify="center" alignItems="center" className={"ProfilHeader"}>
                         <Grid item xs={4}>
                             <Avatar style={{ margin: 'auto' }} className="avatar" src={this.props.user && this.props.user.pictureUrl}/>
                         </Grid>
@@ -98,8 +105,8 @@ class Profil extends React.Component<Props,State> {
                             <Typography variant="subtitle2">
                                 {this.props.user && this.props.user.firstName + " " + this.props.user.lastName}
                             </Typography>
-                            <Typography variant="overline">Date registration : {this.props.user && new Date(Number(this.props.user.registrationDate)).toDateString()}</Typography>
-                            <Typography variant="overline">Email : {this.props.user && this.props.user.email}</Typography>
+                            <Typography className={"el"} variant="overline">Inscrit depuis : {this.props.user && this.getPrettyDate()}</Typography>
+                            <Typography className={"el"} variant="overline">Email : {this.props.user && this.props.user.email}</Typography>
                         </Grid>
                     </Grid>
 
