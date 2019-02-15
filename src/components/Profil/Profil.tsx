@@ -30,18 +30,15 @@ class Profil extends React.Component<Props,State> {
         this.props.getPicture(this.props.match.params.id, 0, []);
     }
 
-    isBottom(el) {
-        return el.getBoundingClientRect().bottom <= window.innerHeight;
-    }
-
     componentWillUnmount() {
         this.props.reset();
         document.removeEventListener('scroll', this.trackScrolling);
     }
 
-    trackScrolling = () => {
-        const wrappedElement = document.getElementById('profil');
-        if (this.isBottom(wrappedElement)) {
+    trackScrolling = (event) => {
+        const node = event.target;
+        const bottom = node.scrollHeight - node.scrollTop === node.clientHeight;
+        if (bottom) {
             this.props.getPicture(this.props.match.params.id, this.props.pageNumber, this.props.pictures);
             document.removeEventListener('scroll', this.trackScrolling);
         }
@@ -105,8 +102,8 @@ class Profil extends React.Component<Props,State> {
                         <Tab label="Tagged" />
                     </Tabs>
                     {this.state.slideIndex === 0 &&
-                    <Grid container spacing={24} id="profil" >
-                        <PictureList isHome={false}/>
+                    <Grid container spacing={8} >
+                        <PictureList isHome={false} ref={this.trackScrolling}/>
                     </Grid>}
                     {this.state.slideIndex === 1 &&
                     <Grid container direction="row" justify="center">

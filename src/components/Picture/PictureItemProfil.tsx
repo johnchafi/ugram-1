@@ -1,19 +1,12 @@
 import * as React from 'react'
-import Card from '@material-ui/core/Card';
-import CardMedia from '@material-ui/core/CardMedia';
 import Grid from '@material-ui/core/Grid';
 import {Link} from 'react-router-dom';
-import {
-    Button, createStyles, Modal, Theme, WithStyles,
-    withStyles
-} from "@material-ui/core";
 import Picture from "../../models/Picture";
 import User from "../../models/User";
 import PictureItem from "../../containers/Picture/PictureItem";
 import Dialog from '@material-ui/core/Dialog';
-import DialogContent from "@material-ui/core/DialogContent";
 
-export interface Props extends WithStyles<typeof styles>{
+export interface Props{
     picture : Picture,
     user : User
     isHome:boolean
@@ -23,42 +16,6 @@ interface State {
     anchorEl: HTMLElement
     open: boolean
 }
-
-
-function getModalStyle() {
-    const top = 50;
-    const left = 50;
-
-    return {
-        top: `${top}%`,
-        left: `${left}%`,
-        transform: `translate(-${top}%, -${left}%)`,
-    };
-}
-
-
-const styles = (theme: Theme) => createStyles({
-    card: {
-        minWidth: 200,
-        maxWidth: 200,
-        maxHeight:200,
-        minHeight:200,
-    },
-    media: {
-        height: 0,
-        paddingTop: '100%', // 16:9
-    },
-    actions: {
-        display: 'flex',
-    },
-    typography: {
-        margin: theme.spacing.unit * 2,
-    },
-    expandOpen: {
-        transform: 'rotate(180deg)',
-    },
-});
-
 
 
 class PictureItemProfil extends React.Component<Props,State> {
@@ -86,10 +43,9 @@ class PictureItemProfil extends React.Component<Props,State> {
     }
 
     render() {
-        const {classes} = this.props;
         return (
-            <Grid item xs={4}>
-                <img onClick={this.handleOpenEdit} style={{ width:'100%', maxHeight:280 }} src={this.props.picture.url|| "//"} alt={this.props.picture.description}/>
+            <Grid item xs={4} className="pictureProfil">
+                <img onClick={this.handleOpenEdit} style={{ width:'100%', height:'100%'}} src={this.props.picture.url|| "//"} alt={this.props.picture.description}/>
                 <Dialog onClose={this.handleCloseEdit} scroll="body" open={this.state.open}>
                     <PictureItem user={this.props.user} picture={this.props.picture} isHome={false}/>
                 </Dialog>
@@ -97,4 +53,4 @@ class PictureItemProfil extends React.Component<Props,State> {
         );
     }
 }
-export default withStyles(styles)(PictureItemProfil);
+export default (PictureItemProfil);
