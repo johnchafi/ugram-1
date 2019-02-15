@@ -35,10 +35,18 @@ class Profil extends React.Component<Props,State> {
         document.removeEventListener('scroll', this.trackScrolling);
     }
 
-    trackScrolling = (event) => {
-        const node = event.target;
-        const bottom = node.scrollHeight - node.scrollTop === node.clientHeight;
-        if (bottom) {
+    isBottom(el) {
+        return el.getBoundingClientRect().bottom <= window.innerHeight;
+    }
+
+    componentDidMount() {
+        document.addEventListener('scroll', this.trackScrolling);
+    }
+
+    trackScrolling = () => {
+        const wrappedElement = document.getElementById('app');
+        if (this.isBottom(wrappedElement)) {
+            console.log('header bottom reached');
             this.props.getPicture(this.props.match.params.id, this.props.pageNumber, this.props.pictures);
             document.removeEventListener('scroll', this.trackScrolling);
         }
@@ -103,7 +111,7 @@ class Profil extends React.Component<Props,State> {
                     </Tabs>
                     {this.state.slideIndex === 0 &&
                     <Grid container spacing={8} >
-                        <PictureList isHome={false} ref={this.trackScrolling}/>
+                        <PictureList isHome={false}/>
                     </Grid>}
                     {this.state.slideIndex === 1 &&
                     <Grid container direction="row" justify="center">
