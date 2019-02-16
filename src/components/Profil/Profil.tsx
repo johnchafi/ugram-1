@@ -111,7 +111,7 @@ class Profil extends React.Component<Props,State> {
                         </Grid>
                     </Grid>
 
-                    <Tabs value={this.state.slideIndex} centered onChange={this.handleChangeTabs}>
+                    <Tabs className={"tabsContainer"} value={this.state.slideIndex} centered onChange={this.handleChangeTabs}>
                         <Tab label="Publications" icon={<Icon className="tab-profil">grid_on_outlined</Icon>} />
                         <Tab label="Téleverser" icon={<Icon className="tab-profil">cloud_upload</Icon>} />
                         <Tab label="Enregistrer" icon={<Icon className="tab-profil">save</Icon>} />

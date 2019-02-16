@@ -70,8 +70,8 @@ class PictureItem extends React.Component<Props,State> {
                         </IconButton>
                     </CardActions>
                     <CardActions className={"action header"} disableActionSpacing>
-                        <span>{this.props.user && this.props.user.id}</span>
-                        {"\u00a0" + this.props.picture.description}
+                        <p><span>{this.props.user && this.props.user.id}</span>
+                            {"\u00a0" + this.props.picture.description}</p>
                     </CardActions>
                     <CardActions className={"action hashtags"} disableActionSpacing>
                         {this.props.picture.tags.map((item) =>

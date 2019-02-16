@@ -33,7 +33,7 @@ class NavBar extends React.Component<Props,State> {
                             <Grid item xs>
                                 <Grid container alignItems="center">
                                     <Link to={"/"}>
-                                        <img className={"logo"} src="https://s3.ca-central-1.amazonaws.com/ugram-team2/48358316_354791461966737_3622340340448493568_n.png?fbclid=IwAR0KMw4EJyh2G5jIgBk6MAXIpJcoxxk4SYacVVbpeEmeJqKuoJOilw_0xa8" alt="Logo UGRAM" />
+                                        <img className={"logo"} src="https://s3.ca-central-1.amazonaws.com/ugram-team02/assets/header-picture.png" alt="Logo UGRAM" />
                                     </Link>
                                     <Divider />
                                 </Grid>

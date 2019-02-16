@@ -88,8 +88,8 @@ class PictureItemHome extends React.Component<Props,State> {
                             </IconButton>
                         </CardActions>
                         <CardActions className={"action header"} disableActionSpacing>
-                            <span>{this.props.picture.user && this.props.picture.user.id}</span>
-                            {"\u00a0" + this.props.picture.description}
+                            <p><span>{this.props.picture.user && this.props.picture.user.id}</span>
+                                {"\u00a0" + this.props.picture.description}</p>
                         </CardActions>
                         <CardActions className={"action hashtags"} disableActionSpacing>
                             {this.props.picture.tags.map((item) =>
@@ -106,7 +106,7 @@ class PictureItemHome extends React.Component<Props,State> {
                         </CardActions>
                     </Grid>
                 </Card>
-                <Dialog onClose={this.handleCloseEdit} scroll="body" open={this.state.open}>
+                <Dialog onClose={this.handleCloseEdit} scroll="body" open={this.state.open} className={"dialogPicture"}>
                     <PictureItem user={this.props.user} picture={this.props.picture} isHome={true}/>
                 </Dialog>
             </Grid>

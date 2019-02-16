@@ -115,8 +115,13 @@ body {
 
   }
   .header {
-    span {
-      font-weight: bold;
+    p {
+      margin: 0;
+      max-width: 100%;
+      word-break: break-word;
+      span {
+        font-weight: bold;
+      }
     }
   }
   .hashtags {
@@ -172,6 +177,7 @@ body {
   height: 100%;
 }
 
+
 .pictureProfil {
   height: 280px;
   text-align: center;
@@ -203,8 +209,26 @@ body {
  }
 }
 
+@media screen and (max-width: 640px) {
+  .tabsContainer {
+    .MuiTab-labelIcon-235 {
+      min-height: 48px;
+    }
+    .MuiTab-labelContainer-243 {
+      display: none;
+    }
+  }
+  .pictureProfil {
+    height: 140px;
+  }
+}
 
 @media screen and (max-width: 320px) {
+  .dialogPicture {
+    .MuiDialog-paperWidthSm-246.MuiDialog-paperScrollBody-244 {
+      margin: 24px;
+    }
+  }
   .media-card {
     width: 100%;
   }
@@ -212,6 +236,6 @@ body {
     width: 300px !important;
   }
   .pictureProfil {
-    height: 150px;
+    height: 100px;
   }
 }
