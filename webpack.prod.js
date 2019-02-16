@@ -31,7 +31,6 @@ module.exports = {
     plugins: [
         new HtmlWebpackPlugin({
             template: './src/public/index.html',
-            jsExtension: '.gz',
         }),
         new webpack.DefinePlugin({ // <-- key to reducing React's size
             'process.env': {
@@ -40,7 +39,7 @@ module.exports = {
         }),
         new webpack.optimize.AggressiveMergingPlugin(),
         new CompressionPlugin({
-            filename: "[path].gz[query]",
+            filename: "[path]",
             algorithm: "gzip",
             test: /\.js$|\.css$|\.html$/,
             threshold: 10240,
