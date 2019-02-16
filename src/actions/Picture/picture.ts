@@ -59,7 +59,6 @@ export function getAllPicturesSortByDate(pageNumber: number, pictures: Picture[]
                 });
             })
             .catch(function (error) {
-                console.log(error);
                 dispatch( {
                     type: ActionTypes.ERROR,
                     payload: {
@@ -110,7 +109,6 @@ export function getUserForPicture(pictures: Picture[]): any {
             if (axios.isCancel(error))
                 stop = true;
         });
-        console.log(users);
         pictures.map(function (picture : Picture) {
             for (let i = 0; i < users.length && !stop; i++) {
                 if (!picture.user && users[i].id == picture.userId) {

@@ -17,7 +17,6 @@ interface State {
 class Profil extends React.Component<Props,State> {
     constructor(props : Props) {
         super(props);
-        console.log(this.props.match.params.id);
         this.state = {
             isEditingProfil: false,
             slideIndex:0,
@@ -70,10 +69,10 @@ class Profil extends React.Component<Props,State> {
         });
     };
 
-    getPrettyDate() {
-        let date = new Date(Number(this.props.user.registrationDate));
+    getPrettyDate() : string {
+        let date : Date = new Date(Number(this.props.user.registrationDate));
 
-        let monthNames = [
+        let monthNames : string[] = [
             "Janvier", "Fevrier", "Mars",
             "Avril", "Mai", "Juin", "Juillet",
             "Aout", "Septembre", "Octobre",

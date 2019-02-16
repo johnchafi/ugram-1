@@ -24,7 +24,6 @@ export function editUser(user: User) : any {
             return dispatch(profilData(user.id));
         })
             .catch(function (error) {
-                console.log(JSON.stringify(error));
                 return (dispatch(errorStatus(error.response.status, error.response.data.message)));
             });
 

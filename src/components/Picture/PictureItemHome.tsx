@@ -19,6 +19,7 @@ import Picture from "../../models/Picture";
 import User from "../../models/User";
 import PictureItem from "../../containers/Picture/PictureItem";
 import Dialog from "@material-ui/core/Dialog";
+import Helper from "../../helper/helper";
 export interface Props{
     picture : Picture,
     user : User
@@ -66,30 +67,7 @@ class PictureItemHome extends React.Component<Props,State> {
     handleOpenEdit = event => {
         this.setState({open: true});
     };
-    getElapsedTime(date) : string {
-        let today = new Date();
-        let diffMs = (date.getTime() - today.getTime());
-        let diffDays = Math.floor(diffMs / 86400000);
 
-        if (diffDays < 1) {
-            let hours = Math.round(Math.abs(today.getTime() - date.getTime()) / 36e5);
-            if (hours < 1) {
-                let diffMins = Math.abs(Math.round(((diffMs % 86400000) % 3600000) / 60000));
-                if (diffMins < 2)
-                    return diffMins + " minute";
-                return diffMins + " minutes";
-            }
-            else if (hours < 2)
-                return hours + " heure";
-            else
-                return hours + " heures";
-        }
-        else {
-            if (diffDays < 2)
-                return diffDays + " jour";
-            return diffDays + " jours";
-        }
-    }
 
     render() {
         return (
@@ -124,7 +102,7 @@ class PictureItemHome extends React.Component<Props,State> {
                             )}
                         </CardActions>
                         <CardActions className={"action date"} disableActionSpacing>
-                            {"Il y a " + this.getElapsedTime(new Date(Number(this.props.picture.createdDate)))}
+                            {"Il y a " + Helper.getElapsedTime(new Date(Number(this.props.picture.createdDate)))}
                         </CardActions>
                     </Grid>
                 </Card>

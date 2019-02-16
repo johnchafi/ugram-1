@@ -41,7 +41,6 @@ class Home extends React.Component<Props,State> {
     trackScrolling = () => {
         const wrappedElement = document.getElementById('app');
         if (this.isBottom(wrappedElement)) {
-            console.log('header bottom reached');
             this.props.getPicturesByDate(this.props.pageNumber, this.props.pictures);
             document.removeEventListener('scroll', this.trackScrolling);
         }
