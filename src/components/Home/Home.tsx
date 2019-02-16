@@ -49,7 +49,7 @@ class Home extends React.Component<Props,State> {
 
     render() {
         return (
-            <Grid  container spacing={24} direction="column" alignItems="center"  className="div-home">
+            <Grid  container direction="column" alignItems="center"  className="div-home">
                 {this.state.isLoading && <CircularProgress />}
                 { !this.state.isLoading && <PictureList isHome={true}/>}
             </Grid>

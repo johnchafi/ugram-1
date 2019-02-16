@@ -113,10 +113,10 @@ class Profil extends React.Component<Props,State> {
                     </Grid>
 
                     <Tabs value={this.state.slideIndex} centered onChange={this.handleChangeTabs}>
-                        <Tab label="Posts" icon={<Icon>grid_on_outlined</Icon>} />
-                        <Tab label="Upload" icon={<Icon>cloud_upload</Icon>} />
-                        <Tab label="Saved" icon={<Icon>save</Icon>} />
-                        <Tab label="Tagged" icon={<Icon>bookmark_border_outlined</Icon>} />
+                        <Tab label="Publications" icon={<Icon className="tab-profil">grid_on_outlined</Icon>} />
+                        <Tab label="Téleverser" icon={<Icon className="tab-profil">cloud_upload</Icon>} />
+                        <Tab label="Enregistrer" icon={<Icon className="tab-profil">save</Icon>} />
+                        <Tab label="Identifications" icon={<Icon className="tab-profil">bookmark_border_outlined</Icon>} />
                     </Tabs>
                     {this.state.slideIndex === 0 &&
                     <Grid container spacing={8} >
