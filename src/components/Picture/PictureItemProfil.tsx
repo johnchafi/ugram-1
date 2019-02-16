@@ -31,12 +31,10 @@ class PictureItemProfil extends React.Component<Props,State> {
     }
 
     handleCloseEdit = event => {
-        console.log("je passe la")
         this.setState({open: false});
     };
 
     handleOpenEdit = event => {
-        console.log("je passe la bas")
         this.setState({open: true});
     };
 
