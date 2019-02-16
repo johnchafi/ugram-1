@@ -84,59 +84,57 @@ class Profil extends React.Component<Props,State> {
     render(): React.ReactNode {
         return (
             <React.Fragment>
-                <div style={{maxWidth:935 , margin:"auto"}}>
-                    <Grid container direction="row" justify="center" alignItems="center" className={"ProfilHeader"}>
-                        <Grid item xs={4}>
-                            <Avatar style={{ margin: 'auto' }} className="avatar" src={this.props.user && this.props.user.pictureUrl}/>
-                        </Grid>
-                        <Grid item xs={8}>
-                            <Grid container alignItems="center">
-                                <Typography component="h1" variant="h4">
-                                    {this.props.user && this.props.user.id}
-                                </Typography>
-                                <EditProfil/>
-                            </Grid>
-                            <div style={{margin:20}}>
-                                <Grid container spacing={40}>
-                                    <Typography variant="subtitle1">
-                                        <b>{this.props.totalEntries}</b> posts
-                                    </Typography>
-                                </Grid>
-                            </div>
-                            <Typography variant="subtitle2">
-                                {this.props.user && this.props.user.firstName + " " + this.props.user.lastName}
-                            </Typography>
-                            <Typography className={"el"} variant="overline">Inscrit depuis le {this.props.user && this.getPrettyDate()}</Typography>
-                            <Typography className={"el"} variant="overline">Email : {this.props.user && this.props.user.email}</Typography>
-                        </Grid>
+                <Grid container direction="row" justify="center" alignItems="center" className={"ProfilHeader"}>
+                    <Grid item xs={4}>
+                        <Avatar style={{ margin: 'auto' }} className="avatar" src={this.props.user && this.props.user.pictureUrl}/>
                     </Grid>
+                    <Grid item xs={8}>
+                        <Grid container alignItems="center">
+                            <Typography component="h1" variant="h4">
+                                {this.props.user && this.props.user.id}
+                            </Typography>
+                            <EditProfil/>
+                        </Grid>
+                        <div style={{margin:20}}>
+                            <Grid container spacing={40}>
+                                <Typography variant="subtitle1">
+                                    <b>{this.props.totalEntries}</b> posts
+                                </Typography>
+                            </Grid>
+                        </div>
+                        <Typography variant="subtitle2">
+                            {this.props.user && this.props.user.firstName + " " + this.props.user.lastName}
+                        </Typography>
+                        <Typography className={"el"} variant="overline">Inscrit depuis le {this.props.user && this.getPrettyDate()}</Typography>
+                        <Typography className={"el"} variant="overline">Email : {this.props.user && this.props.user.email}</Typography>
+                    </Grid>
+                </Grid>
 
-                    <Tabs className={"tabsContainer"} value={this.state.slideIndex} centered onChange={this.handleChangeTabs}>
-                        <Tab label="Publications" icon={<Icon className="tab-profil">grid_on_outlined</Icon>} />
-                        <Tab label="Téleverser" icon={<Icon className="tab-profil">cloud_upload</Icon>} />
-                        <Tab label="Enregistrer" icon={<Icon className="tab-profil">save</Icon>} />
-                        <Tab label="Identifications" icon={<Icon className="tab-profil">bookmark_border_outlined</Icon>} />
-                    </Tabs>
-                    {this.state.slideIndex === 0 &&
-                    <Grid container spacing={8} >
-                        <PictureList isHome={false}/>
-                    </Grid>}
-                    {this.state.slideIndex === 1 &&
-                    <Grid container direction="row" justify="center">
-                        <Upload />
-                    </Grid>}
-                    {this.state.slideIndex === 2 &&
-                    <Grid container direction="row" justify="center">
-                        SAVED
-                    </Grid>}
-                    {this.state.slideIndex === 3 &&
-                    <Grid container direction="row" justify="center">
-                        TAGGED
-                    </Grid>}
-                    <Snackbar anchorOrigin={{vertical: 'bottom', horizontal: 'left',}} open={this.props.open} autoHideDuration={6000} onClose={this.handleClose}>
-                        <MySnackbarContentWrapper onClose={this.handleClose} variant={this.props.variant} message={this.props.message}/>
-                    </Snackbar>
-                </div>
+                <Tabs className={"tabsContainer"} value={this.state.slideIndex} centered onChange={this.handleChangeTabs}>
+                    <Tab label="Publications" icon={<Icon className="tab-profil">grid_on_outlined</Icon>} />
+                    <Tab label="Téleverser" icon={<Icon className="tab-profil">cloud_upload</Icon>} />
+                    <Tab label="Enregistrer" icon={<Icon className="tab-profil">save</Icon>} />
+                    <Tab label="Identifications" icon={<Icon className="tab-profil">bookmark_border_outlined</Icon>} />
+                </Tabs>
+                {this.state.slideIndex === 0 &&
+                <Grid container spacing={8} style={{maxWidth:"100%", margin:0}}>
+                    <PictureList isHome={false}/>
+                </Grid>}
+                {this.state.slideIndex === 1 &&
+                <Grid container direction="row" justify="center">
+                    <Upload />
+                </Grid>}
+                {this.state.slideIndex === 2 &&
+                <Grid container direction="row" justify="center">
+                    SAVED
+                </Grid>}
+                {this.state.slideIndex === 3 &&
+                <Grid container direction="row" justify="center">
+                    TAGGED
+                </Grid>}
+                <Snackbar anchorOrigin={{vertical: 'bottom', horizontal: 'left',}} open={this.props.open} autoHideDuration={6000} onClose={this.handleClose}>
+                    <MySnackbarContentWrapper onClose={this.handleClose} variant={this.props.variant} message={this.props.message}/>
+                </Snackbar>
             </React.Fragment>
         );
     }
