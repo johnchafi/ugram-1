@@ -4,7 +4,7 @@ Création d'un instagram like
 
 ## Getting Started
 
-Ces instructions permettront de lancer le projet ugram-team2 sans problème.
+Ces instructions permettront de lancer le projet ugram-team2.
 
 ### Prerequisites - Windows
 
