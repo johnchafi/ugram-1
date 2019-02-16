@@ -4,17 +4,7 @@ import CardHeader from '@material-ui/core/CardHeader';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import {Link} from 'react-router-dom';
-import {
-    Avatar,
-    CardActions,
-    CircularProgress,
-    createStyles,
-    LinearProgress,
-    Icon,
-    Theme,
-    WithStyles,
-    withStyles
-} from "@material-ui/core";
+import {Avatar, CardActions, CircularProgress, LinearProgress, Icon} from "@material-ui/core";
 import Picture from "../../models/Picture";
 import User from "../../models/User";
 import PictureItem from "../../containers/Picture/PictureItem";
