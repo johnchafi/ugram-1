@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-import {Avatar, Button, Grid, Icon, Snackbar, Tabs, Typography} from "@material-ui/core";
+import {Avatar, Grid, Icon, Snackbar, Tabs, Typography} from "@material-ui/core";
 import MySnackbarContentWrapper from "../../view-components/MySnackBarContentWrapper";
 import PictureList from "../../containers/Picture/PictureList";
 import {Tab} from "@material-ui/core";
@@ -33,6 +33,7 @@ class Profil extends React.Component<Props,State> {
     componentWillUnmount() {
         this.props.reset();
         document.removeEventListener('scroll', this.trackScrolling);
+        this.props.closeMessage();
     }
 
     isBottomProfil(el) {

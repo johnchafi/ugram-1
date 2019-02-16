@@ -3,12 +3,9 @@ import Picture from "../../models/Picture";
 import {
     Button,
     createStyles,
-    FormControl,
-    Grid,
-    Modal, Popover,
+    Grid, Popover,
     TextField,
     Theme,
-    Typography,
     WithStyles,
     withStyles
 } from "@material-ui/core";
@@ -173,7 +170,7 @@ class EditPictureItem extends React.Component<Props,State> {
                             <TextField label="Mentions"  margin="normal" defaultValue={this.state.picture.mentions.join(" ")} onChange={(e) => this.handleChangeMention(e)}/>
                         </Grid>
                         <DialogActions>
-                            <Button color="primary" variant="contained" onClick={this.handleEditPicture} >Sauvegarder
+                            <Button  variant="outlined" onClick={this.handleEditPicture} >Sauvegarder
                             </Button>
                         </DialogActions>
                     </DialogContent>

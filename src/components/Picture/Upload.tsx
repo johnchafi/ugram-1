@@ -159,7 +159,7 @@ class Upload extends React.Component<Props,State> {
                             }
                         </Grid>
                         <Grid container direction="row" justify="center" alignItems="center">
-                            <Button color="primary" variant="contained" onClick={this.handleUploadPicture} >Valider</Button>
+                            <Button variant="outlined" onClick={this.handleUploadPicture} >Valider</Button>
                         </Grid>
                     </Grid>
                     <Grid container direction="row" justify="center" alignItems="center">
