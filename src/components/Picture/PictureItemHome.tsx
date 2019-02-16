@@ -20,6 +20,7 @@ import Picture from "../../models/Picture";
 import User from "../../models/User";
 import PictureItem from "../../containers/Picture/PictureItem";
 import Dialog from "@material-ui/core/Dialog";
+import Icon from "@material-ui/core/Icon";
 export interface Props extends WithStyles<typeof styles>{
     picture : Picture,
     user : User
@@ -103,6 +104,30 @@ class PictureItemHome extends React.Component<Props,State> {
     handleOpenEdit = event => {
         this.setState({open: true});
     };
+    getElapsedTime(date) : string {
+        let today = new Date();
+        let diffMs = (date.getTime() - today.getTime());
+        let diffDays = Math.floor(diffMs / 86400000);
+
+        if (diffDays < 1) {
+            let hours = Math.round(Math.abs(today.getTime() - date.getTime()) / 36e5);
+            if (hours < 1) {
+                let diffMins = Math.abs(Math.round(((diffMs % 86400000) % 3600000) / 60000));
+                if (diffMins < 2)
+                    return diffMins + " minutes";
+                return diffMins + " minute";
+            }
+            else if (hours < 2)
+                return hours + " heure";
+            else
+                return hours + " heures";
+        }
+        else {
+            if (diffDays < 2)
+                return diffDays + " jour";
+            return diffDays + " jours";
+        }
+    }
 
     render() {
         const {classes} = this.props;
@@ -111,18 +136,34 @@ class PictureItemHome extends React.Component<Props,State> {
                 <Card onClick={this.handleOpenEdit}>
                     <CardHeader className={classes.cardHeader} avatar={this.renderAvatar()}
                                 title={this.props.user && this.props.user.firstName + " " + this.props.user.lastName || <LinearProgress />}
-                                subheader={new Date(Number(this.props.picture.createdDate)).toDateString() + " - " + this.props.picture.description}
                     />
                     <img className="media-card" src={this.state.didLoad ? this.props.picture.url : "https://via.placeholder.com/500/f5f5f5"} alt={this.props.picture.description} onLoad={this.onLoad}/>
                     <CardActions className={classes.actions} disableActionSpacing>
-                        <IconButton aria-label="Add to favorites">
-                            <FavoriteIcon />
+                        <IconButton aria-label="Ajouter aux favoris">
+                            <Icon>favorite_border</Icon>
                         </IconButton>
-                        <Grid item xs zeroMinWidth>
-                            <Typography className={"subtext"} variant="overline">
-                                {this.props.picture.mentions.join(" ") + " // " + this.props.picture.tags.join(" #")}
-                            </Typography>
-                        </Grid>
+                        <IconButton aria-label="Commenter">
+                            <Icon>chat_bubble_outline</Icon>
+                        </IconButton>
+                        <IconButton aria-label="Partager">
+                            <Icon>share_outline</Icon>
+                        </IconButton>
+                    </CardActions>
+                    <CardActions className={classes.actions} disableActionSpacing>
+                        {this.props.picture.user && this.props.picture.user.id + " " + this.props.picture.description}
+                    </CardActions>
+                    <CardActions className={classes.actions} disableActionSpacing>
+                        {this.props.picture.tags.map((item, key) =>
+                           "#" + item + " "
+                        )}
+                    </CardActions>
+                    <CardActions className={classes.actions} disableActionSpacing>
+                        {this.props.picture.mentions.map((item, key) =>
+                            "#" + item + " "
+                        )}
+                    </CardActions>
+                    <CardActions className={classes.actions} disableActionSpacing>
+                        {"Il y a " + this.getElapsedTime(new Date(Number(this.props.picture.createdDate)))}
                     </CardActions>
                 </Card>
                 <Dialog onClose={this.handleCloseEdit} scroll="body" open={this.state.open}>
