@@ -27,7 +27,7 @@ class NavBar extends React.Component<Props,State> {
     render() {
         return (
             <div>
-                <AppBar position="sticky" style={{backgroundColor: "#ffffff", borderBottom: "1px solid rgba(0,0,0,.0975)"}} elevation={0}>
+                <AppBar position="fixed" style={{backgroundColor: "#ffffff", borderBottom: "1px solid rgba(0,0,0,.0975)"}} elevation={0}>
                     <Toolbar>
                         <Grid container alignItems="center">
                             <Grid item xs>

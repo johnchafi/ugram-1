@@ -66,8 +66,16 @@ body {
   outline: none;
 }
 
+@media screen and (max-width: 640px){
+  .div-home {
+    padding-top: 0;
+  }
+
+}
+
 .card {
   width: 100%;
+  margin-bottom: 20px !important;
   padding: auto;
 }
 
@@ -153,6 +161,13 @@ body {
 
 body {
   background-color: #fafafa;
+  padding-top: 65px;
+}
+
+@media screen and (max-width: 598px) {
+ body {
+   padding-top: 57px;
+ }
 }
 
 
