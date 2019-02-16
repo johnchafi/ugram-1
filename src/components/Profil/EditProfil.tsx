@@ -1,16 +1,8 @@
 import * as React from 'react'
 import {
     Button,
-    createStyles,
-    Divider,
-    FormControl,
-    Grid, Icon,
-    Modal,
     TextField,
-    Theme,
     Typography,
-    WithStyles,
-    withStyles
 } from "@material-ui/core";
 import User from "../../models/User";
 import SettingIcon from '@material-ui/icons/Settings';
@@ -137,9 +129,9 @@ class EditProfil extends React.Component<Props,State> {
     render() {
         return (
             <div>
-                <Button style={{marginLeft: 10 }} onClick={this.handleEditingProfil}   disableRipple>
+                <IconButton  style={{marginLeft: 10 }} onClick={this.handleEditingProfil}   disableRipple>
                     <SettingIcon/>
-                </Button>
+                </IconButton>
                 <Dialog fullScreen open={this.state.open} onClose={this.close}>
                     <AppBar position="relative" color="default" elevation={0}>
                         <Toolbar>
@@ -149,7 +141,7 @@ class EditProfil extends React.Component<Props,State> {
                             <Typography variant="h6" color="inherit" style={{flex:1}}>
                                 Mon profil
                             </Typography>
-                            <Button color="primary" variant="contained" onClick={this.handleChangeProfil} >Sauvegarder
+                            <Button variant="outlined" onClick={this.handleChangeProfil} >Sauvegarder
                             </Button>
                         </Toolbar>
                     </AppBar>
