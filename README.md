@@ -40,7 +40,7 @@ npm start
 
 ### Deploiement Automatique
 * [Travis](https://travis-ci.com/) - Intégration continue
-Travis s'occupe automatiquement de deployer sur le bucket s3 lorsque les tests unitaires sont correct.
+* Travis s'occupe automatiquement de deployer sur le bucket s3 lorsque les tests unitaires sont correct.
 
 ## Versioning
 
