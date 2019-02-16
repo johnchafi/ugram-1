@@ -95,9 +95,7 @@ class PictureItemHome extends React.Component<Props,State> {
         return (
             <Grid item md={12} lg={12} xs={12} className="card">
                 <Card onClick={this.handleOpenEdit}>
-                    <CardHeader className="cardheader" avatar={this.renderAvatar()}
-                                title={this.props.user && this.props.user.firstName + " " + this.props.user.lastName || <LinearProgress />}
-                    />
+                    <CardHeader className="cardheader" avatar={this.renderAvatar()} title={this.props.user && this.props.user.firstName + " " + this.props.user.lastName || <LinearProgress />}/>
                     <img className="media-card" src={this.state.didLoad ? this.props.picture.url : "https://via.placeholder.com/500/f5f5f5"} alt={this.props.picture.description} onLoad={this.onLoad}/>
                     <CardActions className={"actions"} disableActionSpacing>
                         <IconButton aria-label="Ajouter aux favoris">
