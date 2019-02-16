@@ -95,39 +95,41 @@ class PictureItemHome extends React.Component<Props,State> {
         return (
             <Grid item md={12} lg={12} xs={12} className="card">
                 <Card onClick={this.handleOpenEdit} className={"container-picture"}>
-                    <CardHeader className="cardheader" avatar={this.renderAvatar()} title={this.props.user && this.props.user.firstName + " " + this.props.user.lastName || <LinearProgress />}/>
+                    <CardHeader  className="cardheader" avatar={this.renderAvatar()} title={this.props.user && this.props.user.firstName + " " + this.props.user.lastName || <LinearProgress />}/>
                     <img className="media-card" src={this.state.didLoad ? this.props.picture.url : "https://via.placeholder.com/500/f5f5f5"} alt={this.props.picture.description} onLoad={this.onLoad}/>
-                    <CardActions className={"icon-header"} disableActionSpacing>
-                        <IconButton aria-label="Ajouter aux favoris">
-                            <Icon>favorite_border</Icon>
-                        </IconButton>
-                        <IconButton aria-label="Commenter">
-                            <Icon>chat_bubble_outline</Icon>
-                        </IconButton>
-                        <IconButton aria-label="Partager">
-                            <Icon>share_outline</Icon>
-                        </IconButton>
-                    </CardActions>
-                    <CardActions className={"action header"} disableActionSpacing>
-                        <span>{this.props.picture.user && this.props.picture.user.id}</span>
-                        {"\u00a0" + this.props.picture.description}
-                    </CardActions>
-                    <CardActions className={"action hashtags"} disableActionSpacing>
-                        {this.props.picture.tags.map((item) =>
-                           "#" + item + " "
-                        )}
-                    </CardActions>
-                    <CardActions className={"action mentions"} disableActionSpacing>
-                        {this.props.picture.mentions.map((item) =>
-                            "@" + item + " "
-                        )}
-                    </CardActions>
-                    <CardActions className={"action date"} disableActionSpacing>
-                        {"Il y a " + this.getElapsedTime(new Date(Number(this.props.picture.createdDate)))}
-                    </CardActions>
+                    <Grid className={"container"}>
+                        <CardActions className={"icon-header"} disableActionSpacing>
+                            <IconButton aria-label="Ajouter aux favoris">
+                                <Icon>favorite_border</Icon>
+                            </IconButton>
+                            <IconButton aria-label="Commenter">
+                                <Icon>chat_bubble_outline</Icon>
+                            </IconButton>
+                            <IconButton aria-label="Partager">
+                                <Icon>share_outline</Icon>
+                            </IconButton>
+                        </CardActions>
+                        <CardActions className={"action header"} disableActionSpacing>
+                            <span>{this.props.picture.user && this.props.picture.user.id}</span>
+                            {"\u00a0" + this.props.picture.description}
+                        </CardActions>
+                        <CardActions className={"action hashtags"} disableActionSpacing>
+                            {this.props.picture.tags.map((item) =>
+                                "#" + item + " "
+                            )}
+                        </CardActions>
+                        <CardActions className={"action mentions"} disableActionSpacing>
+                            {this.props.picture.mentions.map((item) =>
+                                "@" + item + " "
+                            )}
+                        </CardActions>
+                        <CardActions className={"action date"} disableActionSpacing>
+                            {"Il y a " + this.getElapsedTime(new Date(Number(this.props.picture.createdDate)))}
+                        </CardActions>
+                    </Grid>
                 </Card>
                 <Dialog onClose={this.handleCloseEdit} scroll="body" open={this.state.open}>
-                        <PictureItem user={this.props.user} picture={this.props.picture} isHome={true}/>
+                    <PictureItem user={this.props.user} picture={this.props.picture} isHome={true}/>
                 </Dialog>
             </Grid>
         );

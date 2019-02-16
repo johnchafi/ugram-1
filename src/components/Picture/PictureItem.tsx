@@ -8,7 +8,7 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import {Link} from 'react-router-dom';
 import {
     Avatar,
-    CardActions, CircularProgress, createStyles, LinearProgress, WithStyles,
+    CardActions, CircularProgress, createStyles, Icon, LinearProgress, WithStyles,
     withStyles
 } from "@material-ui/core";
 import Picture from "../../models/Picture";
@@ -39,6 +39,32 @@ class PictureItem extends React.Component<Props,State> {
         super(props);
     }
 
+    getElapsedTime(date) : string {
+        let today = new Date();
+        let diffMs = (date.getTime() - today.getTime());
+        let diffDays = Math.floor(diffMs / 86400000);
+
+        if (diffDays < 1) {
+            let hours = Math.round(Math.abs(today.getTime() - date.getTime()) / 36e5);
+            if (hours < 1) {
+                let diffMins = Math.abs(Math.round(((diffMs % 86400000) % 3600000) / 60000));
+                if (diffMins < 2)
+                    return diffMins + " minute";
+                return diffMins + " minutes";
+            }
+            else if (hours < 2)
+                return hours + " heure";
+            else
+                return hours + " heures";
+        }
+        else {
+            if (diffDays < 2)
+                return diffDays + " jour";
+            return diffDays + " jours";
+        }
+    }
+
+
     renderAvatar()
     {
         if (this.props.user != null && this.props.user.pictureUrl)
@@ -50,29 +76,41 @@ class PictureItem extends React.Component<Props,State> {
     }
 
     render() {
-        const {classes} = this.props;
         return (
-            <Grid item className={"Picture"}>
-                <Card className="card">
-                    <CardHeader avatar={this.renderAvatar()}
-                                action={ !this.props.isHome &&
-                                <EditPictureItem picture={this.props.picture}/>
-                                }
-                                title={this.props.user && this.props.user.firstName + " " + this.props.user.lastName || <LinearProgress />}
-                                subheader={new Date(Number(this.props.picture.createdDate)).toDateString() + " - " + this.props.picture.description}
-                    />
-                    <img className="media-card" src={this.props.picture.url|| "//"} alt={this.props.picture.description}/>
-                    <CardActions className={classes.actions} disableActionSpacing>
-                        <IconButton aria-label="Add to favorites">
-                            <FavoriteIcon />
-                        </IconButton>
-                        <Typography className={"subtext"} variant="overline">
-                            {this.props.picture.mentions.join(" ") + " // " + this.props.picture.tags.join(" #")}
-                        </Typography>
-                    </CardActions>
+            <Card className={"container-picture"}>
+                <CardHeader className={"item"} avatar={this.renderAvatar()} title={this.props.user && this.props.user.firstName + " " + this.props.user.lastName || <LinearProgress />}/>
+                <img className="media-card" src={this.props.picture.url} alt={this.props.picture.description}/>
+                <Grid className={"container"}>
+                        <CardActions className={"icon-header"} disableActionSpacing>
+                            <IconButton aria-label="Ajouter aux favoris">
+                                <Icon>favorite_border</Icon>
+                            </IconButton>
+                            <IconButton aria-label="Commenter">
+                                <Icon>chat_bubble_outline</Icon>
+                            </IconButton>
+                            <IconButton aria-label="Partager">
+                                <Icon>share_outline</Icon>
+                            </IconButton>
+                        </CardActions>
+                        <CardActions className={"action header"} disableActionSpacing>
+                            <span>{this.props.picture.user && this.props.picture.user.id}</span>
+                            {"\u00a0" + this.props.picture.description}
+                        </CardActions>
+                        <CardActions className={"action hashtags"} disableActionSpacing>
+                            {this.props.picture.tags.map((item) =>
+                                "#" + item + " "
+                            )}
+                        </CardActions>
+                        <CardActions className={"action mentions"} disableActionSpacing>
+                            {this.props.picture.mentions.map((item) =>
+                                "@" + item + " "
+                            )}
+                        </CardActions>
+                        <CardActions className={"action date"} disableActionSpacing>
+                            {"Il y a " + this.getElapsedTime(new Date(Number(this.props.picture.createdDate)))}
+                        </CardActions>
+                    </Grid>
                 </Card>
-            </Grid>
-
         );
     }
 }
