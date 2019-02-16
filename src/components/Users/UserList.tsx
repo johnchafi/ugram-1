@@ -25,18 +25,11 @@ class UserList extends React.Component<Props,State> {
     render() {
         const{users} = this.props;
         return (
-            <div>
-                <Grid
-                    container
-                    spacing={24}
-                    direction="row"
-                    alignItems="center"
-                >
-                        {users.map(function(user, i){
-                            return <UserItem user={user} key={i}/>
-                        })}
-                </Grid>
-            </div>
+            <Grid className={"listUsersContainer"} container spacing={24} direction="row" alignItems="center">
+                {users.map(function(user, i){
+                    return <UserItem user={user} key={i}/>
+                })}
+            </Grid>
         );
     }
 }
