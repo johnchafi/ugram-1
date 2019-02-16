@@ -2,11 +2,11 @@
 
 Création d'un instagram like
 
-## Getting Started
+## Démarrage
 
 Ces instructions permettront de lancer le projet ugram-team2.
 
-### Prerequisites - Windows
+### Pré-requis - Windows
 
 Vous avez besoin d'un environnement possédant nodejs
 
@@ -38,13 +38,15 @@ npm start
 * [Typescript](https://www.typescriptlang.org) - Typescript
 * [Redux](https://redux.js.org) - Gestion des états
 
-
+### Deploiement Automatique
+* [Travis](https://travis-ci.com/) - Intégration continue
+Travis s'occupe automatiquement de deployer sur le bucket s3 lorsque les tests unitaires sont correct.
 
 ## Versioning
 
 Nous utilisons git tag pour le versionning. 
 
-## Authors
+## Auteur
 
 * **Arthur Klein** 
 * **Sébastien Bruere** 
