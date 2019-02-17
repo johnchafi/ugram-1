@@ -211,10 +211,10 @@ body {
 
 @media screen and (max-width: 640px) {
   .tabsContainer {
-    .MuiTab-labelIcon-235 {
+    button {
       min-height: 48px;
     }
-    .MuiTab-labelContainer-243, .jss244 {
+    .tab-profil + span, .jss244 {
       display: none;
     }
   }
