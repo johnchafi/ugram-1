@@ -1,6 +1,5 @@
 # Documentation
 
-
 ## Home
 Regroupe toutes les photos publiées ordonnées par date (tout utilisateur confondu) 
 
@@ -26,7 +25,7 @@ Sur ce profil est regroupé:
 Lorsqu'un utilisateur téléverse une image il est possible:
 * D'ajouter une description
 * D'ajouter des mots-clés
-* D'indentifier des personnes
+* D'identifier d'autres utilisateurs
 
 
 ## Administration
