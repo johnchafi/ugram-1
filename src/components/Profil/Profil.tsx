@@ -118,7 +118,7 @@ class Profil extends React.Component<Props,State> {
                         <Tab label="Identifications" icon={<Icon className="tab-profil">bookmark_border_outlined</Icon>} />
                     </Tabs>
                     {this.state.slideIndex === 0 &&
-                    <Grid container spacing={8}>
+                    <Grid container>
                         <PictureList isHome={false}/>
                     </Grid>}
                     {this.state.slideIndex === 1 &&
