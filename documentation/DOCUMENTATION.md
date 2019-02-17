@@ -50,5 +50,5 @@ Si l'utilisateur connecté consulte une de ses images, il aura accès aux outils
 * Suppression de l'image
 ![Suppression Image](./img/suppression_image.png "Suppression Image")
 
-* Gestion de la description, des mots-clés et des indentifications:
+* Gestion de la description, des mots-clés et des identifications:
 ![Administration Image](./img/administration_image.png "Administration Image")
