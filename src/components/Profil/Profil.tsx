@@ -85,7 +85,7 @@ class Profil extends React.Component<Props,State> {
         return (
             <React.Fragment>
                 <div style={{maxWidth:935 , margin:"auto"}}>
-                    <Grid container direction="row" justify="center" alignItems="center" className={"ProfilHeader"}>
+                    <Grid container direction="row" justify="center" alignItems="center" className="ProfilHeader">
                         <Grid item xs={4}>
                             <Avatar style={{ margin: 'auto' }} className="avatar" src={this.props.user && this.props.user.pictureUrl}/>
                         </Grid>
@@ -111,14 +111,14 @@ class Profil extends React.Component<Props,State> {
                         </Grid>
                     </Grid>
 
-                    <Tabs value={this.state.slideIndex} centered onChange={this.handleChangeTabs}>
+                    <Tabs className={"tabsContainer"} value={this.state.slideIndex} centered onChange={this.handleChangeTabs}>
                         <Tab label="Publications" icon={<Icon className="tab-profil">grid_on_outlined</Icon>} />
                         <Tab label="Téleverser" icon={<Icon className="tab-profil">cloud_upload</Icon>} />
                         <Tab label="Enregistrer" icon={<Icon className="tab-profil">save</Icon>} />
                         <Tab label="Identifications" icon={<Icon className="tab-profil">bookmark_border_outlined</Icon>} />
                     </Tabs>
                     {this.state.slideIndex === 0 &&
-                    <Grid container spacing={8} >
+                    <Grid container spacing={8}>
                         <PictureList isHome={false}/>
                     </Grid>}
                     {this.state.slideIndex === 1 &&

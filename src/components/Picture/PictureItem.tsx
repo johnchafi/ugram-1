@@ -4,33 +4,20 @@ import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
-import FavoriteIcon from '@material-ui/icons/Favorite';
 import {Link} from 'react-router-dom';
-import {
-    Avatar,
-    CardActions, CircularProgress, createStyles, Icon, LinearProgress, WithStyles,
-    withStyles
-} from "@material-ui/core";
+import {Avatar, CardActions, CircularProgress, Icon, LinearProgress} from "@material-ui/core";
 import Picture from "../../models/Picture";
 import User from "../../models/User";
 import EditPictureItem from "../../containers/Picture/EditPictureItem";
 import Helper from "../../helper/helper";
 
-export interface Props extends WithStyles<typeof styles>{
+export interface Props{
     picture : Picture,
     user : User
     isHome:boolean
 }
 interface State {
 }
-
-
-const styles = () => createStyles({
-    actions: {
-        display: 'flex',
-    },
-});
 
 
 
@@ -70,8 +57,8 @@ class PictureItem extends React.Component<Props,State> {
                         </IconButton>
                     </CardActions>
                     <CardActions className={"action header"} disableActionSpacing>
-                        <span>{this.props.user && this.props.user.id}</span>
-                        {"\u00a0" + this.props.picture.description}
+                        <p><span>{this.props.user && this.props.user.id}</span>
+                            {"\u00a0" + this.props.picture.description}</p>
                     </CardActions>
                     <CardActions className={"action hashtags"} disableActionSpacing>
                         {this.props.picture.tags.map((item) =>
@@ -91,4 +78,4 @@ class PictureItem extends React.Component<Props,State> {
         );
     }
 }
-export default withStyles(styles)(PictureItem);
+export default (PictureItem);

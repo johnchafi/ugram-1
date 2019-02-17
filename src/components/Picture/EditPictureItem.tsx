@@ -1,14 +1,6 @@
 import * as React from 'react'
 import Picture from "../../models/Picture";
-import {
-    Button,
-    createStyles,
-    Grid, Popover,
-    TextField,
-    Theme,
-    WithStyles,
-    withStyles
-} from "@material-ui/core";
+import {Button, Grid, Popover, TextField} from "@material-ui/core";
 import Icon from '@material-ui/core/Icon';
 import IconButton from '@material-ui/core/IconButton';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
@@ -18,35 +10,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
 
-const styles = (theme: Theme) => createStyles({
-    paper: {
-        position: 'absolute',
-        width: theme.spacing.unit * 50,
-        backgroundColor: theme.palette.background.paper,
-        boxShadow: theme.shadows[5],
-        padding: theme.spacing.unit * 4,
-        outline: 'none',
-    },
-    card: {
-        minWidth: 500,
-    },
-    media: {
-        height: 0,
-        paddingTop: '100%', // 16:9
-    },
-    actions: {
-        display: 'flex',
-    },
-    typography: {
-        margin: theme.spacing.unit * 2,
-    },
-    expandOpen: {
-        transform: 'rotate(180deg)',
-    }
-});
-
-
-export interface Props extends WithStyles<typeof styles>{
+export interface Props{
     editPicture: (Picture) => any
     picture: Picture
     deletePicture : (string, number) => any
@@ -179,4 +143,4 @@ class EditPictureItem extends React.Component<Props,State> {
         );
     }
 }
-export default withStyles(styles)(EditPictureItem);
+export default (EditPictureItem);

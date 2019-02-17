@@ -4,17 +4,7 @@ import CardHeader from '@material-ui/core/CardHeader';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import {Link} from 'react-router-dom';
-import {
-    Avatar,
-    CardActions,
-    CircularProgress,
-    createStyles,
-    LinearProgress,
-    Icon,
-    Theme,
-    WithStyles,
-    withStyles
-} from "@material-ui/core";
+import {Avatar, CardActions, CircularProgress, LinearProgress, Icon} from "@material-ui/core";
 import Picture from "../../models/Picture";
 import User from "../../models/User";
 import PictureItem from "../../containers/Picture/PictureItem";
@@ -88,8 +78,8 @@ class PictureItemHome extends React.Component<Props,State> {
                             </IconButton>
                         </CardActions>
                         <CardActions className={"action header"} disableActionSpacing>
-                            <span>{this.props.picture.user && this.props.picture.user.id}</span>
-                            {"\u00a0" + this.props.picture.description}
+                            <p><span>{this.props.picture.user && this.props.picture.user.id}</span>
+                                {"\u00a0" + this.props.picture.description}</p>
                         </CardActions>
                         <CardActions className={"action hashtags"} disableActionSpacing>
                             {this.props.picture.tags.map((item) =>
@@ -106,7 +96,7 @@ class PictureItemHome extends React.Component<Props,State> {
                         </CardActions>
                     </Grid>
                 </Card>
-                <Dialog onClose={this.handleCloseEdit} scroll="body" open={this.state.open}>
+                <Dialog onClose={this.handleCloseEdit} scroll="body" open={this.state.open} className={"dialogPicture"}>
                     <PictureItem user={this.props.user} picture={this.props.picture} isHome={true}/>
                 </Dialog>
             </Grid>

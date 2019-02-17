@@ -5,7 +5,6 @@ import Picture from "../../models/Picture";
 import User from "../../models/User";
 import PictureItem from "../../containers/Picture/PictureItem";
 import Dialog from '@material-ui/core/Dialog';
-import {url} from "inspector";
 
 export interface Props{
     picture : Picture,
