@@ -1,36 +1,44 @@
 ﻿# Ugram-team2
 
-Création d'un instagram like
+Réalisation d'un "Instagram-like" réalisée en TypeScript et construite en React sous Redux
+
+[Documentation](./documentation/DOCUMENTATION.md)
 
 ## Démarrage
 
-Ces instructions permettront de lancer le projet ugram-team2.
+Ces instructions permettront de lancer le projet ugram-team2
 
-### Pré-requis - Windows
+### Pré-requis
 
-Vous avez besoin d'un environnement possédant nodejs
+Vérifiez que vous possèdez bien [npm](https://github.com/npm/cli) 
 
 ```
 npm -v
 ```
 
-### Installation - Windows
 
-La dépendance starter-pack-ugram-3102 demande sur windows les windows-build-tools.
+### Installation
+
+Cette étape télécharge les différentes dépendances nécessaires.
+
+#### Windows
+Pour pouvoir build native Node module sur Windows il faudra télécharger les [windows-build-tools](https://github.com/felixrieseberg/windows-build-tools/blob/master/README.md).
+
 ```
-npm install -g --productions windows-build-tools
+npm install --global --productions windows-build-tools
 ```
-### Installation - Linux/ Mac
+
+#### Linux/ Mac
 ```
 npm install
 ```
-### Deploiement - Windows / Linux / Mac
-Pour lancer le projet
+
+
+### Deploiement
 
 ```
 npm start
 ```
-
 
 ## Fait avec
 
@@ -39,12 +47,11 @@ npm start
 * [Redux](https://redux.js.org) - Gestion des états
 
 ### Deploiement Automatique
+
 * [Travis](https://travis-ci.com/) - Intégration continue
-* Travis s'occupe automatiquement de deployer sur le bucket s3 lorsque les tests unitaires sont correct.
 
-## Versioning
+Travis s'occupe automatiquement de deployer sur le bucket s3 lorsque les tests unitaires sont correct.
 
-Nous utilisons git tag pour le versionning. 
 
 ## Auteur
 
