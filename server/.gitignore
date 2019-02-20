@@ -48,6 +48,7 @@ jspm_packages
 
 # IDE
 .idea
+.vs
 
 *.class
 *.classpath
@@ -62,3 +63,6 @@ target
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+
+# NPM lock file
+package-lock.json

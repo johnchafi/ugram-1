@@ -1,25 +1,45 @@
+# Ugram-team2
 
-# node-starter
+Réalisation d'une API "Instagram-like" en NodeJS
 
-Le Node Starter Pack utilise [express](http://expressjs.com/) comme framework. Il offre un serveur roulant par défaut
-sur le port 3000. Il est également intégré avec le SDK de AWS, ainsi que [Bookshelf](http://bookshelfjs.org/) pour la
-communication avec la base de données et [Node Redis](http://redis.js.org/) pour la communication avec Redis.
-De plus, un exemple de projet de test est offert incluant [Mocha](https://mochajs.org/), [Chai](http://chaijs.com/) et [Istanbul](http://gotwarlost.github.io/istanbul/). Évidemment, vous devrez avoir Node 6.9.1 LTS (ou plus récent) d'installé sur votre ordinateur.
+[Lien vers la documentation](./documentation/DOCUMENTATION.md)
 
-Finalement, le logging est configuré pour utiliser AWS CloudWatch logs avec [Winston](https://github.com/lazywithclass/winston-cloudwatch).
+## Démarrage
 
-# Tutoriels recommandés
-- [Getting started with Bookshelf](https://www.sitepoint.com/getting-started-bookshelf-js/)
-- [Getting started with Express](https://expressjs.com/en/starter/installing.html)
+Ces instructions permettront de lancer le projet ugram-team2
 
-# Exécuter
+### Pré-requis
+
+Vérifiez bien que vous possédez [npm](https://github.com/npm/cli) 
+
+```
+npm -v
+```
+
+### Installation
+
+Cette étape télécharge les différentes dépendances nécessaires.
+
+#### Windows
+Pour pouvoir build native Node module sur Windows il faudra télécharger les [windows-build-tools](https://github.com/felixrieseberg/windows-build-tools/blob/master/README.md).
+
+```
+npm install --global --productions windows-build-tools
+```
+
+#### Linux/ Mac
+```
+npm install
+```
+
+## Déploiement
 
 Lancer la commande:
 ```sh
 npm start
 ```
 
-# Exécuter les tests
+## Tests unitaires
 
 Lancer la commande:
 ```sh
@@ -30,3 +50,27 @@ Pour afficher la couverture de test en détails, lancer la commande:
 ```sh
 npm run coverage
 ```
+
+### Déploiement Automatique
+
+* [Travis](https://travis-ci.com/) - Intégration continue
+
+Travis s'occupe automatiquement de déployer sur le bucket s3 lorsque les tests unitaires sont corrects.
+
+## Dépendances
+
+* [express](http://expressjs.com/) - Framework back
+* [Bookshelf](http://bookshelfjs.org/) - Communication base de données
+* [Node Redis](http://redis.js.org/) - Communication avec Redis
+* [Winston](https://github.com/lazywithclass/) - AWS Cloudwatch système de logs
+* [AWS SDK](https://aws.amazon.com/sdk-for-node-js/) - SDK pour AWS
+* [Mocha](https://mochajs.org/) - Tests unitaires
+* [Chai](http://chaijs.com/) - Tests unitaires
+* [Istanbul](http://gotwarlost.github.io/istanbul/) - Tests unitaires
+
+## Auteur
+
+* **Maxime Leroy**
+* **Henri Longle**
+* **Arthur Klein**
+* **Sébastien Bruere**
