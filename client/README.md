@@ -57,5 +57,4 @@ Travis s'occupe automatiquement de deployer sur le bucket s3 lorsque les tests u
 
 * **Arthur Klein** 
 * **Sébastien Bruere** 
-* **Henri Longle** 
 * **Maxime Leroy** 
