@@ -1,8 +1,21 @@
-const service = require('../services/users');
+//const service = require('../services/users');
+const UsersModel = require('../models/user');
 
 //  Gets all the users
 exports.getUsers = (req, res, next) => {
-    return res.send(service.getUsers());
+    UsersModel.get(function (err, contacts) {
+        if (err) {
+            res.json({
+                status: "error",
+                message: err,
+            });
+        }
+        res.json({
+            status: "success",
+            message: "Contacts retrieved successfully",
+            data: contacts
+        });
+    });
 };
 
 // Gets a specific user

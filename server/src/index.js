@@ -1,4 +1,5 @@
 const express = require('express');
+let mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const cors = require('cors');
@@ -8,6 +9,11 @@ const logger = require('./common/logger');
 const routes = require('./routes/routes');
 
 const port = process.env.PORT || 1337;
+
+
+
+// Gérer la connexion a MongoDB
+mongoose.connect('mongodb://ugram:2ZuyP9j4u2PDZqxt@ec2-3-16-169-246.us-east-2.compute.amazonaws.com:27017/ugram-db?authSource=admin', {useNewUrlParser: true}).catch((err) => console.log(err));
 
 const app = express();
 const corsOptions = {
