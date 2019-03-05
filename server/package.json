@@ -12,10 +12,12 @@
   "license": "MIT",
   "dependencies": {
     "aws-sdk": "^2.6.15",
+    "aws-serverless-express": "^3.3.5",
     "body-parser": "^1.15.2",
     "cors": "^2.8.1",
     "ejs": "^2.5.2",
     "express": "^4.14.0",
+    "mongoose": "^5.4.17",
     "morgan": "^1.7.0",
     "redis": "^2.6.3",
     "winston": "^2.3.0",

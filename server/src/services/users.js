@@ -1,9 +1,18 @@
 const logger = require('../common/logger')
 const AWS = require('aws-sdk');
 const s3 = new AWS.S3();
+const UserModel = require('../models/user');
 
 exports.getUsers = () => {
-    return 'This is a sample';
+    return UserModel.get(function(err, data) {
+            if (err) {
+                console.log("Error [" + err + "]");
+                return null;
+            } else {
+                return data;
+            }
+
+    });
 }
 
 exports.getUser = (userId) => {
