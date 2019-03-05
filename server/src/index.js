@@ -52,6 +52,6 @@ app.use(morgan('combined', {'stream': logger.stream}));
 
 app.use('/', routes);
 
-app.listen(port);
-
+//app.listen(port);
+module.exports = app;
 logger.info(`App started on port ${port}`)

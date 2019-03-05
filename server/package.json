@@ -12,6 +12,7 @@
   "license": "MIT",
   "dependencies": {
     "aws-sdk": "^2.6.15",
+    "aws-serverless-express": "^3.3.5",
     "body-parser": "^1.15.2",
     "cors": "^2.8.1",
     "ejs": "^2.5.2",
