@@ -4,9 +4,13 @@
   "description": "Instagram like API",
   "main": "index.js",
   "scripts": {
-    "start": "node src/index.js",
+    "start": "nodemon index",
+    "update": "claudia update",
     "test": "istanbul cover node_modules/mocha/bin/_mocha -- -u exports -R spec test/**/*.js",
     "coverage": "opn ./coverage/lcov-report/index.html"
+  },
+  "devServer": {
+    "historyApiFallback": true
   },
   "author": "Maxime Leroy & Henri Longle & Arthur Klein & Sebastien Bruere",
   "license": "MIT",
@@ -19,7 +23,10 @@
     "express": "^4.14.0",
     "mongoose": "^5.4.17",
     "morgan": "^1.7.0",
+    "nodemon": "^1.18.10",
     "redis": "^2.6.3",
+    "swagger-jsdoc": "^3.2.7",
+    "swagger-ui-dist": "^3.21.0",
     "winston": "^2.3.0",
     "winston-cloudwatch": "^1.7.0"
   },
