@@ -1,4 +1,1 @@
-language: java
-deploy:
-  provider: script
-  script: cd client
+before_script: cd client
