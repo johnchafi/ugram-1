@@ -7,8 +7,8 @@ const fs = require('fs');
 class apiDoc {
     constructor() {
         const swaggerDefinition = {
-            basePath: '/',
-            host: 'localhost:1337',
+            basePath: '/latest',
+            host: 'localhost',
             info: {
                 description: 'Api for ugram project',
                 title: 'UGRAM API',
@@ -22,7 +22,7 @@ class apiDoc {
         this.router = Router();
         this.routes();
         this.swaggerSpec = swaggerJSDoc(options);
-        this.indexContent = fs.readFileSync(`${pathToSwaggerUi}/index.html`).toString().replace('https://petstore.swagger.io/v2/swagger.json', 'http://localhost:1337/info');
+        this.indexContent = fs.readFileSync(`${pathToSwaggerUi}/index.html`).toString().replace('https://petstore.swagger.io/v2/swagger.json', 'https://pxpxqxb9ub.execute-api.us-east-2.amazonaws.com/latest/info');
     }
 
     routes() {
