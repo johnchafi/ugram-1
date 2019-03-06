@@ -44,7 +44,6 @@ app.use(morgan('combined', {'stream': logger.stream}));
 app.use('/api-doc', express.static(swaggerUiAssetPath));
 app.use('/', express.static(swaggerUiAssetPath));
 
-
 logger.info(`App started on port ${port}`)
 
 module.exports = app;

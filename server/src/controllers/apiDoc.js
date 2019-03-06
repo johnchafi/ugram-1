@@ -8,7 +8,7 @@ class apiDoc {
     constructor() {
         const swaggerDefinition = {
             basePath: '/latest',
-            host: 'localhost',
+            host: 'pxpxqxb9ub.execute-api.us-east-2.amazonaws.com',
             info: {
                 description: 'Api for ugram project',
                 title: 'UGRAM API',
