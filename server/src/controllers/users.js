@@ -50,29 +50,63 @@ const UsersModel = require('../models/user');
      */
 //  Gets all the users
 exports.getUsers = (req, res, next) => {
-    UsersModel.get(function (err, contacts) {
+    UsersModel.get(function (err, users) {
         if (err) {
+            res.status(500);
+            res.send("Internal error");
+        } else {
             res.json({
-                status: "error",
-                message: err,
+                users
             });
         }
-        res.json({
-            status: "success",
-            message: "Contacts retrieved successfully",
-            data: contacts
-        });
     });
 };
 
 // Gets a specific user
 exports.getUser = (req, res, next) => {
-    return res.send(service.getUser(req.params.userId));
+    UsersModel.findById(req.params.userId, function (err, user) {
+        if (err) {
+            res.status(400);
+            res.send("Unexisting user or missing parameter userId");
+        } else {
+            res.json({
+                user
+            });
+        }
+    });
 };
 
 // Edits the fields of a specific user
 exports.editUser = (req, res, next) => {
-    return res.send(service.editUser(req.params.userId, req.params.body));
+    UsersModel.findById(req.params.userId, function (err, user) {
+        //check auth
+        let auth = true;
+        if (!auth) {
+            res.status(401);
+            res.send("No authentication provided");
+        }
+        else {
+            if (err) {
+                res.status(400);
+                res.send("Unexisting user");
+            } else {
+                user.firstName = req.body.firstName;
+                user.lastName = req.body.lastName;
+                user.phoneNumber = req.body.phoneNumber;
+
+                //update user
+                user.save(function (err) {
+                    if (err) {
+                        res.status(400);
+                        res.send("Missing parameter");
+                    } else {
+                        res.status(201);
+                        res.send("Updated");
+                    }
+                });
+            }
+        }
+    });
 };
 
 // Gets the pictures of a user
