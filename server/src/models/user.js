@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 
 // Setup schema
 let usersSchema = mongoose.Schema({
+
         email: {
             type: String,
             required: true
@@ -20,8 +21,8 @@ let usersSchema = mongoose.Schema({
             default: "https://i.stack.imgur.com/l60Hf.png"
         },
         registrationDate: {
-            type: Date,
-            default: Date.now()
+            type: Number,
+            default: new Date().getTime()
         }
 });
 

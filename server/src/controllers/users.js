@@ -1,5 +1,6 @@
 //const service = require('../services/users');
 const UsersModel = require('../models/user');
+const TokensModel = require('../models/token');
 
     /**
      * @swagger
@@ -93,6 +94,7 @@ exports.editUser = (req, res, next) => {
                 user.firstName = req.body.firstName;
                 user.lastName = req.body.lastName;
                 user.phoneNumber = req.body.phoneNumber;
+                user.pictureUrl = req.body.user.pictureUrl ? req.body.user.pictureUrl : user.pictureUrl;
 
                 //update user
                 user.save(function (err) {
@@ -105,6 +107,41 @@ exports.editUser = (req, res, next) => {
                     }
                 });
             }
+        }
+    });
+};
+
+exports.createUser = (req, res, next) => {
+    // Create the user
+    let user = new UsersModel(
+        {
+            email : req.body.user.email,
+            firstName : req.body.user.firstName,
+            lastName : req.body.user.lastName,
+            phoneNumber : req.body.user.phoneNumber ? req.user.phoneNumber : "0"
+        });
+    let userId = user.id;
+
+    let token = new TokensModel({
+        value: req.body.token,
+        user : userId
+    });
+
+    user.save(function (err) {
+        if (err) {
+            res.status(400);
+            res.send("Missing parameters");
+        } else {
+            token.save(function (err) {
+                if (err) {
+                    user.remove();
+                    res.status(400);
+                    res.send("Missing parameters");
+                } else {
+                    res.status(201);
+                    res.send("Created");
+                }
+            })
         }
     });
 };
