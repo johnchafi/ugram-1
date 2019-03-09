@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 
 // Setup schema
 let usersSchema = mongoose.Schema({
-
         email: {
             type: String,
             required: true
