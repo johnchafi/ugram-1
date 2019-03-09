@@ -3,7 +3,7 @@ node_js:
   - node
 
 before_install: "cd client"
-before_deploy: "echo 'building and deleting dist file'; cd client ; npm run-script build ; rm -Rf dist/dist"
+before_deploy: "echo 'building and deleting dist file'; npm run-script build ; rm -Rf dist/dist"
 deploy:
   provider: s3
   skip_cleanup: true
@@ -11,7 +11,7 @@ deploy:
   secret_access_key:
     secure: MBETy8QauKQwiCPvbR2ujqC4QmbpkDMORhLFRPmh3xdJ/yh7w7tWpq2tcUhoFGlvLqnWXy65l3uRsE1UvdRc5WRhm0VYySPbaaBNhKIFybslQKTwMM1//1EkE95VavufoLYO51OD2c2yib2/Z/ZQ7WUANNQMof9CKxPS0yz/O77Wchh+POE3nsUU0uIJXm0Nsx+jMCzbl+TyQ8D3AtsFnab0dv3Tc7WTUZdsJtADJ15pVJZXzGYcbORJZGK4eWzPRcL1WgOVfZUlGWtxo9x+OazNxARjxatiApj4O2ky0hN93rrAJf1Op67/jeowbIe4qWFKR177v3rYq84QQpw7YHXWyr0svx3rsdblH7izRWtFeh380ggdjg6wesqOfMwmbl2wUzbypJcQOsNEVUWCoFUL7qAUcgUgfsLEUFrhKQUgMq8tT8PQBWiID96M/uxTYECvjKYKoovdZJFUxVNsesxaUqLR4aJS4Frw6rtDz3Y6KdlsMHte+E9lXrmq76/sCw5UjudKojdCuPIMB1qnvWtUoZAfH8iujCGxQs2JQC9/5uBbc8uHU3gu0fAQcRhWO8k/EsgZkV2o9x1pY8z1YrQFLEDilDAwPrwImbuLv5BIy2Fwc9a35coSHPmii2GbSz4IZgqx04QCgk8iSWcShJNlA4N2CLkkpSK3O0Sf9nM=
   bucket: ugram-team02
-  local-dir: client/dist
+  local-dir: dist
   detect_encoding: true
   acl: public_read
   on:
