@@ -1,5 +1,6 @@
 const express = require('express');
-const mongoose = require('mongoose');
+//const mongoose = require('mongoose');
+const Sequelize = require('sequelize');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const cors = require('cors');
@@ -33,8 +34,16 @@ winston.add(winstonCloudWatch, {
     logStreamName: 'sample'
 });
 
-mongoose.connect('mongodb://ugram:2ZuyP9j4u2PDZqxt@ec2-3-16-169-246.us-east-2.compute.amazonaws.com:27017/ugram-db?authSource=admin', 
-    {useNewUrlParser: true}).catch((err) => console.log(err));
+const sequelize = new Sequelize('CONNECT_STRING');
+
+sequelize
+    .authenticate()
+    .then(() => {
+        console.log('Connection has been established successfully.');
+    })
+    .catch(err => {
+        console.error('Unable to connect to the database:', err);
+    });
 
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
