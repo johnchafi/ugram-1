@@ -10,7 +10,7 @@ const mapStateToProps = (state: State) => ({
 });
 
 const mapDispatchToProps = {
-    handleSubmit: authUser
+    authUser: authUser
 };
 
 export default withRouter(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(AuthForm));
