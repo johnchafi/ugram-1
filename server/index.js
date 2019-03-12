@@ -62,4 +62,4 @@ app.use('/', routes);
 
 app.listen(port);
 
-logger.info(`App started on port ${port}`)
+logger.info(`App started on port ${port}`);

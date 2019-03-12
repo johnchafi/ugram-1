@@ -9,7 +9,7 @@ export enum ActionTypes {
 
 export interface AuthenticatedAction { type: ActionTypes.AUTHENTICATED, payload: IStateProfilApp }
 
-export function authUser(): any {
+export function authUser(username: string, password:string): any {
     return function(dispatch : Dispatch<IStateProfilApp>) {
         sdk.getUser('wfortin')
             .then(function (response) {
