@@ -1,20 +1,35 @@
-const mongoose = require('mongoose');
+const db = require('./database');
+const User = require('./user');
 
 // Setup schema
-let tokensSchema = mongoose.Schema({
-    value : {
-        type: String,
-        required: true
+let tokenSchema = db.sequelize.define('Token', {
+        id: {
+            type: db.Sequelize.INTEGER(11),
+            primaryKey: true,
+            allowNull: false,
+            defaultValue: null,
+            autoIncrement: true
+        },
+        userId: {
+            type: db.Sequelize.STRING,
+            allowNull: false,
+            defaultValue: null,
+            references: {
+                model: User,
+                key: 'id'
+            }
+        },
+        token: {
+            type: db.Sequelize.STRING(4096),
+            allowNull: false,
+            defaultValue: null,
+        }
     },
-    user : {
-        type: String,
-        required: true
+    {
+        freezeTableName: true,
+        timestamps: false
     }
-});
+);
 
 // Export Tokens model
-let Tokens = module.exports = mongoose.model('tokens', tokensSchema);
-
-module.exports.get = function (callback) {
-    Tokens.find(callback);
-};
+module.exports = tokenSchema;

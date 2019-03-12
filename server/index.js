@@ -1,6 +1,4 @@
 const express = require('express');
-//const mongoose = require('mongoose');
-const Sequelize = require('sequelize');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const cors = require('cors');
@@ -26,24 +24,13 @@ const corsOptions = {
     credentials: true
 };
 
-const winston = require('winston');
-const winstonCloudWatch = require('winston-cloudwatch');
+// const winston = require('winston');
+// const winstonCloudWatch = require('winston-cloudwatch');
 
-winston.add(winstonCloudWatch, {
-    logGroupName: 'glo3012',
-    logStreamName: 'sample'
-});
-
-const sequelize = new Sequelize('CONNECT_STRING');
-
-sequelize
-    .authenticate()
-    .then(() => {
-        console.log('Connection has been established successfully.');
-    })
-    .catch(err => {
-        console.error('Unable to connect to the database:', err);
-    });
+// winston.add(winstonCloudWatch, {
+//     logGroupName: 'glo3012',
+//     logStreamName: 'sample'
+// });
 
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
@@ -54,12 +41,12 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(errors.genericErrorHandler);
+//app.use(errors.genericErrorHandler);
 // Enables access-logs on each calls
-app.use(morgan('combined', {'stream': logger.stream}));
+//app.use(morgan('combined', {'stream': logger.stream}));
 
 app.use('/', routes);
 
 app.listen(port);
 
-logger.info(`App started on port ${port}`)
+//logger.info(`App started on port ${port}`)

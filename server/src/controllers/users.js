@@ -1,101 +1,122 @@
 //const service = require('../services/users');
-const UsersModel = require('../models/user');
-const TokensModel = require('../models/token');
+const UserModel = require('../models/user');
+const TokenModel = require('../models/token');
+const uuidv4 = require('uuid/v4');
+
+function getToken(req) {
+    let token = req.headers['x-access-token'] || req.headers['authorization']; 
+    if (token && token.startsWith('Bearer ')) {
+        token = token.slice(7, token.length).trimLeft();
+    }
+    return token;
+}
 
 // Gets all the users
 exports.getUsers = (req, res, next) => {
-    UsersModel.get(function (err, users) {
-        if (err) {
-            res.status(500);
-            res.send("Internal error");
-        } else {
-            res.json({
-                users
-            });
-        }
+    UserModel.findAll().then(users => {
+        res.json(users)
     });
 };
 
 // Gets a specific user
 exports.getUser = (req, res, next) => {
-    UsersModel.findById(req.params.userId, function (err, user) {
-        if (err) {
-            res.status(400);
-            res.send("Unexisting user or missing parameter userId");
-        } else {
-            res.json({
-                user
-            });
-        }
+    UserModel.findByPk(req.params.userId).then(user => {
+        return res.json(user);
     });
 };
 
 // Edits the fields of a specific user
 exports.editUser = (req, res, next) => {
-    UsersModel.findById(req.params.userId, function (err, user) {
-        //check auth
-        let auth = true;
-        if (!auth) {
+    const token = getToken(req);
+    if (!token) {
+        res.status(401);
+        return res.send("Bearer token missing");
+    }    
+    TokenModel.findOne({
+        where: {
+            token: token
+        }
+    }).then(token => {
+        UserModel.findByPk(token.userId).then(user => {
+            user.update({
+                email: req.body.email,
+                firstName: req.body.firstName,
+                lastName: req.body.lastName,
+                phoneNumber: req.body.phoneNumber
+            }).then(() => {
+                res.status(200);
+                res.send();
+            })
+            .catch(err => {
+                res.status(500);
+                res.send(err);
+            });
+        })
+        .catch(err => {
             res.status(401);
-            res.send("No authentication provided");
-        }
-        else {
-            if (err) {
-                res.status(400);
-                res.send("Unexisting user");
-            } else {
-                user.firstName = req.body.firstName;
-                user.lastName = req.body.lastName;
-                user.phoneNumber = req.body.phoneNumber;
-                user.pictureUrl = req.body.user.pictureUrl ? req.body.user.pictureUrl : user.pictureUrl;
-
-                //update user
-                user.save(function (err) {
-                    if (err) {
-                        res.status(400);
-                        res.send("Missing parameter");
-                    } else {
-                        res.status(201);
-                        res.send("Updated");
-                    }
-                });
-            }
-        }
+            return res.send(err);
+        });
+    }).catch(err => {
+        res.status(401);
+        return res.send(err);
     });
 };
 
 exports.createUser = (req, res, next) => {
     // Create the user
-    let user = new UsersModel(
-        {
-            email : req.body.user.email,
-            firstName : req.body.user.firstName,
-            lastName : req.body.user.lastName,
-            phoneNumber : req.body.user.phoneNumber ? req.user.phoneNumber : "0"
-        });
-    let userId = user.id;
-
-    let token = new TokensModel({
-        value: req.body.token,
-        user : userId
-    });
-
-    user.save(function (err) {
-        if (err) {
+    UserModel.create(
+    {
+        id: req.body.id,
+        email : req.body.email,
+        firstName : req.body.firstName,
+        lastName : req.body.lastName,
+        phoneNumber : req.body.phoneNumber
+    })
+    .then(user => {
+        TokenModel.create({
+            userId : user.id,
+            token: uuidv4()
+        })
+        .then(() => {
+            res.status(201);
+            return res.send("Created");
+        })
+        .catch(err => {
             res.status(400);
-            res.send("Missing parameters");
-        } else {
-            token.save(function (err) {
-                if (err) {
-                    user.remove();
-                    res.status(400);
-                    res.send("Missing parameters");
-                } else {
-                    res.status(201);
-                    res.send("Created");
-                }
-            })
+            return res.send(err);
+        });
+    })
+    .catch(err => {
+        res.status(400);
+        return res.send(err);
+    });
+};
+
+exports.deleteUser = (req, res, next) => {
+    const token = getToken(req);
+    if (!token) {
+        res.status(401);
+        return res.send("Bearer token missing");
+    }
+    TokenModel.findOne({
+        where: {
+            token: token
         }
+    }).then(token => {
+        UserModel.findByPk(token.userId).then(user => {
+            return user.destroy();
+        })
+        .then(() => {
+            res.status(200);
+            return res.send();
+        })
+        .catch(err => {
+            res.status(403);
+            return res.send(err);
+        });
+    }).catch(err => {
+        res.status(400);
+        return res.send(err);
     });
 };
 

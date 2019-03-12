@@ -1,33 +1,55 @@
-const mongoose = require('mongoose');
+const db = require('./database');
 
 // Setup schema
-let usersSchema = mongoose.Schema({
+const userSchema = db.sequelize.define('User', {
+        id: {
+            type: db.Sequelize.STRING(40),
+            primaryKey: true,
+            allowNull: false,
+            defaultValue: null
+        },
         email: {
-            type: String,
-            required: true
+            type: db.Sequelize.STRING(40),
+            unique: true,
+            allowNull: false,
+            defaultValue: null
         },
         firstName: {
-            type: String,
-            required: true
+            type: db.Sequelize.STRING(40),
+            unique: false,
+            allowNull: false,
+            defaultValue: null
         },
         lastName: {
-            type: String,
-            required: true
+            type: db.Sequelize.STRING(40),
+            unique: false,
+            allowNull: false,
+            defaultValue: null
         },
-        phoneNumber: String,
+        phoneNumber: {
+            type: db.Sequelize.INTEGER(11),
+            unique: false,
+            allowNull: false,
+            defaultValue: null
+        },
         pictureUrl: {
-            type: String,
-            default: "https://i.stack.imgur.com/l60Hf.png"
+            type: db.Sequelize.STRING,
+            unique: false,
+            allowNull: false,
+            defaultValue: "https://i.stack.imgur.com/l60Hf.png"
         },
         registrationDate: {
-            type: Number,
-            default: new Date().getTime()
+            type: db.Sequelize.DATE,
+            unique: false,
+            allowNull: false,
+            defaultValue: Date.now()
         }
-});
+    },
+    {
+        freezeTableName: true,
+        timestamps: false
+    }
+);
 
 // Export Users model
-let Users = module.exports = mongoose.model('users', usersSchema);
-
-module.exports.get = function (callback) {
-    Users.find(callback);
-};
+module.exports = userSchema;
