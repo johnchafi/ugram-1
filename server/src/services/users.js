@@ -43,19 +43,14 @@ exports.addUserPicture = (userId, field, file, res) => {
             s3bucket.upload(params, function (err, data) {
                 // Whether there is an error or not, delete the temp file
                 fs.unlink(file.path, function (err) {
-                    if (err) {
-                        console.error(err);
-                    }
+                    if (err) throw err;
                     console.log('Temp File Delete');
                 });
 
                 console.log("PRINT FILE:", file);
                 if (err) {
                     console.log('ERROR MSG: ', err);
-                    res.status(500).send(err);
-                } else {
-                    console.log('Successfully uploaded data');
-                    res.status(200).end();
+                    throw err;
                 }
             });
         });
