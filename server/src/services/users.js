@@ -38,7 +38,8 @@ exports.addUserPicture = (userId, field, file, res) => {
         s3bucket.createBucket(function () {
             let params = {
                 Key: "uploads/" + userId + "/" + file.name,
-                Body: data
+                Body: data,
+                ACL:'public-read'
             };
             s3bucket.upload(params, function (err, data) {
                 // Whether there is an error or not, delete the temp file
