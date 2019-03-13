@@ -1,5 +1,6 @@
 const logger = require('../common/logger')
 const AWS = require('aws-sdk');
+const database = require('../models/database');
 const UserModel = require('../models/user');
 const fs = require('fs');
 
@@ -27,35 +28,24 @@ exports.getUserPictures = (userId) => {
     return {userId: userId};
 }
 
-exports.addUserPicture = (userId, field, file, res) => {
+exports.addUserPicture = (userId, field, file, errorCallback, successCallback) => {
 
     fs.readFile(file.path, function (err, data) {
-        if (err) throw err; // Something went wrong!
-        let s3bucket = new AWS.S3({params: {Bucket: 'elasticbeanstalk-us-east-2-374725152443'}});
-        console.log('INSIDE');
-        s3bucket.createBucket(function () {
-            let params = {
-                Key: "uploads/" + userId + "/" + file.name,
-                Body: data,
-                ACL:'public-read',
-                ContentType: 'image/jpeg'
-            };
-            s3bucket.upload(params, function (err, data) {
-                console.log('UPLOAD');
-                // Whether there is an error or not, delete the temp file
-                fs.unlink(file.path, function (err) {
-                    if (err) throw err;
-                    console.log('Temp File Delete');
-                });
-
-                console.log("PRINT FILE:", file);
-                if (err) {
-                    console.log('ERROR MSG: ', err);
-                    throw err;
-                }
-                console.log(data.Location);
-                return data.Location;
+        if (err) return errorCallback(err);
+        const s3bucket = new AWS.S3({params: {Bucket: database.bucketEndpoint }});
+        const params = {
+            Key: database.bucketRootUpload + "/" + userId + "/" + file.name,
+            Body: data,
+            ACL:'public-read',
+            ContentType: 'image/jpeg',
+        };
+        s3bucket.upload(params, function (err, data) {
+            if (err) return errorCallback(err);
+            fs.unlink(file.path, function (err) {
+                if (err) return errorCallback(err);
+                console.log('Temp file deleted');
             });
+            return successCallback(data.Location);
         });
     });
 };

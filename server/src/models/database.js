@@ -16,7 +16,10 @@ sequelize
 
 const db = {
     sequelize: sequelize,
-    Sequelize: Sequelize
+    Sequelize: Sequelize,
+    bucketEndpoint: 'elasticbeanstalk-us-east-2-374725152443',
+    bucketDomain: 's3.amazonaws.com',
+    bucketRootUpload: 'uploads'
 };
 
 module.exports = db;
