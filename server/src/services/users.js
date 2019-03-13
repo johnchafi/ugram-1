@@ -32,9 +32,7 @@ exports.addUserPicture = (userId, field, file, res) => {
     fs.readFile(file.path, function (err, data) {
         if (err) throw err; // Something went wrong!
         let s3bucket = new AWS.S3({params: {Bucket: 'elasticbeanstalk-us-east-2-374725152443'}});
-        /** @TODO generer l'id de la photo par rapport a l'id du champs dans la table.
-         * @TODO l'option field possede tout les champs dans un post d'image : description tags mentions.
-         * */
+        console.log('INSIDE');
         s3bucket.createBucket(function () {
             let params = {
                 Key: "uploads/" + userId + "/" + file.name,
@@ -42,6 +40,7 @@ exports.addUserPicture = (userId, field, file, res) => {
                 ACL:'public-read'
             };
             s3bucket.upload(params, function (err, data) {
+                console.log('UPLOAD');
                 // Whether there is an error or not, delete the temp file
                 fs.unlink(file.path, function (err) {
                     if (err) throw err;
@@ -53,6 +52,7 @@ exports.addUserPicture = (userId, field, file, res) => {
                     console.log('ERROR MSG: ', err);
                     throw err;
                 }
+                console.log(data.Location);
                 return data.Location;
             });
         });

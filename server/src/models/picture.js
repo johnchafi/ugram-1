@@ -22,7 +22,7 @@ const pictureSchema = db.sequelize.define('Pictures', {
             defaultValue: null
         },
         userId: {
-            type: db.Sequelize.STRING,
+            type: db.Sequelize.STRING(256),
             allowNull: false,
             defaultValue: null,
             references: {

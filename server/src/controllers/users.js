@@ -148,30 +148,36 @@ exports.addUserPicture = (req, res, next) => {
                 }
                 if (files.file) {
                     try {
-                        const bucketUrl = service.addUserPicture(req.params.userId, fields, files.file, res);
-                        PictureModel.create(
-                        {
-                            description : req.body.description,
-                            url : bucketUrl,
-                            userId : req.params.userId
-                        })
-                        .then(picture => {
-                            res.status(200);
-                            res.json({
-                                id: picture.url
-                            })
-                        })
-                        .catch(err => {
+                        service.addUserPicture(req.params.userId, fields, files.file, res).then(url => {
+                            console.log(url);
+                            PictureModel.create(
+                                {
+                                    description : req.body.description,
+                                    url : bucketUrl,
+                                    userId : req.params.userId
+                                })
+                                .then(picture => {
+                                    res.status(200);
+                                    return res.json({
+                                        id: picture.url
+                                    })
+                                })
+                                .catch(err => {
+                                    res.status(500);
+                                    return res.send(err);
+                                });
+                        }).catch(err => {
                             res.status(500);
-                            res.send(err);
+                            return res.send(err);
                         });
                     } catch(err) {
                         res.status(500);
-                        res.send('Cannot upload picture');
+                        return res.send(err);
                     }
+                } else {
+                    res.status(400);
+                    return res.send('File cannot be empty');    
                 }
-                res.status(400);
-                return res.send('File cannot be empty');
             });
         })
         .catch(err => {
