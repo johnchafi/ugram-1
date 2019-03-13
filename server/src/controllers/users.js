@@ -1,10 +1,12 @@
-//const service = require('../services/users');
+const service = require('../services/users');
 const UserModel = require('../models/user');
 const TokenModel = require('../models/token');
 const uuidv4 = require('uuid/v4');
+const formidable = require('formidable')
+const fs = require('fs');
 
 function getToken(req) {
-    let token = req.headers['x-access-token'] || req.headers['authorization']; 
+    let token = req.headers['x-access-token'] || req.headers['authorization'];
     if (token && token.startsWith('Bearer ')) {
         token = token.slice(7, token.length).trimLeft();
     }
@@ -31,7 +33,7 @@ exports.editUser = (req, res, next) => {
     if (!token) {
         res.status(401);
         return res.send("Bearer token missing");
-    }    
+    }
     TokenModel.findOne({
         where: {
             token: token
@@ -127,11 +129,13 @@ exports.getUserPictures = (req, res, next) => {
 
 // Uploads a picture for a user
 exports.addUserPicture = (req, res, next) => {
-    const response = service.addUserPicture(req.params.userId, req.params.body).then(function(data) {
-        return res.send('Upload successful');
-    }).catch(function(err) {
-        console.log(err);
-        res.status(500).send('An error occured');
+    new formidable.IncomingForm().parse(req, (err, fields, files) => {
+        if (err) {
+            console.error('Error', err);
+            throw err
+        }
+        let file  = files.file;
+        service.addUserPicture(req.params.userId, fields, file, res);
     });
 };
 

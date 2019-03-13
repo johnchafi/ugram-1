@@ -1,7 +1,7 @@
 const logger = require('../common/logger')
 const AWS = require('aws-sdk');
-const s3 = new AWS.S3();
 const UserModel = require('../models/user');
+const fs = require('fs');
 
 exports.getUsers = () => {
     return UserModel.get(function(err, data) {
@@ -27,17 +27,37 @@ exports.getUserPictures = (userId) => {
     return {userId: userId};
 }
 
-exports.addUserPicture = (userId, picture) => {
-    const bucketName = 'glo3102-sample';
-    const keyName = 'hello_world.txt';
-    const params = {
-        Bucket: bucketName,
-        Key: keyName,
-        Body: body
-    };
-    logger.info(`Uploading file "${keyName}" to bucket "${bucketName}" with body "${body}"`);
-    return s3.putObject(params).promise();
-}
+exports.addUserPicture = (userId, field, file, res) => {
+
+    fs.readFile(file.path, function (err, data) {
+        if (err) throw err; // Something went wrong!
+        let s3bucket = new AWS.S3({params: {Bucket: 'elasticbeanstalk-us-east-2-374725152443'}});
+        s3bucket.createBucket(function () {
+            let params = {
+                Key: file.name,
+                Body: data
+            };
+            s3bucket.upload(params, function (err, data) {
+                // Whether there is an error or not, delete the temp file
+                fs.unlink(file.path, function (err) {
+                    if (err) {
+                        console.error(err);
+                    }
+                    console.log('Temp File Delete');
+                });
+
+                console.log("PRINT FILE:", file);
+                if (err) {
+                    console.log('ERROR MSG: ', err);
+                    res.status(500).send(err);
+                } else {
+                    console.log('Successfully uploaded data');
+                    res.status(200).end();
+                }
+            });
+        });
+    });
+};
 
 exports.getUserPicture = (userId, pictureId) => {
     return {userId: userId};
