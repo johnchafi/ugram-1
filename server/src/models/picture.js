@@ -6,7 +6,8 @@ const pictureSchema = db.sequelize.define('Pictures', {
             type: db.Sequelize.INTEGER(11),
             primaryKey: true,
             allowNull: false,
-            defaultValue: null
+            defaultValue: null,
+            autoIncrement: true
         },
         description: {
             type: db.Sequelize.STRING(256),
@@ -19,7 +20,16 @@ const pictureSchema = db.sequelize.define('Pictures', {
             unique: false,
             allowNull: false,
             defaultValue: null
-        }
+        },
+        userId: {
+            type: db.Sequelize.STRING,
+            allowNull: false,
+            defaultValue: null,
+            references: {
+                model: User,
+                key: 'id'
+            }
+        },
     },
     {
         freezeTableName: true,
