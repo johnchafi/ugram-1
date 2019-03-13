@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 
-const sequelize = new Sequelize('db', 'user', 'password', {
-    host: 'url',
+const sequelize = new Sequelize('ugram', 'ugram', 'azertyuiop', {
+    host: 'ugram.cxwi9docu0jq.us-east-2.rds.amazonaws.com',
     dialect: 'mysql',
     operatorsAliases: false,
 });

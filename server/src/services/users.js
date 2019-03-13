@@ -37,7 +37,7 @@ exports.addUserPicture = (userId, field, file, res) => {
          * */
         s3bucket.createBucket(function () {
             let params = {
-                Key: file.name,
+                Key: "uploads/" + userId + "/" + file.name,
                 Body: data
             };
             s3bucket.upload(params, function (err, data) {
@@ -54,7 +54,7 @@ exports.addUserPicture = (userId, field, file, res) => {
                     console.log('ERROR MSG: ', err);
                     res.status(500).send(err);
                 } else {
-                    console.log('Successfully uploaded data');
+                    res.json({id: data.Location});
                     res.status(200).end();
                 }
             });
