@@ -129,13 +129,34 @@ exports.getUserPictures = (req, res, next) => {
 
 // Uploads a picture for a user
 exports.addUserPicture = (req, res, next) => {
-    new formidable.IncomingForm().parse(req, (err, fields, files) => {
-        if (err) {
-            console.error('Error', err);
-            throw err
+
+    const token = getToken(req);
+    if (!token) {
+        res.status(400);
+        return res.send("Bearer token missing");
+    }
+    TokenModel.findOne({
+        where: {
+            token: token
         }
-        let file  = files.file;
-        service.addUserPicture(req.params.userId, fields, file, res);
+    }).then(token => {
+        UserModel.findByPk(token.userId).then(() => {
+            new formidable.IncomingForm().parse(req, (err, fields, files) => {
+                if (err) {
+                    console.error('Error', err);
+                    throw err
+                }
+                let file  = files.file;
+                return service.addUserPicture(req.params.userId, fields, file, res);
+            });
+        })
+            .catch(err => {
+                res.status(403);
+                return res.send(err);
+            });
+    }).catch(err => {
+        res.status(401);
+        return res.send(err);
     });
 };
 

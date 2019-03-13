@@ -32,6 +32,9 @@ exports.addUserPicture = (userId, field, file, res) => {
     fs.readFile(file.path, function (err, data) {
         if (err) throw err; // Something went wrong!
         let s3bucket = new AWS.S3({params: {Bucket: 'elasticbeanstalk-us-east-2-374725152443'}});
+        /** @TODO generer l'id de la photo par rapport a l'id du champs dans la table.
+         * @TODO l'option field possede tout les champs dans un post d'image : description tags mentions.
+         * */
         s3bucket.createBucket(function () {
             let params = {
                 Key: file.name,
