@@ -37,7 +37,8 @@ exports.addUserPicture = (userId, field, file, res) => {
             let params = {
                 Key: "uploads/" + userId + "/" + file.name,
                 Body: data,
-                ACL:'public-read'
+                ACL:'public-read',
+                ContentType: 'image/jpeg'
             };
             s3bucket.upload(params, function (err, data) {
                 console.log('UPLOAD');
