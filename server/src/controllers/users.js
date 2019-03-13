@@ -49,15 +49,15 @@ exports.editUser = (req, res, next) => {
                 res.status(200);
                 res.send();
             })
-            .catch(err => {
-                res.status(500);
-                res.send(err);
-            });
+                .catch(err => {
+                    res.status(500);
+                    res.send(err);
+                });
         })
-        .catch(err => {
-            res.status(401);
-            return res.send(err);
-        });
+            .catch(err => {
+                res.status(401);
+                return res.send(err);
+            });
     }).catch(err => {
         res.status(401);
         return res.send(err);
@@ -67,31 +67,31 @@ exports.editUser = (req, res, next) => {
 exports.createUser = (req, res, next) => {
     // Create the user
     UserModel.create(
-    {
-        id: req.body.id,
-        email : req.body.email,
-        firstName : req.body.firstName,
-        lastName : req.body.lastName,
-        phoneNumber : req.body.phoneNumber
-    })
-    .then(user => {
-        TokenModel.create({
-            userId : user.id,
-            token: uuidv4()
+        {
+            id: req.body.id,
+            email : req.body.email,
+            firstName : req.body.firstName,
+            lastName : req.body.lastName,
+            phoneNumber : req.body.phoneNumber
         })
-        .then(() => {
-            res.status(201);
-            return res.send("Created");
+        .then(user => {
+            TokenModel.create({
+                userId : user.id,
+                token: uuidv4()
+            })
+                .then(() => {
+                    res.status(201);
+                    return res.send("Created");
+                })
+                .catch(err => {
+                    res.status(400);
+                    return res.send(err);
+                });
         })
         .catch(err => {
             res.status(400);
             return res.send(err);
         });
-    })
-    .catch(err => {
-        res.status(400);
-        return res.send(err);
-    });
 };
 
 exports.deleteUser = (req, res, next) => {
@@ -108,14 +108,14 @@ exports.deleteUser = (req, res, next) => {
         UserModel.findByPk(token.userId).then(user => {
             return user.destroy();
         })
-        .then(() => {
-            res.status(200);
-            return res.send();
-        })
-        .catch(err => {
-            res.status(403);
-            return res.send(err);
-        });
+            .then(() => {
+                res.status(200);
+                return res.send();
+            })
+            .catch(err => {
+                res.status(403);
+                return res.send(err);
+            });
     }).catch(err => {
         res.status(400);
         return res.send(err);
@@ -147,7 +147,10 @@ exports.addUserPicture = (req, res, next) => {
                     throw err
                 }
                 let file  = files.file;
-                return service.addUserPicture(req.params.userId, fields, file, res);
+                if (file)
+                    return service.addUserPicture(req.params.userId, fields, file, res);
+                res.status(400);
+                return res.send('File cannot be empty');
             });
         })
             .catch(err => {
