@@ -1,9 +1,11 @@
 const service = require('../services/users');
 const UserModel = require('../models/user');
 const TokenModel = require('../models/token');
+const PictureModel = require('../models/picture');
+
 const uuidv4 = require('uuid/v4');
-const formidable = require('formidable')
-const fs = require('fs');
+const formidable = require('formidable');
+const path = require('path');
 
 function getToken(req) {
     let token = req.headers['x-access-token'] || req.headers['authorization'];
@@ -79,14 +81,14 @@ exports.createUser = (req, res, next) => {
                 userId : user.id,
                 token: uuidv4()
             })
-                .then(() => {
-                    res.status(201);
-                    return res.send("Created");
-                })
-                .catch(err => {
-                    res.status(400);
-                    return res.send(err);
-                });
+            .then(() => {
+                res.status(201);
+                return res.send("Created");
+            })
+            .catch(err => {
+                res.status(400);
+                return res.send(err);
+            });
         })
         .catch(err => {
             res.status(400);
@@ -124,12 +126,6 @@ exports.deleteUser = (req, res, next) => {
 
 // Gets the pictures of a user
 exports.getUserPictures = (req, res, next) => {
-    return res.send(service.getUserPictures(req.params.userId));
-};
-
-// Uploads a picture for a user
-exports.addUserPicture = (req, res, next) => {
-
     const token = getToken(req);
     if (!token) {
         res.status(400);
@@ -140,23 +136,87 @@ exports.addUserPicture = (req, res, next) => {
             token: token
         }
     }).then(token => {
-        UserModel.findByPk(token.userId).then(() => {
-            new formidable.IncomingForm().parse(req, (err, fields, files) => {
-                if (err) {
-                    console.error('Error', err);
-                    throw err
+        UserModel.findByPk(token.userId).then(user => {
+            PictureModel.findAll({ 
+                where: {
+                    userId: user.id
                 }
-                let file  = files.file;
-                if (file)
-                    return service.addUserPicture(req.params.userId, fields, file, res);
+            }).then(pictures => {
+                pictures.forEach(picture => {
+                    PictureModel.formatToClient(picture);
+                });
+                res.status(200);
+                return res.json(pictures);
+            }).catch(err => {
                 res.status(400);
-                return res.send('File cannot be empty');
-            });
-        })
-            .catch(err => {
-                res.status(403);
                 return res.send(err);
             });
+        }).catch(err => {
+            res.status(400);
+            return res.send(err);
+        });
+    }).catch(err => {
+        res.status(401);
+        return res.send(err);
+    });
+};
+
+// Uploads a picture for a user
+exports.addUserPicture = (req, res, next) => {
+    const token = getToken(req);
+    if (!token) {
+        res.status(400);
+        return res.send("Bearer token missing");
+    }
+    TokenModel.findOne({
+        where: {
+            token: token
+        }
+    }).then(token => {
+        UserModel.findByPk(token.userId).then(user => {
+            new formidable.IncomingForm().parse(req, (err, fields, files) => {
+                if (err) {
+                    res.status(500);
+                    return res.send(err);
+                }
+                if (files.file) {
+                    const pictureModel = JSON.parse(fields.pictureModel);
+                    const extension = path.extname(files.file.name);
+                    PictureModel.create(
+                    {
+                        description : pictureModel.description,
+                        extension : extension,
+                        userId : user.id
+                    })
+                    .then(picture => {
+                        files.file.name = picture.id + extension;
+                        const errCallback = (err) => {
+                            res.status(500);
+                            return res.send(err);
+                        }
+                        const succCallback = (url) => {
+                            console.log(url);
+                            res.status(200);
+                            return res.json({
+                                id: picture.id
+                            })        
+                        }
+                        service.addUserPicture(req.params.userId, fields, files.file, errCallback, succCallback);
+                    })
+                    .catch(err => {
+                        res.status(500);
+                        return res.send(err);
+                    });
+                } else {
+                    res.status(400);
+                    return res.send('File cannot be empty');    
+                }
+            });
+        })
+        .catch(err => {
+            res.status(403);
+            return res.send(err);
+        });
     }).catch(err => {
         res.status(401);
         return res.send(err);
@@ -165,7 +225,34 @@ exports.addUserPicture = (req, res, next) => {
 
 // Gets a single picture
 exports.getUserPicture = (req, res, next) => {
-    return res.send(service.getUserPicture(req.params.userId, req.params.pictureId));
+    const token = getToken(req);
+    if (!token) {
+        res.status(400);
+        return res.send("Bearer token missing");
+    }
+    TokenModel.findOne({
+        where: {
+            token: token
+        }
+    }).then(token => {
+        UserModel.findByPk(token.userId).then(user => {
+            PictureModel.findByPk(req.params.pictureId).then(picture => {
+                PictureModel.formatToClient(picture);
+                res.status(200);
+                return res.json(picture);
+            }).catch(err => {
+                res.status(400);
+                return res.send(err);
+            })
+        })
+        .catch(err => {
+            res.status(403);
+            return res.send(err);
+        });
+    }).catch(err => {
+        res.status(401);
+        return res.send(err);
+    });
 };
 
 // Edits the fields of a picture for a user
