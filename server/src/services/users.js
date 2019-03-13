@@ -3,6 +3,11 @@ const AWS = require('aws-sdk');
 const UserModel = require('../models/user');
 const fs = require('fs');
 
+AWS.config.update({
+    accessKeyId: "AKIAIRCQYVHQV4RN5RKA",
+    secretAccessKey: "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"
+});
+
 exports.getUsers = () => {
     return UserModel.get(function(err, data) {
             if (err) {
