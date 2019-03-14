@@ -1,48 +1,55 @@
 const db = require('./database');
 
 // Setup schema
-const userSchema = db.sequelize.define('User', {
+const userSchema = db.sequelize.define('user', {
         id: {
             type: db.Sequelize.STRING(40),
             primaryKey: true,
             allowNull: false,
-            defaultValue: null
+            defaultValue: null,
+            field: 'id'
         },
         email: {
             type: db.Sequelize.STRING(40),
             unique: true,
             allowNull: false,
-            defaultValue: null
+            defaultValue: null,
+            field: 'email'
         },
         firstName: {
             type: db.Sequelize.STRING(40),
             unique: false,
             allowNull: false,
-            defaultValue: null
+            defaultValue: null,
+            field: 'first_name'
         },
         lastName: {
             type: db.Sequelize.STRING(40),
             unique: false,
             allowNull: false,
-            defaultValue: null
+            defaultValue: null,
+            field: 'last_name'
         },
         phoneNumber: {
             type: db.Sequelize.INTEGER(11),
             unique: false,
             allowNull: false,
-            defaultValue: null
+            defaultValue: null,
+            field: 'phone_number'
         },
         pictureUrl: {
             type: db.Sequelize.STRING,
             unique: false,
             allowNull: false,
-            defaultValue: "https://i.stack.imgur.com/l60Hf.png"
+            defaultValue: "https://i.stack.imgur.com/l60Hf.png",
+            field: 'picture_url'
         },
         registrationDate: {
             type: db.Sequelize.DATE,
             unique: false,
             allowNull: false,
-            defaultValue: Date.now()
+            defaultValue: db.Sequelize.NOW,
+            field: 'registration'
         }
     },
     {
@@ -50,6 +57,10 @@ const userSchema = db.sequelize.define('User', {
         timestamps: false
     }
 );
+
+userSchema.formatToClient = (user) => {
+    user.dataValues.registrationDate = new Date(user.dataValues.registrationDate).getTime();
+};
 
 // Export Users model
 module.exports = userSchema;

@@ -3,6 +3,9 @@ const PictureModel = require('../models/picture');
 const TagModel = require('../models/tag');
 const MentionModel = require('../models/mention');
 
+const pagination = require('../services/pagination');
+const auth = require('../services/auth');
+
 //Gets the pictures ordered by creation date
 exports.getPictures = (req, res, next) => {
     PictureModel.findAll({
@@ -45,18 +48,18 @@ exports.getPictures = (req, res, next) => {
                     });
                     PictureModel.formatToClient(picture, finalMentions, finalTags);
                 })
-                res.status(200);
-                return res.json({items : pictures});
+                return auth.sendSuccess(
+                    res,
+                    pagination.formatPagination(pictures, req.query.page, req.query.perPage),
+                    200
+                );
             }).catch(err => {
-                res.status(400);
-                return res.send(err);
+                return auth.sendError(res, err, 400);
             });
         }).catch(err => {
-            res.status(400);
-            return res.send(err);
+            return auth.sendError(res, err, 400);
         });
     }).catch(err => {
-        res.status(400);
-        return res.send(err);
+        return auth.sendError(res, err, 400);
     });
 };

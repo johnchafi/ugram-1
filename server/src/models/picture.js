@@ -2,35 +2,40 @@ const db = require('./database');
 const User = require('./user');
 
 // Setup schema
-const pictureSchema = db.sequelize.define('Pictures', {
+const pictureSchema = db.sequelize.define('picture', {
         id: {
             type: db.Sequelize.INTEGER(11),
             primaryKey: true,
             allowNull: false,
             defaultValue: null,
-            autoIncrement: true
+            autoIncrement: true,
+            field: 'id'
         },
         description: {
             type: db.Sequelize.STRING(256),
             unique: false,
             allowNull: false,
-            defaultValue: null
+            defaultValue: null,
+            field: 'description'
         },
         extension: {
             type: db.Sequelize.STRING(40),
             unique: false,
-            allowNull: false
+            allowNull: false,
+            field: 'extension'
         },
         createdDate: {
-            type: 'TIMESTAMP',
-            defaultValue: db.Sequelize.literal('CURRENT_TIMESTAMP'),
+            type: db.Sequelize.DATE,
+            defaultValue: db.Sequelize.NOW,
             unique: false,
-            allowNull: true
+            allowNull: true,
+            field: 'created'
         },
         userId: {
             type: db.Sequelize.STRING(256),
             allowNull: false,
             defaultValue: null,
+            field: 'user_id',
             references: {
                 model: User,
                 key: 'id'
@@ -48,6 +53,7 @@ pictureSchema.formatToClient = (picture, mentions, tags) => {
         db.bucketRootUpload + "/" + picture.dataValues.userId + "/" + picture.dataValues.id + picture.dataValues.extension;
     picture.dataValues.tags = [];
     picture.dataValues.mentions = [];
+    picture.dataValues.createdDate = new Date(picture.dataValues.createdDate).getTime();
     Object.keys(tags).forEach(function(key) {
         picture.dataValues.tags.push(tags[key].dataValues.value);
     });

@@ -1,4 +1,7 @@
 const service = require('../services/users');
+const pagination = require('../services/pagination');
+const auth = require('../services/auth');
+
 const UserModel = require('../models/user');
 const TokenModel = require('../models/token');
 const PictureModel = require('../models/picture');
@@ -6,123 +9,85 @@ const TagModel = require('../models/tag');
 const MentionModel = require('../models/mention');
 
 const multiparty = require('multiparty');
-const uuidv4 = require('uuid/v4');
 const path = require('path');
-
-function getToken(req) {
-    let token = req.headers['x-access-token'] || req.headers['authorization'];
-    if (token && token.startsWith('Bearer ')) {
-        token = token.slice(7, token.length).trimLeft();
-    }
-    return token;
-}
 
 // Gets all the users
 exports.getUsers = (req, res, next) => {
     UserModel.findAll().then(users => {
-        res.json(users)
+        users.forEach(user => {
+            UserModel.formatToClient(user);
+        })
+        return auth.sendSuccess(
+            res, 
+            pagination.formatPagination(users, req.query.page, req.query.perPage),
+            200
+        );
     });
 };
 
 // Gets a specific user
 exports.getUser = (req, res, next) => {
     UserModel.findByPk(req.params.userId).then(user => {
-        return res.json(user);
+        UserModel.formatToClient(user);
+        return auth.sendSuccess(res, user, 200);
     });
 };
 
 // Edits the fields of a specific user
 exports.editUser = (req, res, next) => {
-    const token = getToken(req);
-    if (!token) {
-        res.status(401);
-        return res.send("Bearer token missing");
-    }
-    TokenModel.findOne({
-        where: {
-            token: token
-        }
-    }).then(token => {
-        UserModel.findByPk(token.userId).then(user => {
-            user.update({
-                email: req.body.email,
-                firstName: req.body.firstName,
-                lastName: req.body.lastName,
-                phoneNumber: req.body.phoneNumber
-            }).then(() => {
-                res.status(200);
-                res.send();
-            })
-                .catch(err => {
-                    res.status(500);
-                    res.send(err);
-                });
+    auth.isAuthenticated(req).then(user => {
+        user.update({
+            email: req.body.email,
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
+            phoneNumber: req.body.phoneNumber
+        }).then(() => {
+            return auth.sendSuccess(res, null, 200);
         })
-            .catch(err => {
-                res.status(401);
-                return res.send(err);
-            });
+        .catch(err => {
+            return auth.sendError(res, err, 500);
+        });
     }).catch(err => {
-        res.status(401);
-        return res.send(err);
+        return auth.sendError(res, err, 401);
     });
 };
 
 exports.createUser = (req, res, next) => {
     // Create the user
     UserModel.create(
-        {
-            id: req.body.id,
-            email : req.body.email,
-            firstName : req.body.firstName,
-            lastName : req.body.lastName,
-            phoneNumber : req.body.phoneNumber
+    {
+        id: req.body.id,
+        email : req.body.email,
+        firstName : req.body.firstName,
+        lastName : req.body.lastName,
+        phoneNumber : req.body.phoneNumber
+    })
+    .then(user => {
+        TokenModel.create({
+            userId : user.id,
+            token: auth.generateToken()
         })
-        .then(user => {
-            TokenModel.create({
-                userId : user.id,
-                token: uuidv4()
-            })
-            .then(() => {
-                res.status(201);
-                return res.send("Created");
-            })
-            .catch(err => {
-                res.status(400);
-                return res.send(err);
-            });
+        .then(token => {
+            return auth.sendSuccess(res, {token : token.token}, 200);
         })
         .catch(err => {
-            res.status(400);
-            return res.send(err);
+            return auth.sendError(res, err, 400);
         });
+    })
+    .catch(err => {
+        return auth.sendError(res, err, 400);
+    });
 };
 
 exports.deleteUser = (req, res, next) => {
-    const token = getToken(req);
-    if (!token) {
-        res.status(401);
-        return res.send("Bearer token missing");
-    }
-    TokenModel.findOne({
-        where: {
-            token: token
-        }
-    }).then(token => {
-        UserModel.findByPk(token.userId).then(user => {
-            return user.destroy();
-        })
-            .then(() => {
-                res.status(200);
-                return res.send();
-            })
-            .catch(err => {
-                res.status(403);
-                return res.send(err);
-            });
-    }).catch(err => {
-        res.status(400);
-        return res.send(err);
+    auth.isAuthenticated(req).then(user => {
+        return user.destroy();
+    })
+    .then(() => {
+        return auth.sendSuccess(res, null, 200);
+    })
+    .catch(err => {
+        return auth.sendError(res, err, 401);
     });
 };
 
@@ -171,102 +136,77 @@ exports.getUserPictures = (req, res, next) => {
                     });
                     PictureModel.formatToClient(picture, finalMentions, finalTags);
                 })
-                res.status(200);
-                return res.json({items : pictures});
+                return auth.sendSuccess(
+                    res,
+                    pagination.formatPagination(pictures, req.query.page, req.query.perPage),
+                    200
+                );
             }).catch(err => {
-                res.status(400);
-                return res.send(err);
+                return auth.sendError(res, err, 400);
             });
         }).catch(err => {
-            res.status(400);
-            return res.send(err);
+            return auth.sendError(res, err, 400);
         });
     }).catch(err => {
-        res.status(400);
-        return res.send(err);
+        return auth.sendError(res, err, 400);
     });
 };
 
 // Uploads a picture for a user
 exports.addUserPicture = (req, res, next) => {
-    const token = getToken(req);
-    if (!token) {
-        res.status(400);
-        return res.send("Bearer token missing");
-    }
-    TokenModel.findOne({
-        where: {
-            token: token
-        }
-    }).then(token => {
-        UserModel.findByPk(token.userId).then(user => {
-            var form = new multiparty.Form();
+    auth.isAuthenticated(req).then(user => {
+        var form = new multiparty.Form();
 
-            form.parse(req, function(err, fields, files) {
-                if (files.file) {
-                    const extension = path.extname(files.file[0].originalFilename);
-                    PictureModel.create({
-                        description : fields.description[0],
-                        extension : extension,
-                        userId : user.id,
-                    })
-                    .then(picture => {
-                        let tags = [];
-                        fields.tags.forEach(tag => {
-                            const nestedTags = tag.split(",");
-                            nestedTags.forEach(nestedTag => {
-                                tags.push({ value: nestedTag, pictureId: picture.id });
-                            });
-                        })
-                        TagModel.bulkCreate(tags).then(tags => {
-                            let mentions = [];
-                            fields.mentions.forEach(mention => {
-                                const nestedMentions = mention.split(",");
-                                nestedMentions.forEach(nestedMention => {
-                                    mentions.push({ userId: nestedMention, pictureId: picture.id });
-                                });
-                            })
-                            MentionModel.bulkCreate(mentions).then(mentions => {
-                                files.file[0].originalFilename = picture.id + extension;
-                                const errCallback = (err) => {
-                                    res.status(500);
-                                    return res.send('Cannot upload file');
-                                }
-                                const succCallback = (url) => {
-                                    console.log(url);
-                                    res.status(200);
-                                    return res.json({
-                                        id: picture.id
-                                    })
-                                }
-                                service.addUserPicture(req.params.userId, fields, files.file[0], errCallback, succCallback);
-                            }).catch(err => {
-                                res.status(500);
-                                console.log(err);
-                                return res.send('Cannot insert mentions');
-                            })
-                        }).catch(err => {
-                            res.status(500);
-                            return res.send('Cannot insert tags');
+        form.parse(req, function(err, fields, files) {
+            if (files.file) {
+                const extension = path.extname(files.file[0].originalFilename);
+                PictureModel.create({
+                    description : fields.description[0],
+                    extension : extension,
+                    userId : user.id,
+                })
+                .then(picture => {
+                    let tags = [];
+                    fields.tags.forEach(tag => {
+                        const nestedTags = tag.split(",");
+                        nestedTags.forEach(nestedTag => {
+                            tags.push({ value: nestedTag, pictureId: picture.id });
                         });
                     })
-                    .catch(err => {
-                        res.status(500);
-                        return res.send(err);
+                    TagModel.bulkCreate(tags).then(tags => {
+                        let mentions = [];
+                        fields.mentions.forEach(mention => {
+                            const nestedMentions = mention.split(",");
+                            nestedMentions.forEach(nestedMention => {
+                                mentions.push({ userId: nestedMention, pictureId: picture.id });
+                            });
+                        })
+                        MentionModel.bulkCreate(mentions).then(mentions => {
+                            files.file[0].originalFilename = picture.id + extension;
+                            const errCallback = (err) => {
+                                return auth.sendError(res, 'Cannot upload file', 500);
+                            }
+                            const succCallback = (url) => {
+                                return auth.sendSuccess(res, {id: picture.id}, 200);
+                            }
+                            service.addUserPicture(req.params.userId, fields, files.file[0], errCallback, succCallback);
+                        }).catch(err => {
+                            return auth.sendError(res, 'Cannot insert mentions', 500);
+                        })
+                    }).catch(err => {
+                        return auth.sendError(res, 'Cannot insert tags', 500);
                     });
-                } else {
-                    res.status(400);
-                    return res.send('No file provided');
-                }
-            });
-        })
-        .catch(err => {
-            res.status(403);
-            return res.send(err);
+                })
+                .catch(err => {
+                    return auth.sendError(res, err, 500);
+                });
+            } else {
+                return auth.sendError(res, 'No file provided', 400);
+            }
         });
-    }).catch(err => {
-        res.status(401);
-        return res.send(err);
+    })
+    .catch(err => {
+        return auth.sendError(res, err, 401);
     });
 };
 
@@ -284,150 +224,103 @@ exports.getUserPicture = (req, res, next) => {
                 }
             }).then(tags => {
                 PictureModel.formatToClient(picture, mentions, tags);
-                res.status(200);
-                return res.json(picture);
+                return auth.sendSuccess(res, picture, 200);
             }).catch(err => {
-                res.status(400);
-                return res.send(err);
+                return auth.sendError(res, err, 400);
             })
         }).catch(err => {
-            res.status(400);
-            return res.send(err);
+            return auth.sendError(res, err, 400);
         });
     }).catch(err => {
-        res.status(400);
-        return res.send(err);
+        return auth.sendError(res, err, 400);
     })
 };
 
 // Edits the fields of a picture for a user
 exports.editUserPicture = (req, res, next) => {
-    const token = getToken(req);
-    if (!token) {
-        res.status(400);
-        return res.send("Bearer token missing");
-    }
-    TokenModel.findOne({
-        where: {
-            token: token
-        }
-    }).then(token => {
-        UserModel.findByPk(token.userId).then(user => {
-            PictureModel.update(
-                {
-                    description : req.body.description
-                },
-                {
-                    where: {
-                        id: req.params.pictureId
-                    }
+    auth.isAuthenticated(req).then(user => {
+        PictureModel.update(
+            {
+                description : req.body.description
+            },
+            {
+                where: {
+                    id: req.params.pictureId
                 }
-            )
-            .then(() => {
-                PictureModel.findByPk(req.params.pictureId).then(picture => {
-                    let tags = [];
-                    req.body.tags.forEach(tag => {
-                        tags.push({ value: tag, pictureId: picture.id });
-                    })
-                    TagModel.destroy({
-                        where: {
-                            pictureId: picture.id
-                        }
-                    }).then(() => {
-                        TagModel.bulkCreate(tags).then(tags => {
-                            let mentions = [];
-                            req.body.mentions.forEach(mention => {
-                                mentions.push({ userId: mention, pictureId: picture.id });
-                            })
-                            MentionModel.destroy({
-                                where : {
-                                    pictureId: picture.id
-                                }
-                            }).then(() => {
-                                MentionModel.bulkCreate(mentions).then(mentions => {
-                                    PictureModel.formatToClient(picture, mentions, tags);
-                                    res.status(200);
-                                    return res.json(picture);
-                                }).catch(err => {
-                                    res.status(500);
-                                    return res.send(err);
-                                })
+            }
+        )
+        .then(() => {
+            PictureModel.findByPk(req.params.pictureId).then(picture => {
+                let tags = [];
+                req.body.tags.forEach(tag => {
+                    tags.push({ value: tag, pictureId: picture.id });
+                })
+                TagModel.destroy({
+                    where: {
+                        pictureId: picture.id
+                    }
+                }).then(() => {
+                    TagModel.bulkCreate(tags).then(tags => {
+                        let mentions = [];
+                        req.body.mentions.forEach(mention => {
+                            mentions.push({ userId: mention, pictureId: picture.id });
+                        })
+                        MentionModel.destroy({
+                            where : {
+                                pictureId: picture.id
+                            }
+                        }).then(() => {
+                            MentionModel.bulkCreate(mentions).then(mentions => {
+                                PictureModel.formatToClient(picture, mentions, tags);
+                                return auth.sendSuccess(res, picture, 200);
                             }).catch(err => {
-                                res.status(500);
-                                return res.send(err);
-                            });
+                                return auth.sendError(res, err, 500);
+                            })
                         }).catch(err => {
-                            res.status(500);
-                            return res.send(err);
+                            return auth.sendError(res, err, 500);
                         });
                     }).catch(err => {
-                        res.status(500);
-                        return res.send(err);
+                        return auth.sendError(res, err, 500);
                     });
                 }).catch(err => {
-                    res.status(500);
-                    return res.send(err);
+                    return auth.sendError(res, err, 500);
                 });
-            })
-            .catch(err => {
-                res.status(500);
-                return res.send(err);
+            }).catch(err => {
+                return auth.sendError(res, err, 500);
             });
         })
         .catch(err => {
-            res.status(403);
-            return res.send(err);
+            return auth.sendError(res, err, 500);
         });
     }).catch(err => {
-        res.status(401);
-        return res.send(err);
+        return auth.sendError(res, err, 401);
     });
 };
 
 // Deletes a picture for a user
 exports.deleteUserPicture = (req, res, next) => {
-    const token = getToken(req);
-    if (!token) {
-        res.status(400);
-        return res.send("Bearer token missing");
-    }
-    TokenModel.findOne({
-        where: {
-            token: token
-        }
-    }).then(token => {
-        UserModel.findByPk(token.userId).then(user => {
-            PictureModel.findByPk(req.params.pictureId).then(picture => {
-                const errCallback = (err) => {
-                    res.status(500);
-                    return res.send('Unable to delete the file');
-                };
-                const succCallback = () => {
-                    PictureModel.destroy({
-                        where: {
-                            id: picture.id
-                        }
-                    }).then(() => {
-                        res.status(200);
-                        return res.send();
-                    })
-                    .catch(err => {
-                        res.status(500);
-                        return res.send(err);
-                    });
-                };
-                service.deleteUserPicture(picture.userId, picture.id + picture.extension, errCallback, succCallback);
-            }).catch(err => {
-                res.status(400);
-                return res.send(err);
-            })
+    auth.isAuthenticated(req).then(user => {
+        PictureModel.findByPk(req.params.pictureId).then(picture => {
+            const errCallback = (err) => {
+                return auth.sendError(res, 'Unable to delete the specified file', 401);
+            };
+            const succCallback = () => {
+                PictureModel.destroy({
+                    where: {
+                        id: picture.id
+                    }
+                }).then(() => {
+                    return auth.sendSuccess(res, null, 200);
+                })
+                .catch(err => {
+                    return auth.sendError(res, err, 500);
+                });
+            };
+            service.deleteUserPicture(picture.userId, picture.id + picture.extension, errCallback, succCallback);
+        }).catch(err => {
+            return auth.sendError(res, err, 400);
         })
-        .catch(err => {
-            res.status(403);
-            return res.send(err);
-        });
     }).catch(err => {
-        res.status(401);
-        return res.send(err);
+        return auth.sendError(res, err, 401);
     });
 };
