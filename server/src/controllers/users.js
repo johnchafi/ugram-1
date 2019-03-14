@@ -18,7 +18,7 @@ exports.getUsers = (req, res, next) => {
             UserModel.formatToClient(user);
         })
         return auth.sendSuccess(
-            res, 
+            res,
             pagination.formatPagination(users, req.query.page, req.query.perPage),
             200
         );
@@ -98,7 +98,7 @@ exports.getUserPictures = (req, res, next) => {
             userId: req.params.userId
         },
         order: [
-            ['id', 'ASC']
+            ['createdDate', 'DESC']
         ]
     }).then(pictures => {
         let ids = [];

@@ -10,7 +10,7 @@ const auth = require('../services/auth');
 exports.getPictures = (req, res, next) => {
     PictureModel.findAll({
         order: [
-            ['id', 'ASC']
+            ['createdDate', 'DESC']
         ]
     }).then(pictures => {
         let ids = [];
