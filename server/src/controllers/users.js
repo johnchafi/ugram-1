@@ -2,9 +2,11 @@ const service = require('../services/users');
 const UserModel = require('../models/user');
 const TokenModel = require('../models/token');
 const PictureModel = require('../models/picture');
+const TagModel = require('../models/tag');
+const MentionModel = require('../models/mention');
 
+const multiparty = require('multiparty');
 const uuidv4 = require('uuid/v4');
-const formidable = require('formidable');
 const path = require('path');
 
 function getToken(req) {
@@ -126,37 +128,61 @@ exports.deleteUser = (req, res, next) => {
 
 // Gets the pictures of a user
 exports.getUserPictures = (req, res, next) => {
-    const token = getToken(req);
-    if (!token) {
-        res.status(400);
-        return res.send("Bearer token missing");
-    }
-    TokenModel.findOne({
+    PictureModel.findAll({ 
         where: {
-            token: token
-        }
-    }).then(token => {
-        UserModel.findByPk(token.userId).then(user => {
-            PictureModel.findAll({ 
+            userId: req.params.userId
+        },
+        order: [
+            ['id', 'ASC']
+        ]
+    }).then(pictures => {
+        let ids = [];
+        pictures.forEach(picture => {
+            ids.push(picture.id);
+        });
+        TagModel.findAll({
+            where: {
+                pictureId: ids
+            },
+            order: [
+                ['id', 'ASC']
+            ]
+        }).then(tags => {
+            MentionModel.findAll({
                 where: {
-                    userId: user.id
-                }
-            }).then(pictures => {
+                    pictureId: ids
+                },
+                order: [
+                    ['id', 'ASC']
+                ]
+            }).then(mentions => {
                 pictures.forEach(picture => {
-                    PictureModel.formatToClient(picture);
-                });
+                    let finalTags = [];
+                    tags.forEach(tag => {
+                        if (tag.pictureId == picture.id) {
+                            finalTags.push(tag);
+                        }
+                    });
+                    let finalMentions = [];
+                    mentions.forEach(mention => {
+                        if (mention.pictureId == picture.id) {
+                            finalMentions.push(mention);
+                        }
+                    });
+                    PictureModel.formatToClient(picture, finalMentions, finalTags);
+                })
                 res.status(200);
                 return res.json(pictures);
             }).catch(err => {
                 res.status(400);
-                return res.send(err);
+                return res.send(err);    
             });
         }).catch(err => {
             res.status(400);
             return res.send(err);
         });
     }).catch(err => {
-        res.status(401);
+        res.status(400);
         return res.send(err);
     });
 };
@@ -174,34 +200,55 @@ exports.addUserPicture = (req, res, next) => {
         }
     }).then(token => {
         UserModel.findByPk(token.userId).then(user => {
-            new formidable.IncomingForm().parse(req, (err, fields, files) => {
-                if (err) {
-                    res.status(500);
-                    return res.send(err);
-                }
+            var form = new multiparty.Form();
+
+            form.parse(req, function(err, fields, files) {
                 if (files.file) {
-                    const pictureModel = JSON.parse(fields.pictureModel);
-                    const extension = path.extname(files.file.name);
-                    PictureModel.create(
-                    {
-                        description : pictureModel.description,
+                    const extension = path.extname(files.file[0].originalFilename);
+                    PictureModel.create({
+                        description : fields.description[0],
                         extension : extension,
                         userId : user.id
                     })
                     .then(picture => {
-                        files.file.name = picture.id + extension;
-                        const errCallback = (err) => {
+                        let tags = [];
+                        fields.tags.forEach(tag => {
+                            const nestedTags = tag.split(",");
+                            nestedTags.forEach(nestedTag => {
+                                tags.push({ value: nestedTag, pictureId: picture.id });
+                            });                          
+                        })
+                        TagModel.bulkCreate(tags).then(tags => {
+                            let mentions = [];
+                            fields.mentions.forEach(mention => {
+                                const nestedMentions = mention.split(",");
+                                nestedMentions.forEach(nestedMention => {
+                                    mentions.push({ userId: nestedMention, pictureId: picture.id });
+                                });
+                            })
+                            MentionModel.bulkCreate(mentions).then(mentions => {
+                                files.file[0].originalFilename = picture.id + extension;
+                                const errCallback = (err) => {
+                                    res.status(500);
+                                    return res.send('Cannot upload file');
+                                }
+                                const succCallback = (url) => {
+                                    console.log(url);
+                                    res.status(200);
+                                    return res.json({
+                                        id: picture.id
+                                    })        
+                                }
+                                service.addUserPicture(req.params.userId, fields, files.file[0], errCallback, succCallback);
+                            }).catch(err => {
+                                res.status(500);
+                                console.log(err);
+                                return res.send('Cannot insert mentions');
+                            })
+                        }).catch(err => {
                             res.status(500);
-                            return res.send(err);
-                        }
-                        const succCallback = (url) => {
-                            console.log(url);
-                            res.status(200);
-                            return res.json({
-                                id: picture.id
-                            })        
-                        }
-                        service.addUserPicture(req.params.userId, fields, files.file, errCallback, succCallback);
+                            return res.send('Cannot insert tags');
+                        });
                     })
                     .catch(err => {
                         res.status(500);
@@ -209,7 +256,7 @@ exports.addUserPicture = (req, res, next) => {
                     });
                 } else {
                     res.status(400);
-                    return res.send('File cannot be empty');    
+                    return res.send('No file provided');
                 }
             });
         })
@@ -225,6 +272,120 @@ exports.addUserPicture = (req, res, next) => {
 
 // Gets a single picture
 exports.getUserPicture = (req, res, next) => {
+    PictureModel.findByPk(req.params.pictureId).then(picture => {
+        MentionModel.findAll({
+            where: {
+                pictureId: picture.id
+            }
+        }).then(mentions => {
+            TagModel.findAll({
+                where: {
+                    pictureId: picture.id
+                }
+            }).then(tags => {
+                PictureModel.formatToClient(picture, mentions, tags);
+                res.status(200);
+                return res.json(picture);
+            }).catch(err => {
+                res.status(400);
+                return res.send(err);    
+            })
+        }).catch(err => {
+            res.status(400);
+            return res.send(err);
+        });
+    }).catch(err => {
+        res.status(400);
+        return res.send(err);
+    })
+};
+
+// Edits the fields of a picture for a user
+exports.editUserPicture = (req, res, next) => {
+    const token = getToken(req);
+    if (!token) {
+        res.status(400);
+        return res.send("Bearer token missing");
+    }
+    TokenModel.findOne({
+        where: {
+            token: token
+        }
+    }).then(token => {
+        UserModel.findByPk(token.userId).then(user => {
+            PictureModel.update(
+                { 
+                    description : req.body.description
+                },
+                {
+                    where: {
+                        id: req.params.pictureId
+                    }
+                }
+            )
+            .then(() => {
+                PictureModel.findByPk(req.params.pictureId).then(picture => {
+                    let tags = [];
+                    req.body.tags.forEach(tag => {
+                        tags.push({ value: tag, pictureId: picture.id });
+                    })
+                    TagModel.destroy({
+                        where: {
+                            pictureId: picture.id
+                        }
+                    }).then(() => {
+                        TagModel.bulkCreate(tags).then(tags => {
+                            let mentions = [];
+                            req.body.mentions.forEach(mention => {
+                                mentions.push({ userId: mention, pictureId: picture.id });
+                            })
+                            MentionModel.destroy({
+                                where : {
+                                    pictureId: picture.id
+                                }
+                            }).then(() => {
+                                MentionModel.bulkCreate(mentions).then(mentions => {
+                                    PictureModel.formatToClient(picture, mentions, tags);
+                                    res.status(200);
+                                    return res.json(picture);
+                                }).catch(err => {
+                                    res.status(500);
+                                    return res.send(err);
+                                })
+                            }).catch(err => {
+                                res.status(500);
+                                return res.send(err);
+                            });
+                        }).catch(err => {
+                            res.status(500);
+                            return res.send(err);
+                        });
+                    }).catch(err => {
+                        res.status(500);
+                        return res.send(err);    
+                    });
+                }).catch(err => {
+                    res.status(500);
+                    return res.send(err);
+                });
+            })
+            .catch(err => {
+                res.status(500);
+                return res.send(err);
+            });
+        })
+        .catch(err => {
+            res.status(403);
+            return res.send(err);
+        });
+    }).catch(err => {
+        res.status(401);
+        return res.send(err);
+    });
+};
+
+// Deletes a picture for a user
+exports.deleteUserPicture = (req, res, next) => {
     const token = getToken(req);
     if (!token) {
         res.status(400);
@@ -237,9 +398,25 @@ exports.getUserPicture = (req, res, next) => {
     }).then(token => {
         UserModel.findByPk(token.userId).then(user => {
             PictureModel.findByPk(req.params.pictureId).then(picture => {
-                PictureModel.formatToClient(picture);
-                res.status(200);
-                return res.json(picture);
+                const errCallback = (err) => {
+                    res.status(500);
+                    return res.send('Unable to delete the file');
+                };
+                const succCallback = () => {
+                    PictureModel.destroy({
+                        where: {
+                            id: picture.id
+                        }
+                    }).then(() => {
+                        res.status(200);
+                        return res.send();
+                    })
+                    .catch(err => {
+                        res.status(500);
+                        return res.send(err);
+                    });    
+                };
+                service.deleteUserPicture(picture.userId, picture.id + picture.extension, errCallback, succCallback);
             }).catch(err => {
                 res.status(400);
                 return res.send(err);
@@ -253,14 +430,4 @@ exports.getUserPicture = (req, res, next) => {
         res.status(401);
         return res.send(err);
     });
-};
-
-// Edits the fields of a picture for a user
-exports.editUserPicture = (req, res, next) => {
-    return res.send(service.editUserPicture(req.params.userId, req.params.pictureId, req.params.body));
-};
-
-// Deletes a picture for a user
-exports.deleteUserPicture = (req, res, next) => {
-    return res.send(service.deleteUserPicture(req.params.userId, req.params.pictureId));
 };
