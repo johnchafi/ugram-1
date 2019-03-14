@@ -128,7 +128,7 @@ exports.deleteUser = (req, res, next) => {
 
 // Gets the pictures of a user
 exports.getUserPictures = (req, res, next) => {
-    PictureModel.findAll({ 
+    PictureModel.findAll({
         where: {
             userId: req.params.userId
         },
@@ -172,10 +172,10 @@ exports.getUserPictures = (req, res, next) => {
                     PictureModel.formatToClient(picture, finalMentions, finalTags);
                 })
                 res.status(200);
-                return res.json(pictures);
+                return res.json({items : pictures});
             }).catch(err => {
                 res.status(400);
-                return res.send(err);    
+                return res.send(err);
             });
         }).catch(err => {
             res.status(400);
@@ -216,7 +216,7 @@ exports.addUserPicture = (req, res, next) => {
                             const nestedTags = tag.split(",");
                             nestedTags.forEach(nestedTag => {
                                 tags.push({ value: nestedTag, pictureId: picture.id });
-                            });                          
+                            });
                         })
                         TagModel.bulkCreate(tags).then(tags => {
                             let mentions = [];
@@ -237,7 +237,7 @@ exports.addUserPicture = (req, res, next) => {
                                     res.status(200);
                                     return res.json({
                                         id: picture.id
-                                    })        
+                                    })
                                 }
                                 service.addUserPicture(req.params.userId, fields, files.file[0], errCallback, succCallback);
                             }).catch(err => {
@@ -288,7 +288,7 @@ exports.getUserPicture = (req, res, next) => {
                 return res.json(picture);
             }).catch(err => {
                 res.status(400);
-                return res.send(err);    
+                return res.send(err);
             })
         }).catch(err => {
             res.status(400);
@@ -314,7 +314,7 @@ exports.editUserPicture = (req, res, next) => {
     }).then(token => {
         UserModel.findByPk(token.userId).then(user => {
             PictureModel.update(
-                { 
+                {
                     description : req.body.description
                 },
                 {
@@ -362,7 +362,7 @@ exports.editUserPicture = (req, res, next) => {
                         });
                     }).catch(err => {
                         res.status(500);
-                        return res.send(err);    
+                        return res.send(err);
                     });
                 }).catch(err => {
                     res.status(500);
@@ -414,7 +414,7 @@ exports.deleteUserPicture = (req, res, next) => {
                     .catch(err => {
                         res.status(500);
                         return res.send(err);
-                    });    
+                    });
                 };
                 service.deleteUserPicture(picture.userId, picture.id + picture.extension, errCallback, succCallback);
             }).catch(err => {
