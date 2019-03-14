@@ -37,10 +37,17 @@ const pictureSchema = db.sequelize.define('Pictures', {
     }
 );
 
-pictureSchema.formatToClient = (picture) => {
+pictureSchema.formatToClient = (picture, mentions, tags) => {
     picture.dataValues.url  = "http://" + db.bucketEndpoint + "." + db.bucketDomain + "/" + 
         db.bucketRootUpload + "/" + picture.dataValues.userId + "/" + picture.dataValues.id + picture.dataValues.extension;
-
+    picture.dataValues.tags = [];
+    picture.dataValues.mentions = [];
+    Object.keys(tags).forEach(function(key) {
+        picture.dataValues.tags.push(tags[key].dataValues.value);
+    });
+    Object.keys(mentions).forEach(function(key) {
+        picture.dataValues.mentions.push(mentions[key].dataValues.userId);
+    });
     delete picture.dataValues.extension;
 };
 
