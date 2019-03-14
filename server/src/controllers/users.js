@@ -208,7 +208,7 @@ exports.addUserPicture = (req, res, next) => {
                     PictureModel.create({
                         description : fields.description[0],
                         extension : extension,
-                        userId : user.id
+                        userId : user.id,
                     })
                     .then(picture => {
                         let tags = [];

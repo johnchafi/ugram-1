@@ -21,6 +21,12 @@ const pictureSchema = db.sequelize.define('Pictures', {
             unique: false,
             allowNull: false
         },
+        createdDate: {
+            type: 'TIMESTAMP',
+            defaultValue: db.Sequelize.literal('CURRENT_TIMESTAMP'),
+            unique: false,
+            allowNull: true
+        },
         userId: {
             type: db.Sequelize.STRING(256),
             allowNull: false,
@@ -38,7 +44,7 @@ const pictureSchema = db.sequelize.define('Pictures', {
 );
 
 pictureSchema.formatToClient = (picture, mentions, tags) => {
-    picture.dataValues.url  = "http://" + db.bucketEndpoint + "." + db.bucketDomain + "/" + 
+    picture.dataValues.url  = "http://" + db.bucketEndpoint + "." + db.bucketDomain + "/" +
         db.bucketRootUpload + "/" + picture.dataValues.userId + "/" + picture.dataValues.id + picture.dataValues.extension;
     picture.dataValues.tags = [];
     picture.dataValues.mentions = [];

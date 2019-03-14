@@ -43,7 +43,7 @@ CREATE TABLE `picture` (
   `id` int NOT NULL AUTO_INCREMENT,
   `description` varchar(255) NOT NULL,
   `extension` varchar(40) NOT NULL,
-  `created` timestamp NOT NULL,
+  `createdDate` timestamp NOT NULL,
   `user_id` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
