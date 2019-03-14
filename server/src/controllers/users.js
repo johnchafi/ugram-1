@@ -302,10 +302,132 @@ exports.getUserPicture = (req, res, next) => {
 
 // Edits the fields of a picture for a user
 exports.editUserPicture = (req, res, next) => {
-    return res.send(service.editUserPicture(req.params.userId, req.params.pictureId, req.params.body));
+    const token = getToken(req);
+    if (!token) {
+        res.status(400);
+        return res.send("Bearer token missing");
+    }
+    TokenModel.findOne({
+        where: {
+            token: token
+        }
+    }).then(token => {
+        UserModel.findByPk(token.userId).then(user => {
+            PictureModel.update(
+                { 
+                    description : req.body.description
+                },
+                {
+                    where: {
+                        id: req.params.pictureId
+                    }
+                }
+            )
+            .then(() => {
+                PictureModel.findByPk(req.params.pictureId).then(picture => {
+                    let tags = [];
+                    req.body.tags.forEach(tag => {
+                        tags.push({ value: tag, pictureId: picture.id });
+                    })
+                    TagModel.destroy({
+                        where: {
+                            pictureId: picture.id
+                        }
+                    }).then(() => {
+                        TagModel.bulkCreate(tags).then(tags => {
+                            let mentions = [];
+                            req.body.mentions.forEach(mention => {
+                                mentions.push({ userId: mention, pictureId: picture.id });
+                            })
+                            MentionModel.destroy({
+                                where : {
+                                    pictureId: picture.id
+                                }
+                            }).then(() => {
+                                MentionModel.bulkCreate(mentions).then(mentions => {
+                                    PictureModel.formatToClient(picture, mentions, tags);
+                                    res.status(200);
+                                    return res.json(picture);
+                                }).catch(err => {
+                                    res.status(500);
+                                    return res.send(err);
+                                })
+                            }).catch(err => {
+                                res.status(500);
+                                return res.send(err);
+                            });
+                        }).catch(err => {
+                            res.status(500);
+                            return res.send(err);
+                        });
+                    }).catch(err => {
+                        res.status(500);
+                        return res.send(err);    
+                    });
+                }).catch(err => {
+                    res.status(500);
+                    return res.send(err);
+                });
+            })
+            .catch(err => {
+                res.status(500);
+                return res.send(err);
+            });
+        })
+        .catch(err => {
+            res.status(403);
+            return res.send(err);
+        });
+    }).catch(err => {
+        res.status(401);
+        return res.send(err);
+    });
 };
 
 // Deletes a picture for a user
 exports.deleteUserPicture = (req, res, next) => {
-    return res.send(service.deleteUserPicture(req.params.userId, req.params.pictureId));
+    const token = getToken(req);
+    if (!token) {
+        res.status(400);
+        return res.send("Bearer token missing");
+    }
+    TokenModel.findOne({
+        where: {
+            token: token
+        }
+    }).then(token => {
+        UserModel.findByPk(token.userId).then(user => {
+            PictureModel.findByPk(req.params.pictureId).then(picture => {
+                const errCallback = (err) => {
+                    res.status(500);
+                    return res.send('Unable to delete the file');
+                };
+                const succCallback = () => {
+                    PictureModel.destroy({
+                        where: {
+                            id: picture.id
+                        }
+                    }).then(() => {
+                        res.status(200);
+                        return res.send();
+                    })
+                    .catch(err => {
+                        res.status(500);
+                        return res.send(err);
+                    });    
+                };
+                service.deleteUserPicture(picture.userId, picture.id + picture.extension, errCallback, succCallback);
+            }).catch(err => {
+                res.status(400);
+                return res.send(err);
+            })
+        })
+        .catch(err => {
+            res.status(403);
+            return res.send(err);
+        });
+    }).catch(err => {
+        res.status(401);
+        return res.send(err);
+    });
 };

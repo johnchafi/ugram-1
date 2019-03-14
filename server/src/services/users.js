@@ -29,7 +29,6 @@ exports.getUserPictures = (userId) => {
 }
 
 exports.addUserPicture = (userId, field, file, errorCallback, successCallback) => {
-
     fs.readFile(file.path, function (err, data) {
         if (err) return errorCallback(err);
         const s3bucket = new AWS.S3({params: {Bucket: database.bucketEndpoint }});
@@ -58,6 +57,13 @@ exports.editUserPicture = (userId, pictureId, picture) => {
     return {userId: userId};
 };
 
-exports.deleteUserPicture = (userId, pictureId) => {
-    return 'OK';
+exports.deleteUserPicture = (userId, pictureName, errorCallback, successCallback) => {
+    const s3bucket = new AWS.S3({params: {Bucket: database.bucketEndpoint }});
+    const params = {
+        Key: database.bucketRootUpload + "/" + userId + "/" + pictureName
+    };
+    s3bucket.deleteObject(params, function (err, data) {
+        if (err) return errorCallback(err);
+        return successCallback();
+    });
 };
