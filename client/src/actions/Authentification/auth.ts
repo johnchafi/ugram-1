@@ -10,9 +10,10 @@ export enum ActionTypes {
 
 export interface AuthenticatedAction { type: ActionTypes.AUTHENTICATED, payload: IStateAuthApp }
 
-export function authUser(username: string, password:string): any {
+export function authUser(username: string, password:string, token:string): any {
     return function(dispatch : Dispatch<IStateProfilApp>) {
-        sdk.getUser('wfortin')
+        sdk.setToken(token);
+        sdk.getUser(username)
             .then(function (response) {
                 // response.data;
                 dispatch(  {

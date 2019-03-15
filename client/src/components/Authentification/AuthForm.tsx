@@ -1,12 +1,15 @@
 import * as React from 'react'
 import User from "../../models/User";
 import {Button, TextField} from "@material-ui/core";
+import { Cookies } from 'react-cookie';
+
 import { GoogleLogin } from 'react-google-login';
 
 interface Props {
     isAuthenticated: boolean,
     user: User
-    authUser: (username: string, password: string) => any
+    authUser: (username: string, password: string, token:string) => any,
+    cookies : Cookies
 }
 interface State {
     username: string
@@ -25,16 +28,24 @@ class AuthForm extends React.Component<Props,State> {
 
     _updateUsername = (event) => {
         this.setState({ username: event.target.value });
-    }
+    };
     _updatePassword = (event) =>  {
         this.setState({ password: event.target.value });
-    }
+    };
 
 
     _handleSubmit = event => {
-        console.log(this.props);
-        this.props.authUser(this.state.username, this.state.password);
-    }
+        //TODO Handle errors
+        //TODO Call API for getting token
+
+        let token : string = 'a693d876-615f-4f17-949c-31ea4e13ff32';
+
+        this.props.cookies.set('userID', this.state.username, { path: '/' });
+        this.props.cookies.set('token', token, { path: '/' });
+
+        this.props.authUser(this.state.username, this.state.password, token);
+    };
+
     responseGoogle(response) {
         console.log(response);
     };

@@ -4,10 +4,10 @@ import {authUser} from "../../actions/Authentification/auth";
 import {getAuth, getAuthUser} from "../../selectors/Authentification/auth";
 import {State} from "../../reducers";
 import { withRouter } from 'react-router-dom';
-const mapStateToProps = (state: State) => ({
+const mapStateToProps = (state: State, ownProps : any) => ({
     isAuthenticated: getAuth(state),
     user: getAuthUser(state),
-    token:
+    cookies: ownProps.cookies
 });
 
 const mapDispatchToProps = {
