@@ -19,6 +19,7 @@ export function reducer(state: IStateAuthApp = initialState, action: Action) : I
             return {
                 ...state,
                 user: user,
+                isAuthenticated: true
             };
         default:
             return state

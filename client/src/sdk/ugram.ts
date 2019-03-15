@@ -9,9 +9,12 @@ let call2 = CancelToken.source();
 let picturesOfUser = CancelToken.source();
 
 const endpoint = "http://api.ugram.net/"
-const bearerToken = "91935b05-358b-4f41-aa79-8d6248d63637";
+let bearerToken = "91935b05-358b-4f41-aa79-8d6248d63637";
 
 export class sdk {
+    static setToken(token) {
+        bearerToken = token;
+    }
     static cancelToken() {
         picturesOfUser.cancel();
         picturesOfUser = CancelToken.source();
