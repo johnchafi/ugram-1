@@ -6,9 +6,11 @@ const swaggerUiAssetPath = require('swagger-ui-dist').getAbsoluteFSPath();
 const root = require('../controllers/root');
 const pictures = require('./pictures');
 const users = require('./users');
+const login = require('./login');
 
 router.use('/pictures', pictures);
 router.use('/users', users);
+router.use('/login', login);
 
 /**
  * @swagger

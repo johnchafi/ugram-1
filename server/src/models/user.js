@@ -23,6 +23,14 @@ const userSchema = db.sequelize.define('user', {
             defaultValue: null,
             field: 'first_name'
         },
+        password: {
+            type: db.Sequelize.STRING,
+            unique: false,
+            allowNull: false,
+            defaultValue: null,
+            field: 'password'
+        },
+
         lastName: {
             type: db.Sequelize.STRING(40),
             unique: false,
@@ -60,6 +68,7 @@ const userSchema = db.sequelize.define('user', {
 
 userSchema.formatToClient = (user) => {
     user.dataValues.registrationDate = new Date(user.dataValues.registrationDate).getTime();
+    delete user.dataValues.password;
 };
 
 // Export Users model

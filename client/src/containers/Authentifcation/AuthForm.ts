@@ -6,7 +6,8 @@ import {State} from "../../reducers";
 import { withRouter } from 'react-router-dom';
 const mapStateToProps = (state: State) => ({
     isAuthenticated: getAuth(state),
-    user: getAuthUser(state)
+    user: getAuthUser(state),
+    token:
 });
 
 const mapDispatchToProps = {

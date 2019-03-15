@@ -52,6 +52,7 @@ exports.editUser = (req, res, next) => {
     });
 };
 
+
 exports.createUser = (req, res, next) => {
     // Create the user
     UserModel.create(
