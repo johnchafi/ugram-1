@@ -7,8 +7,8 @@
 
 body {
   margin: 0;
+  background-color: #fafafa;
 }
-
 .header-nav {
   span {
     font-size: 28px;
@@ -70,9 +70,45 @@ body {
   padding: auto;
 }
 
-.logo {
-  max-width: 100px;
+.navbar {
+  background-color: white !important;
+
+  .left {
+    display: block;
+    * {
+      display: inline-block;
+    }
+    img {
+      max-width: 35px;
+    }
+    .logo {
+      max-width: 100px;
+    }
+    hr {
+      height: 34px;
+      width: 1px;
+      background-color: #262626;
+      margin: 0 15px;
+    }
+  }
+
+  .searchbar {
+    max-height: 60px;
+    position: relative;
+
+    .resultat {
+      position: absolute;
+      height: 300px;
+      top: 56px;
+      left: 0;
+      width: 300px;
+      max-width: 100%;
+      background-color: white;
+      display: none;
+    }
+  }
 }
+
 
 .error {
   color: #f44336;
@@ -200,15 +236,9 @@ body {
   }
 }
 
-body {
-  background-color: #fafafa;
-  padding-top: 65px;
-}
+
 
 @media screen and (max-width: 598px) {
- body {
-   padding-top: 57px;
- }
 }
 
 @media screen and (max-width: 640px) {
