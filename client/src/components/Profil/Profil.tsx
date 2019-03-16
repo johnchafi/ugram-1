@@ -94,7 +94,7 @@ class Profil extends React.Component<Props,State> {
                                 <Typography component="h1" variant="h4">
                                     {this.props.user && this.props.user.id}
                                 </Typography>
-                                <EditProfil/>
+                                {this.props.cookies.get("userid") === this.props.user.id && <EditProfil/>}
                             </Grid>
                             <div style={{margin:20}}>
                                 <Grid container spacing={40}>
@@ -114,7 +114,7 @@ class Profil extends React.Component<Props,State> {
                     <Tabs className={"tabsContainer"} value={this.state.slideIndex} centered onChange={this.handleChangeTabs}>
                         <Tab label="Publications" icon={<Icon className="tab-profil">grid_on_outlined</Icon>} />
                         <Tab label="Téleverser" icon={<Icon className="tab-profil">cloud_upload</Icon>} />
-                        <Tab label="Enregistrer" icon={<Icon className="tab-profil">save</Icon>} />
+                        {this.props.cookies.get("userid") === this.props.user.id &&  <Tab label="Enregistrer" icon={<Icon className="tab-profil">save</Icon>} />}
                         <Tab label="Identifications" icon={<Icon className="tab-profil">bookmark_border_outlined</Icon>} />
                     </Tabs>
                     {this.state.slideIndex === 0 &&
@@ -133,9 +133,9 @@ class Profil extends React.Component<Props,State> {
                     <Grid container direction="row" justify="center">
                         TAGGED
                     </Grid>}
-                    <Snackbar anchorOrigin={{vertical: 'bottom', horizontal: 'left',}} open={this.props.open} autoHideDuration={6000} onClose={this.handleClose}>
+                    {this.props.variant && <Snackbar anchorOrigin={{vertical: 'bottom', horizontal: 'left',}} open={this.props.open} autoHideDuration={6000} onClose={this.handleClose}>
                         <MySnackbarContentWrapper onClose={this.handleClose} variant={this.props.variant} message={this.props.message}/>
-                    </Snackbar>
+                    </Snackbar>}
                 </div>
             </React.Fragment>
         );

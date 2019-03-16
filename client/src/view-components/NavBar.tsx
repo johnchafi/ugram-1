@@ -1,15 +1,16 @@
 import * as React from 'react'
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
+import {Cookies} from 'react-cookie';
+import {Link} from 'react-router-dom';
+import {Divider, Grid, Icon} from "@material-ui/core";
 
 interface Props {
+    cookies : Cookies
 }
 interface State {
     isOpen: boolean
 }
-import {Link} from 'react-router-dom';
-import {Divider, Grid, Icon} from "@material-ui/core";
-
 
 class NavBar extends React.Component<Props,State> {
     constructor(props : Props) {
@@ -41,7 +42,7 @@ class NavBar extends React.Component<Props,State> {
                             <Grid container justify="flex-end">
                                 <Link to={"/users/"}><Icon >explore_outlined</Icon></Link>
                                 <Icon >favorite_border_rounded</Icon>
-                                <Link to={"/profil/team02"}><Icon>person_outlined</Icon></Link>
+                                <Link to={"/profil/" + this.props.cookies.get("userid")}><Icon>person_outlined</Icon></Link>
                             </Grid>
                         </Grid>
                     </Grid>

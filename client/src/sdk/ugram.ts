@@ -8,7 +8,7 @@ let call1 = CancelToken.source();
 let call2 = CancelToken.source();
 let picturesOfUser = CancelToken.source();
 
-const endpoint = "http://api.ugram.net/"
+const endpoint = "http://localhost:3000/";
 let bearerToken = "91935b05-358b-4f41-aa79-8d6248d63637";
 
 export class sdk {
@@ -25,9 +25,40 @@ export class sdk {
         call1 = CancelToken.source();
         call2 = CancelToken.source();
     }
+
+    static getUserByToken(token : string) {
+        return axios.post(endpoint + 'login/token/',
+            {
+                token:token,
+            });
+    }
+
+
     static getUser(username : string) {
         return axios.get(endpoint + 'users/' + username);
     }
+
+    static login(username : string, password: string) {
+        return axios.post(endpoint + 'login/',
+            {
+                email:username,
+                password:password
+            });
+    }
+
+    static createUser(user: User) {
+        return axios.post(endpoint + 'users/',
+            {
+                id: user.id,
+                email : user.email,
+                firstName : user.firstName,
+                lastName : user.lastName,
+                phoneNumber : user.phoneNumber,
+                password : user.password,
+            });
+    }
+
+
     static getUsers() {
         return axios.get(endpoint + 'users/')
     }

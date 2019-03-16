@@ -1,17 +1,18 @@
 import {Action, ActionTypes} from '../../actions/Authentification/auth'
-import User from "../../models/User";
 
 
 export interface IStateAuthApp {
-    user: User
+    user: string
     isAuthenticated: boolean
     token: string
+    message: string
 }
 
 export const initialState: IStateAuthApp = {
-    user: {},
+    user: null,
     isAuthenticated: false,
-    token:null
+    token : null,
+    message: null
 };
 
 export function reducer(state: IStateAuthApp = initialState, action: Action) : IStateAuthApp {
@@ -21,11 +22,15 @@ export function reducer(state: IStateAuthApp = initialState, action: Action) : I
             return {
                 ...state,
                 user: user,
-<<<<<<< HEAD
-                token: token,
-=======
->>>>>>> ca6a2c86ceddfc709f50f0c691f5ffcdfaf53623
-                isAuthenticated: true
+                isAuthenticated: true,
+                token: token
+            };
+        case ActionTypes.ERROR:
+            return {
+                ...state,
+                user: null,
+                isAuthenticated: false,
+                token: null,
             };
         default:
             return state

@@ -1,19 +1,29 @@
 import * as React from 'react'
-import User from "../../models/User";
-import {Button, TextField} from "@material-ui/core";
+import {Button, Grid, Icon, Snackbar, TextField} from "@material-ui/core";
 import { Cookies } from 'react-cookie';
-
+import * as _ from "lodash";
 import { GoogleLogin } from 'react-google-login';
-
-interface Props {
+import {WithLastLocationProps} from 'react-router-last-location';
+import {Link} from 'react-router-dom';
+import { withLastLocation } from 'react-router-last-location';
+import {Redirect, Route, RouteProps} from 'react-router';
+import MySnackbarContentWrapper from "../../view-components/MySnackBarContentWrapper";
+interface Props extends WithLastLocationProps{
     isAuthenticated: boolean,
-    user: User
-    authUser: (username: string, password: string, token:string) => any,
+    user: string
+    authUser: (username: string, password: string) => any,
     cookies : Cookies
+    token: string,
+    closeMessage: () => any
+    message:string
+    open:boolean
+    variant:string
+    location: string
 }
 interface State {
     username: string
     password: string
+    prevPath: any
 }
 
 
@@ -22,8 +32,21 @@ class AuthForm extends React.Component<Props,State> {
         super(props);
         this.state = {
             username: '',
-            password: ''
+            password: '',
+            prevPath:''
         };
+    }
+
+    handleClose = (event, reason) : void => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        this.props.closeMessage();
+    };
+
+    componentWillMount(): void {
+        if (this.props.lastLocation != null)
+        this.setState({ prevPath: this.props.lastLocation});
     }
 
     _updateUsername = (event) => {
@@ -33,17 +56,21 @@ class AuthForm extends React.Component<Props,State> {
         this.setState({ password: event.target.value });
     };
 
+    componentWillReceiveProps(nextProps: Readonly<Props>, nextContext: any): void {
+        //this.props.cookies.set('userID', this.state.username, { path: '/' });
+        if (nextProps.token != this.props.token) {
+            this.props.cookies.set('token', nextProps.token, {path: '/'});
+            this.props.cookies.set('userid', nextProps.user, { path: '/' });
+            if (this.state.prevPath.pathname.indexOf('profil') > -1){
+                this.setState({ prevPath: "/profil/" + nextProps.user});
+            }
+        }
+        console.log(this.props.cookies);
+    }
+
 
     _handleSubmit = event => {
-        //TODO Handle errors
-        //TODO Call API for getting token
-
-        let token : string = 'a693d876-615f-4f17-949c-31ea4e13ff32';
-
-        this.props.cookies.set('userID', this.state.username, { path: '/' });
-        this.props.cookies.set('token', token, { path: '/' });
-
-        this.props.authUser(this.state.username, this.state.password, token);
+        this.props.authUser(this.state.username, this.state.password);
     };
 
     responseGoogle(response) {
@@ -52,8 +79,11 @@ class AuthForm extends React.Component<Props,State> {
 
 
     render() {
+        console.log(this.props.open);
         const { username, password } = this.state;
         const { _updateUsername, _updatePassword, _handleSubmit, props } = this;
+        if (this.props.isAuthenticated)
+            return <Redirect to={this.state.prevPath}/>
         return (
             <div>
                 <GoogleLogin
@@ -65,9 +95,13 @@ class AuthForm extends React.Component<Props,State> {
                 <TextField  margin="normal" label="Email" defaultValue={username} onChange={(e) => _updateUsername(e)} fullWidth/>
                 <TextField type="password" margin="normal" label="Mot de passe" defaultValue={password} onChange={(e) => _updatePassword(e)} fullWidth/>
                 <Button onClick={_handleSubmit} >Connexion</Button>
+                <Link to={"/signup"}><Icon >account_circle</Icon></Link>
+                {this.props.variant && <Snackbar anchorOrigin={{vertical: 'bottom', horizontal: 'left',}} open={this.props.open} autoHideDuration={6000} onClose={this.handleClose}>
+                    <MySnackbarContentWrapper onClose={this.handleClose} variant={this.props.variant} message={this.props.message}/>
+                </Snackbar>}
             </div>
         );
     }
 }
 
-export default AuthForm;
+export default withLastLocation(AuthForm);

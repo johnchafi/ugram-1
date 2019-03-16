@@ -59,11 +59,13 @@ exports.createUser = (req, res, next) => {
     {
         id: req.body.id,
         email : req.body.email,
+        password : req.body.password,
         firstName : req.body.firstName,
         lastName : req.body.lastName,
         phoneNumber : req.body.phoneNumber
     })
     .then(user => {
+        console.log(user);
         TokenModel.create({
             userId : user.id,
             token: auth.generateToken()
@@ -72,11 +74,18 @@ exports.createUser = (req, res, next) => {
             return auth.sendSuccess(res, {token : token.token}, 200);
         })
         .catch(err => {
-            return auth.sendError(res, err, 400);
+            return auth.sendError(res, err.errors[0].message, 400);
         });
     })
     .catch(err => {
-        return auth.sendError(res, err, 400);
+        console.log(err.errors[0].path);
+        if (err.errors[0].path === "password")
+            err.errors[0].message = "Password cannot be null";
+        if (err.errors[0].path === "PRIMARY")
+            err.errors[0].message = "Pseudo is already use";
+        if (err.errors[0].path === "email")
+            err.errors[0].message = "Email must be unique";
+        return auth.sendError(res, err.errors[0].message, 400);
     });
 };
 

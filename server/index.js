@@ -8,21 +8,9 @@ const logger = require('./src/common/logger');
 
 const routes = require('./src/routes/routes');
 
-const port = process.env.PORT || 80;
+const port = process.env.PORT || 3000;
 
 const app = express();
-const corsOptions = {
-    origin: '*',
-    methods: [
-        'GET',
-        'PUT',
-        'POST',
-        'PATCH',
-        'DELETE',
-        'UPDATE'
-    ],
-    credentials: true
-};
 
 // const winston = require('winston');
 // const winstonCloudWatch = require('winston-cloudwatch');
@@ -35,7 +23,7 @@ const corsOptions = {
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 
-app.use(cors(corsOptions));
+app.use(cors());
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));

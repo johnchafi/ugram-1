@@ -14,16 +14,17 @@ import {getAuthUser} from "../../selectors/Authentification/auth";
 import {getNumberOfPost, getPageNumber, getPictures} from "../../selectors/Picture/Picture";
 import {getPictureForProfil, resetProfil} from "../../actions/Picture/picture";
 import {closeStatus} from "../../actions/Status/status";
-const mapStateToProps = (state: State) => ({
+const mapStateToProps = (state: State, ownProps : any) => ({
     user: getUserProfil(state),
     status: getStatusProfil(state),
-    userid: getAuthUser(state).id,
+    userid: getAuthUser(state),
     totalEntries: getNumberOfPost(state),
     pictures:getPictures(state),
     message: getMessageError(state),
     variant: getVariantString(state),
     pageNumber: getPageNumber(state),
-    open: getStateofStatus(state)
+    open: getStateofStatus(state),
+    cookies: ownProps.cookies
 });
 
 const mapDispatchToProps = {
