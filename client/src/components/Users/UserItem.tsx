@@ -32,9 +32,8 @@ class UserItem extends React.Component<Props,State> {
     render() {
         const {classes} = this.props;
         return (
-            <Grid item xs md={4} lg={3}>
+            <Grid item xs={12} md={12} lg={12}>
                 <Link to={`/profil/${this.props.user.id}`}>
-                    <Card className={classes.card}>
                         <CardHeader
                             avatar={
                                 <Avatar aria-label="Recipe" src={this.props.user.pictureUrl}>
@@ -44,7 +43,6 @@ class UserItem extends React.Component<Props,State> {
                             title={this.props.user.firstName + " " + this.props.user.lastName}
                             subheader={new Date(Number(this.props.user.registrationDate)).toDateString()}
                         />
-                    </Card>
                 </Link>
             </Grid>
 

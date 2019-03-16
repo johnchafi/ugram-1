@@ -31,10 +31,10 @@ class ProtectedRoute extends React.Component<Props, State>{
             this.props.authUser(this.props.cookies.get("token"));
     }
 
-    checkCookie()
+    checkCookie(token: string)
     {
 
-        if (this.state.token !== this.props.cookies.get('token')) {
+        if (token !== this.props.cookies.get('token')) {
             this.props.authUser(null);
         }
     }
@@ -44,7 +44,7 @@ class ProtectedRoute extends React.Component<Props, State>{
             this.props.authUser(null);
         else if (nextProps.isAuthenticated){
             this.setState({token : this.props.cookies.get("token")});
-            setInterval(this.checkCookie, 100);
+            //setInterval(this.checkCookie(this.state.token), 100);
         }
     }
 
