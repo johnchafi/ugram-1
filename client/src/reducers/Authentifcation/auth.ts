@@ -25,12 +25,17 @@ export function reducer(state: IStateAuthApp = initialState, action: Action) : I
                 isAuthenticated: true,
                 token: token
             };
+        case ActionTypes.TOKEN:
+            return {
+                ...state,
+                isAuthenticated: true,
+            };
         case ActionTypes.ERROR:
             return {
                 ...state,
                 user: null,
                 isAuthenticated: false,
-                token: null,
+                token: null
             };
         default:
             return state

@@ -5,7 +5,7 @@ import { withRouter } from 'react-router-dom';
 import AccountForm from "../../components/Authentification/AccountForm";
 import {getMessageError, getStateofStatus, getStatusProfil, getVariantString} from "../../selectors/Profil/Profil";
 import {closeStatus} from "../../actions/Status/status";
-const mapStateToProps = (state: State, ownProps : any) => ({
+const mapStateToProps = (state: State) => ({
     message: getMessageError(state),
     variant: getVariantString(state),
     open: getStateofStatus(state),

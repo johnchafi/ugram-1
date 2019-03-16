@@ -7,6 +7,7 @@ import {errorStatus, successStatus} from "../Status/status";
 
 export enum ActionTypes {
     AUTHENTICATED = "AUTH",
+    TOKEN = "TOKEN",
     ERROR = "ERROR-AUTH"
 }
 
@@ -15,8 +16,9 @@ export interface AuthenticatedAction { type: ActionTypes, payload: IStateAuthApp
 
 export function getUserWithToken(token: string): any {
     return function(dispatch : Dispatch<IStateProfilApp>) {
-        if (!token)
-            dispatch( {
+        if (!token) {
+            sdk.setToken("");
+            dispatch({
                 type: ActionTypes.ERROR,
                 payload: {
                     isAuthenticated: false,
@@ -24,17 +26,34 @@ export function getUserWithToken(token: string): any {
 
                 }
             });
+        }
         sdk.getUserByToken(token)
             .then(function (response) {
-                console.log(response);
                 sdk.setToken(response.data.token);
                 dispatch(  {
                     type: ActionTypes.AUTHENTICATED,
                     payload: {
                         isAuthenticated: true,
                         user: response.data.userId,
-                        status: response.status,
                         token: response.data.token
+                    }
+                })
+            })
+            .catch(function (error) {
+            });
+    }
+}
+
+
+export function checkTokenValidity(token: string): any {
+    return function(dispatch : Dispatch<IStateProfilApp>) {
+        sdk.getUserByToken(token)
+            .then(function (response) {
+                sdk.setToken(response.data.token);
+                dispatch(  {
+                    type: ActionTypes.TOKEN,
+                    payload: {
+                        isAuthenticated: true,
                     }
                 })
             })
@@ -68,7 +87,6 @@ export function authUser(username: string, password:string): any {
                     payload: {
                         isAuthenticated: true,
                         user: response.data.userId,
-                        status: response.status,
                         token: response.data.token
                     }
                 })

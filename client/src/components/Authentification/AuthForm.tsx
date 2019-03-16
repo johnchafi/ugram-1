@@ -1,7 +1,6 @@
 import * as React from 'react'
 import {Button, Grid, Icon, Snackbar, TextField} from "@material-ui/core";
 import { Cookies } from 'react-cookie';
-import * as _ from "lodash";
 import { GoogleLogin } from 'react-google-login';
 import {WithLastLocationProps} from 'react-router-last-location';
 import {Link} from 'react-router-dom';
@@ -33,7 +32,7 @@ class AuthForm extends React.Component<Props,State> {
         this.state = {
             username: '',
             password: '',
-            prevPath:''
+            prevPath:{pathname:''}
         };
     }
 
@@ -62,10 +61,9 @@ class AuthForm extends React.Component<Props,State> {
             this.props.cookies.set('token', nextProps.token, {path: '/'});
             this.props.cookies.set('userid', nextProps.user, { path: '/' });
             if (this.state.prevPath.pathname.indexOf('profil') > -1){
-                this.setState({ prevPath: "/profil/" + nextProps.user});
+                this.setState({prevPath : {  pathname: "/profil/" + nextProps.user}});
             }
         }
-        console.log(this.props.cookies);
     }
 
 
@@ -83,7 +81,7 @@ class AuthForm extends React.Component<Props,State> {
         const { username, password } = this.state;
         const { _updateUsername, _updatePassword, _handleSubmit, props } = this;
         if (this.props.isAuthenticated)
-            return <Redirect to={this.state.prevPath}/>
+            return <Redirect to={this.state.prevPath.pathname}/>
         return (
             <div>
                 <GoogleLogin

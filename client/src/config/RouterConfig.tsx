@@ -18,7 +18,11 @@ interface Props {
     cookies? : any
 }
 
-class RouterConfig extends Component<Props> {
+interface State {
+    token : string
+}
+
+class RouterConfig extends Component<Props, State> {
     constructor(props : Props) {
         super(props);
     }
@@ -33,8 +37,7 @@ class RouterConfig extends Component<Props> {
                         <Switch>
                             <Route path='/login' render={() => (<AuthForm  cookies={this.props.cookies}/>)}/>
                             <Route path='/signup' render={() => (<AccountForm/>)}/>
-                            <ProtectedRoute  cookies={this.props.cookies} exact path='/' render={() => {
-                                return <Home/>}}/>
+                            <ProtectedRoute  cookies={this.props.cookies} exact path='/' render={() => (<Home/>)}/>
                             <ProtectedRoute cookies={this.props.cookies} exact path="/profil/:id/" render={() => (<Profil  cookies={this.props.cookies}/>)}/>
                             <ProtectedRoute cookies={this.props.cookies} path='/users' render={() => (<Users/>)}/>
                         </Switch>

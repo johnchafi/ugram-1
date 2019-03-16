@@ -6,12 +6,14 @@ interface Props extends RouteProps {
     isAuthenticated: boolean;
     cookies: Cookies;
     authUser: (token:string) => any
+    checkToken: (token:string) => any
     location: string
 }
 
 
 interface State {
     askForLog: boolean
+    token: string
 }
 
 class ProtectedRoute extends React.Component<Props, State>{
@@ -20,16 +22,30 @@ class ProtectedRoute extends React.Component<Props, State>{
         super(props);
         this.state = {
             askForLog:false,
+            token: null
         };
     }
 
     componentWillMount(): void {
-        this.props.authUser(this.props.cookies.get("token"));
+        if (this.props.cookies.get("token"))
+            this.props.authUser(this.props.cookies.get("token"));
+    }
+
+    checkCookie()
+    {
+
+        if (this.state.token !== this.props.cookies.get('token')) {
+            this.props.authUser(null);
+        }
     }
 
     componentWillReceiveProps(nextProps: Readonly<Props>, nextContext: any): void {
         if (nextProps.isAuthenticated && !this.props.cookies.get("token"))
             this.props.authUser(null);
+        else if (nextProps.isAuthenticated){
+            this.setState({token : this.props.cookies.get("token")});
+            setInterval(this.checkCookie, 100);
+        }
     }
 
 

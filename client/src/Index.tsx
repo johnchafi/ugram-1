@@ -12,4 +12,5 @@ ReactDOM.render(
         </BrowserRouter>
     </CookiesProvider>,
     document.getElementById('app') as HTMLElement
+
 );
