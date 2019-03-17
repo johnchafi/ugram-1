@@ -18,8 +18,6 @@ const app = express();
  winston.add(winstonCloudWatch, {
      logGroupName: 'kleinh',
      logStreamName: 'team02-api',
-     awsAccessKeyId : "AKIAJ3MWMDFB4KZE6SSQ",
-     awsSecretKey : "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"
  });
 
 app.set('views', __dirname + '/views');
