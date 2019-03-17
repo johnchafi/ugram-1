@@ -8,12 +8,13 @@ interface Props extends RouteProps {
     authUser: (token:string) => any
     checkToken: (token:string) => any
     location: string
+    token : string
+    userId : string
 }
 
 
 interface State {
     askForLog: boolean
-    token: string
 }
 
 class ProtectedRoute extends React.Component<Props, State>{
@@ -22,7 +23,6 @@ class ProtectedRoute extends React.Component<Props, State>{
         super(props);
         this.state = {
             askForLog:false,
-            token: null
         };
     }
 
@@ -31,20 +31,19 @@ class ProtectedRoute extends React.Component<Props, State>{
             this.props.authUser(this.props.cookies.get("token"));
     }
 
-    checkCookie(token: string)
+    checkCookie(token:string, userId: string)
     {
 
-        if (token !== this.props.cookies.get('token')) {
+        if (token !== null && token !== this.props.cookies.get('token') || userId !== null && userId !== this.props.cookies.get("userid") ) {
             this.props.authUser(null);
+            this.props.cookies.set('token', null);
+            this.props.cookies.set('userid', null);
         }
     }
 
     componentWillReceiveProps(nextProps: Readonly<Props>, nextContext: any): void {
-        if (nextProps.isAuthenticated && !this.props.cookies.get("token"))
+        if (nextProps.isAuthenticated && (!this.props.cookies.get("token") || !this.props.cookies.get("userid"))) {
             this.props.authUser(null);
-        else if (nextProps.isAuthenticated){
-            this.setState({token : this.props.cookies.get("token")});
-            //setInterval(this.checkCookie(this.state.token), 100);
         }
     }
 
@@ -53,8 +52,10 @@ class ProtectedRoute extends React.Component<Props, State>{
         if (!this.props.isAuthenticated) {
             return <Redirect to={{pathname: "/login"}}/>
         }
-        else if (this.props.isAuthenticated)
+        else if (this.props.isAuthenticated) {
+            setInterval(function () {this.checkCookie(this.props.token, this.props.userId) }.bind(this), 100);
             return <Route {...this.props}/>;
+        }
     }
 }
 
