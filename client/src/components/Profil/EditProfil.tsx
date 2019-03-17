@@ -16,6 +16,7 @@ import FormGroup from "@material-ui/core/FormGroup";
 
 export interface Props{
     editUser: (User) => any
+    deleteUser: (userId : string) => any
     profil: User
 }
 interface State {
@@ -125,6 +126,10 @@ class EditProfil extends React.Component<Props,State> {
         this.setState({open: true})
     };
 
+    deleteProfil = () : void => {
+        this.props.deleteUser(this.props.profil.id);
+    };
+
 
     render() {
         return (
@@ -142,6 +147,8 @@ class EditProfil extends React.Component<Props,State> {
                                 Mon profil
                             </Typography>
                             <Button variant="outlined" onClick={this.handleChangeProfil} >Sauvegarder
+                            </Button>
+                            <Button variant="outlined" onClick={this.deleteProfil} >Supprimer mon profil
                             </Button>
                         </Toolbar>
                     </AppBar>

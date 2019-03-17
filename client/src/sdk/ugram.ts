@@ -79,6 +79,14 @@ export class sdk {
         });
     }
 
+    static deleteUser(userid : string) {
+        return axios.delete(endpoint + 'users/' + userid, {
+            headers: {
+                Authorization: 'Bearer ' + bearerToken
+            }
+        });
+    }
+
     static getPicturesByUser(userid : string, pageNumber : number) {
         return axios.get(endpoint + 'users/' + userid + '/pictures?page=' + pageNumber, {cancelToken:picturesOfUser.token})
     }

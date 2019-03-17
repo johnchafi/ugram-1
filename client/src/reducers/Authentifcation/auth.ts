@@ -37,6 +37,13 @@ export function reducer(state: IStateAuthApp = initialState, action: Action) : I
                 isAuthenticated: false,
                 token: null
             };
+        case ActionTypes.LOGOUT:
+            return {
+                ...state,
+                user: null,
+                isAuthenticated: false,
+                token: null
+            };
         default:
             return state
     }

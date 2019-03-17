@@ -8,7 +8,8 @@ import {errorStatus, successStatus} from "../Status/status";
 export enum ActionTypes {
     AUTHENTICATED = "AUTH",
     TOKEN = "TOKEN",
-    ERROR = "ERROR-AUTH"
+    ERROR = "ERROR-AUTH",
+    LOGOUT = "LOGOUT"
 }
 
 export interface AuthenticatedAction { type: ActionTypes, payload: IStateAuthApp }
@@ -84,8 +85,6 @@ export function authUserGoogle(googleObject: any): any {
         console.log(googleObject.tokenObj.access_token);
         console.log(googleObject.profileObj);
         console.log(googleObject.tokenId);
-
-
         user.id = googleObject.profileObj.googleId;
         user.phoneNumber = googleObject.profileObj.googleId;
         user.email = googleObject.profileObj.email;
