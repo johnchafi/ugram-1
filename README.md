@@ -4,8 +4,8 @@
 
 Réalisation d'un projet "Instagram-like"
 
-* [Lien vers le client](./client/)
-* [Lien vers le serveur](./server/)
+* [Client](./client/)
+* [Serveur](./server/)
 
 ## Auteur
 
