@@ -27,6 +27,6 @@ exports.getInfo = (req, res, next) => {
 };
 
 exports.get = (req, res, next) => {
-    const indexContent = fs.readFileSync(`https://s3.ca-central-1.amazonaws.com/ugram-team02/index.html`).toString();
+    const indexContent = fs.readFileSync('https://s3.ca-central-1.amazonaws.com/ugram-team02/index.html').toString();
     res.send(indexContent);
 }
