@@ -32,6 +32,7 @@ exports.get = (req, res, next) => {
     let s3 = new AWS.S3();
     let params = {Bucket: 'ugram-team02', Key: 'index.html'};
     s3.getObject(params, function(err, data) {
+        res.setHeader('Content-Type', 'text/html');
         res.send(data.Body);
     });
 }
