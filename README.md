@@ -9,7 +9,7 @@ Réalisation d'un projet "Instagram-like"
 
 ## Auteur
 
-* **Maxime Leroy**
-* **Henri Longle**
-* **Arthur Klein**
-* **Sébastien Bruere**
+* **[Maxime Leroy](https://github.com/maximeleroylaval)**
+* **[Henri Longle](https://github.com/longle-h)**
+* **[Arthur Klein](https://github.com/klein-h)**
+* **[Sébastien Bruere](https://github.com/bruere-s)**
