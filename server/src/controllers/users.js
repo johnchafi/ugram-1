@@ -30,6 +30,8 @@ exports.getUser = (req, res, next) => {
     UserModel.findByPk(req.params.userId).then(user => {
         UserModel.formatToClient(user);
         return auth.sendSuccess(res, user, 200);
+    }).catch(err => {
+        return auth.sendError(res, "User '" + req.params.userId + "' does not exist.", 400)
     });
 };
 
@@ -42,13 +44,13 @@ exports.editUser = (req, res, next) => {
             lastName: req.body.lastName,
             phoneNumber: req.body.phoneNumber
         }).then(() => {
-            return auth.sendSuccess(res, null, 200);
+            return auth.sendSuccess(res, { message: "User updated"}, 201);
         })
         .catch(err => {
             return auth.sendError(res, err, 500);
         });
     }).catch(err => {
-        return auth.sendError(res, err, 401);
+        return auth.sendError(res, err.message, err.code);
     });
 };
 
@@ -71,7 +73,7 @@ exports.createUser = (req, res, next) => {
             token: auth.generateToken()
         })
         .then(token => {
-            return auth.sendSuccess(res, {token : token.token}, 200);
+            return auth.sendSuccess(res, {token : token.token}, 201);
         })
         .catch(err => {
             return auth.sendError(res, err.errors[0].message, 400);
@@ -80,11 +82,11 @@ exports.createUser = (req, res, next) => {
     .catch(err => {
         console.log(err.errors[0].path);
         if (err.errors[0].path === "password")
-            err.errors[0].message = "Password cannot be null";
+            err.errors[0].message = "Missing field 'password'";
         if (err.errors[0].path === "PRIMARY")
-            err.errors[0].message = "Pseudo is already use";
+            err.errors[0].message = "Id is already taken";
         if (err.errors[0].path === "email")
-            err.errors[0].message = "Email must be unique";
+            err.errors[0].message = "Email is already taken";
         return auth.sendError(res, err.errors[0].message, 400);
     });
 };
@@ -103,62 +105,70 @@ exports.deleteUser = (req, res, next) => {
 
 // Gets the pictures of a user
 exports.getUserPictures = (req, res, next) => {
-    PictureModel.findAll({
-        where: {
-            userId: req.params.userId
-        },
-        order: [
-            ['createdDate', 'DESC']
-        ]
-    }).then(pictures => {
-        let ids = [];
-        pictures.forEach(picture => {
-            ids.push(picture.id);
-        });
-        TagModel.findAll({
-            where: {
-                pictureId: ids
-            },
-            order: [
-                ['id', 'ASC']
-            ]
-        }).then(tags => {
-            MentionModel.findAll({
+    UserModel.findByPk(req.params.userId).then(user => {
+        if (user === null) {
+            return auth.sendError(res, "User '" + req.params.userId + "' does not exist.", 400)
+        } else {
+            PictureModel.findAll({
                 where: {
-                    pictureId: ids
+                    userId: req.params.userId
                 },
                 order: [
-                    ['id', 'ASC']
+                    ['createdDate', 'DESC']
                 ]
-            }).then(mentions => {
+            }).then(pictures => {
+                let ids = [];
                 pictures.forEach(picture => {
-                    let finalTags = [];
-                    tags.forEach(tag => {
-                        if (tag.pictureId == picture.id) {
-                            finalTags.push(tag);
-                        }
+                    ids.push(picture.id);
+                });
+                TagModel.findAll({
+                    where: {
+                        pictureId: ids
+                    },
+                    order: [
+                        ['id', 'ASC']
+                    ]
+                }).then(tags => {
+                    MentionModel.findAll({
+                        where: {
+                            pictureId: ids
+                        },
+                        order: [
+                            ['id', 'ASC']
+                        ]
+                    }).then(mentions => {
+                        pictures.forEach(picture => {
+                            let finalTags = [];
+                            tags.forEach(tag => {
+                                if (tag.pictureId == picture.id) {
+                                    finalTags.push(tag);
+                                }
+                            });
+                            let finalMentions = [];
+                            mentions.forEach(mention => {
+                                if (mention.pictureId == picture.id) {
+                                    finalMentions.push(mention);
+                                }
+                            });
+                            PictureModel.formatToClient(picture, finalMentions, finalTags);
+                        })
+                        return auth.sendSuccess(
+                            res,
+                            pagination.formatPagination(pictures, req.query.page, req.query.perPage),
+                            200
+                        );
+                    }).catch(err => {
+                        return auth.sendError(res, err, 400);
                     });
-                    let finalMentions = [];
-                    mentions.forEach(mention => {
-                        if (mention.pictureId == picture.id) {
-                            finalMentions.push(mention);
-                        }
-                    });
-                    PictureModel.formatToClient(picture, finalMentions, finalTags);
-                })
-                return auth.sendSuccess(
-                    res,
-                    pagination.formatPagination(pictures, req.query.page, req.query.perPage),
-                    200
-                );
+                }).catch(err => {
+                    return auth.sendError(res, err, 400);
+                });
             }).catch(err => {
                 return auth.sendError(res, err, 400);
-            });
-        }).catch(err => {
-            return auth.sendError(res, err, 400);
-        });
+            })
+        }
     }).catch(err => {
-        return auth.sendError(res, err, 400);
+        return auth.sendError(res, "User '" + req.params.userId + "' does not exist.", 400)
     });
 };
 
@@ -216,7 +226,7 @@ exports.addUserPicture = (req, res, next) => {
         });
     })
     .catch(err => {
-        return auth.sendError(res, err, 401);
+        return auth.sendError(res, err.message, err.code);
     });
 };
 

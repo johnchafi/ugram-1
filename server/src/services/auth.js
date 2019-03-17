@@ -23,7 +23,10 @@ exports.isAuthenticated = (req) => {
     const token = this.getToken(req);
     if (!token) {
         const promise = new Promise(function(resolve, reject) {
-            throw "Bearer token missing from Authorization";
+            throw {
+                code: 401,
+                message : "Bearer token missing from Authorization"
+            };
         });
         return promise;
     }
@@ -32,10 +35,19 @@ exports.isAuthenticated = (req) => {
             token: token
         }
     }).then(token => {
-        if (token === null) throw "Token supplied does not exist";
-        if (req.params.userId !== token.userId) throw "Wrong user id specified in url parameters";
+        if (token === null) throw {
+            code: 403,
+            message : "Unknown token"
+        };
+        if (req.params.userId !== token.userId) throw {
+            code: 403,
+            message : "Supplied userId doesn't not match with token's userId"
+        };
         return UserModel.findByPk(token.userId).catch(err => {
-            throw "Specified user id does not correspond to supplied token";
+            throw {
+                code: 401,
+                message : "Specified user id does not correspond to supplied token"
+            };
         });
     }).catch(err => {
         throw err;
@@ -57,5 +69,7 @@ exports.sendError = (res, error, code) => {
         error = "Unexpected error";
     }
     res.status(code);
-    res.end(error);
+    res.json({
+        message: error
+    });
 }
