@@ -14,7 +14,7 @@ export enum ActionTypes {
     GET_PICTURE_PROFIL = 'GET_PICTURE_PROFIL',
     UPLOAD_PICTURE_PROFIL_SUCCESS = 'UPLOAD_PICTURE_PROFIL_SUCCESS',
     RESET = 'RESET',
-    ERROR = "ERROR",
+    ERROR = "ERROR-PICTURE",
     EDIT_PICTURE = 'EDIT_PICTURE'
 }
 export interface AuthenticatedAction { type: ActionTypes, payload: IStatePictureApp }
@@ -34,6 +34,13 @@ export function getPictureForProfil(userid: string, pageNumber: number, pictures
                         pictures: results,
                         pageNumber: pageNumber,
                         totalEntries: response.data.totalEntries
+                    }
+                })
+            }).catch(function (error) {
+                dispatch( {
+                    type: ActionTypes.ERROR,
+                    payload: {
+                        pictures: null,
                     }
                 })
             })

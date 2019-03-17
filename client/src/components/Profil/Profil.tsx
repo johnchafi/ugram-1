@@ -82,6 +82,13 @@ class Profil extends React.Component<Props,State> {
         return date.getDate() + ' ' + monthNames[date.getMonth()] + ' ' + date.getFullYear();
     }
     render(): React.ReactNode {
+        console.log(this.props.user);
+        if (!this.props.user)
+            return ( <React.Fragment>
+                <div style={{maxWidth:935 , margin:"auto"}}>
+
+                </div>
+            </React.Fragment>);
         return (
             <React.Fragment>
                 <div style={{maxWidth:935 , margin:"auto"}}>
