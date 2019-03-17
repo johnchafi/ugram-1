@@ -11,6 +11,7 @@ interface Props extends WithLastLocationProps{
     isAuthenticated: boolean,
     user: string
     authUser: (username: string, password: string) => any,
+    authUserGoogle: (response:any) => any,
     cookies : Cookies
     token: string,
     closeMessage: () => any
@@ -71,8 +72,8 @@ class AuthForm extends React.Component<Props,State> {
         this.props.authUser(this.state.username, this.state.password);
     };
 
-    responseGoogle(response) {
-        console.log(response);
+    responseGoogle = response => {
+        this.props.authUserGoogle(response);
     };
 
 

@@ -28,7 +28,7 @@ exports.getInfo = (req, res, next) => {
 
 exports.get = (req, res, next) => {
     const indexContent = fs.readFileSync(`${pathToSwaggerUi}/index.html`).toString().
-        replace('https://petstore.swagger.io/v2/swagger.json', 
-            'https://pxpxqxb9ub.execute-api.us-east-2.amazonaws.com/latest/info');
+    replace('https://petstore.swagger.io/v2/swagger.json',
+        'https://pxpxqxb9ub.execute-api.us-east-2.amazonaws.com/latest/info');
     res.send(indexContent);
 }

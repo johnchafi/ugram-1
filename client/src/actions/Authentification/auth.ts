@@ -8,7 +8,8 @@ import {errorStatus, successStatus} from "../Status/status";
 export enum ActionTypes {
     AUTHENTICATED = "AUTH",
     TOKEN = "TOKEN",
-    ERROR = "ERROR-AUTH"
+    ERROR = "ERROR-AUTH",
+    LOGOUT = "LOGOUT"
 }
 
 export interface AuthenticatedAction { type: ActionTypes, payload: IStateAuthApp }
@@ -72,6 +73,46 @@ export function createUser(user: User): any {
             .catch(function (error) {
                 dispatch(errorStatus(error.response.status, error.response.data));
             });
+    }
+}
+
+
+export function authUserGoogle(googleObject: any): any {
+    return function(dispatch : Dispatch<IStateProfilApp>) {
+
+
+        let user : User = {};
+        console.log(googleObject.tokenObj.access_token);
+        console.log(googleObject.profileObj);
+        console.log(googleObject.tokenId);
+        user.id = googleObject.profileObj.googleId;
+        user.phoneNumber = googleObject.profileObj.googleId;
+        user.email = googleObject.profileObj.email;
+        user.firstName = googleObject.profileObj.givenName;
+        user.password = googleObject.profileObj.googleId;
+        user.lastName = googleObject.profileObj.familyName;
+        user.pictureUrl = googleObject.profileObj.imageUrl;
+        sdk.loginGoogle(user, googleObject.tokenId).then(function (response) {
+            sdk.setToken(response.data.token);
+            dispatch(  {
+                type: ActionTypes.AUTHENTICATED,
+                payload: {
+                    isAuthenticated: true,
+                    user: response.data.userId,
+                    token: response.data.token
+                }
+            })
+        })
+            .catch(function (error) {
+                dispatch(errorStatus(error.response.status, error.response.data));
+                dispatch( {
+                    type: ActionTypes.ERROR,
+                    payload: {
+                        isAuthenticated: false,
+                        user: null,
+                    }
+                })
+            })
     }
 }
 

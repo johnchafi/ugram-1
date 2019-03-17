@@ -5,8 +5,8 @@ const logger = new winston.Logger({
     transports: [
       new WinstonCloudwatch({
             logGroupName: 'glo3012',
-            logStreamName: 'sample',
-            awsRegion: 'us-west-2',
+            logStreamName: 'ugram',
+            awsRegion: 'us-east-2',
             jsonMessage: true
         }),
         new winston.transports.Console({

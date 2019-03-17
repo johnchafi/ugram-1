@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "webpack --env prod -p --progress",
-    "start": "webpack-dev-server --https --port 8080  --env dev --mode development",
+    "start": "webpack-dev-server --port 80  --env dev --mode development",
     "test": "node_modules/.bin/jest",
     "verbose": "true"
   },
@@ -39,6 +39,7 @@
     "@types/lodash": "^4.14.123",
     "@types/material-ui": "^0.21.5",
     "axios": "latest",
+    "babel-plugin-transform-remove-console": "^6.9.4",
     "connected-react-router": "^6.2.2",
     "expect": "^24.1.0",
     "fetch-mock": "^7.3.0",

@@ -1,6 +1,8 @@
 exports.formatPages = (array, page, perPage) => {
     if (perPage == undefined) {
         perPage = Object.keys(array).length;
+        if (perPage > 20)
+            perPage = 20;
     }
     if (page == undefined || page < 0) {
         page = 0;

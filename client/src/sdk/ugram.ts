@@ -8,7 +8,7 @@ let call1 = CancelToken.source();
 let call2 = CancelToken.source();
 let picturesOfUser = CancelToken.source();
 
-const endpoint = "http://localhost:3000/";
+const endpoint = "http://ugram-team02.pm9h7ckh7u.us-east-2.elasticbeanstalk.com/";
 let bearerToken = "";
 
 export class sdk {
@@ -46,6 +46,15 @@ export class sdk {
             });
     }
 
+    static loginGoogle(user: User, token:string) {
+        return axios.post(endpoint + 'login/google',
+            {
+                user : user,
+                token : token
+            });
+    }
+
+
     static createUser(user: User) {
         return axios.post(endpoint + 'users/',
             {
@@ -64,6 +73,14 @@ export class sdk {
     }
     static editUser(userid : string, userObj : User) {
         return axios.put(endpoint + 'users/' + userid, userObj, {
+            headers: {
+                Authorization: 'Bearer ' + bearerToken
+            }
+        });
+    }
+
+    static deleteUser(userid : string) {
+        return axios.delete(endpoint + 'users/' + userid, {
             headers: {
                 Authorization: 'Bearer ' + bearerToken
             }

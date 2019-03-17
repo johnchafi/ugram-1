@@ -7,10 +7,29 @@ import {errorStatus, successStatus} from "../Status/status";
 export enum ActionTypes {
     PROFIL = 'PROFIL',
     ERROR = 'ERROR',
+    LOGOUT = 'LOGOUT',
 }
 
 export interface UserProfilAction { type: ActionTypes, payload: IStateProfilApp }
 
+
+export function deleteUser(userId: string) : any {
+    return function (dispatch: Dispatch<UserProfilAction>) {
+        sdk.deleteUser(userId).then(function (response) {
+            dispatch(successStatus(response.status, "Profil supprimé avec succès"));
+           return dispatch(  {
+                type: ActionTypes.LOGOUT,
+                payload: {
+                    isAuthenticated: false,
+                }
+            })
+        })
+            .catch(function (error) {
+                return (dispatch(errorStatus(error.response.status, error.response.data.message)));
+            });
+
+    }
+}
 
 export function editUser(user: User) : any {
     return function (dispatch: Dispatch<UserProfilAction>) {

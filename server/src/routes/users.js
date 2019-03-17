@@ -54,7 +54,7 @@ router.get('/', users.getUsers);
 router.post('/', users.createUser);
 router.get('/:userId', users.getUser);
 router.put('/:userId', users.editUser);
-router.delete('/:userId', users.deleteUser)
+router.delete('/:userId', users.deleteUser);
 
 router.get('/:userId/pictures', users.getUserPictures);
 router.post('/:userId/pictures', users.addUserPicture);
