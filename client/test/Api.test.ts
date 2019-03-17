@@ -35,9 +35,9 @@ describe('actions', () => {
 
     it('should get picture for profil page', async () => {
         const store = mockStore();
-        await store.dispatch(Actions.getPictureForProfil("team02", 0, []));
+        await store.dispatch(Actions.getPictureForProfil("riton", 0, []));
 
-        let response = await sdk.getPicturesByUser('team02', 0)
+        let response = await sdk.getPicturesByUser('riton', 0)
             .then(function (response) {
                 return response;
             });

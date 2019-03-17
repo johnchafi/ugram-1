@@ -166,13 +166,13 @@ exports.getUserPictures = (req, res, next) => {
                             200
                         );
                     }).catch(err => {
-                        return auth.sendError(res, err, 400);
+                        return auth.sendError(res, err, 500);
                     });
                 }).catch(err => {
-                    return auth.sendError(res, err, 400);
+                    return auth.sendError(res, err, 500);
                 });
             }).catch(err => {
-                return auth.sendError(res, err, 400);
+                return auth.sendError(res, err, 500);
             });
         }
     }).catch(err => {
@@ -187,7 +187,7 @@ exports.addUserPicture = (req, res, next) => {
         var form = new multiparty.Form();
 
         form.parse(req, function(err, fields, files) {
-            if (files && files.file) {
+            if (files && files.file && fields.description && fields.tags && fields.mentions) {
                 const extension = path.extname(files.file[0].originalFilename);
                 PictureModel.create({
                     description : fields.description[0],
@@ -224,13 +224,12 @@ exports.addUserPicture = (req, res, next) => {
                     }).catch(err => {
                         return auth.sendError(res, 'Cannot insert tags', 500);
                     });
-                })
-                    .catch(err => {
-                        console.log(err);
-                        return auth.sendError(res, err, 500);
-                    });
+                }).catch(err => {
+                    console.log(err);
+                    return auth.sendError(res, err, 500);
+                });
             } else {
-                return auth.sendError(res, 'No file provided', 400);
+                return auth.sendError(res, 'Missing fields', 400);
             }
         });
     })  .catch(err => {
@@ -242,26 +241,35 @@ exports.addUserPicture = (req, res, next) => {
 exports.getUserPicture = (req, res, next) => {
     logger.log('info', "[REQUEST : GET ONE PICTURE] TRYING GET ONE PICTURE.", {tags: 'request,get'});
     PictureModel.findByPk(req.params.pictureId).then(picture => {
-        MentionModel.findAll({
-            where: {
-                pictureId: picture.id
-            }
-        }).then(mentions => {
-            TagModel.findAll({
+        if (isNaN(req.params.pictureId)) {
+            return auth.sendError(res, "Provided type for pictureId is invalid.", 400)
+        }
+        if (picture === null ||picture.userId !== req.params.userId) {
+            return auth.sendError(res, "Picture '" + req.params.pictureId + "' does not exist for user '" + req.params.userId + "'.", 400);
+        } else {
+            MentionModel.findAll({
                 where: {
                     pictureId: picture.id
                 }
-            }).then(tags => {
-                PictureModel.formatToClient(picture, mentions, tags);
-                return auth.sendSuccess(res, picture, 200);
+            }).then(mentions => {
+                TagModel.findAll({
+                    where: {
+                        pictureId: picture.id
+                    }
+                }).then(tags => {
+                    PictureModel.formatToClient(picture, mentions, tags);
+                    return auth.sendSuccess(res, picture, 200);
+                }).catch(err => {
+                    // Server error
+                    return auth.sendError(res, err, 500);
+                })
             }).catch(err => {
-                return auth.sendError(res, err, 400);
-            })
-        }).catch(err => {
-            return auth.sendError(res, err, 400);
-        });
+                // Server error
+                return auth.sendError(res, err, 500);
+            });
+        }
     }).catch(err => {
-        return auth.sendError(res, err, 400);
+        return auth.sendError(res, "Missing parameter", 400);
     })
 };
 
@@ -269,46 +277,51 @@ exports.getUserPicture = (req, res, next) => {
 exports.editUserPicture = (req, res, next) => {
     logger.log('info', "[REQUEST : EDIT USER PICTURE] TRYING EDIT ONE PICTURE.", {tags: 'request,put'});
     auth.isAuthenticated(req).then(user => {
-        PictureModel.update(
-            {
-                description : req.body.description
-            },
-            {
-                where: {
-                    id: req.params.pictureId
-                }
+        if (isNaN(req.params.pictureId)) {
+            return auth.sendError(res, "Provided type for pictureId is invalid.", 400)
+        }
+        PictureModel.findByPk(req.params.pictureId).then(picture => {
+            if (req.params.userId !== picture.userId) {
+                return auth.sendError(res, "Picture '" + req.params.pictureId + "' does not exist for user '" + req.params.userId + "'.", 400)
             }
-        )
-            .then(() => {
-                PictureModel.findByPk(req.params.pictureId).then(picture => {
-                    let tags = [];
-                    req.body.tags.forEach(tag => {
-                        tags.push({ value: tag, pictureId: picture.id });
-                    })
-                    TagModel.destroy({
-                        where: {
-                            pictureId: picture.id
-                        }
-                    }).then(() => {
-                        TagModel.bulkCreate(tags).then(tags => {
-                            let mentions = [];
-                            req.body.mentions.forEach(mention => {
-                                mentions.push({ userId: mention, pictureId: picture.id });
-                            })
-                            MentionModel.destroy({
-                                where : {
-                                    pictureId: picture.id
-                                }
-                            }).then(() => {
-                                MentionModel.bulkCreate(mentions).then(mentions => {
-                                    PictureModel.formatToClient(picture, mentions, tags);
-                                    return auth.sendSuccess(res, picture, 200);
-                                }).catch(err => {
-                                    return auth.sendError(res, err, 500);
-                                })
+            if (req.body.description === null ||req.body.tags === null || req.body.mentions === null) {
+                return auth.sendError(res, "Missing parameter", 400)
+            }
+            PictureModel.update(
+                {
+                    description : req.body.description
+                },
+                {
+                    where: {
+                        id: req.params.pictureId
+                    }
+                }
+            ).then(() => {
+                let tags = [];
+                req.body.tags.forEach(tag => {
+                    tags.push({ value: tag, pictureId: picture.id });
+                })
+                TagModel.destroy({
+                    where: {
+                        pictureId: picture.id
+                    }
+                }).then(() => {
+                    TagModel.bulkCreate(tags).then(tags => {
+                        let mentions = [];
+                        req.body.mentions.forEach(mention => {
+                            mentions.push({ userId: mention, pictureId: picture.id });
+                        })
+                        MentionModel.destroy({
+                            where : {
+                                pictureId: picture.id
+                            }
+                        }).then(() => {
+                            MentionModel.bulkCreate(mentions).then(mentions => {
+                                PictureModel.formatToClient(picture, mentions, tags);
+                                return auth.sendSuccess(res, picture, 201);
                             }).catch(err => {
                                 return auth.sendError(res, err, 500);
-                            });
+                            })
                         }).catch(err => {
                             return auth.sendError(res, err, 500);
                         });
@@ -318,12 +331,15 @@ exports.editUserPicture = (req, res, next) => {
                 }).catch(err => {
                     return auth.sendError(res, err, 500);
                 });
+            }).catch(err => {
+                console.log(err);
+                return auth.sendError(res, "Missing parameter", 400);
             })
-            .catch(err => {
-                return auth.sendError(res, err, 500);
-            });
+        }).catch(err => {
+            return auth.sendError(res, "Picture '" + req.params.pictureId + "' does not exist for user '" + req.params.userId + "'.", 400);
+        })
     }).catch(err => {
-        return auth.sendError(res, err, 401);
+        return auth.sendError(res, err.message, err.code);
     });
 };
 
@@ -331,7 +347,13 @@ exports.editUserPicture = (req, res, next) => {
 exports.deleteUserPicture = (req, res, next) => {
     logger.log('info', "[REQUEST : DELETE USER PICTURE] TRYING DELETE ONE PICTURE.", {tags: 'request,delete'});
     auth.isAuthenticated(req).then(user => {
+        if (isNaN(req.params.pictureId)) {
+            return auth.sendError(res, "Provided type for pictureId is invalid.", 400)
+        }
         PictureModel.findByPk(req.params.pictureId).then(picture => {
+            if (req.params.userId !== picture.userId) {
+                return auth.sendError(res, "Picture '" + req.params.pictureId + "' does not exist for user '" + req.params.userId + "'.", 400)
+            }
             const errCallback = (err) => {
                 return auth.sendError(res, 'Unable to delete the specified file', 401);
             };
@@ -349,7 +371,7 @@ exports.deleteUserPicture = (req, res, next) => {
             };
             service.deleteUserPicture(picture.userId, picture.id + picture.extension, errCallback, succCallback);
         }).catch(err => {
-            return auth.sendError(res, err, 400);
+            return auth.sendError(res, "Picture '" + req.params.pictureId + "' does not exist for user '" + req.params.userId + "'.", 400)
         })
     }).catch(err => {
         console.log(err);
