@@ -6,6 +6,7 @@ import Search from "../containers/Search/Search";
 
 interface Props {
     cookies : Cookies
+    isAuthenticated: boolean
 }
 interface State {
     isOpen: boolean
@@ -31,7 +32,9 @@ class NavBar extends React.Component<Props,State> {
 
     render() {
         return (
+
             <AppBar position="sticky" color="default" className={"navbar"} elevation={0}>
+                { this.props.isAuthenticated &&
                 <Toolbar>
                     <Grid container alignItems="center">
                         <Grid item xs>
@@ -56,7 +59,7 @@ class NavBar extends React.Component<Props,State> {
                             </Grid>
                         </Grid>
                     </Grid>
-                </Toolbar>
+                </Toolbar>}
             </AppBar>
 
 
