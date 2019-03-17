@@ -122,7 +122,7 @@ exports.getUserPictures = (req, res, next) => {
                     userId: req.params.userId
                 },
                 order: [
-                    ['createdDate', 'DESC']
+                    ['created', 'DESC']
                 ]
             }).then(pictures => {
                 let ids = [];
@@ -134,7 +134,7 @@ exports.getUserPictures = (req, res, next) => {
                         pictureId: ids
                     },
                     order: [
-                        ['id', 'ASC']
+                        ['id', 'DESC']
                     ]
                 }).then(tags => {
                     MentionModel.findAll({
@@ -142,7 +142,7 @@ exports.getUserPictures = (req, res, next) => {
                             pictureId: ids
                         },
                         order: [
-                            ['id', 'ASC']
+                            ['id', 'DESC']
                         ]
                     }).then(mentions => {
                         pictures.forEach(picture => {
@@ -225,15 +225,14 @@ exports.addUserPicture = (req, res, next) => {
                         return auth.sendError(res, 'Cannot insert tags', 500);
                     });
                 })
-                    .catch(err => {
-                        console.log(err);
-                        return auth.sendError(res, err, 500);
-                    });
+                .catch(err => {
+                    return auth.sendError(res, err, 500);
+                });
             } else {
                 return auth.sendError(res, 'No file provided', 400);
             }
         });
-    })  .catch(err => {
+    }).catch(err => {
         return auth.sendError(res, err.message, err.code);
     });
 };
@@ -279,36 +278,33 @@ exports.editUserPicture = (req, res, next) => {
                 }
             }
         )
-            .then(() => {
-                PictureModel.findByPk(req.params.pictureId).then(picture => {
-                    let tags = [];
-                    req.body.tags.forEach(tag => {
-                        tags.push({ value: tag, pictureId: picture.id });
-                    })
-                    TagModel.destroy({
-                        where: {
-                            pictureId: picture.id
-                        }
-                    }).then(() => {
-                        TagModel.bulkCreate(tags).then(tags => {
-                            let mentions = [];
-                            req.body.mentions.forEach(mention => {
-                                mentions.push({ userId: mention, pictureId: picture.id });
-                            })
-                            MentionModel.destroy({
-                                where : {
-                                    pictureId: picture.id
-                                }
-                            }).then(() => {
-                                MentionModel.bulkCreate(mentions).then(mentions => {
-                                    PictureModel.formatToClient(picture, mentions, tags);
-                                    return auth.sendSuccess(res, picture, 200);
-                                }).catch(err => {
-                                    return auth.sendError(res, err, 500);
-                                })
+        .then(() => {
+            PictureModel.findByPk(req.params.pictureId).then(picture => {
+                let tags = [];
+                req.body.tags.forEach(tag => {
+                    tags.push({ value: tag, pictureId: picture.id });
+                })
+                TagModel.destroy({
+                    where: {
+                        pictureId: picture.id
+                    }
+                }).then(() => {
+                    TagModel.bulkCreate(tags).then(tags => {
+                        let mentions = [];
+                        req.body.mentions.forEach(mention => {
+                            mentions.push({ userId: mention, pictureId: picture.id });
+                        })
+                        MentionModel.destroy({
+                            where : {
+                                pictureId: picture.id
+                            }
+                        }).then(() => {
+                            MentionModel.bulkCreate(mentions).then(mentions => {
+                                PictureModel.formatToClient(picture, mentions, tags);
+                                return auth.sendSuccess(res, picture, 200);
                             }).catch(err => {
                                 return auth.sendError(res, err, 500);
-                            });
+                            })
                         }).catch(err => {
                             return auth.sendError(res, err, 500);
                         });
@@ -318,10 +314,13 @@ exports.editUserPicture = (req, res, next) => {
                 }).catch(err => {
                     return auth.sendError(res, err, 500);
                 });
-            })
-            .catch(err => {
+            }).catch(err => {
                 return auth.sendError(res, err, 500);
             });
+        })
+        .catch(err => {
+            return auth.sendError(res, err, 500);
+        });
     }).catch(err => {
         return auth.sendError(res, err, 401);
     });
@@ -352,7 +351,6 @@ exports.deleteUserPicture = (req, res, next) => {
             return auth.sendError(res, err, 400);
         })
     }).catch(err => {
-        console.log(err);
         return auth.sendError(res, err.message, err.code);
     });
 };
