@@ -55,21 +55,4 @@ describe('actions', () => {
         }];
         expect(expectedAction[0]).toEqual(actions[0]);
     });
-
-    it('should get profil info', async () => {
-        const store = mockStore();
-        await store.dispatch(ActionsProfil.profilData("team02"));
-
-        const actions = store.getActions();
-        const expectedAction = [{
-            type: ActionsProfil.ActionTypes.PROFIL,
-            payload: {
-                user: await sdk.getUser('team02')
-                    .then(function (response) {
-                        return response.data;
-                    })
-            }
-        }];
-        expect(expectedAction[0]).toEqual(actions[0]);
-    })
 });
