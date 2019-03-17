@@ -51,10 +51,11 @@ exports.sendSuccess = (res, data, code) => {
 }
 
 exports.sendError = (res, error, code) => {
-    res.status(code);
+    console.log(error);
     if (!this.isDefined(error)) {
         console.log(error);
         error = "Unexpected error";
     }
-    return res.json({error: error});
+    res.status(code);
+    res.end(error);
 }

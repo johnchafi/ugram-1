@@ -12,13 +12,31 @@ exports.loginUser = (req, res, next) => {
                 userId: user.id,
             }})
             .then(token => {
-                return auth.sendSuccess(res, {token : token.token}, 200);
+                return auth.sendSuccess(res, {token : token.token, userId: user.id}, 200);
+            })
+            .catch(err => {
+                return auth.sendError(res, "Cannot find user", 400);
+            });
+    })
+        .catch(err => {
+            return auth.sendError(res, "Cannot find user", 400);
+        });
+};
+
+exports.getUserToken = (req, res, next) => {
+    console.log(req.body);
+    // Create the user
+        TokenModel.findOne({where: {
+                token: req.body.token,
+            }})
+            .then(token => {
+                UserModel.findOne({where: {
+                        id: token.userId
+                    }}).then(user => {
+                    return auth.sendSuccess(res, {token : token.token, userId: user.id}, 200);
+                })
             })
             .catch(err => {
                 return auth.sendError(res, err, 400);
             });
-    })
-        .catch(err => {
-            return auth.sendError(res, err, 400);
-        });
 };

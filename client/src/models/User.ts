@@ -4,6 +4,7 @@ export default interface User {
     id?: string,
     lastName?: string,
     phoneNumber?: number,
+    password?: string,
     pictureUrl?: string,
     registrationDate?: {
         afterNow: true,

@@ -1,9 +1,9 @@
 import Picture from "../models/Picture";
 import User from "../models/User";
-
-
+import {Cookies} from "react-cookie";
 
 export default interface Props {
+    cookies : Cookies
     getProfil: (userId: string) => any
     closeMessage: () => any
     getPicture: (userId : string, pageNumber : number, pictures: Picture[]) => any

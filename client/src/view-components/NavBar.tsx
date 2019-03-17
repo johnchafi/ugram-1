@@ -1,14 +1,15 @@
-import * as React from 'react'
-import {TextField, Toolbar, AppBar, Divider, Grid, Icon, Hidden} from '@material-ui/core';
+import * as React from 'react';
+import {Cookies} from 'react-cookie';
 import {Link} from 'react-router-dom';
+import {Toolbar, AppBar, Divider, Grid, Icon, Hidden} from '@material-ui/core';
 import Search from "../containers/Search/Search";
 
 interface Props {
+    cookies : Cookies
 }
 interface State {
     isOpen: boolean
 }
-
 
 const logo =
     'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhbW8vOS9If-qdZ7-4SL30yXffg9sRyryDcil-2I8JoKSp36CKxw';
@@ -51,7 +52,7 @@ class NavBar extends React.Component<Props,State> {
                             <Grid container justify="flex-end">
                                 <Link to={"/users/"}><Icon >explore_outlined</Icon></Link>
                                 <Icon >favorite_border_rounded</Icon>
-                                <Link to={"/profil/team02"}><Icon>person_outlined</Icon></Link>
+                                <Link to={"/profil/" + this.props.cookies.get("userid")}><Icon>person_outlined</Icon></Link>
                             </Grid>
                         </Grid>
                     </Grid>

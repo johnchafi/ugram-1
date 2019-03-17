@@ -4,7 +4,7 @@ import {Button, Grid, Popover, TextField} from "@material-ui/core";
 import Icon from '@material-ui/core/Icon';
 import IconButton from '@material-ui/core/IconButton';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import * as cloneDeep from 'lodash/cloneDeep';
+import * as _ from 'lodash/';
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -29,7 +29,7 @@ class EditPictureItem extends React.Component<Props,State> {
     {
         super(props);
         this.state = {
-            picture: cloneDeep({... this.props.picture}),
+            picture: _.cloneDeep({... this.props.picture}),
             anchorEl:null,
             open: false
         }
