@@ -185,7 +185,20 @@ body {
     max-height: 580px;
     max-width: 100%;
   }
+  .containerForm.register {
+    width: 320px;
+    max-width: 100%;
+    margin: 0 auto;
 
+    .input {
+      background-color: #E8F0FE;
+    }
+    .up {
+      p {
+        font-size: 20px;
+      }
+    }
+  }
   .containerForm {
     text-align: center;
     padding: 10px 20px;
@@ -210,6 +223,10 @@ body {
       border: none;
       border-radius: 5px;
       background-color: #E8F0FE;
+      label {
+        padding-left: 5px;
+
+      }
       :before {
         border: none !important;
       }
@@ -229,8 +246,12 @@ body {
     }
 
   }
-
-  .register {
+  .backLogin {
+    width: 320px;
+    max-width: 100%;
+    margin: 0 auto;
+  }
+  .register, .backLogin {
     text-align: center;
     padding: 10px 20px;
     background-color: white;
@@ -241,6 +262,9 @@ body {
       font-family: "Roboto", "Helvetica", "Arial", sans-serif;
       color: #999;
       font-size: 14px;
+    }
+    span {
+      font-weight: 500;
     }
     a {
       color: #003569;
