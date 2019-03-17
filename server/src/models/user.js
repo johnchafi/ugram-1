@@ -1,4 +1,4 @@
-const db = require('./database');
+const db = require('../services/database');
 
 // Setup schema
 const userSchema = db.sequelize.define('user', {

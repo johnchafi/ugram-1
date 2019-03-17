@@ -1,5 +1,6 @@
 const UserModel = require('../models/user');
 const TokenModel = require('../models/token');
+
 const auth = require('../services/auth');
 
 exports.loginUser = (req, res, next) => {
