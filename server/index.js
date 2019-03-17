@@ -17,7 +17,9 @@ const app = express();
 
  winston.add(winstonCloudWatch, {
      logGroupName: 'glo3012',
-     logStreamName: 'ugram'
+     logStreamName: 'ugram',
+     awsAccessKeyId : "AKIAIRCQYVHQV4RN5RKA",
+     awsSecretKey : "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"
  });
 
 app.set('views', __dirname + '/views');
@@ -37,4 +39,4 @@ app.use('/', routes);
 
 app.listen(port);
 
-logger.info(`App started on port ${port}`)
+logger.info(`App started on port ${port}`);
