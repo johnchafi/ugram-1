@@ -1,51 +1,62 @@
 import * as React from 'react'
-import {Avatar, Grid, Hidden, TextField} from "@material-ui/core";
+import {Avatar, Grid, TextField} from "@material-ui/core";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Search from '@material-ui/icons/Search';
 import Picture from "../../models/Picture";
 import {Link} from 'react-router-dom';
+import User from "../../models/User";
 
 
 export interface Props{
     handleSearch: (search : string) => any,
     picturesDescription : Picture[],
-    picturesTags : Picture[]
+    picturesTags : Picture[],
+    users : User[]
 }
 interface State {
     typingTimeout: number,
     descriptions: Picture[],
-    picturesTags: Picture[]
+    picturesTags: Picture[],
+    searchString: string,
+    users : User[]
 }
 
 
 
 class SearchComponent extends React.Component<Props,State> {
-private
+
     constructor(props: Props)
     {
         super(props);
         this.state = {
+            searchString: "",
             typingTimeout: 0,
             descriptions: null,
-            picturesTags: null
+            picturesTags: null,
+            users: null
         }
     }
 
 
-    handleChange = (searchString : string) : void => {
+    handleChange = (SearchString : string) : void => {
+        this.setState({
+            searchString: SearchString
+        });
+
         if (this.state.typingTimeout) {
             clearTimeout(this.state.typingTimeout);
         }
 
         this.setState({
             typingTimeout: window.setTimeout(function () {
-                if (searchString != "") {
-                    this.props.handleSearch(searchString);
+                if (this.state.searchString != "") {
+                    this.props.handleSearch(this.state.searchString);
                 }
                 else {
                     this.setState({
-                            descriptions: null,
-                        picturesTags: null
+                        descriptions: null,
+                        picturesTags: null,
+                        users: null
                         }
                     );
                 }
@@ -55,7 +66,6 @@ private
     };
 
     componentWillReceiveProps(nextProps: Readonly<Props>, nextContext: any): void {
-        console.log(nextProps);
         if (nextProps.picturesDescription !== this.props.picturesDescription) {
             this.setState({
                     descriptions: nextProps.picturesDescription
@@ -68,29 +78,36 @@ private
                 }
             );
         }
+        if (nextProps.users !== this.props.users) {
+            this.setState({
+                    users: nextProps.users
+                }
+            );
+        }
     }
 
-    handleClose = (event, reason) : void => {
-        if (reason === "clickaway") {
-            this.setState({
+    closeResultat = () : void => {
+        this.setState({
                 descriptions: null,
-                picturesTags: null
-            })
-        }
-
+                picturesTags: null,
+                users: null,
+                searchString: ""
+            }
+        );
     };
-
-
-
-    static displaySearchDescriptionElement(item) {
-     return (
-         <Link to={`/profil/${item.userId}`}>
-             <Grid className={"description"} key={item.id}>
+    displaySearchDescriptionElement(item, index) {
+        return (
+         <Link to={`/profil/${item.userId}`} key={index} onClick={this.closeResultat}>
+             <Grid className={"description"} >
                  <div className={"searchLeft"}>
-                     <Avatar  className="avatar-home-picture" aria-label="Description" >D</Avatar>
+                     <Avatar  className="avatar-home-picture" aria-label="Description">D</Avatar>
                  </div>
                  <div className={"searchRight"}>
-                     <p>{item.userId}<br /><span>{item.description}</span></p>
+                     <p>{item.userId}<br />
+                     <span>
+                         {item.description}
+                     </span>
+                     </p>
                  </div>
 
              </Grid>
@@ -98,26 +115,50 @@ private
      )
     }
 
-    static displaySearchTagElement(item : string, i : number) {
-        return <li key={i}>{item}</li>
+
+
+    displaySearchUserElement(item : User, index) {
+        return (
+            <Link to={`/profil/${item.id}`} key={index} onClick={this.closeResultat}>
+                <Grid className={"description"} >
+                    <div className={"searchLeft"}>
+                        <Avatar  className="avatar-home-picture" aria-label="Description" src={item.pictureUrl}/>
+                    </div>
+                    <div className={"searchRight"}>
+                        <p>{item.id}<br />
+                            <span>{`${item.firstName} ${item.lastName}`}</span></p>
+                    </div>
+                </Grid>
+            </Link>
+        )
     }
 
-    handleOutsideClick(e) {
-        // ignore clicks on the component itself
-        if (this.node.contains(e.target)) {
-            return;
-        }
+    displaySearchTagElement(picture : Picture, index : number, search : string) {
+        return (
+            <Link to={`/profil/${picture.userId}`} key={index} onClick={this.closeResultat}>
+                <Grid className={"description"} >
+                    <div className={"searchLeft"}>
+                        <Avatar  className="avatar-home-picture" aria-label="Description">#</Avatar>
+                    </div>
+                    <div className={"searchRight"}>
+                        <p>{picture.userId}<br />
+                            {
+                                picture.tags.map((item : string, i) => {
+                                    if (item.includes(search)) {
+                                        return ( <span className={"bold"} key={i}>#{item} </span>);
+                                    }
+                                    else {
+                                        return ( <span key={i}>#{item} </span>);
+                                    }
+                                })
 
-        this.handleClick();
-    }
+                            }
+                        </p>
+                    </div>
 
-    handleClick() {
-        if (!this.state.descriptions && !this.state.picturesTags) {
-            // attach/remove event handler
-            document.addEventListener('click', this.handleOutsideClick, false);
-        } else {
-            document.removeEventListener('click', this.handleOutsideClick, false);
-        }
+                </Grid>
+            </Link>
+        )
     }
 
 
@@ -125,9 +166,10 @@ private
 
         return (
 
-            <Grid item xs className={"searchbar"} ref={node => { this.node = node; }}>
+            <Grid item xs className={"searchbar"}>
 
                 <TextField
+                    value={this.state.searchString}
                     variant="outlined"
                     placeholder="Rechercher"
                     onChange={(e) => this.handleChange(e.target.value)}
@@ -145,16 +187,18 @@ private
                     <Grid className={"resultat"}>
                         <Grid>
                             {
-                                this.state.descriptions.map((item, key) =>
-                                    SearchComponent.displaySearchDescriptionElement(item)
+                                this.state.descriptions.map((item, index) =>
+                                    this.displaySearchDescriptionElement(item, index)
                                 )
                             }
                             {
-                                <TextField>Tags:</TextField> &&
-                                this.state.picturesTags.map((item, key) =>
-                                    item.tags.map((tag, i) =>
-                                        SearchComponent.displaySearchTagElement(tag, i)
-                                    )
+                                this.state.picturesTags.map((item, i) =>
+                                    this.displaySearchTagElement(item, i, this.state.searchString)
+                                )
+                            }
+                            {
+                                this.state.users.map((item, i) =>
+                                    this.displaySearchUserElement(item, i)
                                 )
                             }
                         </Grid>

@@ -9,6 +9,9 @@ body {
   margin: 0;
   background-color: #fafafa;
 }
+.bold {
+  font-weight: bold !important;
+}
 .header-nav {
   span {
     font-size: 28px;
@@ -101,6 +104,8 @@ body {
     .resultat {
       position: absolute;
       padding: 15px;
+      max-height: 300px;
+      overflow-y: scroll;
       top: 34px;
       left: 0;
       width: 300px;
@@ -112,6 +117,7 @@ body {
 
         .searchLeft, .searchRight {
           display: inline-block;
+          vertical-align: middle;
         }
         .searchRight p {
           display: inline-block;
@@ -119,11 +125,12 @@ body {
           font-family: "Roboto", "Helvetica", "Arial", sans-serif;
           color: black;
           font-weight: bold;
-          font-size: 15px;
+          font-size: 16px;
           line-height: 1.1;
           margin: 0;
         }
         .searchRight p  span {
+          font-size: 14px;
           font-weight: normal;
         }
       }
