@@ -1,17 +1,12 @@
 const logger = require('../common/logger');
-const AWS = require('aws-sdk');
-const database = require('../models/database');
-const fs = require('fs');
+const database = require('./database');
 
-AWS.config.update({
-    accessKeyId: "AKIAIRCQYVHQV4RN5RKA",
-    secretAccessKey: "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"
-});
+const fs = require('fs');
 
 exports.addUserPicture = (userId, field, file, errorCallback, successCallback) => {
     fs.readFile(file.path, function (err, data) {
         if (err) return errorCallback(err);
-        const s3bucket = new AWS.S3({params: {Bucket: database.bucketEndpoint }});
+        const s3bucket = new database.AWS.S3({params: {Bucket: database.bucketEndpoint }});
         const params = {
             Key: database.bucketRootUpload + "/" + userId + "/" + file.originalFilename,
             Body: data,
@@ -22,7 +17,7 @@ exports.addUserPicture = (userId, field, file, errorCallback, successCallback) =
             if (err) return errorCallback(err);
             fs.unlink(file.path, function (err) {
                 if (err) return errorCallback(err);
-                console.log('Temp file deleted');
+                logger.log('info', "[AWS S3] Temporary file " + file.path + ' deleted', {tags: 'services,addUserPicture'});
             });
             return successCallback(data.Location);
         });
@@ -30,12 +25,13 @@ exports.addUserPicture = (userId, field, file, errorCallback, successCallback) =
 };
 
 exports.deleteUserPicture = (userId, pictureName, errorCallback, successCallback) => {
-    const s3bucket = new AWS.S3({params: {Bucket: database.bucketEndpoint }});
+    const s3bucket = new database.AWS.S3({params: {Bucket: database.bucketEndpoint }});
     const params = {
         Key: database.bucketRootUpload + "/" + userId + "/" + pictureName
     };
     s3bucket.deleteObject(params, function (err, data) {
         if (err) return errorCallback(err);
+        logger.log('info', "[AWS S3] File " + params.Key + ' deleted', {tags: 'services,deleteUserPicture'});
         return successCallback();
     });
 };

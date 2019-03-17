@@ -1,7 +1,8 @@
+const logger = require('../common/logger');
+
 const service = require('../services/users');
 const pagination = require('../services/pagination');
 const auth = require('../services/auth');
-const logger = require('../common/logger');
 
 const UserModel = require('../models/user');
 const TokenModel = require('../models/token');
@@ -122,7 +123,7 @@ exports.getUserPictures = (req, res, next) => {
                     userId: req.params.userId
                 },
                 order: [
-                    ['createdDate', 'DESC']
+                    ['created', 'DESC']
                 ]
             }).then(pictures => {
                 let ids = [];
@@ -134,7 +135,7 @@ exports.getUserPictures = (req, res, next) => {
                         pictureId: ids
                     },
                     order: [
-                        ['id', 'ASC']
+                        ['id', 'DESC']
                     ]
                 }).then(tags => {
                     MentionModel.findAll({
@@ -142,7 +143,7 @@ exports.getUserPictures = (req, res, next) => {
                             pictureId: ids
                         },
                         order: [
-                            ['id', 'ASC']
+                            ['id', 'DESC']
                         ]
                     }).then(mentions => {
                         pictures.forEach(picture => {
@@ -225,14 +226,13 @@ exports.addUserPicture = (req, res, next) => {
                         return auth.sendError(res, 'Cannot insert tags', 500);
                     });
                 }).catch(err => {
-                    console.log(err);
                     return auth.sendError(res, err, 500);
                 });
             } else {
                 return auth.sendError(res, 'Missing fields', 400);
             }
         });
-    })  .catch(err => {
+    }).catch(err => {
         return auth.sendError(res, err.message, err.code);
     });
 };
@@ -374,7 +374,6 @@ exports.deleteUserPicture = (req, res, next) => {
             return auth.sendError(res, "Picture '" + req.params.pictureId + "' does not exist for user '" + req.params.userId + "'.", 400)
         })
     }).catch(err => {
-        console.log(err);
         return auth.sendError(res, err.message, err.code);
     });
 };

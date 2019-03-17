@@ -1,4 +1,7 @@
 exports.formatPages = (array, page, perPage) => {
+    if (array === undefined || array === null || Object.keys(array).length === 0) {
+        return [];
+    }
     if (perPage == undefined) {
         perPage = Object.keys(array).length;
         if (perPage > 20)
@@ -11,6 +14,9 @@ exports.formatPages = (array, page, perPage) => {
 }
 
 exports.getPages = (array, perPage) => {
+    if (array === undefined || array === null || Object.keys(array).length === 0) {
+        return 0;
+    }
     if (perPage == undefined || perPage <= 0) {
         perPage = Object.keys(array).length;
         if (perPage > 20)

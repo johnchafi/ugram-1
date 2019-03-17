@@ -1,4 +1,3 @@
-const service = require('../services/pictures');
 const PictureModel = require('../models/picture');
 const TagModel = require('../models/tag');
 const MentionModel = require('../models/mention');
@@ -10,7 +9,7 @@ const auth = require('../services/auth');
 exports.getPictures = (req, res, next) => {
     PictureModel.findAll({
         order: [
-            ['createdDate', 'DESC']
+            [ 'created' , 'DESC']
         ]
     }).then(pictures => {
         let ids = [];
@@ -22,7 +21,7 @@ exports.getPictures = (req, res, next) => {
                 pictureId: ids
             },
             order: [
-                ['id', 'ASC']
+                ['id', 'DESC']
             ]
         }).then(tags => {
             MentionModel.findAll({
@@ -30,7 +29,7 @@ exports.getPictures = (req, res, next) => {
                     pictureId: ids
                 },
                 order: [
-                    ['id', 'ASC']
+                    ['id', 'DESC']
                 ]
             }).then(mentions => {
                 pictures.forEach(picture => {

@@ -2,7 +2,7 @@
 
 Réalisation d'un "Instagram-like" réalisé en TypeScript et construit en React sous Redux
 
-[Lien vers la documentation](./documentation/DOCUMENTATION.md)
+[Documentation](./documentation/DOCUMENTATION.md)
 
 ## Démarrage
 
@@ -51,10 +51,3 @@ npm start
 * [Travis](https://travis-ci.com/) - Intégration continue
 
 Travis s'occupe automatiquement de deployer sur le bucket s3 lorsque les tests unitaires sont correct.
-
-
-## Auteur
-
-* **Arthur Klein** 
-* **Sébastien Bruere** 
-* **Maxime Leroy** 

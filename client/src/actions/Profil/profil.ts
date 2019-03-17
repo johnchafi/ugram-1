@@ -6,7 +6,7 @@ import {errorStatus, successStatus} from "../Status/status";
 
 export enum ActionTypes {
     PROFIL = 'PROFIL',
-    ERROR = 'ERROR',
+    ERROR = 'ERROR_USER',
     LOGOUT = 'LOGOUT',
 }
 

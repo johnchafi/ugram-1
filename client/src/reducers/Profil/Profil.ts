@@ -30,6 +30,11 @@ export function reducer(state: IStateProfilApp = initialState, action: Action) :
                 ...state,
                 user: action.payload.user,
             };
+        case ActionTypes.ERROR:
+            return {
+                ...state,
+                user: action.payload.user,
+            };
         default:
             return state
     }

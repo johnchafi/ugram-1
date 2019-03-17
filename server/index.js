@@ -12,14 +12,6 @@ const port = process.env.PORT || 80;
 
 const app = express();
 
- const winston = require('winston');
- const winstonCloudWatch = require('winston-cloudwatch');
-
- winston.add(winstonCloudWatch, {
-     logGroupName: 'kleinh',
-     logStreamName: 'team02-api',
- });
-
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 
