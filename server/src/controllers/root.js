@@ -1,8 +1,6 @@
 const swaggerJSDoc = require('swagger-jsdoc');
-//const pathToSwaggerUi = require('swagger-ui-dist').absolutePath();
+const pathToSwaggerUi = require('swagger-ui-dist').absolutePath();
 const fs = require('fs');
-const AWS = require('aws-sdk');
-const path = require("path");
 
 exports.getInfo = (req, res, next) => {
     const swaggerDefinition = {
@@ -29,10 +27,8 @@ exports.getInfo = (req, res, next) => {
 };
 
 exports.get = (req, res, next) => {
-    let s3 = new AWS.S3();
-    let params = {Bucket: 'ugram-team02', Key: 'index.html'};
-    s3.getObject(params, function(err, data) {
-        res.setHeader('Content-Type', 'text/html');
-        res.send(data.Body);
-    });
+    const indexContent = fs.readFileSync(`${pathToSwaggerUi}/index.html`).toString().
+    replace('https://petstore.swagger.io/v2/swagger.json',
+        'https://pxpxqxb9ub.execute-api.us-east-2.amazonaws.com/latest/info');
+    res.send(indexContent);
 }

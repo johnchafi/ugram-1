@@ -29,5 +29,7 @@ router.get('/info', root.getInfo);
 
 // Tricky part to change default swagger url
 router.get('/', root.get);
+router.get('/index.html', root.get);
+router.use('/', express.static(swaggerUiAssetPath))
 
 module.exports = router;
