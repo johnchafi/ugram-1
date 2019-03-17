@@ -27,8 +27,10 @@ class ProtectedRoute extends React.Component<Props, State>{
     }
 
     componentWillMount(): void {
-        if (this.props.cookies.get("token"))
+        if (this.props.cookies.get("token")) {
             this.props.authUser(this.props.cookies.get("token"));
+            this.setState({askForLog:true});
+        }
     }
 
     checkCookie(token:string, userId: string)
@@ -45,12 +47,14 @@ class ProtectedRoute extends React.Component<Props, State>{
         if (nextProps.isAuthenticated && (!this.props.cookies.get("token") || !this.props.cookies.get("userid"))) {
             this.props.authUser(null);
         }
+        if (!nextProps.isAuthenticated)
+            this.setState({askForLog:false});
     }
 
 
     public render() {
         if (!this.props.isAuthenticated) {
-            if (!this.state.askForLog)
+            if (this.state.askForLog)
                 return <div/>;
             return <Redirect to={{pathname: "/login"}}/>
         }

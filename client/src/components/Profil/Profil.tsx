@@ -84,7 +84,6 @@ class Profil extends React.Component<Props,State> {
         return date.getDate() + ' ' + monthNames[date.getMonth()] + ' ' + date.getFullYear();
     }
     render(): React.ReactNode {
-        console.log(this.props.user);
         if (!this.props.user)
             return ( <React.Fragment>
                 <Grid container direction="row" justify="center" alignItems="center" className={"ProfilNotFound"}>
