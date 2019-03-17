@@ -12,11 +12,13 @@ exports.formatPages = (array, page, perPage) => {
 
 exports.getPages = (array, perPage) => {
     if (perPage == undefined || perPage <= 0) {
-        return 1;
+        perPage = Object.keys(array).length;
+        if (perPage > 20)
+            perPage = 20;
     }
     const pages = Math.round(Object.keys(array).length / perPage);
-    if (pages == 0) {
-        return 1;
+    if (Object.keys(array).length % perPage !== 0) {
+        return pages + 1;
     }
     return pages;
 }
