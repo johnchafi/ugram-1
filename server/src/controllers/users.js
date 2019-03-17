@@ -1,7 +1,8 @@
+const logger = require('../common/logger');
+
 const service = require('../services/users');
 const pagination = require('../services/pagination');
 const auth = require('../services/auth');
-const logger = require('../common/logger');
 
 const UserModel = require('../models/user');
 const TokenModel = require('../models/token');

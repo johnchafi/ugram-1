@@ -1,4 +1,3 @@
-const service = require('../services/pictures');
 const PictureModel = require('../models/picture');
 const TagModel = require('../models/tag');
 const MentionModel = require('../models/mention');

@@ -1,5 +1,5 @@
-const db = require('./database');
-const User = require('./user');
+const db = require('../services/database');
+//const User = require('./user');
 const Picture = require('./picture');
 
 // Setup schema
