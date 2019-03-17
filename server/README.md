@@ -2,7 +2,7 @@
 
 Réalisation d'une API "Instagram-like" en NodeJS
 
-[Lien vers la documentation](http://ugram-team02.pm9h7ckh7u.us-east-2.elasticbeanstalk.com/)
+[Documentation](http://ugram-team02.pm9h7ckh7u.us-east-2.elasticbeanstalk.com/)
 
 ## Démarrage
 
@@ -61,16 +61,14 @@ Travis s'occupe automatiquement de déployer sur le bucket s3 lorsque les tests 
 
 * [express](http://expressjs.com/) - Framework back
 * [Bookshelf](http://bookshelfjs.org/) - Communication base de données
-* [Node Redis](http://redis.js.org/) - Communication avec Redis
+* [Redis](http://redis.js.org/) - Communication avec Redis
 * [Winston](https://github.com/lazywithclass/) - AWS Cloudwatch système de logs
-* [AWS SDK](https://aws.amazon.com/sdk-for-node-js/) - SDK pour AWS
+* [AWS](https://aws.amazon.com/sdk-for-node-js/) - SDK pour AWS
 * [Mocha](https://mochajs.org/) - Tests unitaires
 * [Chai](http://chaijs.com/) - Tests unitaires
 * [Istanbul](http://gotwarlost.github.io/istanbul/) - Tests unitaires
-
-## Auteur
-
-* **Maxime Leroy**
-* **Henri Longle**
-* **Arthur Klein**
-* **Sébastien Bruere**
+* [Multiparty](https://github.com/pillarjs/multiparty) - Parsing des headers multipart
+* [Sequelize](https://github.com/sequelize/sequelize) - ORM de base de données
+* [Swagger](https://swagger.io/tools/swagger-ui/) - Interface web de documentation de code
+* [Uuid](https://github.com/kelektiv/node-uuid) - Generation d'identifiants uniques UUID
+* [Nodemon](https://github.com/remy/nodemon) - Automatically restart the server on code changes
