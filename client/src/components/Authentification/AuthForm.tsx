@@ -69,6 +69,8 @@ class AuthForm extends React.Component<Props,State> {
             if (this.state.prevPath.pathname.indexOf('profil') > -1 && this.state.prevPath.pathname.indexOf('undefined') > -1){
                 this.setState({prevPath : {  pathname: "/profil/" + nextProps.user}});
             }
+            if (this.state.prevPath.pathname.indexOf('signup') > -1)
+                this.setState({prevPath : {  pathname: "/"}});
         }
     }
 
