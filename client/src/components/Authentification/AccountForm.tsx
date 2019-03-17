@@ -1,8 +1,11 @@
 import * as React from 'react'
-import {Button, Snackbar, TextField} from "@material-ui/core";
+import {Button, Grid, Hidden, Snackbar, TextField} from "@material-ui/core";
 import {Redirect, Route, RouteProps} from 'react-router';
 import User from "../../models/User";
 import MySnackbarContentWrapper from "../../view-components/MySnackBarContentWrapper";
+import {GoogleLogin} from "react-google-login";
+import {Link} from 'react-router-dom';
+
 interface Props{
     createUser: (user: User) => any,
     closeMessage: () => any
@@ -32,7 +35,7 @@ class AccountForm extends React.Component<Props,State> {
                 id: '',
                 lastName: '',
                 password: '',
-                phoneNumber: 0
+                phoneNumber: null
             },
             confPassword: '',
             errorMail : null,
@@ -114,7 +117,7 @@ class AccountForm extends React.Component<Props,State> {
 
     _handleSubmit = event => {
         if (this.validate() === 0)
-        this.props.createUser(this.state.user);
+            this.props.createUser(this.state.user);
     };
 
     handleClose = (event, reason) : void => {
@@ -176,23 +179,66 @@ class AccountForm extends React.Component<Props,State> {
         return nbErrors;
     }
 
+    responseGoogle = response => {
+
+    };
+
     render() {
         const {user, confPassword } = this.state;
         const { _updateUsername, _updatePassword, _handleSubmit, _updateConfPassword, _updatePseudo, _updateFirstName, _updateLastName, _updatePhone} = this;
         return (
-            <div>
-                <TextField error={this.state.errorMail !== null} helperText={this.state.errorMail} margin="normal" label="Email" defaultValue={user.email} onChange={(e) => _updateUsername(e)} fullWidth/>
-                <TextField error={this.state.errorFirstName !== null} helperText={this.state.errorFirstName} margin="normal" label="Prénom" defaultValue={user.firstName} onChange={(e) => _updateFirstName(e)} fullWidth/>
-                <TextField error={this.state.errorLastName !== null} helperText={this.state.errorLastName} margin="normal" label="Nom" defaultValue={user.lastName} onChange={(e) => _updateLastName(e)} fullWidth/>
-                <TextField error={this.state.errorTel !== null} helperText={this.state.errorTel} margin="normal" label="Numéro de téléphone" defaultValue={user.phoneNumber} onChange={(e) => _updatePhone(e)} fullWidth/>
-                <TextField error={this.state.errorId !== null} helperText={this.state.errorId} type="normal" margin="normal" label="Pseudo" defaultValue={user.id} onChange={(e) => _updatePseudo(e)} fullWidth/>
-                <TextField error={this.state.errorMdp !== null} helperText={this.state.errorMdp} type="password" margin="normal" label="Mot de passe" defaultValue={user.password} onChange={(e) => _updatePassword(e)} fullWidth/>
-                <TextField error={this.state.errorMdp !== null} helperText={this.state.errorMdp} type="password" margin="normal" label="Confirmation mot de passe" defaultValue={confPassword} onChange={(e) => _updateConfPassword(e)} fullWidth/>
-                <Button onClick={_handleSubmit} >Créer un compte</Button>
+
+            <Grid container justify="center" alignItems="center">
+                <Grid className="LoginPage">
+
+                    <form className={"containerForm register"} onSubmit={(e) => _handleSubmit(e)}>
+                        <div className={"up"}>
+                            <img className={"logo"} alt="label" src="https://s3.ca-central-1.amazonaws.com/ugram-team02/assets/header-picture.png" />
+                            <p>Inscrivez-vous pour voir les<br />photos et vidéos de vos amis.</p>
+                        </div>
+
+                        <GoogleLogin
+                            clientId="782927614430-as1qgn7v6a07qm28r3aqk119rnj7je21.apps.googleusercontent.com"
+                            buttonText="Se connecter avec Google"
+                            onSuccess={this.responseGoogle}
+                            onFailure={this.responseGoogle}
+                        />
+                        <div className={"or"}>
+                            <p>OU</p>
+                        </div>
+
+                        <TextField className={"input"} error={this.state.errorMail !== null} helperText={this.state.errorMail} margin="normal" label="Email" defaultValue={user.email} onChange={(e) => _updateUsername(e)} fullWidth/>
+                        <TextField className={"input"} error={this.state.errorFirstName !== null} helperText={this.state.errorFirstName} margin="normal" label="Prénom" defaultValue={user.firstName} onChange={(e) => _updateFirstName(e)} fullWidth/>
+                        <TextField className={"input"} error={this.state.errorLastName !== null} helperText={this.state.errorLastName} margin="normal" label="Nom" defaultValue={user.lastName} onChange={(e) => _updateLastName(e)} fullWidth/>
+                        <TextField className={"input"} error={this.state.errorTel !== null} helperText={this.state.errorTel} margin="normal" label="Numéro de téléphone" defaultValue={user.phoneNumber} onChange={(e) => _updatePhone(e)} fullWidth/>
+                        <TextField className={"input"} error={this.state.errorId !== null} helperText={this.state.errorId} type="normal" margin="normal" label="Pseudo" defaultValue={user.id} onChange={(e) => _updatePseudo(e)} fullWidth/>
+                        <TextField className={"input"} error={this.state.errorMdp !== null} helperText={this.state.errorMdp} type="password" margin="normal" label="Mot de passe" defaultValue={user.password} onChange={(e) => _updatePassword(e)} fullWidth/>
+                        <TextField className={"input"} error={this.state.errorMdp !== null} helperText={this.state.errorMdp} type="password" margin="normal" label="Confirmation mot de passe" defaultValue={confPassword} onChange={(e) => _updateConfPassword(e)} fullWidth/>
+
+                        <Button onClick={_handleSubmit} >Inscription</Button>
+
+                        <p>En vous inscrivant, vous acceptez nos <span>Conditions générales</span>, notre <span>Politique d’utilisation des données</span> et notre <span>Politique d’utilisation des cookies</span>.</p>
+                    </form>
+
+                    <div className={"backLogin"}>
+                        <p>Vous avez un compte ? <Link to={"/login"}>Connectez-vous</Link></p>
+                    </div>
+                </Grid>
                 {this.props.variant && <Snackbar anchorOrigin={{vertical: 'bottom', horizontal: 'left',}} open={this.props.open} autoHideDuration={6000} onClose={this.handleClose}>
                     <MySnackbarContentWrapper onClose={this.handleClose} variant={this.props.variant} message={this.props.message}/>
                 </Snackbar>}
-            </div>
+            </Grid>
+
+
+
+
+
+
+
+
+
+
+
         );
     }
 }
