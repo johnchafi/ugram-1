@@ -1,6 +1,7 @@
 const service = require('../services/users');
 const pagination = require('../services/pagination');
 const auth = require('../services/auth');
+const logger = require('../common/logger');
 
 const UserModel = require('../models/user');
 const TokenModel = require('../models/token');
@@ -13,6 +14,7 @@ const path = require('path');
 
 // Gets all the users
 exports.getUsers = (req, res, next) => {
+    logger.log('info', "[REQUEST : GET USERS] TRYING GET USERS.", {tags: 'request,get'});
     UserModel.findAll().then(users => {
         users.forEach(user => {
             UserModel.formatToClient(user);
@@ -27,6 +29,7 @@ exports.getUsers = (req, res, next) => {
 
 // Gets a specific user
 exports.getUser = (req, res, next) => {
+    logger.log('info', "[REQUEST : GET  ONE USER] TRYING GET USER.", {tags: 'request,get'});
     UserModel.findByPk(req.params.userId).then(user => {
         UserModel.formatToClient(user);
         return auth.sendSuccess(res, user, 200);
@@ -35,6 +38,7 @@ exports.getUser = (req, res, next) => {
 
 // Edits the fields of a specific user
 exports.editUser = (req, res, next) => {
+    logger.log('info', "[REQUEST : EDIT  ONE USER] TRYING EDIT USER.", {tags: 'request,post'});
     auth.isAuthenticated(req).then(user => {
         user.update({
             email: req.body.email,
@@ -54,6 +58,7 @@ exports.editUser = (req, res, next) => {
 
 
 exports.createUser = (req, res, next) => {
+    logger.log('info', "[REQUEST : CREATE  ONE USER] TRYING CREATE USER.", {tags: 'request,post'});
     // Create the user
     UserModel.create(
     {
@@ -90,6 +95,7 @@ exports.createUser = (req, res, next) => {
 };
 
 exports.deleteUser = (req, res, next) => {
+    logger.log('info', "[REQUEST : DELETE  ONE USER] TRYING DELETE USER.", {tags: 'request,delete'});
     auth.isAuthenticated(req).then(user => {
         return user.destroy();
     })
@@ -103,6 +109,7 @@ exports.deleteUser = (req, res, next) => {
 
 // Gets the pictures of a user
 exports.getUserPictures = (req, res, next) => {
+    logger.log('info', "[REQUEST : GET USER PICTURES] TRYING GET USER PICTURES.", {tags: 'request,get'});
     PictureModel.findAll({
         where: {
             userId: req.params.userId
@@ -164,6 +171,7 @@ exports.getUserPictures = (req, res, next) => {
 
 // Uploads a picture for a user
 exports.addUserPicture = (req, res, next) => {
+    logger.log('info', "[REQUEST : ADD  ONE PICTURE USER] TRYING ADD PICTURE USER.", {tags: 'request,post'});
     auth.isAuthenticated(req).then(user => {
         var form = new multiparty.Form();
 
@@ -222,6 +230,7 @@ exports.addUserPicture = (req, res, next) => {
 
 // Gets a single picture
 exports.getUserPicture = (req, res, next) => {
+    logger.log('info', "[REQUEST : GET ONE PICTURE] TRYING GET ONE PICTURE.", {tags: 'request,get'});
     PictureModel.findByPk(req.params.pictureId).then(picture => {
         MentionModel.findAll({
             where: {
@@ -248,6 +257,7 @@ exports.getUserPicture = (req, res, next) => {
 
 // Edits the fields of a picture for a user
 exports.editUserPicture = (req, res, next) => {
+    logger.log('info', "[REQUEST : EDIT USER PICTURE] TRYING EDIT ONE PICTURE.", {tags: 'request,put'});
     auth.isAuthenticated(req).then(user => {
         PictureModel.update(
             {
@@ -309,6 +319,7 @@ exports.editUserPicture = (req, res, next) => {
 
 // Deletes a picture for a user
 exports.deleteUserPicture = (req, res, next) => {
+    logger.log('info', "[REQUEST : DELETE USER PICTURE] TRYING DELETE ONE PICTURE.", {tags: 'request,delete'});
     auth.isAuthenticated(req).then(user => {
         PictureModel.findByPk(req.params.pictureId).then(picture => {
             const errCallback = (err) => {

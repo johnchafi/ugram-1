@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize');
-
+const logger = require('../common/logger');
 const sequelize = new Sequelize('ugram', 'ugram', 'azertyuiop', {
     host: 'ugram.cxwi9docu0jq.us-east-2.rds.amazonaws.com',
     dialect: 'mysql',
@@ -8,10 +8,10 @@ const sequelize = new Sequelize('ugram', 'ugram', 'azertyuiop', {
 sequelize
     .authenticate()
     .then(() => {
-        console.log('Connection has been established successfully.');
+        logger.log('info', "[STARTUP] Connecting to DB...", {tags: 'startup,SQL'});
     })
     .catch(err => {
-        console.error('Unable to connect to the database:', err);
+        logger.log('error', "[ERROR_DB] Cannot connect to DB....", {tags: 'error,SQL'});
     });
 
 const db = {
