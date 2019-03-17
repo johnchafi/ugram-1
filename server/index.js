@@ -12,13 +12,13 @@ const port = process.env.PORT || 80;
 
 const app = express();
 
-// const winston = require('winston');
-// const winstonCloudWatch = require('winston-cloudwatch');
+ const winston = require('winston');
+ const winstonCloudWatch = require('winston-cloudwatch');
 
-// winston.add(winstonCloudWatch, {
-//     logGroupName: 'glo3012',
-//     logStreamName: 'sample'
-// });
+ winston.add(winstonCloudWatch, {
+     logGroupName: 'glo3012',
+     logStreamName: 'ugram'
+ });
 
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
@@ -29,12 +29,12 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-//app.use(errors.genericErrorHandler);
+app.use(errors.genericErrorHandler);
 // Enables access-logs on each calls
-//app.use(morgan('combined', {'stream': logger.stream}));
+app.use(morgan('combined', {'stream': logger.stream}));
 
 app.use('/', routes);
 
 app.listen(port);
 
-//logger.info(`App started on port ${port}`)
+logger.info(`App started on port ${port}`)
