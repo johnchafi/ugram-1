@@ -46,6 +46,15 @@ export class sdk {
             });
     }
 
+    static loginGoogle(user: User, token:string) {
+        return axios.post(endpoint + 'login/google',
+            {
+                user : user,
+                token : token
+            });
+    }
+
+
     static createUser(user: User) {
         return axios.post(endpoint + 'users/',
             {
