@@ -57,7 +57,7 @@ exports.isAuthenticated = (req) => {
 exports.sendSuccess = (res, data, code) => {
     res.status(code);
     if (!this.isDefined(data)) {
-        res.send();
+        return res.send();
     }
     return res.json(data);
 }

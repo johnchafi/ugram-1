@@ -6,7 +6,8 @@ import PictureItemProfil, {Props} from "../../components/Picture/PictureItemProf
 const mapStateToProps = (state: State, ownProps: Props) => ({
     picture: ownProps.picture,
     user: ownProps.user,
-    isHome: ownProps.isHome
+    isHome: ownProps.isHome,
+    isMe: ownProps.isMe
 });
 
 const mapDispatchToProps = {

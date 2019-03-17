@@ -46,7 +46,7 @@ class NavBar extends React.Component<Props,State> {
                             </Grid>
                         </Grid>
                         <Hidden xsDown>
-                            <Search/>
+                            <Search />
                         </Hidden>
                         <Grid item className={"header-nav"}>
                             <Grid container justify="flex-end">

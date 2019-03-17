@@ -10,6 +10,7 @@ export interface Props{
     picture : Picture,
     user : User
     isHome:boolean
+    isMe: boolean
     deletePicture : (string, number) => any
 }
 interface State {
@@ -47,7 +48,7 @@ class PictureItemProfil extends React.Component<Props,State> {
             <Grid className="containerPictureProfil" item xs={4}>
                 <Grid  onClick={this.handleOpenEdit} className="pictureProfil" style={{backgroundImage: "url(" + this.props.picture.url + ")"}}/>
                 <Dialog onClose={this.handleCloseEdit} scroll="body" open={this.state.open}>
-                    <PictureItem user={this.props.user} picture={this.props.picture} isHome={false}/>
+                    <PictureItem user={this.props.user} picture={this.props.picture} isHome={false} isMe={this.props.isMe}/>
                 </Dialog>
             </Grid>
         );

@@ -45,6 +45,7 @@ export function getAllPicturesSortByDate(pageNumber: number, pictures: Picture[]
         let results: Picture[] = [];
         return sdk.getPictures(pageNumber)
             .then(  function (response) {
+                console.log(response);
                 pictures.map(function (picture : Picture) {results.push(Object.assign({}, picture))}.bind(results));
                 response.data.items.map(function (picture : Picture) {results.push(Object.assign({}, picture))}.bind(results));
                 if (response.data.totalPages > pageNumber)
