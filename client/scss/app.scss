@@ -95,16 +95,39 @@ body {
   .searchbar {
     max-height: 60px;
     position: relative;
-
+    input {
+      padding: 7.5px 14px !important;
+    }
     .resultat {
       position: absolute;
-      height: 300px;
-      top: 56px;
+      padding: 15px;
+      top: 34px;
       left: 0;
       width: 300px;
       max-width: 100%;
       background-color: white;
-      display: none;
+
+      .description {
+        list-style: none;
+
+        .searchLeft, .searchRight {
+          display: inline-block;
+        }
+        .searchRight p {
+          display: inline-block;
+          vertical-align: middle;
+          font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+          color: black;
+          font-weight: bold;
+          font-size: 15px;
+          line-height: 1.1;
+          margin: 0;
+        }
+        .searchRight p  span {
+          font-weight: normal;
+        }
+      }
+
     }
   }
 }
