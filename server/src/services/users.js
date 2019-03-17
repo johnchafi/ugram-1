@@ -3,6 +3,11 @@ const AWS = require('aws-sdk');
 const database = require('../models/database');
 const fs = require('fs');
 
+AWS.config.update({
+    accessKeyId: "AKIAIRCQYVHQV4RN5RKA",
+    secretAccessKey: "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"
+});
+
 exports.addUserPicture = (userId, field, file, errorCallback, successCallback) => {
     fs.readFile(file.path, function (err, data) {
         if (err) return errorCallback(err);

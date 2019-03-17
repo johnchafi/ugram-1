@@ -8,7 +8,7 @@ let call1 = CancelToken.source();
 let call2 = CancelToken.source();
 let picturesOfUser = CancelToken.source();
 
-const endpoint = "http://ugram-team02.pm9h7ckh7u.us-east-2.elasticbeanstalk.com/";
+const endpoint = "http://localhost:3000/";
 let bearerToken = "";
 
 export class sdk {

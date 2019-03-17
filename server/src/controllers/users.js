@@ -331,6 +331,7 @@ exports.deleteUserPicture = (req, res, next) => {
             return auth.sendError(res, err, 400);
         })
     }).catch(err => {
+        console.log(err);
         return auth.sendError(res, err, 401);
     });
 };
