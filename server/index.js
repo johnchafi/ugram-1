@@ -16,10 +16,10 @@ const app = express();
  const winstonCloudWatch = require('winston-cloudwatch');
 
  winston.add(winstonCloudWatch, {
-     logGroupName: 'glo3012',
-     logStreamName: 'ugram',
-     awsAccessKeyId : "AKIAIRCQYVHQV4RN5RKA",
-     awsSecretKey : "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"
+     logGroupName: 'kleinh',
+     logStreamName: 'team02-api',
+     awsAccessKeyId : "AKIAJ3MWMDFB4KZE6SSQ",
+     awsSecretKey : "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"
  });
 
 app.set('views', __dirname + '/views');

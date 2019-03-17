@@ -4,8 +4,8 @@ const WinstonCloudwatch = require('winston-cloudwatch');
 const logger = new winston.Logger({
     transports: [
       new WinstonCloudwatch({
-            logGroupName: 'glo3012',
-            logStreamName: 'ugram',
+          logGroupName: 'kleinh',
+          logStreamName: 'team02-api',
             awsRegion: 'us-east-2',
             jsonMessage: true
         }),
