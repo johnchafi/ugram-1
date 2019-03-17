@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {Redirect, Route, RouteProps} from 'react-router';
 import {Cookies} from "react-cookie";
-import {CircularProgress} from "@material-ui/core";
 
 interface Props extends RouteProps {
     isAuthenticated: boolean;
@@ -37,8 +36,8 @@ class ProtectedRoute extends React.Component<Props, State>{
 
         if (token !== null && token !== this.props.cookies.get('token') || userId !== null && userId !== this.props.cookies.get("userid") ) {
             this.props.authUser(null);
-            this.props.cookies.set('token', null);
-            this.props.cookies.set('userid', null);
+            this.props.cookies.remove('token');
+            this.props.cookies.remove('userid');
         }
     }
 
@@ -46,15 +45,13 @@ class ProtectedRoute extends React.Component<Props, State>{
         if (nextProps.isAuthenticated && (!this.props.cookies.get("token") || !this.props.cookies.get("userid"))) {
             this.props.authUser(null);
         }
-        if (nextProps.isAuthenticated === this.props.isAuthenticated)
-            this.setState({askForLog:true});
     }
 
 
     public render() {
         if (!this.props.isAuthenticated) {
             if (!this.state.askForLog)
-                return <CircularProgress disableShrink />;
+                return <div/>;
             return <Redirect to={{pathname: "/login"}}/>
         }
         else if (this.props.isAuthenticated) {

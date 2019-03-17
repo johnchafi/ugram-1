@@ -51,7 +51,7 @@ class AuthForm extends React.Component<Props,State> {
 
     componentWillMount(): void {
         if (this.props.lastLocation != null)
-        this.setState({ prevPath: this.props.lastLocation});
+            this.setState({ prevPath: this.props.lastLocation});
     }
 
     _updateUsername = (event) => {
@@ -106,6 +106,10 @@ class AuthForm extends React.Component<Props,State> {
     };
 
 
+    errorGoogle = response => {
+    };
+
+
     render() {
         console.log(this.props.open);
         const { username, password } = this.state;
@@ -122,32 +126,33 @@ class AuthForm extends React.Component<Props,State> {
                 <Grid className={"right"} item xs={12} sm={6}>
                     <form className={"containerForm"} onSubmit={(e) => _handleSubmit(e)}>
                         <img className={"logo"} alt="label" src="https://s3.ca-central-1.amazonaws.com/ugram-team02/assets/header-picture.png" />
-                        <TextField className={"input"} helperText={this.state.errorUsername} margin="normal" label="Email" defaultValue={username} onChange={(e) => _updateUsername(e)} fullWidth/>
-                        <TextField className={"input"} helperText={this.state.errorPassword} type="password" margin="normal" label="Mot de passe" defaultValue={password} onChange={(e) => _updatePassword(e)} fullWidth/>
-                        <Button type={"submit"}>Se connecter</Button>
+                        <Grid>
+                            <TextField className={"input"} helperText={this.state.errorUsername} margin="normal" label="Email" defaultValue={username} onChange={(e) => _updateUsername(e)} fullWidth/>
+                            <TextField className={"input"} helperText={this.state.errorPassword} type="password" margin="normal" label="Mot de passe" defaultValue={password} onChange={(e) => _updatePassword(e)} fullWidth/>
+                            <Button type={"submit"}>Se connecter</Button>
 
-                        <div className={"or"}>
-                            <p>OU</p>
-                        </div>
+                            <div className={"or"}>
+                                <p>OU</p>
+                            </div>
 
-                        <GoogleLogin
-                            clientId="782927614430-as1qgn7v6a07qm28r3aqk119rnj7je21.apps.googleusercontent.com"
-                            buttonText="Se connecter avec Google"
-                            onSuccess={this.responseGoogle}
-                            onFailure={this.responseGoogle}
-                        />
+                            <GoogleLogin
+                                clientId="782927614430-as1qgn7v6a07qm28r3aqk119rnj7je21.apps.googleusercontent.com"
+                                buttonText="Se connecter avec Google"
+                                onSuccess={this.responseGoogle}
+                                onFailure={this.errorGoogle}
+                            />
 
-
+                        </Grid>
                     </form>
 
                     <div className={"register"}>
                         <p>Vous n’avez pas de compte  ? <Link to={"/signup"}>Inscrivez-vous</Link></p>
                     </div>
 
-                    {this.props.variant && <Snackbar anchorOrigin={{vertical: 'bottom', horizontal: 'left',}} open={this.props.open} autoHideDuration={6000} onClose={this.handleClose}>
-                        <MySnackbarContentWrapper onClose={this.handleClose} variant={this.props.variant} message={this.props.message}/>
-                    </Snackbar>}
                 </Grid>
+                {this.props.variant && <Snackbar anchorOrigin={{vertical: 'bottom', horizontal: 'left',}} open={this.props.open} autoHideDuration={6000} onClose={this.handleClose}>
+                    <MySnackbarContentWrapper onClose={this.handleClose} variant={this.props.variant} message={this.props.message}/>
+                </Snackbar>}
             </Grid>
         );
     }

@@ -19,7 +19,7 @@ export function getUserWithToken(token: string): any {
     return function(dispatch : Dispatch<IStateProfilApp>) {
         if (!token) {
             sdk.setToken("");
-            dispatch({
+            return dispatch({
                 type: ActionTypes.ERROR,
                 payload: {
                     isAuthenticated: false,
@@ -71,7 +71,7 @@ export function createUser(user: User): any {
                 dispatch(successStatus(response.status, "Profil créer avec succès"));
             })
             .catch(function (error) {
-                dispatch(errorStatus(error.response.status, error.response.data));
+                dispatch(errorStatus(error.response.status, error.response.data.message));
             });
     }
 }
@@ -104,7 +104,7 @@ export function authUserGoogle(googleObject: any): any {
             })
         })
             .catch(function (error) {
-                dispatch(errorStatus(error.response.status, error.response.data));
+                dispatch(errorStatus(error.response.status, error.response.data.message));
                 dispatch( {
                     type: ActionTypes.ERROR,
                     payload: {
@@ -133,7 +133,8 @@ export function authUser(username: string, password:string): any {
                 })
             })
             .catch(function (error) {
-                dispatch(errorStatus(error.response.status, error.response.data));
+                console.log(error.response);
+                dispatch(errorStatus(error.response.status, error.response.data.message));
                 dispatch( {
                     type: ActionTypes.ERROR,
                     payload: {
