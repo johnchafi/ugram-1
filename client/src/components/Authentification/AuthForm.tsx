@@ -61,7 +61,7 @@ class AuthForm extends React.Component<Props,State> {
         if (nextProps.token != this.props.token) {
             this.props.cookies.set('token', nextProps.token, {path: '/'});
             this.props.cookies.set('userid', nextProps.user, { path: '/' });
-            if (this.state.prevPath.pathname.indexOf('profil') > -1){
+            if (this.state.prevPath.pathname.indexOf('profil') > -1 && this.state.prevPath.pathname.indexOf('undefined') > -1){
                 this.setState({prevPath : {  pathname: "/profil/" + nextProps.user}});
             }
         }

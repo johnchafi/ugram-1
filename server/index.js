@@ -16,8 +16,8 @@ const app = express();
  const winstonCloudWatch = require('winston-cloudwatch');
 
  winston.add(winstonCloudWatch, {
-     logGroupName: 'glo3012',
-     logStreamName: 'ugram'
+     logGroupName: 'kleinh',
+     logStreamName: 'team02-api',
  });
 
 app.set('views', __dirname + '/views');
@@ -37,4 +37,4 @@ app.use('/', routes);
 
 app.listen(port);
 
-logger.info(`App started on port ${port}`)
+logger.info(`App started on port ${port}`);

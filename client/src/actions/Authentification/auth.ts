@@ -139,6 +139,7 @@ export function authUser(username: string, password:string): any {
                     payload: {
                         isAuthenticated: false,
                         user: null,
+                        token: null
                     }
                 })
             });

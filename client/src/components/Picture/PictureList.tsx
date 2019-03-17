@@ -13,7 +13,7 @@ class PictureList extends React.Component<Props,State> {
     }
 
     render() {
-        const {pictures, isHome, user } = this.props;
+        const {pictures, isHome, user, isMe } = this.props;
         return (
             pictures && pictures.map(function (picture, i) {
 
@@ -21,7 +21,7 @@ class PictureList extends React.Component<Props,State> {
                     return (<PictureItemHome user={isHome ? picture.user : user} picture={picture} key={picture.id} isHome={isHome}/>);
                 else
                     return (
-                            <PictureItemProfil user={isHome ? picture.user : user} picture={picture} key={picture.id} isHome={isHome}/>)
+                            <PictureItemProfil user={isHome ? picture.user : user} isMe={isMe} picture={picture} key={picture.id} isHome={isHome}/>)
             })
         );
     }
