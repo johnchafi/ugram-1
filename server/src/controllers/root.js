@@ -1,6 +1,8 @@
 const swaggerJSDoc = require('swagger-jsdoc');
 //const pathToSwaggerUi = require('swagger-ui-dist').absolutePath();
 const fs = require('fs');
+const AWS = require('aws-sdk');
+const path = require("path");
 
 exports.getInfo = (req, res, next) => {
     const swaggerDefinition = {
@@ -27,6 +29,9 @@ exports.getInfo = (req, res, next) => {
 };
 
 exports.get = (req, res, next) => {
-    const indexContent = fs.readFileSync('https://s3.ca-central-1.amazonaws.com/ugram-team02/index.html').toString();
-    res.send(indexContent);
+    let s3 = new AWS.S3();
+    let params = {Bucket: 'ugram-team02', Key: 'index.html'};
+    s3.getObject(params, function(err, data) {
+        res.send(data.Body);
+    });
 }
