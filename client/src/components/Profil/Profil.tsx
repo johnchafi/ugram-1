@@ -7,6 +7,8 @@ import {Tab} from "@material-ui/core";
 import EditProfil from "../../containers/Profil/EditProfil";
 import Props from "../../Props/Profil";
 import Upload from "../../containers/Picture/Upload";
+import {Link} from 'react-router-dom';
+
 
 interface State {
     isEditingProfil: boolean,
@@ -85,9 +87,12 @@ class Profil extends React.Component<Props,State> {
         console.log(this.props.user);
         if (!this.props.user)
             return ( <React.Fragment>
-                <div style={{maxWidth:935 , margin:"auto"}}>
-
-                </div>
+                <Grid container direction="row" justify="center" alignItems="center" className={"ProfilNotFound"}>
+                    <div>
+                    <p>Cette page n’est malheureusement pas disponible.</p>
+                    <p>Le lien que vous avez suivi est peut-être rompu, ou la page a été supprimée. <Link to={"/"}>Revenir à Instagram</Link>.</p>
+                    </div>
+                </Grid>
             </React.Fragment>);
         return (
             <React.Fragment>

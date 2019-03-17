@@ -10,6 +10,7 @@ import User from "../../models/User";
 import PictureItem from "../../containers/Picture/PictureItem";
 import Dialog from "@material-ui/core/Dialog";
 import Helper from "../../helper/helper";
+
 export interface Props{
     picture : Picture,
     user : User
@@ -63,7 +64,10 @@ class PictureItemHome extends React.Component<Props,State> {
         return (
             <Grid item md={12} lg={12} xs={12} className="card">
                 <Card onClick={this.handleOpenEdit} className={"container-picture"}>
-                    <CardHeader  className="cardheader" avatar={this.renderAvatar()} title={this.props.user && this.props.user.firstName + " " + this.props.user.lastName || <LinearProgress />}/>
+
+                    <Link to={this.props.user ? `/profil/${this.props.user.id}` : ''}>
+                        <CardHeader className="cardheader" avatar={this.renderAvatar()} title={this.props.user && this.props.user.firstName + " " + this.props.user.lastName || <LinearProgress />}/>
+                    </Link>
                     <img className="media-card" src={this.state.didLoad ? this.props.picture.url : "https://via.placeholder.com/500/f5f5f5"} alt={this.props.picture.description} onLoad={this.onLoad}/>
                     <Grid className={"container"}>
                         <CardActions className={"icon-header"} disableActionSpacing>
@@ -82,13 +86,17 @@ class PictureItemHome extends React.Component<Props,State> {
                                 {"\u00a0" + this.props.picture.description}</p>
                         </CardActions>
                         <CardActions className={"action hashtags"} disableActionSpacing>
-                            {this.props.picture.tags.map((item) =>
-                                "#" + item + " "
+                            {this.props.picture.tags.map((item) => {
+                                    if (item != "")
+                                        return ("#" + item + " ")
+                                }
                             )}
                         </CardActions>
                         <CardActions className={"action mentions"} disableActionSpacing>
-                            {this.props.picture.mentions.map((item) =>
-                                "@" + item + " "
+                            {this.props.picture.mentions.length > 0 && this.props.picture.mentions.map((item) => {
+                                if (item != "")
+                                    return ("@" + item + " ")
+                            }
                             )}
                         </CardActions>
                         <CardActions className={"action date"} disableActionSpacing>

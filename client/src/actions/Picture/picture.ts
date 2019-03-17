@@ -79,12 +79,21 @@ export function getAllPicturesSortByDate(pageNumber: number, pictures: Picture[]
 
 export function uploadPicture(userId : string, file : File, model : UploadModel): any {
     return function (dispatch: Dispatch<IStatePictureApp>) {
-        sdk.uploadPictureByUser(userId, file, model).then(response => {
-            dispatch(successStatus(response.status, "Image ajoutée avec succès"));
-            return dispatch(getPictureForProfil(userId, 0, []));
-        }).catch(error => {
-            return (dispatch(errorStatus(error.response.status, error.response.data.message)));
-        });
+
+        if (file.size > 2999000) {
+            return dispatch(errorStatus(400, "La taille de l'image est trop grosse (3MO maximum)"))
+        }
+        else {
+            sdk.uploadPictureByUser(userId, file, model).then(response => {
+                dispatch(successStatus(response.status, "Image ajoutée avec succès"));
+                return dispatch(getPictureForProfil(userId, 0, []));
+            }).catch(error => {
+                return (dispatch(errorStatus(error.response.status, error.response.data.message)));
+            });
+        }
+
+
+
     }
 }
 

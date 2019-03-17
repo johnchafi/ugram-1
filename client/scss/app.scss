@@ -73,6 +73,28 @@ body {
   padding: auto;
 }
 
+.ProfilNotFound {
+  text-align: center;
+  padding-top: 100px;
+  p {
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    color: black;
+  }
+  p:nth-child(1) {
+    font-size: 22px;
+    font-weight: bold;
+  }
+  p:nth-child(2) {
+    font-size: 18px;
+    margin-top: 0;
+  }
+  a {
+    font-size: 18px;
+    color: black;
+    text-decoration: underline;
+  }
+}
+
 .navbar {
   background-color: white !important;
 
@@ -155,6 +177,9 @@ body {
 }
 
 .container-picture {
+  a:-webkit-any-link {
+    text-decoration: none !important;
+  }
   &.item {
     padding: 12px;
   }
