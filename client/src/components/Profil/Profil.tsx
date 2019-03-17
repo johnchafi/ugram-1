@@ -119,7 +119,7 @@ class Profil extends React.Component<Props,State> {
                     </Tabs>
                     {this.state.slideIndex === 0 &&
                     <Grid container>
-                        <PictureList isHome={false}/>
+                        <PictureList isHome={false} isMe={this.props.cookies.get("userid") === this.props.user.id}/>
                     </Grid>}
                     {this.state.slideIndex === 1 &&
                     <Grid container direction="row" justify="center">

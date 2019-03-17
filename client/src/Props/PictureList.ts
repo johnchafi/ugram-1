@@ -5,4 +5,5 @@ export default interface Props {
     pictures: Picture[],
     user: User
     isHome:boolean
+    isMe:boolean
 }

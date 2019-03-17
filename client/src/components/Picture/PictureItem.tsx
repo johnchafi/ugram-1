@@ -15,6 +15,7 @@ export interface Props{
     picture : Picture,
     user : User
     isHome:boolean
+    isMe:boolean
 }
 interface State {
 }
@@ -42,7 +43,7 @@ class PictureItem extends React.Component<Props,State> {
     render() {
         return (
             <Card className={"container-picture"}>
-                <CardHeader action={ !this.props.isHome && <EditPictureItem picture={this.props.picture}/>} className={"item"} avatar={this.renderAvatar()} title={this.props.user && this.props.user.firstName + " " + this.props.user.lastName || <LinearProgress />}/>
+                <CardHeader action={ !this.props.isHome && this.props.isMe && <EditPictureItem picture={this.props.picture}/>} className={"item"} avatar={this.renderAvatar()} title={this.props.user && this.props.user.firstName + " " + this.props.user.lastName || <LinearProgress />}/>
                 <img className="media-card" src={this.props.picture.url} alt={this.props.picture.description}/>
                 <Grid className={"container"}>
                     <CardActions className={"icon-header"} disableActionSpacing>
