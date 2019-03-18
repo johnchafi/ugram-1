@@ -14,13 +14,12 @@ interface Props{
     variant:string
 }
 interface State {
-    confPassword: string
+    errorMail: string,
     user:User,
-    errorMail: string
     errorTel: string,
     errorFirstName: string,
     errorLastName: string,
-    errorMdp: string
+    errorMdp: string,
     errorId: string
 }
 
@@ -30,14 +29,15 @@ class AccountForm extends React.Component<Props,State> {
         super(props);
         this.state = {
             user: {
+                confPassword: '',
                 email: '',
                 firstName: '',
                 id: '',
                 lastName: '',
                 password: '',
-                phoneNumber: null
+                phoneNumber: null,
+
             },
-            confPassword: '',
             errorMail : null,
             errorTel : null,
             errorFirstName : null,
@@ -49,74 +49,51 @@ class AccountForm extends React.Component<Props,State> {
 
 
     _updateUsername = (event) => {
-        this.setState({
-            user: {
-                ...this.state.user,
-                email: event.target.value
-            }
-        });
+        this.state.user.email = event.target.value;
+
         this.validate();
     };
 
 
     _updateFirstName = (event) => {
-        this.setState({
-            user: {
-                ...this.state.user,
-                firstName: event.target.value
-            }
-        });
+        this.state.user.firstName = event.target.value;
+
         this.validate();
     };
 
     _updateLastName = (event) => {
-        this.setState({
-            user: {
-                ...this.state.user,
-                lastName: event.target.value
-            }
-        });
+        this.state.user.lastName = event.target.value;
+
         this.validate();
     };
 
     _updatePhone = (event) => {
-        this.setState({
-            user: {
-                ...this.state.user,
-                phoneNumber: event.target.value
-            }
-        });
+        this.state.user.phoneNumber = event.target.value;
+
         this.validate();
     };
 
 
     _updatePseudo = (event) => {
-        this.setState({
-            user: {
-                ...this.state.user,
-                id: event.target.value
-            }
-        });
+        this.state.user.id = event.target.value;
+
         this.validate();
     };
 
     _updatePassword = (event) =>  {
-        this.setState({
-            user: {
-                ...this.state.user,
-                password: event.target.value
-            }
-        });
+        this.state.user.password = event.target.value;
+
         this.validate();
     };
 
     _updateConfPassword = (event) =>  {
-        this.setState({ confPassword: event.target.value });
+        this.state.user.confPassword = event.target.value;
         this.validate();
     };
 
     _handleSubmit = event => {
-        if (this.validate() === 0)
+        event.preventDefault();
+        if (this.validate())
             this.props.createUser(this.state.user);
     };
 
@@ -127,56 +104,59 @@ class AccountForm extends React.Component<Props,State> {
         this.props.closeMessage();
     };
 
-    validate() : number {
-        let nbErrors : number = 0;
+    validate() : boolean {
+        let check : boolean = true;
 
         let emailReg : RegExp =  new RegExp("[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}");
-        let numberReg : RegExp = new RegExp("^[0-9-+s()]*$");
-        if (!emailReg.test(this.state.user.email)) {
+        let numberReg : RegExp = new RegExp("^[0-9]*$");
+
+        if (this.state.user.email && !emailReg.test(this.state.user.email)) {
             this.setState({errorMail: "Email incorrect"});
-            nbErrors++;
+            check = false;
         }
         else {
             this.setState({errorMail: null});
         }
-        if (!numberReg.test(this.state.user.phoneNumber.toString())) {
+
+        if (this.state.user.phoneNumber && (!(numberReg.test(this.state.user.phoneNumber.toString())) || !(this.state.user.phoneNumber.toString().length == 10))) {
+
             this.setState({errorTel: "Numéro de téléphone incorrect"});
-            nbErrors++;
+            check = false;
         }
         else {
             this.setState({errorTel: null});
         }
-        if (this.state.user.firstName.length === 0) {
+        if (this.state.user.firstName && this.state.user.firstName.length === 0) {
             this.setState({errorFirstName: "Prénom incorrect"});
-            nbErrors++;
+            check = false;
         }
         else {
             this.setState({errorFirstName: null});
         }
-        if (this.state.user.lastName.length === 0) {
+        if (this.state.user.lastName && this.state.user.lastName.length === 0) {
             this.setState({errorLastName: "Nom incorrect"});
-            nbErrors++;
+            check = false;
         }
         else {
             this.setState({errorLastName: null});
         }
 
-        if (this.state.user.id.length < 3) {
+        if (this.state.user.id && this.state.user.id.length < 3) {
             this.setState({errorId: "Pseudo Incorrect"});
-            nbErrors++;
+            check = false;
         }
         else {
             this.setState({errorId: null});
         }
 
-        if (this.state.user.password !== this.state.confPassword) {
+        if (this.state.user.password && this.state.user.password !== this.state.user.confPassword) {
             this.setState({errorMdp: "Les mots de passe se coincide pas"});
-            nbErrors++;
+            check = false;
         }
         else {
             this.setState({errorMdp: null});
         }
-        return nbErrors;
+        return check;
     }
 
     responseGoogle = response => {
@@ -184,13 +164,12 @@ class AccountForm extends React.Component<Props,State> {
     };
 
     render() {
-        const {user, confPassword } = this.state;
+        const {user } = this.state;
         const { _updateUsername, _updatePassword, _handleSubmit, _updateConfPassword, _updatePseudo, _updateFirstName, _updateLastName, _updatePhone} = this;
         return (
 
             <Grid container justify="center" alignItems="center">
                 <Grid className="LoginPage">
-
                     <form className={"containerForm register"} onSubmit={(e) => _handleSubmit(e)}>
                         <div className={"up"}>
                             <img className={"logo"} alt="label" src="https://s3.ca-central-1.amazonaws.com/ugram-team02/assets/header-picture.png" />
@@ -213,7 +192,7 @@ class AccountForm extends React.Component<Props,State> {
                         <TextField className={"input"} error={this.state.errorTel !== null} helperText={this.state.errorTel} margin="normal" label="Numéro de téléphone" defaultValue={user.phoneNumber} onChange={(e) => _updatePhone(e)} fullWidth/>
                         <TextField className={"input"} error={this.state.errorId !== null} helperText={this.state.errorId} type="normal" margin="normal" label="Pseudo" defaultValue={user.id} onChange={(e) => _updatePseudo(e)} fullWidth/>
                         <TextField className={"input"} error={this.state.errorMdp !== null} helperText={this.state.errorMdp} type="password" margin="normal" label="Mot de passe" defaultValue={user.password} onChange={(e) => _updatePassword(e)} fullWidth/>
-                        <TextField className={"input"} error={this.state.errorMdp !== null} helperText={this.state.errorMdp} type="password" margin="normal" label="Confirmation mot de passe" defaultValue={confPassword} onChange={(e) => _updateConfPassword(e)} fullWidth/>
+                        <TextField className={"input"} error={this.state.errorMdp !== null} helperText={this.state.errorMdp} type="password" margin="normal" label="Confirmation mot de passe" defaultValue={user.confPassword} onChange={(e) => _updateConfPassword(e)} fullWidth/>
 
                         <Button onClick={_handleSubmit} >Inscription</Button>
 
