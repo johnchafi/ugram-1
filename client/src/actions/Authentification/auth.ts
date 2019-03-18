@@ -68,7 +68,7 @@ export function createUser(user: User): any {
         console.log(user);
         sdk.createUser(user)
             .then(function (response) {
-                dispatch(successStatus(response.status, "Profil créer avec succès"));
+                dispatch(successStatus(response.status, "Profil créé avec succès"));
             })
             .catch(function (error) {
                 dispatch(errorStatus(error.response.status, error.response.data.message));

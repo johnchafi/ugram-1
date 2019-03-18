@@ -6,6 +6,7 @@ export default interface User {
     phoneNumber?: number,
     password?: string,
     pictureUrl?: string,
+    confPassword?: string,
     registrationDate?: {
         afterNow: true,
         beforeNow: true,
