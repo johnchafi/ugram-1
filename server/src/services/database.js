@@ -16,7 +16,7 @@ AWS.config.update({
 });
 
 const sequelize = new Sequelize('ugram', 'ugram', 'azertyuiop', {
-    host: 'ugram.cxwi9docu0jq.us-east-2.rds.amazonaws.com',
+    host: 'ugram-db.cxwi9docu0jq.us-east-2.rds.amazonaws.com',
     dialect: 'mysql',
     operatorsAliases: false,
 });
