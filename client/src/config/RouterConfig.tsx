@@ -36,7 +36,7 @@ class RouterConfig extends Component<Props, State> {
                         <NavBar cookies={this.props.cookies}/>
                         <Switch>
                             <Route path='/login' render={() => (<AuthForm  cookies={this.props.cookies}/>)}/>
-                            <Route path='/signup' render={() => (<AccountForm/>)}/>
+                            <Route path='/signup' render={() => (<AccountForm cookies={this.props.cookies}/>)}/>
                             <ProtectedRoute  cookies={this.props.cookies} exact path='/' render={() => (<Home/>)}/>
                             <ProtectedRoute cookies={this.props.cookies} exact path="/profil/:id/" render={() => (<Profil  cookies={this.props.cookies}/>)}/>
                             <ProtectedRoute cookies={this.props.cookies} path='/users' render={() => (<Users/>)}/>

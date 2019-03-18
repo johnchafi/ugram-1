@@ -5,13 +5,20 @@ import User from "../../models/User";
 import MySnackbarContentWrapper from "../../view-components/MySnackBarContentWrapper";
 import {GoogleLogin} from "react-google-login";
 import {Link} from 'react-router-dom';
+import {Cookies} from "react-cookie";
 
 interface Props{
     createUser: (user: User) => any,
+    authUser: (email:string, password:string) => any,
     closeMessage: () => any
     message:string
+    status: number
     open:boolean
-    variant:string
+    isAuthenticated: boolean
+    variant:string,
+    cookies: Cookies
+    token: string
+    userid: string
 }
 interface State {
     errorMail: string,
@@ -54,6 +61,10 @@ class AccountForm extends React.Component<Props,State> {
         this.validate();
     };
 
+    componentWillUnmount() {
+        this.props.closeMessage();
+    }
+
 
     _updateFirstName = (event) => {
         this.state.user.firstName = event.target.value;
@@ -79,6 +90,18 @@ class AccountForm extends React.Component<Props,State> {
 
         this.validate();
     };
+
+    componentWillReceiveProps(nextProps: Readonly<Props>, nextContext: any): void {
+        console.log(nextProps);
+        if (nextProps.status === 201){
+            this.props.authUser(this.state.user.email, this.state.user.password);
+        }
+        if (nextProps.isAuthenticated)
+        {
+            this.props.cookies.set('token', nextProps.token, {path: '/'});
+            this.props.cookies.set('userid', nextProps.userid, { path: '/' });
+        }
+    }
 
     _updatePassword = (event) =>  {
         this.state.user.password = event.target.value;
@@ -166,6 +189,8 @@ class AccountForm extends React.Component<Props,State> {
     render() {
         const {user } = this.state;
         const { _updateUsername, _updatePassword, _handleSubmit, _updateConfPassword, _updatePseudo, _updateFirstName, _updateLastName, _updatePhone} = this;
+        if (this.props.isAuthenticated)
+            return <Redirect to={'/'}/>;
         return (
 
             <Grid container justify="center" alignItems="center">
@@ -207,16 +232,6 @@ class AccountForm extends React.Component<Props,State> {
                     <MySnackbarContentWrapper onClose={this.handleClose} variant={this.props.variant} message={this.props.message}/>
                 </Snackbar>}
             </Grid>
-
-
-
-
-
-
-
-
-
-
 
         );
     }

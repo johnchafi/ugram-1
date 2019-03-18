@@ -105,7 +105,7 @@ class Profil extends React.Component<Props,State> {
                                 <Typography component="h1" variant="h4">
                                     {this.props.user && this.props.user.id}
                                 </Typography>
-                                {this.props.cookies.get("userid") === this.props.user.id && <EditProfil/>}
+                                {this.props.cookies.get("userid") === this.props.user.id && <EditProfil cookies={this.props.cookies}/>}
                             </Grid>
                             <div style={{margin:20}}>
                                 <Grid container spacing={40}>

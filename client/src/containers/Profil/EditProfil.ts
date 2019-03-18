@@ -4,8 +4,10 @@ import {State} from "../../reducers";
 import {deleteUser, editUser} from "../../actions/Profil/profil";
 import {withRouter} from 'react-router-dom';
 import EditProfil from "../../components/Profil/EditProfil";
-const mapStateToProps = (state: State) => ({
+import Props from "../../Props/Profil";
+const mapStateToProps = (state: State, ownProps: Props) => ({
     profil: getUserProfil(state),
+    cookies: ownProps.cookies
 });
 
 const mapDispatchToProps = {

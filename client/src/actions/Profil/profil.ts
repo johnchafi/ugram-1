@@ -16,7 +16,6 @@ export interface UserProfilAction { type: ActionTypes, payload: IStateProfilApp 
 export function deleteUser(userId: string) : any {
     return function (dispatch: Dispatch<UserProfilAction>) {
         sdk.deleteUser(userId).then(function (response) {
-            dispatch(successStatus(response.status, "Profil supprimé avec succès"));
            return dispatch(  {
                 type: ActionTypes.LOGOUT,
                 payload: {

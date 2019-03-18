@@ -13,11 +13,13 @@ import IconButton from "@material-ui/core/IconButton";
 import Toolbar from "@material-ui/core/Toolbar";
 import DialogContent from "@material-ui/core/DialogContent";
 import FormGroup from "@material-ui/core/FormGroup";
+import {Cookies} from "react-cookie";
 
 export interface Props{
     editUser: (User) => any
     deleteUser: (userId : string) => any
-    profil: User
+    profil: User,
+    cookies: Cookies
 }
 interface State {
     profil: User,
@@ -127,6 +129,8 @@ class EditProfil extends React.Component<Props,State> {
     };
 
     deleteProfil = () : void => {
+        this.props.cookies.remove('token');
+        this.props.cookies.remove('userid');
         this.props.deleteUser(this.props.profil.id);
     };
 
