@@ -8,8 +8,8 @@ const logger = new winston.Logger({
             logStreamName: 'team02-api',
             awsRegion: 'us-east-2',
             jsonMessage: true,
-            awsAccessKeyId : "AKIAJ3MWMDFB4KZE6SSQ",
-            awsSecretKey : "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"
+            awsAccessKeyId : process.env.aws_access_key,
+            awsSecretKey : process.env.aws_access_key_secret
         }),
         new winston.transports.Console({
             level: 'debug',
