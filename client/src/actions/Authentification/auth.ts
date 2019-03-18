@@ -4,6 +4,7 @@ import { sdk } from "../../sdk/ugram";
 import {IStateAuthApp} from "../../reducers/Authentifcation/auth";
 import User from "../../models/User";
 import {errorStatus, successStatus} from "../Status/status";
+import {UserProfilAction} from "../Profil/profil";
 
 export enum ActionTypes {
     AUTHENTICATED = "AUTH",
@@ -41,6 +42,7 @@ export function getUserWithToken(token: string): any {
                 })
             })
             .catch(function (error) {
+                dispatch(errorStatus(error.response.status, error.response.data.message));
             });
     }
 }
@@ -116,6 +118,20 @@ export function authUserGoogle(googleObject: any): any {
     }
 }
 
+export function disconnectUser() : any {
+    return function (dispatch: Dispatch<UserProfilAction>) {
+            return dispatch(  {
+                type: ActionTypes.LOGOUT,
+                payload: {
+                    isAuthenticated: false,
+                    user: null,
+                    token:null
+                }
+            })
+
+    }
+}
+
 
 export function authUser(username: string, password:string): any {
     return function(dispatch : Dispatch<IStateProfilApp>) {
@@ -133,7 +149,7 @@ export function authUser(username: string, password:string): any {
                 })
             })
             .catch(function (error) {
-                console.log(error.response);
+                console.log(error.response.data);
                 dispatch(errorStatus(error.response.status, error.response.data.message));
                 dispatch( {
                     type: ActionTypes.ERROR,

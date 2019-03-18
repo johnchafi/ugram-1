@@ -10,6 +10,7 @@ interface Props extends RouteProps {
     location: string
     token : string
     userId : string
+    status: number
 }
 
 
@@ -47,8 +48,12 @@ class ProtectedRoute extends React.Component<Props, State>{
         if (nextProps.isAuthenticated && (!this.props.cookies.get("token") || !this.props.cookies.get("userid"))) {
             this.props.authUser(null);
         }
-        if (!nextProps.isAuthenticated)
-            this.setState({askForLog:false});
+        console.log(nextProps);
+        if (!nextProps.isAuthenticated) {
+            this.setState({askForLog: false});
+            this.props.cookies.remove('token');
+            this.props.cookies.remove('userid');
+        }
     }
 
 

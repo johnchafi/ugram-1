@@ -5,6 +5,7 @@ import {deleteUser, editUser} from "../../actions/Profil/profil";
 import {withRouter} from 'react-router-dom';
 import EditProfil from "../../components/Profil/EditProfil";
 import Props from "../../Props/Profil";
+import {disconnectUser} from "../../actions/Authentification/auth";
 const mapStateToProps = (state: State, ownProps: Props) => ({
     profil: getUserProfil(state),
     cookies: ownProps.cookies
@@ -12,7 +13,8 @@ const mapStateToProps = (state: State, ownProps: Props) => ({
 
 const mapDispatchToProps = {
     editUser: editUser,
-    deleteUser: deleteUser
+    deleteUser: deleteUser,
+    disconnectUser: disconnectUser
 };
 
 export default withRouter(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(EditProfil))

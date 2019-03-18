@@ -1,6 +1,6 @@
 import * as React from 'react'
 import {
-    Button,
+    Button, Icon,
     TextField,
     Typography,
 } from "@material-ui/core";
@@ -18,6 +18,7 @@ import {Cookies} from "react-cookie";
 export interface Props{
     editUser: (User) => any
     deleteUser: (userId : string) => any
+    disconnectUser: () => any
     profil: User,
     cookies: Cookies
 }
@@ -51,7 +52,8 @@ class EditProfil extends React.Component<Props,State> {
         let nbErrors : number = 0;
 
         let emailReg : RegExp =  new RegExp("[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}");
-        let numberReg : RegExp = new RegExp("^[0-9-+s()]*$");
+        let numberReg : RegExp = new RegExp("^[0-9]*$");
+
         if (!emailReg.test(email)) {
             this.setState({errorMail: "Email incorrect"});
             nbErrors++;
@@ -128,6 +130,11 @@ class EditProfil extends React.Component<Props,State> {
         this.setState({open: true})
     };
 
+    disconnectUser = () : void => {
+        this.props.disconnectUser();
+    };
+
+
     deleteProfil = () : void => {
         this.props.cookies.remove('token');
         this.props.cookies.remove('userid');
@@ -150,10 +157,12 @@ class EditProfil extends React.Component<Props,State> {
                             <Typography variant="h6" color="inherit" style={{flex:1}}>
                                 Mon profil
                             </Typography>
-                            <Button variant="outlined" onClick={this.handleChangeProfil} >Sauvegarder
-                            </Button>
-                            <Button variant="outlined" onClick={this.deleteProfil} >Supprimer mon profil
-                            </Button>
+                            <IconButton onClick={this.handleChangeProfil} ><Icon>save</Icon>
+                            </IconButton>
+                            <IconButton onClick={this.deleteProfil} ><Icon>restore_from_trash</Icon>
+                            </IconButton>
+                            <IconButton onClick={this.disconnectUser} ><Icon>power_settings_new</Icon>
+                            </IconButton>
                         </Toolbar>
                     </AppBar>
                     <DialogContent>
