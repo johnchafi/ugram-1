@@ -1,5 +1,5 @@
-import { State } from '../../reducers'
-import { createSelector } from 'reselect'
+import { State } from "../../reducers";
+import { createSelector } from "reselect";
 
 const getIsAuth = ((state: State) => state.auth);
 

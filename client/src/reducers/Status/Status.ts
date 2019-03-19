@@ -1,6 +1,5 @@
 import {Action, ActionTypes} from "../../actions/Status/status";
 
-
 export interface IStateStatusApp {
     message : string
     status: number

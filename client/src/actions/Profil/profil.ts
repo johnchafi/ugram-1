@@ -5,13 +5,12 @@ import { sdk } from "../../sdk/ugram";
 import {errorStatus, successStatus} from "../Status/status";
 
 export enum ActionTypes {
-    PROFIL = 'PROFIL',
-    ERROR = 'ERROR_USER',
-    LOGOUT = 'LOGOUT',
+    PROFIL = "PROFIL",
+    ERROR = "ERROR_USER",
+    LOGOUT = "LOGOUT",
 }
 
 export interface UserProfilAction { type: ActionTypes, payload: IStateProfilApp }
-
 
 export function deleteUser(userId: string) : any {
     return function (dispatch: Dispatch<UserProfilAction>) {

@@ -1,5 +1,5 @@
 import * as React from 'react'
-import {Button, FormControl, Grid, Hidden, Icon, Snackbar, TextField} from "@material-ui/core";
+import {Button, Grid, Hidden, Snackbar, TextField} from "@material-ui/core";
 import { Cookies } from 'react-cookie';
 import { GoogleLogin } from 'react-google-login';
 import {WithLastLocationProps} from 'react-router-last-location';
@@ -7,7 +7,6 @@ import {Link} from 'react-router-dom';
 import { withLastLocation } from 'react-router-last-location';
 import {Redirect, Route, RouteProps} from 'react-router';
 import MySnackbarContentWrapper from "../../view-components/MySnackBarContentWrapper";
-import Picture from "../../models/Picture";
 interface Props extends WithLastLocationProps{
     isAuthenticated: boolean,
     user: string
@@ -62,11 +61,10 @@ class AuthForm extends React.Component<Props,State> {
     };
 
     componentWillReceiveProps(nextProps: Readonly<Props>, nextContext: any): void {
-        //this.props.cookies.set('userID', this.state.username, { path: '/' });
         if (nextProps.token != this.props.token) {
             this.props.cookies.set('token', nextProps.token, {path: '/'});
             this.props.cookies.set('userid', nextProps.user, { path: '/' });
-            if (this.state.prevPath.pathname.indexOf('profil') > -1 && this.state.prevPath.pathname.indexOf('undefined') > -1){
+            if (this.state.prevPath.pathname.indexOf('profil') > -1 && (this.state.prevPath.pathname.indexOf('undefined') > -1 || this.state.prevPath.pathname.indexOf(nextProps.user) === -1)){
                 this.setState({prevPath : {  pathname: "/profil/" + nextProps.user}});
             }
             if (this.state.prevPath.pathname.indexOf('signup') > -1)

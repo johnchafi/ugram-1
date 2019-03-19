@@ -1,8 +1,8 @@
-import { connect } from 'react-redux'
+import { connect } from "react-redux";
 import { getUserProfil} from "../../selectors/Profil/Profil";
 import {State} from "../../reducers";
 import {deleteUser, editUser} from "../../actions/Profil/profil";
-import {withRouter} from 'react-router-dom';
+import {withRouter} from "react-router-dom";
 import EditProfil from "../../components/Profil/EditProfil";
 import Props from "../../Props/Profil";
 import {disconnectUser} from "../../actions/Authentification/auth";

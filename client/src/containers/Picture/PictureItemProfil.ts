@@ -1,6 +1,6 @@
-import { connect } from 'react-redux'
+import { connect } from "react-redux";
 import {State} from "../../reducers";
-import { withRouter } from 'react-router-dom';
+import { withRouter } from "react-router-dom";
 import {deletePicture} from "../../actions/Picture/picture";
 import PictureItemProfil, {Props} from "../../components/Picture/PictureItemProfil";
 const mapStateToProps = (state: State, ownProps: Props) => ({
@@ -13,6 +13,5 @@ const mapStateToProps = (state: State, ownProps: Props) => ({
 const mapDispatchToProps = {
     deletePicture: deletePicture,
 };
-
 
 export default withRouter(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(PictureItemProfil))

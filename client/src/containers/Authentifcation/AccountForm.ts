@@ -1,7 +1,7 @@
-import { connect } from 'react-redux'
+import { connect } from "react-redux";
 import {authUser, createUser} from "../../actions/Authentification/auth";
 import {State} from "../../reducers";
-import { withRouter } from 'react-router-dom';
+import { withRouter } from "react-router-dom";
 import AccountForm from "../../components/Authentification/AccountForm";
 import {getMessageError, getStateofStatus, getStatusProfil, getVariantString} from "../../selectors/Profil/Profil";
 import {closeStatus} from "../../actions/Status/status";

@@ -1,7 +1,6 @@
-const webpack = require("webpack");
-
 const TerserPlugin = require('terser-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const TSLintPlugin = require('tslint-webpack-plugin');
 
 module.exports = {
     entry: './src/Index.tsx',
@@ -46,7 +45,31 @@ module.exports = {
                     },
                 }],
             },
-            {test: /\.(jpe?g|gif|png|svg)$/, loader: "file-loader?name=./static/img/[name].[ext]"}
+            {test: /\.(jpe?g|gif|png|svg)$/, loader: "file-loader?name=./static/img/[name].[ext]"},
+            {
+                test: /\.ts$/,
+                enforce: 'pre',
+                use: [
+                    {
+                        loader: 'tslint-loader',
+                        options: {
+                            configuration: {
+                                rules: {
+                                    "eofline": true,
+                                    "ban-ts-ignore": true,
+                                    "no-trailing-whitespace": false,
+                                    "comment-format": false,
+                                    "quotemark": true,
+                                    "no-console": true,
+                                    "one-line": true,
+                                    "no-consecutive-blank-lines": true,
+                                    "curly": true,
+                                }
+                            }
+                        }
+                    }
+                ]
+            }
         ]
     }
 };

@@ -1,4 +1,4 @@
-import { connect } from 'react-redux'
+import { connect } from "react-redux";
 import Profil from "../../components/Profil/Profil";
 import {
     getMessageError,
@@ -9,7 +9,7 @@ import {
 } from "../../selectors/Profil/Profil";
 import {State} from "../../reducers";
 import {profilData} from "../../actions/Profil/profil";
-import { withRouter } from 'react-router-dom';
+import { withRouter } from "react-router-dom";
 import {getAuthUser} from "../../selectors/Authentification/auth";
 import {getNumberOfPost, getPageNumber, getPictures} from "../../selectors/Picture/Picture";
 import {getPictureForProfil, resetProfil} from "../../actions/Picture/picture";

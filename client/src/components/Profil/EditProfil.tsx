@@ -61,7 +61,7 @@ class EditProfil extends React.Component<Props,State> {
         else {
             this.setState({errorMail: null});
         }
-        if (!numberReg.test(tel.toString())) {
+        if (!numberReg.test(tel.toString()) || !(tel.toString().length == 10)) {
             this.setState({errorTel: "Numéro de téléphone incorrect"});
             nbErrors++;
         }

@@ -5,17 +5,17 @@ import {IStateProfilApp} from "../../reducers/Profil/Profil";
 import Picture from "../../models/Picture";
 import UploadModel from "../../models/Upload";
 import User from "../../models/User";
-import { sdk } from '../../sdk/ugram';
+import { sdk } from "../../sdk/ugram";
 import {errorStatus, successStatus} from "../Status/status";
 
 export enum ActionTypes {
-    GET_PICTURE_HOME = 'GET_PICTURE_HOME',
-    GET_PICTURE_HOME_FINISH = 'GET_PICTURE_HOME_FINISH',
-    GET_PICTURE_PROFIL = 'GET_PICTURE_PROFIL',
-    UPLOAD_PICTURE_PROFIL_SUCCESS = 'UPLOAD_PICTURE_PROFIL_SUCCESS',
-    RESET = 'RESET',
+    GET_PICTURE_HOME = "GET_PICTURE_HOME",
+    GET_PICTURE_HOME_FINISH = "GET_PICTURE_HOME_FINISH",
+    GET_PICTURE_PROFIL = "GET_PICTURE_PROFIL",
+    UPLOAD_PICTURE_PROFIL_SUCCESS = "UPLOAD_PICTURE_PROFIL_SUCCESS",
+    RESET = "RESET",
     ERROR = "ERROR-PICTURE",
-    EDIT_PICTURE = 'EDIT_PICTURE'
+    EDIT_PICTURE = "EDIT_PICTURE"
 }
 export interface AuthenticatedAction { type: ActionTypes, payload: IStatePictureApp }
 
@@ -26,8 +26,9 @@ export function getPictureForProfil(userid: string, pageNumber: number, pictures
             .then(function (response) {
                 pictures.map(function (picture : Picture) {results.push(Object.assign({}, picture))}.bind(results));
                 response.data.items.map(function (picture : Picture) {results.push(Object.assign({}, picture))}.bind(results));
-                if (response.data.totalPages > pageNumber)
+                if (response.data.totalPages > pageNumber) {
                     pageNumber = pageNumber + 1;
+                }
                 dispatch({
                     type: ActionTypes.GET_PICTURE_PROFIL,
                     payload: {
@@ -52,11 +53,11 @@ export function getAllPicturesSortByDate(pageNumber: number, pictures: Picture[]
         let results: Picture[] = [];
         return sdk.getPictures(pageNumber)
             .then(  function (response) {
-                console.log(response);
                 pictures.map(function (picture : Picture) {results.push(Object.assign({}, picture))}.bind(results));
                 response.data.items.map(function (picture : Picture) {results.push(Object.assign({}, picture))}.bind(results));
-                if (response.data.totalPages > pageNumber)
+                if (response.data.totalPages > pageNumber) {
                     pageNumber = pageNumber + 1;
+                }
                 dispatch({
                     type: ActionTypes.GET_PICTURE_HOME,
                     payload: {
@@ -91,9 +92,6 @@ export function uploadPicture(userId : string, file : File, model : UploadModel)
                 return (dispatch(errorStatus(error.response.status, error.response.data.message)));
             });
         }
-
-
-
     }
 }
 
@@ -123,8 +121,9 @@ export function getUserForPicture(pictures: Picture[]): any {
         users = await sdk.getUsers().then(function (response) {
             return response.data.items;
         }).catch(error => {
-            if (axios.isCancel(error))
+            if (axios.isCancel(error)) {
                 stop = true;
+            }
         });
         pictures.map(function (picture : Picture) {
             for (let i = 0; i < users.length && !stop; i++) {
@@ -138,7 +137,7 @@ export function getUserForPicture(pictures: Picture[]): any {
                 }
             }
         }.bind(results));
-        if (!stop)
+        if (!stop) {
             dispatch({
                 type: ActionTypes.GET_PICTURE_HOME_FINISH,
                 payload: {
@@ -146,6 +145,7 @@ export function getUserForPicture(pictures: Picture[]): any {
                     finish: false,
                 }
             });
+        }
     }
 }
 
@@ -177,4 +177,5 @@ export function deletePicture(userId: string, pictureId: number): any {
             });
     }
 }
+
 export type Action = AuthenticatedAction

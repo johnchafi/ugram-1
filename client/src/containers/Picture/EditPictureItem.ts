@@ -1,13 +1,12 @@
-import { connect } from 'react-redux'
+import { connect } from "react-redux";
 import {State} from "../../reducers";
-import { withRouter } from 'react-router-dom';
+import { withRouter } from "react-router-dom";
 import {Props} from "../../components/Picture/EditPictureItem";
 import {deletePicture, editPicture} from "../../actions/Picture/picture";
 import EditPictureItem from "../../components/Picture/EditPictureItem";
 const mapStateToProps = (state: State, ownProps: Props) => ({
     picture: ownProps.picture
 });
-
 
 const mapDispatchToProps = {
     editPicture: editPicture,

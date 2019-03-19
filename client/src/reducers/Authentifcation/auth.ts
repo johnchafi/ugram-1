@@ -1,5 +1,4 @@
-import {Action, ActionTypes} from '../../actions/Authentification/auth'
-
+import {Action, ActionTypes} from "../../actions/Authentification/auth";
 
 export interface IStateAuthApp {
     user: string

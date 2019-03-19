@@ -1,4 +1,4 @@
-import { combineReducers } from 'redux'
+import { combineReducers } from "redux";
 import * as fromAuth from "./Authentifcation/auth";
 import * as fromProfil from "./Profil/Profil";
 import * as fromUsers from "./Users/UserList";
@@ -30,8 +30,6 @@ export const initialState: State = {
     search: fromSearch.initialState
 };
 
-
-
 /*
  * Root reducer of the app
  * Returned reducer will be of type Reducer<State>
@@ -44,4 +42,3 @@ export const reducer = combineReducers<State>({
     status: fromStatus.reducer,
     search: fromSearch.reducer
 });
-

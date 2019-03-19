@@ -1,8 +1,8 @@
-import { connect } from 'react-redux'
+import { connect } from "react-redux";
 import {checkTokenValidity, getUserWithToken} from "../../actions/Authentification/auth";
 import {getAuth, getAuthUser, getTokenUser} from "../../selectors/Authentification/auth";
 import {State} from "../../reducers";
-import { withRouter } from 'react-router-dom';
+import { withRouter } from "react-router-dom";
 import ProtectedRoute from "../../components/Authentification/ProtectedRoute";
 import {getStatusProfil} from "../../selectors/Profil/Profil";
 

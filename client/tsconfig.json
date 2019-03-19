@@ -9,6 +9,19 @@
     "outDir": "dist",
     "lib": ["es2016", "dom"]
   },
+  "rules": {
+    "eofline": true,
+    "ban-ts-ignore": true,
+    "object-literal-key-quotes": [true, "always"],
+    "no-trailing-whitespace": false,
+    "comment-format": false,
+    "quotemark": true,
+    "no-console": true,
+    "one-line": true,
+    "no-consecutive-blank-lines": true,
+    "curly": true,
+    "jsx-wrap-multiline": true
+  },
   "exclude": [
     "node_modules"
   ]

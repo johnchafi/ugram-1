@@ -27,19 +27,18 @@ export class sdk {
     }
 
     static getUserByToken(token : string) {
-        return axios.post(endpoint + 'login/token/',
+        return axios.post(endpoint + "login/token/",
             {
                 token:token,
             });
     }
 
-
     static getUser(username : string) {
-        return axios.get(endpoint + 'users/' + username);
+        return axios.get(endpoint + "users/" + username);
     }
 
     static login(username : string, password: string) {
-        return axios.post(endpoint + 'login/',
+        return axios.post(endpoint + "login/",
             {
                 email:username,
                 password:password
@@ -47,16 +46,15 @@ export class sdk {
     }
 
     static loginGoogle(user: User, token:string) {
-        return axios.post(endpoint + 'login/google',
+        return axios.post(endpoint + "login/google",
             {
                 user : user,
                 token : token
             });
     }
 
-
     static createUser(user: User) {
-        return axios.post(endpoint + 'users/',
+        return axios.post(endpoint + "users/",
             {
                 id: user.id,
                 email : user.email,
@@ -67,60 +65,58 @@ export class sdk {
             });
     }
 
-
     static getUsers() {
-        return axios.get(endpoint + 'users/')
+        return axios.get(endpoint + "users/")
     }
+
     static editUser(userid : string, userObj : User) {
-        return axios.put(endpoint + 'users/' + userid, userObj, {
+        return axios.put(endpoint + "users/" + userid, userObj, {
             headers: {
-                Authorization: 'Bearer ' + bearerToken
+                Authorization: "Bearer " + bearerToken
             }
         });
     }
 
     static deleteUser(userid : string) {
-        return axios.delete(endpoint + 'users/' + userid, {
+        return axios.delete(endpoint + "users/" + userid, {
             headers: {
-                Authorization: 'Bearer ' + bearerToken
+                Authorization: "Bearer " + bearerToken
             }
         });
     }
 
     static getPicturesByUser(userid : string, pageNumber : number) {
-        return axios.get(endpoint + 'users/' + userid + '/pictures?page=' + pageNumber, {cancelToken:picturesOfUser.token})
+        return axios.get(endpoint + "users/" + userid + "/pictures?page=" + pageNumber, {cancelToken:picturesOfUser.token})
     }
     static getPictures(pageNumber) {
-        return axios.get(endpoint + 'pictures/?page=' + pageNumber, {cancelToken:call1.token})
+        return axios.get(endpoint + "pictures/?page=" + pageNumber, {cancelToken:call1.token})
     }
     static updatePictureByUser(userid : string, pictureid : number, pictureObj : any) {
-        return axios.put(endpoint + 'users/' + userid + "/pictures/" + pictureid, pictureObj, {
+        return axios.put(endpoint + "users/" + userid + "/pictures/" + pictureid, pictureObj, {
             headers: {
-                Authorization: 'Bearer ' + bearerToken
+                Authorization: "Bearer " + bearerToken
             }
         });
     }
     static deletePictureByUser(userid : string, pictureid : number) {
-        return axios.delete(endpoint + 'users/' + userid + "/pictures/" + pictureid, {
+        return axios.delete(endpoint + "users/" + userid + "/pictures/" + pictureid, {
             headers: {
-                Authorization: 'Bearer ' + bearerToken
+                Authorization: "Bearer " + bearerToken
             }
         });
     }
 
     static uploadPictureByUser(userId : string, file : File, model : Upload) {
         const fileUpload = new FormData();
-
-        fileUpload.append('file', file);
-        fileUpload.append('description', model.description);
-        fileUpload.append('tags', model.tags.toString());
-        fileUpload.append('mentions', model.mentions.toString());
-
-        return axios.post(endpoint + 'users/' + userId + "/pictures/",
+        fileUpload.append("file", file);
+        fileUpload.append("description", model.description);
+        fileUpload.append("tags", model.tags.toString());
+        fileUpload.append("mentions", model.mentions.toString());
+        return axios.post(endpoint + "users/" + userId + "/pictures/",
             fileUpload, {
             headers: {
-                Authorization: 'Bearer ' + bearerToken,
-                'Content-Type': 'multipart/form-data'
+                Authorization: "Bearer " + bearerToken,
+                "Content-Type": "multipart/form-data"
             }});
     }
 }

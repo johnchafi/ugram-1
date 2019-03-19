@@ -1,4 +1,4 @@
-import { createSelector } from 'reselect'
+import { createSelector } from "reselect";
 import {State} from "../../reducers";
 
 const getUserProfilData = ((state: State) => state.profil);

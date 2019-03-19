@@ -1,6 +1,6 @@
-import { connect } from 'react-redux'
+import { connect } from "react-redux";
 import {State} from "../../reducers";
-import {withRouter} from 'react-router-dom';
+import {withRouter} from "react-router-dom";
 import Search from "../../components/Search/SearchComponent";
 import {handleSearch} from "../../actions/Search/Search";
 import {getPicturesDescription, getPicturesTags, getUsers} from "../../selectors/Search/Search";

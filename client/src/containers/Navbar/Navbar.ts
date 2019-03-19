@@ -1,6 +1,6 @@
-import { connect } from 'react-redux'
+import { connect } from "react-redux";
 import {State} from "../../reducers";
-import { withRouter } from 'react-router-dom';
+import { withRouter } from "react-router-dom";
 import {getAuth} from "../../selectors/Authentification/auth";
 import NavBar from "../../view-components/NavBar";
 const mapStateToProps = (state: State, ownProps: any) => ({

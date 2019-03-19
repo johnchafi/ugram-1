@@ -1,6 +1,5 @@
-import {Action, ActionTypes} from '../../actions/Picture/picture'
+import {Action, ActionTypes} from "../../actions/Picture/picture";
 import Picture from "../../models/Picture";
-
 
 export interface IStatePictureApp {
     isAuthenticated: boolean,
@@ -17,6 +16,7 @@ export const initialState: IStatePictureApp = {
     totalEntries: 0,
     pageNumber:0
 };
+
 export function reducer(state: IStatePictureApp = initialState, action: Action) : IStatePictureApp {
     switch (action.type) {
         case ActionTypes.GET_PICTURE_HOME:

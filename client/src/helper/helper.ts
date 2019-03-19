@@ -1,5 +1,3 @@
-import PictureItemHome from "../components/Picture/PictureItemHome";
-
 class Helper {
     static getElapsedTime(date) : string {
         let today : Date = new Date();
@@ -10,18 +8,22 @@ class Helper {
             let hours : number = Math.round(Math.abs(today.getTime() - date.getTime()) / 36e5);
             if (hours < 1) {
                 let diffMins : number = Math.abs(Math.round(((diffMs % 86400000) % 3600000) / 60000));
-                if (diffMins < 2)
+                if (diffMins < 2) {
                     return diffMins + " minute";
+                }
                 return diffMins + " minutes";
             }
-            else if (hours < 2)
+            else if (hours < 2) {
                 return hours + " heure";
-            else
+            }
+            else {
                 return hours + " heures";
+            }
         }
         else {
-            if (diffDays < 2)
+            if (diffDays < 2) {
                 return diffDays + " jour";
+            }
             return diffDays + " jours";
         }
     }

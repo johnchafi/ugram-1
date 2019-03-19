@@ -3,7 +3,7 @@ import {Dispatch} from "redux";
 import { sdk } from "../../sdk/ugram";
 
 export enum ActionTypes {
-    GET_USERS = 'GET_USERS',
+    GET_USERS = "GET_USERS",
     ERROR = "ERROR",
 }
 export interface AuthenticatedAction { type: ActionTypes, payload: IStateUsersApp }

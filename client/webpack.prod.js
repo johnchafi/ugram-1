@@ -4,7 +4,7 @@ const TerserPlugin = require('terser-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
 const HtmlWebpackChangeAssetsExtensionPlugin = require('html-webpack-change-assets-extension-plugin')
-const S3Plugin = require('webpack-s3-plugin');
+const TSLintPlugin = require('tslint-webpack-plugin');
 
 module.exports = {
     entry: './src/Index.tsx',
@@ -45,7 +45,10 @@ module.exports = {
             threshold: 10240,
             minRatio: 0.8
         }),
-        new HtmlWebpackChangeAssetsExtensionPlugin()
+        new HtmlWebpackChangeAssetsExtensionPlugin(),
+        new TSLintPlugin({
+            files: ['./src/**/*.ts']
+        })
     ],
     module: {
         rules: [
