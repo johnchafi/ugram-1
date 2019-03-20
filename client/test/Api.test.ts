@@ -1,9 +1,13 @@
 import * as Actions from '../src/actions/Picture/picture';
+import * as ActionsAuth from '../src/actions/Authentification/auth';
 import * as ActionsProfil from '../src/actions/Profil/profil';
 import { sdk } from "../src/sdk/ugram";
 import { registerMiddlewares } from 'redux-actions-assertions';
 import configureMockStore from "redux-mock-store";
 import thunk from "redux-thunk";
+import User from "../dist/dist/src/models/User";
+import {ActionTypes} from "../src/actions/Status/status";
+import {error} from "util";
 
 export const mockStore = configureMockStore([thunk]);
 
@@ -51,6 +55,125 @@ describe('actions', () => {
                 pictures: response.data.items,
                 pageNumber: pageNumber,
                 totalEntries: response.data.totalEntries
+            }
+        }];
+        expect(expectedAction[0]).toEqual(actions[0]);
+    });
+
+    it('should display an error for profil page', async () => {
+        const store = mockStore();
+        await store.dispatch(Actions.getPictureForProfil("toto", 0, []));
+        const actions = store.getActions();
+        const expectedAction = [{
+            type: Actions.ActionTypes.ERROR,
+            payload: {
+                pictures: null
+            }
+        }];
+        expect(expectedAction[0]).toEqual(actions[0]);
+    });
+
+    it('should display error for creating user', async () => {
+        const store = mockStore();
+        let user: User;
+        await store.dispatch(ActionsAuth.createUser(user));
+        let error = await sdk.createUser(user)
+            .then(function (response) {
+                return response;
+            }).catch(error => {
+                return error;
+            });
+        const actions = store.getActions();
+        console.log(actions[0]);
+        const expectedAction = [{
+            type: ActionTypes.ERROR,
+            payload: {
+                status: error.response.status,
+                message:  error.response.data.message,
+                variant: "error"
+            }
+        }];
+        expect(expectedAction[0]).toEqual(actions[0]);
+    });
+
+    it('should display error for creating user with only id set', async () => {
+        const store = mockStore();
+        let user: User = {};
+        user.id = "toto";
+        await store.dispatch(ActionsAuth.createUser(user));
+        let error = await sdk.createUser(user)
+            .then(function (response) {
+                return response;
+            }).catch(error => {
+                return error;
+            });
+        const actions = store.getActions();
+        const expectedAction = [{
+            type: ActionTypes.ERROR,
+            payload: {
+                status: error.response.status,
+                message:  error.response.data.message,
+                variant: "error"
+            }
+        }];
+        expect(expectedAction[0]).toEqual(actions[0]);
+    });
+
+    it('should display error for route login/token', async () => {
+        const store = mockStore();
+        let user: User = {};
+        user.id = "toto";
+        await store.dispatch(ActionsAuth.getUserWithToken(''));
+        let error = await sdk.getUserByToken('')
+            .then(function (response) {
+                return response;
+            }).catch(error => {
+                return error;
+            });
+        const actions = store.getActions();
+        const expectedAction = [{
+            type: "ERROR-AUTH",
+            payload: {
+                isAuthenticated: false,
+                user: null
+            }
+        }];
+        expect(expectedAction[0]).toEqual(actions[0]);
+    });
+
+    it('should display error for getting fake user', async () => {
+        const store = mockStore();
+        await store.dispatch(ActionsProfil.profilData('toot'));
+        let error = await sdk.getUser('toot')
+            .then(function (response) {
+                return response;
+            }).catch(error => {
+                return error;
+            });
+        const actions = store.getActions();
+        const expectedAction = [{
+            type: "ERROR_USER",
+            payload: {
+                user: null,
+                message: error
+            }
+        }];
+        expect(expectedAction[0]).toEqual(actions[0]);
+    });
+    it('should display good for getting real user', async () => {
+        const store = mockStore();
+        await store.dispatch(ActionsProfil.profilData('toot974'));
+        let response = await sdk.getUser('toot974')
+            .then(function (response) {
+                return response;
+            }).catch(error => {
+                return error;
+            });
+        const actions = store.getActions();
+        const expectedAction = [{
+            type: "PROFIL",
+            payload: {
+                user: response.data,
             }
         }];
         expect(expectedAction[0]).toEqual(actions[0]);

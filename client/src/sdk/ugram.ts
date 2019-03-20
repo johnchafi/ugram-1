@@ -1,13 +1,13 @@
 import axios from "axios";
-import Picture from "../models/Picture";
 import User from "../models/User";
 import Upload from "../models/Upload";
+import {validate} from "validate-typescript";
+import schema from "validator";
 
 let CancelToken = axios.CancelToken;
 let call1 = CancelToken.source();
 let call2 = CancelToken.source();
 let picturesOfUser = CancelToken.source();
-
 const endpoint = "http://ugram-team02.pm9h7ckh7u.us-east-2.elasticbeanstalk.com/";
 let bearerToken = "";
 
@@ -54,15 +54,22 @@ export class sdk {
     }
 
     static createUser(user: User) {
-        return axios.post(endpoint + "users/",
-            {
-                id: user.id,
-                email : user.email,
-                firstName : user.firstName,
-                lastName : user.lastName,
-                phoneNumber : user.phoneNumber,
-                password : user.password,
+        try {
+            const input = validate(schema, user);
+            return axios.post(endpoint + "users/",
+                {
+                    id: user.id,
+                    email: user.email,
+                    firstName: user.firstName,
+                    lastName: user.lastName,
+                    phoneNumber: user.phoneNumber,
+                    password: user.password,
+                });
+        } catch (error) {
+            return Promise.reject({
+                response: { status: 400, data: {message: "Schema user is not valid"}}
             });
+        }
     }
 
     static getUsers() {
@@ -114,9 +121,9 @@ export class sdk {
         fileUpload.append("mentions", model.mentions.toString());
         return axios.post(endpoint + "users/" + userId + "/pictures/",
             fileUpload, {
-            headers: {
-                Authorization: "Bearer " + bearerToken,
-                "Content-Type": "multipart/form-data"
-            }});
+                headers: {
+                    Authorization: "Bearer " + bearerToken,
+                    "Content-Type": "multipart/form-data"
+                }});
     }
 }

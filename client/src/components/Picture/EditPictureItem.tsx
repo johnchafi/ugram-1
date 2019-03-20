@@ -64,10 +64,6 @@ class EditPictureItem extends React.Component<Props,State> {
         this.setState({open: false});
     };
 
-    componentWillReceiveProps(nextProps: Readonly<Props>, nextContext: any): void {
-        this.setState({open: true});
-    }
-
     handleClick = event => {
         this.setState({
             anchorEl: event.currentTarget,
@@ -81,14 +77,14 @@ class EditPictureItem extends React.Component<Props,State> {
     };
 
 
-    handleSuppress = event => {
+    handleSuppress = () => {
         this.props.deletePicture(this.props.picture.userId, this.props.picture.id);
         this.setState({
             anchorEl: null,
         });
     };
 
-    handleEdit = event => {
+    handleEdit = () => {
         this.setState({
             open: !this.state.open,
         });
