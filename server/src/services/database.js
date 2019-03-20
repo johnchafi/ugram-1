@@ -4,7 +4,8 @@ const AWS = require('aws-sdk');
 const winston = require('winston');
 const winstonCloudWatch = require('winston-cloudwatch');
 const Sequelize = require('sequelize');
-
+const dotenv = require('dotenv');
+dotenv.config();
 winston.add(winstonCloudWatch, {
     logGroupName: 'kleinh',
     logStreamName: 'team02-api',

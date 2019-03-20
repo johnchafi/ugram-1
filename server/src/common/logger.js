@@ -1,5 +1,7 @@
 const winston = require('winston');
 const WinstonCloudwatch = require('winston-cloudwatch');
+const dotenv = require('dotenv');
+dotenv.config();
 
 const logger = new winston.Logger({
     transports: [

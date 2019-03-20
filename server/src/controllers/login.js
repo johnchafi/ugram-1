@@ -16,6 +16,7 @@ exports.loginUser = (req, res, next) => {
             return auth.sendSuccess(res, {token : token.token, userId: user.id}, 200);
         })
         .catch(err => {
+            res.end(res.sentry + '\n');
             return auth.sendError(res, "Cannot find user", 400);
         });
     })

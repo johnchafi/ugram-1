@@ -2,7 +2,8 @@ const uuidv4 = require('uuid/v4');
 
 const UserModel = require('../models/user');
 const TokenModel = require('../models/token');
-
+const Sentry = require('@sentry/node');
+Sentry.init({ dsn: 'https://535ecc5a93654d4fab876372a40565e4@sentry.io/1419323' });
 exports.getToken = (req) => {
     let token = req.headers['x-access-token'] || req.headers['authorization'];
     if (token && token.startsWith('Bearer ')) {
@@ -59,11 +60,10 @@ exports.sendSuccess = (res, data, code) => {
     if (!this.isDefined(data)) {
         return res.send();
     }
-    return res.json(data);
+    res.json(data);
 }
 
 exports.sendError = (res, error, code) => {
-    console.log(error);
     if (!this.isDefined(error)) {
         console.log(error);
         error = "Unexpected error";
@@ -72,4 +72,5 @@ exports.sendError = (res, error, code) => {
     res.json({
         message: error
     });
+    Sentry.captureException(new Error(error));
 }
