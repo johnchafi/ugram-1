@@ -1,6 +1,6 @@
 .vs/
 .idea
 node_modules
-server/.env
+
 dist/
 package-lock.json
