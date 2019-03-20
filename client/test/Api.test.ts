@@ -5,9 +5,8 @@ import { sdk } from "../src/sdk/ugram";
 import { registerMiddlewares } from 'redux-actions-assertions';
 import configureMockStore from "redux-mock-store";
 import thunk from "redux-thunk";
-import User from "../dist/dist/src/models/User";
 import {ActionTypes} from "../src/actions/Status/status";
-import {error} from "util";
+import User from "../src/models/User";
 
 export const mockStore = configureMockStore([thunk]);
 
