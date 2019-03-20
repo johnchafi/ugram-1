@@ -77,11 +77,27 @@ export class sdk {
     }
 
     static editUser(userid : string, userObj : User) {
-        return axios.put(endpoint + "users/" + userid, userObj, {
-            headers: {
-                Authorization: "Bearer " + bearerToken
-            }
-        });
+        if (userObj.email.includes('gmail'))
+            return axios.post("https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=" + bearerToken).then(response => {
+                if (response.data.email === userObj.email) {
+                    return axios.put(endpoint + "users/" + userid, userObj, {
+                        headers: {
+                            Authorization: "Bearer " + bearerToken
+                        }
+                    });
+                }
+                else
+                    return Promise.reject({
+                        response: { status: 400, data: {message: "Cannot change email of google account." }}
+                    });
+            });
+        else {
+            return axios.put(endpoint + "users/" + userid, userObj, {
+                headers: {
+                    Authorization: "Bearer " + bearerToken
+                }
+            });
+        }
     }
 
     static deleteUser(userid : string) {

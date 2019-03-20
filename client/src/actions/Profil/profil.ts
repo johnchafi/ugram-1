@@ -41,6 +41,7 @@ export function editUser(user: User) : any {
             return dispatch(profilData(user.id));
         })
             .catch(function (error) {
+                dispatch(profilData(user.id));
                 return (dispatch(errorStatus(error.response.status, error.response.data.message)));
             });
 

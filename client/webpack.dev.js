@@ -60,7 +60,6 @@ module.exports = {
                                     "no-trailing-whitespace": false,
                                     "comment-format": false,
                                     "quotemark": true,
-                                    "no-console": true,
                                     "one-line": true,
                                     "no-consecutive-blank-lines": true,
                                     "curly": true,
