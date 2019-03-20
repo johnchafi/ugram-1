@@ -15,6 +15,7 @@
   "author": "Maxime Leroy & Henri Longle & Arthur Klein & Sebastien Bruere",
   "license": "MIT",
   "dependencies": {
+    "@sentry/node": "^4.6.4",
     "aws-sdk": "^2.6.15",
     "aws-serverless-express": "^3.3.5",
     "body-parser": "^1.15.2",
@@ -26,6 +27,7 @@
     "mysql2": "^1.6.5",
     "nodemon": "^1.18.10",
     "redis": "^2.6.3",
+    "sentry": "^0.1.2",
     "sequelize": "^4.43.0",
     "swagger-jsdoc": "^3.2.7",
     "swagger-ui-dist": "^3.21.0",
