@@ -365,13 +365,53 @@ exports.deleteUserPicture = (req, res, next) => {
                 }).then(() => {
                     return auth.sendSuccess(res, null, 200);
                 })
-                    .catch(err => {
-                        return auth.sendError(res, err, 500);
-                    });
+                .catch(err => {
+                    return auth.sendError(res, err, 500);
+                });
             };
             service.deleteUserPicture(picture.userId, picture.id + picture.extension, errCallback, succCallback);
         }).catch(err => {
-            return auth.sendError(res, "Picture '" + req.params.pictureId + "' does not exist for user '" + req.params.userId + "'.", 400)
+            return auth.sendError(res, "Picture '" + req.params.pictureId + "' does not exist for user '" + req.params.userId + "'.", 400);
+        })
+    }).catch(err => {
+        return auth.sendError(res, err.message, err.code);
+    });
+};
+
+// Deletes all pictures for a user
+exports.deleteUserPictures = (req, res, next) => {
+    logger.log('info', "[REQUEST : DELETE USER PICTURES] TRYING DELETE ALL PICTURES.", {tags: 'request,delete'});
+    auth.isAuthenticated(req).then(user => {
+        PictureModel.findAll({
+            where : {
+                userId: user.id
+            }
+        }).then(pictures => {
+            if (!auth.isDefined(pictures)) {
+                throw "No pictures"
+            }
+            const errCallback = (err) => {
+                return auth.sendError(res, 'Unable to delete files for user ' + user.id, 401);
+            };
+            const succCallback = () => {
+                PictureModel.destroy({
+                    where: {
+                        userId: user.id
+                    }
+                }).then(() => {
+                    return auth.sendSuccess(res, null, 200);
+                })
+                .catch(err => {
+                    return auth.sendError(res, err, 500);
+                });
+            };
+            pictureNames = [];
+            pictures.forEach(picture => {
+                pictureNames.push(picture.id + picture.extension)
+            });
+            service.deleteUserPictures(user.id, pictureNames, errCallback, succCallback);
+        }).catch(err => {
+            return auth.sendError(res, "No pictures found for user '" + user.id + "'.", 400);
         })
     }).catch(err => {
         return auth.sendError(res, err.message, err.code);

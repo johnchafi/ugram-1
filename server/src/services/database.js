@@ -24,7 +24,7 @@ const sequelize = new Sequelize(process.env.db_name, process.env.db_user , proce
 
 sequelize.authenticate()
 .then(() => {
-    logger.log('info', "[STARTUP] Connecting to DB...", {tags: 'startup,SQL'});
+    logger.log('info', "[STARTUP] Connected to DB", {tags: 'startup,SQL'});
 })
 .catch(err => {
     logger.log('error', "[ERROR_DB] Cannot connect to DB....", {tags: 'error,SQL'});

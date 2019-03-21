@@ -58,6 +58,7 @@ router.delete('/:userId', users.deleteUser);
 
 router.get('/:userId/pictures', users.getUserPictures);
 router.post('/:userId/pictures', users.addUserPicture);
+router.delete('/:userId/pictures', users.deleteUserPictures);
 
 router.get('/:userId/pictures/:pictureId', users.getUserPicture);
 router.put('/:userId/pictures/:pictureId', users.editUserPicture);

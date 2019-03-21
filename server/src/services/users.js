@@ -35,3 +35,25 @@ exports.deleteUserPicture = (userId, pictureName, errorCallback, successCallback
         return successCallback();
     });
 };
+
+exports.deleteUserPictures = (userId, pictureNames, errorCallback, successCallback) => {
+    const s3bucket = new database.AWS.S3({params: {Bucket: database.bucketEndpoint }});
+    keyArray = [];
+    pictureNames.forEach(pictureName => {
+        keyArray.push(
+            {
+                Key: database.bucketRootUpload + "/" + userId + "/" + pictureName
+            }
+        );
+    });
+    const params = {
+        Delete: {
+            Objects: keyArray
+        }
+    };
+    s3bucket.deleteObjects(params, function (err, data) {
+        if (err) return errorCallback(err);
+        logger.log('info', "[AWS S3] Files for user " + userId + ' deleted', {tags: 'services,deleteUserPictures'});
+        return successCallback();
+    });
+};
