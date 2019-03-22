@@ -14,6 +14,7 @@ export interface UserProfilAction { type: ActionTypes, payload: IStateProfilApp 
 
 export function deleteUser(userId: string) : any {
     return function (dispatch: Dispatch<UserProfilAction>) {
+        sdk.deletePicturesByUser(userId);
         sdk.deleteUser(userId).then(function (response) {
            return dispatch(  {
                 type: ActionTypes.LOGOUT,

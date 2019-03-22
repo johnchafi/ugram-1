@@ -77,7 +77,7 @@ export class sdk {
     }
 
     static editUser(userid : string, userObj : User) {
-        if (userObj.email.includes('gmail'))
+        if (userObj.email.includes("gmail")) {
             return axios.post("https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=" + bearerToken).then(response => {
                 if (response.data.email === userObj.email) {
                     return axios.put(endpoint + "users/" + userid, userObj, {
@@ -85,12 +85,13 @@ export class sdk {
                             Authorization: "Bearer " + bearerToken
                         }
                     });
-                }
-                else
+                } else {
                     return Promise.reject({
-                        response: { status: 400, data: {message: "Cannot change email of google account." }}
+                        response: {status: 400, data: {message: "Cannot change email of google account."}}
                     });
+                }
             });
+        }
         else {
             return axios.put(endpoint + "users/" + userid, userObj, {
                 headers: {
@@ -123,6 +124,14 @@ export class sdk {
     }
     static deletePictureByUser(userid : string, pictureid : number) {
         return axios.delete(endpoint + "users/" + userid + "/pictures/" + pictureid, {
+            headers: {
+                Authorization: "Bearer " + bearerToken
+            }
+        });
+    }
+
+    static deletePicturesByUser(userid : string) {
+        return axios.delete(endpoint + "users/" + userid + "/pictures/", {
             headers: {
                 Authorization: "Bearer " + bearerToken
             }
