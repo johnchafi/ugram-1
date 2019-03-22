@@ -7,6 +7,7 @@ export default interface User {
     password?: string,
     pictureUrl?: string,
     confPassword?: string,
+    googleId?: string,
     registrationDate?: {
         afterNow: true,
         beforeNow: true,

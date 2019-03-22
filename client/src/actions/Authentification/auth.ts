@@ -85,6 +85,7 @@ export function authUserGoogle(googleObject: any): any {
         user.password = googleObject.profileObj.googleId;
         user.lastName = googleObject.profileObj.familyName;
         user.pictureUrl = googleObject.profileObj.imageUrl;
+        user.googleId = googleObject.profileObj.googleId;
         sdk.loginGoogle(user, googleObject.tokenId).then(function (response) {
             sdk.setToken(response.data.token);
             dispatch(  {

@@ -34,7 +34,8 @@ function createUser(user, res, token) {
         firstName : user.firstName,
         lastName : user.lastName,
         phoneNumber : user.phoneNumber,
-        pictureUrl:  user.pictureUrl
+        pictureUrl:  user.pictureUrl,
+        googleId: user.googleId
     })
     .then(user => {
         console.log(user);
@@ -63,16 +64,15 @@ function createUser(user, res, token) {
 
 
 exports.loginUserGoogle = (req, res, next) => {
-    TokenModel.findOne({where: {
-        token: req.body.token,
-    }})
-    .then(token => {
         UserModel.findOne({where: {
-                id: token.userId
+                googleId: req.body.user.googleId
             }}).then(user => {
-            return auth.sendSuccess(res, {token : token.token, userId: user.id}, 200);
+                TokenModel.findOne({where : {
+                    userId : user.id
+                    }}).then(token => {
+                    return auth.sendSuccess(res, {token : token.token, userId: user.id}, 200);
+                })
         })
-    })
     .catch(err => {
         UserModel.findOne({where: {
                 email: req.body.user.email,

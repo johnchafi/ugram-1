@@ -52,6 +52,12 @@ const userSchema = db.sequelize.define('user', {
             defaultValue: "https://i.stack.imgur.com/l60Hf.png",
             field: 'picture_url'
         },
+        googleId: {
+            type: db.Sequelize.STRING,
+            unique: false,
+            allowNull: true,
+            field: 'googleId'
+        },
         registrationDate: {
             type: db.Sequelize.DATE,
             unique: false,
