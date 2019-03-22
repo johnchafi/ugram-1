@@ -78,7 +78,7 @@ export function createUser(user: User): any {
 export function authUserGoogle(googleObject: any): any {
     return function(dispatch : Dispatch<IStateProfilApp>) {
         let user : User = {};
-        user.id = googleObject.profileObj.googleId;
+        user.id =  googleObject.profileObj.givenName + googleObject.profileObj.familyName + googleObject.profileObj.googleId.slice(0, 4);
         user.phoneNumber = googleObject.profileObj.googleId;
         user.email = googleObject.profileObj.email;
         user.firstName = googleObject.profileObj.givenName;
