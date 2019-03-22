@@ -55,7 +55,6 @@ export class sdk {
 
     static createUser(user: User) {
         try {
-            const input = validate(schema, user);
             return axios.post(endpoint + "users/",
                 {
                     id: user.id,
@@ -64,6 +63,7 @@ export class sdk {
                     lastName: user.lastName,
                     phoneNumber: user.phoneNumber,
                     password: user.password,
+                    googleId:0
                 });
         } catch (error) {
             return Promise.reject({

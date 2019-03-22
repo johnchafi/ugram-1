@@ -3,7 +3,7 @@ const pathToSwaggerUi = require('swagger-ui-dist').absolutePath();
 const auth = require('../services/auth');
 const fs = require('fs');
 
-const swaggerHost = 'http://ugram-team02.pm9h7ckh7u.us-east-2.elasticbeanstalk.com'
+const swaggerHost = 'http://ugram-team02.pm9h7ckh7u.us-east-2.elasticbeanstalk.com';
 const swaggerBasePath = '/';
 
 exports.getInfo = (req, res, next) => {
@@ -21,7 +21,7 @@ exports.getInfo = (req, res, next) => {
         swaggerDefinition,
     };
     const swaggerSpec = swaggerJSDoc(options);
-    
+
     return auth.sendSuccess(res, swaggerSpec, 200);
 };
 
