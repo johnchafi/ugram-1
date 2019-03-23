@@ -15,10 +15,12 @@ export class sdk {
     static setToken(token) {
         bearerToken = token;
     }
+
     static cancelToken() {
         picturesOfUser.cancel();
         picturesOfUser = CancelToken.source();
     }
+    
     static resetToken() {
         call1.cancel();
         call2.cancel();
@@ -77,11 +79,11 @@ export class sdk {
     }
 
     static editUser(userid : string, userObj : User) {
-            return axios.put(endpoint + "users/" + userid, userObj, {
-                headers: {
-                    Authorization: "Bearer " + bearerToken
-                }
-            });
+        return axios.put(endpoint + "users/" + userid, userObj, {
+            headers: {
+                Authorization: "Bearer " + bearerToken
+            }
+        });
     }
 
     static deleteUser(userid : string) {
@@ -95,9 +97,11 @@ export class sdk {
     static getPicturesByUser(userid : string, pageNumber : number) {
         return axios.get(endpoint + "users/" + userid + "/pictures?page=" + pageNumber, {cancelToken:picturesOfUser.token})
     }
+
     static getPictures(pageNumber) {
         return axios.get(endpoint + "pictures/?page=" + pageNumber, {cancelToken:call1.token})
     }
+
     static updatePictureByUser(userid : string, pictureid : number, pictureObj : any) {
         return axios.put(endpoint + "users/" + userid + "/pictures/" + pictureid, pictureObj, {
             headers: {
@@ -105,6 +109,7 @@ export class sdk {
             }
         });
     }
+
     static deletePictureByUser(userid : string, pictureid : number) {
         return axios.delete(endpoint + "users/" + userid + "/pictures/" + pictureid, {
             headers: {

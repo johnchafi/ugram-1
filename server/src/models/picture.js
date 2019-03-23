@@ -51,6 +51,7 @@ const pictureSchema = db.sequelize.define('picture', {
 pictureSchema.formatToClient = (picture, mentions, tags) => {
     picture.dataValues.url  = "http://" + db.bucketEndpoint + "." + db.bucketDomain + "/" +
         db.bucketRootUpload + "/" + picture.dataValues.userId + "/" + picture.dataValues.id + picture.dataValues.extension;
+    picture.dataValues.url = encodeURI(picture.dataValues.url);
     picture.dataValues.tags = [];
     picture.dataValues.mentions = [];
     picture.dataValues.createdDate = new Date(picture.dataValues.createdDate).getTime();
