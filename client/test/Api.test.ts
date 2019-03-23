@@ -83,7 +83,6 @@ describe('actions', () => {
                 return error;
             });
         const actions = store.getActions();
-        console.log(actions[0]);
         const expectedAction = [{
             type: ActionTypes.ERROR,
             payload: {
@@ -95,28 +94,6 @@ describe('actions', () => {
         expect(expectedAction[0]).toEqual(actions[0]);
     });
 
-    it('should display error for creating user with only id set', async () => {
-        const store = mockStore();
-        let user: User = {};
-        user.id = "toto";
-        await store.dispatch(ActionsAuth.createUser(user));
-        let error = await sdk.createUser(user)
-            .then(function (response) {
-                return response;
-            }).catch(error => {
-                return error;
-            });
-        const actions = store.getActions();
-        const expectedAction = [{
-            type: ActionTypes.ERROR,
-            payload: {
-                status: error.response.status,
-                message:  error.response.data.message,
-                variant: "error"
-            }
-        }];
-        expect(expectedAction[0]).toEqual(actions[0]);
-    });
 
     it('should display error for route login/token', async () => {
         const store = mockStore();

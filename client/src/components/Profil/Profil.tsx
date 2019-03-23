@@ -8,13 +8,14 @@ import EditProfil from "../../containers/Profil/EditProfil";
 import Props from "../../Props/Profil";
 import Upload from "../../containers/Picture/Upload";
 import {Link} from 'react-router-dom';
+import * as queryString from "querystring";
 
 
 interface State {
     isEditingProfil: boolean,
     slideIndex: number
     open: boolean
-    isLoading: boolean
+    isLoading: boolean,
 }
 
 class Profil extends React.Component<Props,State> {
@@ -24,7 +25,7 @@ class Profil extends React.Component<Props,State> {
             isEditingProfil: true,
             slideIndex:0,
             isLoading:true,
-            open: this.props.open
+            open: this.props.open,
         };
     }
 

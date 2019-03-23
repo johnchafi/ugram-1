@@ -111,7 +111,6 @@ class AuthForm extends React.Component<Props,State> {
 
 
     render() {
-        console.log(this.props.open);
         const { username, password } = this.state;
         const { _updateUsername, _updatePassword, _handleSubmit, props } = this;
         if (this.props.isAuthenticated)

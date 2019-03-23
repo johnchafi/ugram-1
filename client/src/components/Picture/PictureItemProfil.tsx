@@ -12,6 +12,7 @@ export interface Props{
     isHome:boolean
     isMe: boolean
     deletePicture : (string, number) => any
+    location:{search : any}
 }
 interface State {
     anchorEl: HTMLElement
@@ -30,6 +31,14 @@ class PictureItemProfil extends React.Component<Props,State> {
         }
     }
 
+    componentDidMount() {
+        const values = new URLSearchParams(this.props.location.search);
+        if (values && parseInt(values.get('search')) === this.props.picture.id ) {
+            this.setState({open:true})
+        }
+    }
+
+
     handleCloseEdit = event => {
         this.setState({open: false});
     };
@@ -41,6 +50,11 @@ class PictureItemProfil extends React.Component<Props,State> {
     componentWillReceiveProps(nextProps: Readonly<Props>, nextContext: any): void {
         if (this.props.picture !== nextProps.picture)
             this.setState({open:false});
+        if (nextProps.location.search) {
+            const values = new URLSearchParams(this.props.location.search);
+            if (values && parseInt(values.get('search')) === nextProps.picture.id )
+                this.setState({open: true});
+        }
     }
 
     render() {

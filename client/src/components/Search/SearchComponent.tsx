@@ -97,7 +97,7 @@ class SearchComponent extends React.Component<Props,State> {
     };
     displaySearchDescriptionElement(item, index) {
         return (
-         <Link to={`/profil/${item.userId}`} key={index} onClick={this.closeResultat}>
+         <Link to={`/profil/${item.userId}?search=${item.id}`} key={index} onClick={this.closeResultat}>
              <Grid className={"description"} >
                  <div className={"searchLeft"}>
                      <Avatar  className="avatar-home-picture" aria-label="Description">D</Avatar>
@@ -135,7 +135,7 @@ class SearchComponent extends React.Component<Props,State> {
 
     displaySearchTagElement(picture : Picture, index : number, search : string) {
         return (
-            <Link to={`/profil/${picture.userId}`} key={index} onClick={this.closeResultat}>
+            <Link to={`/profil/${picture.userId}?search=${picture.id}`} key={index} onClick={this.closeResultat}>
                 <Grid className={"description"} >
                     <div className={"searchLeft"}>
                         <Avatar  className="avatar-home-picture" aria-label="Description">#</Avatar>

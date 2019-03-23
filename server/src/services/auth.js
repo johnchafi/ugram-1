@@ -65,7 +65,6 @@ exports.sendSuccess = (res, data, code) => {
 
 exports.sendError = (res, error, code) => {
     if (!this.isDefined(error)) {
-        console.log(error);
         error = "Unexpected error";
     }
     res.status(code);

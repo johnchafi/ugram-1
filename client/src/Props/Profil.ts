@@ -11,8 +11,8 @@ export default interface Props {
     user : User
     status: number,
     pageNumber: number
-    match: {params : {id: string}}
-    location:{pathname:string}
+    match: {params : {id: string}},
+   location:{pathname:string, search : any}
     pictures: Picture[],
     totalEntries: number
     message:string

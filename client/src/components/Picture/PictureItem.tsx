@@ -65,14 +65,18 @@ class PictureItem extends React.Component<Props,State> {
                     </CardActions>
                     <CardActions className={"action hashtags"} disableActionSpacing>
                         {this.props.picture.tags.length > 0 &&
-                        this.props.picture.tags.map((item) =>
-                            "#" + item + " "
+                        this.props.picture.tags.map((item) => {
+                                if (item != "")
+                                    return "#" + item + " "
+                            }
                         )}
                     </CardActions>
                     <CardActions className={"action mentions"} disableActionSpacing>
                         {this.props.picture.mentions.length > 0 &&
-                        this.props.picture.mentions.map((item) =>
-                            "@" + item + " "
+                        this.props.picture.mentions.map((item) => {
+                                if (item != "")
+                                   return "@" + item + " "
+                            }
                         )}
                     </CardActions>
                     <CardActions className={"action date"} disableActionSpacing>

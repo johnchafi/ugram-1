@@ -38,7 +38,6 @@ function createUser(user, res, token) {
         googleId: user.googleId
     })
     .then(user => {
-        console.log(user);
         TokenModel.create({
             userId : user.id,
             token: token
@@ -51,7 +50,6 @@ function createUser(user, res, token) {
             });
     })
     .catch(err => {
-        console.log(err.errors[0].path);
         if (err.errors[0].path === "password")
             err.errors[0].message = "Password cannot be null";
         if (err.errors[0].path === "PRIMARY")

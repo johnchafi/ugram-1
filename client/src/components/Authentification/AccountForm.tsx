@@ -92,7 +92,6 @@ class AccountForm extends React.Component<Props,State> {
     };
 
     componentWillReceiveProps(nextProps: Readonly<Props>, nextContext: any): void {
-        console.log(nextProps);
         if (nextProps.status === 201){
             this.props.authUser(this.state.user.email, this.state.user.password);
         }

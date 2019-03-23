@@ -73,7 +73,6 @@ exports.createUser = (req, res, next) => {
             phoneNumber : req.body.phoneNumber
         })
         .then(user => {
-            console.log(user);
             TokenModel.create({
                 userId : user.id,
                 token: auth.generateToken()
@@ -86,7 +85,6 @@ exports.createUser = (req, res, next) => {
                 });
         })
         .catch(err => {
-            console.log(err.errors[0].path);
             if (err.errors[0].path === "password")
                 err.errors[0].message = "Missing field 'password'";
             if (err.errors[0].path === "PRIMARY")
@@ -332,7 +330,6 @@ exports.editUserPicture = (req, res, next) => {
                     return auth.sendError(res, err, 500);
                 });
             }).catch(err => {
-                console.log(err);
                 return auth.sendError(res, "Missing parameter", 400);
             })
         }).catch(err => {
