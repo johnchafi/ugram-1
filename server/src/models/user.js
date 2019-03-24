@@ -75,6 +75,7 @@ const userSchema = db.sequelize.define('user', {
 userSchema.formatToClient = (user) => {
     user.dataValues.registrationDate = new Date(user.dataValues.registrationDate).getTime();
     delete user.dataValues.password;
+    delete user.dataValues.googleId;
 };
 
 // Export Users model
