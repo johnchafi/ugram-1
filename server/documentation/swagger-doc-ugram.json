@@ -542,8 +542,8 @@
         "tags": [
           "user-pictures"
         ],
-        "summary": "delete all pictures for the logged user",
-        "description": "delete all pictures for the logged user",
+        "summary": "delete specific pictures for the logged user",
+        "description": "delete specific pictures for the logged user",
         "operationId": "deletePictures",
         "parameters": [
           {
