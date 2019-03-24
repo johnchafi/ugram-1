@@ -35,7 +35,7 @@ exports.getUser = (req, res, next) => {
         UserModel.formatToClient(user);
         return auth.sendSuccess(res, user, 200);
     }).catch(err => {
-        return auth.sendError(res, "User '" + req.params.userId + "' does not exist.", 400)
+        return auth.sendError(res, "User '" + req.params.userId + "' does not exist.", 404)
     });
 };
 
@@ -113,7 +113,7 @@ exports.getUserPictures = (req, res, next) => {
 
     UserModel.findByPk(req.params.userId).then(user => {
         if (user === null) {
-            return auth.sendError(res, "User '" + req.params.userId + "' does not exist.", 400)
+            return auth.sendError(res, "User '" + req.params.userId + "' does not exist.", 404)
         } else {
             logger.log('info', "[REQUEST : GET USER PICTURES] TRYING GET USER PICTURES.", {tags: 'request,get'});
             PictureModel.findAll({
@@ -175,7 +175,7 @@ exports.getUserPictures = (req, res, next) => {
             });
         }
     }).catch(err => {
-        return auth.sendError(res, "User '" + req.params.userId + "' does not exist.", 400)
+        return auth.sendError(res, "User '" + req.params.userId + "' does not exist.", 404)
     });
 };
 
@@ -243,7 +243,7 @@ exports.getUserPicture = (req, res, next) => {
             return auth.sendError(res, "Provided type for pictureId is invalid.", 400)
         }
         if (picture === null ||picture.userId !== req.params.userId) {
-            return auth.sendError(res, "Picture '" + req.params.pictureId + "' does not exist for user '" + req.params.userId + "'.", 400);
+            return auth.sendError(res, "Picture '" + req.params.pictureId + "' does not exist for user '" + req.params.userId + "'.", 404);
         } else {
             MentionModel.findAll({
                 where: {
@@ -280,7 +280,7 @@ exports.editUserPicture = (req, res, next) => {
         }
         PictureModel.findByPk(req.params.pictureId).then(picture => {
             if (req.params.userId !== picture.userId) {
-                return auth.sendError(res, "Picture '" + req.params.pictureId + "' does not exist for user '" + req.params.userId + "'.", 400)
+                return auth.sendError(res, "Picture '" + req.params.pictureId + "' does not exist for user '" + req.params.userId + "'.", 404)
             }
             if (req.body.description === null ||req.body.tags === null || req.body.mentions === null) {
                 return auth.sendError(res, "Missing parameter", 400)
@@ -333,7 +333,7 @@ exports.editUserPicture = (req, res, next) => {
                 return auth.sendError(res, "Missing parameter", 400);
             })
         }).catch(err => {
-            return auth.sendError(res, "Picture '" + req.params.pictureId + "' does not exist for user '" + req.params.userId + "'.", 400);
+            return auth.sendError(res, "Picture '" + req.params.pictureId + "' does not exist for user '" + req.params.userId + "'.", 404);
         })
     }).catch(err => {
         return auth.sendError(res, err.message, err.code);
@@ -349,7 +349,7 @@ exports.deleteUserPicture = (req, res, next) => {
         }
         PictureModel.findByPk(req.params.pictureId).then(picture => {
             if (req.params.userId !== picture.userId) {
-                return auth.sendError(res, "Picture '" + req.params.pictureId + "' does not exist for user '" + req.params.userId + "'.", 400)
+                return auth.sendError(res, "Picture '" + req.params.pictureId + "' does not exist for user '" + req.params.userId + "'.", 404)
             }
             const errCallback = (err) => {
                 return auth.sendError(res, 'Unable to delete the specified file', 401);
@@ -360,7 +360,7 @@ exports.deleteUserPicture = (req, res, next) => {
                         id: picture.id
                     }
                 }).then(() => {
-                    return auth.sendSuccess(res, null, 200);
+                    return auth.sendSuccess(res, null, 204);
                 })
                 .catch(err => {
                     return auth.sendError(res, err, 500);
@@ -368,7 +368,7 @@ exports.deleteUserPicture = (req, res, next) => {
             };
             service.deleteUserPicture(picture.userId, picture.id + picture.extension, errCallback, succCallback);
         }).catch(err => {
-            return auth.sendError(res, "Picture '" + req.params.pictureId + "' does not exist for user '" + req.params.userId + "'.", 400);
+            return auth.sendError(res, "Picture '" + req.params.pictureId + "' does not exist for user '" + req.params.userId + "'.", 404);
         })
     }).catch(err => {
         return auth.sendError(res, err.message, err.code);
@@ -388,7 +388,7 @@ exports.deleteUserPictures = (req, res, next) => {
                 throw "No pictures"
             }
             const errCallback = (err) => {
-                return auth.sendError(res, 'Unable to delete files for user ' + user.id, 401);
+                return auth.sendError(res, 'Unable to delete files for user ' + user.id, 501);
             };
             const succCallback = () => {
                 PictureModel.destroy({
@@ -396,7 +396,7 @@ exports.deleteUserPictures = (req, res, next) => {
                         userId: user.id
                     }
                 }).then(() => {
-                    return auth.sendSuccess(res, null, 200);
+                    return auth.sendSuccess(res, null, 204);
                 })
                 .catch(err => {
                     return auth.sendError(res, err, 500);
@@ -408,7 +408,7 @@ exports.deleteUserPictures = (req, res, next) => {
             });
             service.deleteUserPictures(user.id, pictureNames, errCallback, succCallback);
         }).catch(err => {
-            return auth.sendError(res, "No pictures found for user '" + user.id + "'.", 400);
+            return auth.sendError(res, "No pictures found for user '" + user.id + "'.", 404);
         })
     }).catch(err => {
         return auth.sendError(res, err.message, err.code);
