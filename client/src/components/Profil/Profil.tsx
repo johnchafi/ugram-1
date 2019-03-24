@@ -109,7 +109,7 @@ class Profil extends React.Component<Props,State> {
                             {this.state.isLoading &&  <Avatar  className="avatar-home-picture" aria-label="Recipe" ><CircularProgress disableShrink /></Avatar> || <Avatar style={{ margin: 'auto' }} className="avatar" src={this.props.user && this.props.user.pictureUrl}/>}
                         </Grid>
                         {!this.state.isLoading &&
-                        <Grid item xs={8}>
+                        <Grid item xs={8} className="containerProfil">
                             <Grid container alignItems="center">
                                 <Typography component="h1" variant="h4">
                                     {this.props.user && this.props.user.id}
