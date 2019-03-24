@@ -18,7 +18,7 @@ app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 app.use(cors());
 
-app.use(bodyParser.json());
+app.use(bodyParser.json({limit:'3mb'}));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(Sentry.Handlers.requestHandler());
