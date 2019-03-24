@@ -5,12 +5,15 @@ import Picture from "../../models/Picture";
 import User from "../../models/User";
 import PictureItem from "../../containers/Picture/PictureItem";
 import Dialog from '@material-ui/core/Dialog';
+import { History } from 'history';
 
-export interface Props{
+
+export interface Props {
     picture : Picture,
     user : User
     isHome:boolean
     isMe: boolean
+    history : History
     deletePicture : (string, number) => any
     location:{search : any}
 }
@@ -34,7 +37,7 @@ class PictureItemProfil extends React.Component<Props,State> {
     componentDidMount() {
         const values = new URLSearchParams(this.props.location.search);
         if (values && parseInt(values.get('search')) === this.props.picture.id ) {
-            this.setState({open:true})
+            this.setState({open:true});
         }
     }
 

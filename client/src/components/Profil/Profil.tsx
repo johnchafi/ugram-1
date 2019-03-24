@@ -144,7 +144,7 @@ class Profil extends React.Component<Props,State> {
                     </Grid>}
                     {this.props.cookies.get("userid") === this.props.user.id && this.state.slideIndex === 1 &&
                     <Grid container direction="row" justify="center">
-                        <Upload />
+                        <Upload open={this.props.open} />
                     </Grid>}
                     {this.state.slideIndex === 2 &&
                     <Grid container direction="row" justify="center">

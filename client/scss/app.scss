@@ -136,7 +136,9 @@ body {
 
       .description {
         list-style: none;
-
+        .searchRight {
+          max-width: 223px;
+        }
         .searchLeft, .searchRight {
           display: inline-block;
           vertical-align: middle;
