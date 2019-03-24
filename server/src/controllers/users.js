@@ -133,7 +133,7 @@ exports.getUserPictures = (req, res, next) => {
                         pictureId: ids
                     },
                     order: [
-                        ['id', 'DESC']
+                        ['id', 'ASC']
                     ]
                 }).then(tags => {
                     MentionModel.findAll({
@@ -141,7 +141,7 @@ exports.getUserPictures = (req, res, next) => {
                             pictureId: ids
                         },
                         order: [
-                            ['id', 'DESC']
+                            ['id', 'ASC']
                         ]
                     }).then(mentions => {
                         pictures.forEach(picture => {
@@ -408,7 +408,7 @@ exports.deleteUserPictures = (req, res, next) => {
             });
             service.deleteUserPictures(user.id, pictureNames, errCallback, succCallback);
         }).catch(err => {
-            return auth.sendError(res, "No pictures found for user '" + user.id + "'.", 404);
+            return auth.sendError(res, "No pictures found for user '" + user.id + "'.", 204);
         })
     }).catch(err => {
         return auth.sendError(res, err.message, err.code);

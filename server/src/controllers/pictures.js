@@ -21,7 +21,7 @@ exports.getPictures = (req, res, next) => {
                 pictureId: ids
             },
             order: [
-                ['id', 'DESC']
+                ['id', 'ASC']
             ]
         }).then(tags => {
             MentionModel.findAll({
@@ -29,7 +29,7 @@ exports.getPictures = (req, res, next) => {
                     pictureId: ids
                 },
                 order: [
-                    ['id', 'DESC']
+                    ['id', 'ASC']
                 ]
             }).then(mentions => {
                 pictures.forEach(picture => {

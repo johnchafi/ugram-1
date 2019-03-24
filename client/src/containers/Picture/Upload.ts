@@ -5,8 +5,9 @@ import Upload from "../../components/Picture/Upload";
 import {uploadPicture} from "../../actions/Picture/picture";
 import {getUserProfil} from "../../selectors/Profil/Profil";
 
-const mapStateToProps = (state: State) => ({
-    user: getUserProfil(state)
+const mapStateToProps = (state: State, ownProps: any) => ({
+    user: getUserProfil(state),
+    open : ownProps.open
 });
 
 const mapDispatchToProps = {

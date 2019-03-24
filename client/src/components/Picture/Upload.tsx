@@ -1,7 +1,7 @@
 import * as React from 'react'
 import {Link} from 'react-router-dom';
 import {
-    Button, FormControl, Icon, TextField, Grid
+    Button, FormControl, Icon, TextField, Grid, CircularProgress
 } from "@material-ui/core";
 import Picture from "../../models/Picture";
 import User from "../../models/User";
@@ -10,7 +10,8 @@ import PictureItem from "../../containers/Picture/PictureItem";
 
 export interface Props{
     user: User,
-    uploadPicture: (userId: string, file : File, model : UploadModel) => any
+    uploadPicture: (userId: string, file : File, model : UploadModel) => any,
+    open: boolean
 }
 interface State {
     upload: UploadModel,
@@ -18,7 +19,8 @@ interface State {
     fileUrl: string,
     picture : Picture,
     errorDescription: string,
-    errorImage: string
+    errorImage: string,
+    loading: boolean
 }
 
 
@@ -32,6 +34,7 @@ class Upload extends React.Component<Props,State> {
             fileUrl: "",
             errorDescription: null,
             errorImage: null,
+            loading: false,
             upload: {
                 description: "",
                 mentions: [],
@@ -113,22 +116,32 @@ class Upload extends React.Component<Props,State> {
         });
     };
     handleUploadFile = (file) => {
-        this.state.picture.url = URL.createObjectURL(file[0]);
+        if (file.length > 0) {
+            this.state.picture.url = URL.createObjectURL(file[0]);
 
-        this.setState({
-            picture: {
-                ...this.state.picture,
-                url: URL.createObjectURL(file[0])
-            },
-            file: file[0]
-        });
+            this.setState({
+                picture: {
+                    ...this.state.picture,
+                    url: URL.createObjectURL(file[0])
+                },
+                file: file[0]
+            });
+
+        }
+
+
     };
     handleUploadPicture = () => {
-        if (this.validate(this.state.picture))
+        if (this.validate(this.state.picture)) {
+            this.setState({loading: true});
             this.props.uploadPicture(this.props.user.id, this.state.file, this.state.upload);
+        }
     };
 
     componentWillReceiveProps(nextProps: Readonly<Props>, nextContext: any): void {
+        if (nextProps.open) {
+            this.setState({loading: false});
+        }
     }
 
     render() {
@@ -159,7 +172,15 @@ class Upload extends React.Component<Props,State> {
                             }
                         </Grid>
                         <Grid container direction="row" justify="center" alignItems="center">
-                            <Button variant="outlined" onClick={this.handleUploadPicture} >Valider</Button>
+                                <Button variant="outlined" onClick={this.handleUploadPicture} >
+                                    {
+                                        this.state.loading &&
+                                        <CircularProgress disableShrink /> ||
+
+                                        'Valider'
+                                    }
+
+                                </Button>
                         </Grid>
                     </Grid>
                     <Grid container direction="row" justify="center" alignItems="center">

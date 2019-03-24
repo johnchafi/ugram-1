@@ -3,7 +3,6 @@ import {Button, Grid, Hidden, Snackbar, TextField} from "@material-ui/core";
 import {Redirect, Route, RouteProps} from 'react-router';
 import User from "../../models/User";
 import MySnackbarContentWrapper from "../../view-components/MySnackBarContentWrapper";
-import {GoogleLogin} from "react-google-login";
 import {Link} from 'react-router-dom';
 import {Cookies} from "react-cookie";
 
@@ -181,10 +180,6 @@ class AccountForm extends React.Component<Props,State> {
         return check;
     }
 
-    responseGoogle = response => {
-
-    };
-
     render() {
         const {user } = this.state;
         const { _updateUsername, _updatePassword, _handleSubmit, _updateConfPassword, _updatePseudo, _updateFirstName, _updateLastName, _updatePhone} = this;
@@ -199,17 +194,6 @@ class AccountForm extends React.Component<Props,State> {
                             <img className={"logo"} alt="label" src="https://s3.ca-central-1.amazonaws.com/ugram-team02/assets/header-picture.png" />
                             <p>Inscrivez-vous pour voir les<br />photos et vidéos de vos amis.</p>
                         </div>
-
-                        <GoogleLogin
-                            clientId="782927614430-as1qgn7v6a07qm28r3aqk119rnj7je21.apps.googleusercontent.com"
-                            buttonText="Se connecter avec Google"
-                            onSuccess={this.responseGoogle}
-                            onFailure={this.responseGoogle}
-                        />
-                        <div className={"or"}>
-                            <p>OU</p>
-                        </div>
-
                         <TextField className={"input"} error={this.state.errorMail !== null} helperText={this.state.errorMail} margin="normal" label="Email" defaultValue={user.email} onChange={(e) => _updateUsername(e)} fullWidth/>
                         <TextField className={"input"} error={this.state.errorFirstName !== null} helperText={this.state.errorFirstName} margin="normal" label="Prénom" defaultValue={user.firstName} onChange={(e) => _updateFirstName(e)} fullWidth/>
                         <TextField className={"input"} error={this.state.errorLastName !== null} helperText={this.state.errorLastName} margin="normal" label="Nom" defaultValue={user.lastName} onChange={(e) => _updateLastName(e)} fullWidth/>
