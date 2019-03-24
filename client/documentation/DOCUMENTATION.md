@@ -1,5 +1,23 @@
 # Documentation
 
+
+## Connexion
+Deux possibilités:
+
+* Connexion via une combinaison email/mot de passe
+* Connexion via OAuth2.0 via les services Google
+
+## Création de compte
+
+* Inscription manuelle via le formulaire
+![Création de compte manuelle](./img/creation_compte_manuelle.png "Création de compte manuelle")
+
+
+**ou**
+
+* Inscription via OAUth2.0 via les services Google (gènère un userId) 
+![Création de compte google](./img/creation_compte_google.png "Création de compte Google")
+
 ## Home
 Regroupe toutes les photos publiées ordonnées par date (tout utilisateur confondu) 
 
@@ -15,6 +33,18 @@ Sur ce profil est regroupé:
 * Toutes les photos publiées par cet utilisateur  
  
 ``http://ugram-team02.s3-website.ca-central-1.amazonaws.com/profil/<nom_utilisateur>``
+
+## Recherche
+Possibilité de chercher par tags/identification/nom d'utilisateur
+
+* Tags/Identifications:
+
+![Recherche Tag Identification](./img/recherche_tag_identifications.png "Administration profil")
+
+
+* Utilisateurs :
+
+![Recherche Utilisateur](./img/recherche_utilisateur.png "Administration profil")
 
 
 ## Liste des utilisateurs
@@ -52,3 +82,14 @@ Si l'utilisateur connecté consulte une de ses images, il aura accès aux outils
 
 * Gestion de la description, des mots-clés et des identifications:
 ![Administration Image](./img/administration_image.png "Administration Image")
+
+#### Deconnexion et suppression du compte
+Une fois dans le panel d'administration du profil, l'utisateur aura la possibilité de se déconnecter et de supprimer son compte
+
+* Deconnexion
+![Deconnexion du compte](./img/deconnexion_compte.png "Deconnexion compte")
+
+* Suppression du compte
+![Suppression du compte](./img/suppression_compte.png "Suppression compte")
+
+

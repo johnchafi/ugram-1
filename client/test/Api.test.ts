@@ -38,9 +38,9 @@ describe('actions', () => {
 
     it('should get picture for profil page', async () => {
         const store = mockStore();
-        await store.dispatch(Actions.getPictureForProfil("ArthurKlein1170", 0, []));
+        await store.dispatch(Actions.getPictureForProfil("HenriLongle1012", 0, []));
 
-        let response = await sdk.getPicturesByUser('ArthurKlein1170', 0)
+        let response = await sdk.getPicturesByUser('HenriLongle1012', 0)
             .then(function (response) {
                 return response;
             });
@@ -138,8 +138,8 @@ describe('actions', () => {
     });
     it('should display good for getting real user', async () => {
         const store = mockStore();
-        await store.dispatch(ActionsProfil.profilData('ArthurKlein1170'));
-        let response = await sdk.getUser('ArthurKlein1170')
+        await store.dispatch(ActionsProfil.profilData('HenriLongle1012'));
+        let response = await sdk.getUser('HenriLongle1012')
             .then(function (response) {
                 return response;
             }).catch(error => {
