@@ -12,6 +12,10 @@ class PictureList extends React.Component<Props,State> {
         super(props);
     }
 
+    componentWillMount(): void {
+        this.props.getComment();
+    }
+
     render() {
         const {pictures, isHome, user, isMe } = this.props;
         return (

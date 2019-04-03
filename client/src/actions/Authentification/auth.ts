@@ -5,8 +5,9 @@ import {IStateAuthApp} from "../../reducers/Authentifcation/auth";
 import User from "../../models/User";
 import {errorStatus, successStatus} from "../Status/status";
 import {UserProfilAction} from "../Profil/profil";
-import io from "socket.io-client";
-
+import * as io from "socket.io-client";
+import {getComment} from "../Comment/comment";
+let socket : SocketIOClient.Socket = null;
 export enum ActionTypes {
     AUTHENTICATED = "AUTH",
     TOKEN = "TOKEN",
@@ -31,6 +32,8 @@ export function getUserWithToken(token: string): any {
         }
         sdk.getUserByToken(token)
             .then(function (response) {
+                if (socket == null)
+                    initSocket(dispatch);
                 sdk.setToken(response.data.token);
                 dispatch(  {
                     type: ActionTypes.AUTHENTICATED,
@@ -76,6 +79,15 @@ export function createUser(user: User): any {
     }
 }
 
+
+function initSocket(dispatch) {
+    socket = io.connect('http://localhost:3000');
+    socket.on('GET_COMMENTS', function (data) {
+        console.log(data);
+        return dispatch(getComment());
+    });
+}
+
 export function authUserGoogle(googleObject: any): any {
     return function(dispatch : Dispatch<IStateProfilApp>) {
         let user : User = {};
@@ -88,11 +100,8 @@ export function authUserGoogle(googleObject: any): any {
         user.pictureUrl = googleObject.profileObj.imageUrl;
         user.googleId = googleObject.profileObj.googleId;
         sdk.loginGoogle(user, googleObject.tokenId).then(function (response) {
+            initSocket(dispatch);
             sdk.setToken(response.data.token);
-            let socket = io.connect('http://localhost:3000');
-            socket.on('GET_COMMENTS', function (data) {
-                console.log(data);
-            });
             dispatch(  {
                 type: ActionTypes.AUTHENTICATED,
                 payload: {
@@ -133,11 +142,7 @@ export function authUser(username: string, password:string): any {
     return function(dispatch : Dispatch<IStateProfilApp>) {
         sdk.login(username, password)
             .then(function (response) {
-                sdk.setToken(response.data.token);
-                let socket = io.connect('http://localhost:3000');
-                socket.on('GET_COMMENTS', function (data) {
-                    console.log(data);
-                });
+                initSocket(dispatch);
                 dispatch(  {
                     type: ActionTypes.AUTHENTICATED,
                     payload: {

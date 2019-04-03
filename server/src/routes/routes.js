@@ -8,11 +8,12 @@ const root = require('../controllers/root');
 const pictures = require('./pictures');
 const users = require('./users');
 const login = require('./login');
-
+const comment = require('./comment');
 
 router.use('/pictures', pictures);
 router.use('/users', users);
 router.use('/login', login);
+router.use('/comment', comment);
 
 router.get('/info', root.getInfo);
 

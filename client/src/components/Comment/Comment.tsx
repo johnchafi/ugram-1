@@ -2,10 +2,6 @@ import * as React from 'react'
 import {Link} from 'react-router-dom';
 import {
     Avatar,
-    CardActions,
-    CircularProgress,
-    LinearProgress,
-    Icon,
     List,
     ListItem,
     ListItemText, Divider
@@ -18,7 +14,8 @@ export interface Props{
     comments : Comment[],
     user : User,
     picture : Picture
-    addComment : (string, number) => any
+    addComment : (comment : Comment) => any
+    deleteComment : (comment : Comment, userId : string) => any
 }
 
 export  interface State {
@@ -36,9 +33,8 @@ class Comments extends React.Component<Props, State> {
 
     componentWillReceiveProps(nextProps: Readonly<Props>, nextContext: any): void {
         if (nextProps.comments !== this.props.comments){
-            let comment : Comment[] = [];
-            comment.push(nextProps.comments.find(comment => comment.pictureId === this.props.picture.id));
-            this.setState({ownComments: comment});
+            console.log(nextProps.comments);
+            this.setState({ownComments: nextProps.comments.filter(comment => comment.pictureId === this.props.picture.id)});
         }
     }
 
@@ -48,7 +44,7 @@ class Comments extends React.Component<Props, State> {
             <List>
                 {this.state.ownComments.map((comment : Comment) => {
                         return (
-                            <div>
+                            <div key={comment.id}>
                                 <ListItem>
                                     <Avatar>
                                         {comment.userId}

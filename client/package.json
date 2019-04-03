@@ -14,6 +14,7 @@
   "devDependencies": {
     "@types/node": "8.5.5",
     "@types/react": "16.0.34",
+    "@types/socket.io-client": "^1.4.32",
     "compression-webpack-plugin": "^2.0.0",
     "css-loader": "0.28.7",
     "html-webpack-change-assets-extension-plugin": "^1.1.0",

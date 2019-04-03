@@ -12,7 +12,6 @@ export const initialState: IStateComment = {
 
 export function reducer(state: IStateComment = initialState, action: Action) : IStateComment {
     switch (action.type) {
-
         case ActionTypes.ADD_COMMENT:
             return {
                 ...state,
