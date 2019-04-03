@@ -5,6 +5,7 @@ import Search from '@material-ui/icons/Search';
 import Picture from "../../models/Picture";
 import {Link} from 'react-router-dom';
 import User from "../../models/User";
+import onClickOutside from "react-onclickoutside";
 
 
 export interface Props{
@@ -54,9 +55,9 @@ class SearchComponent extends React.Component<Props,State> {
                 }
                 else {
                     this.setState({
-                        descriptions: null,
-                        picturesTags: null,
-                        users: null
+                            descriptions: null,
+                            picturesTags: null,
+                            users: null
                         }
                     );
                 }
@@ -74,7 +75,7 @@ class SearchComponent extends React.Component<Props,State> {
         }
         if (nextProps.picturesTags !== this.props.picturesTags) {
             this.setState({
-                picturesTags: nextProps.picturesTags
+                    picturesTags: nextProps.picturesTags
                 }
             );
         }
@@ -97,22 +98,22 @@ class SearchComponent extends React.Component<Props,State> {
     };
     displaySearchDescriptionElement(item, index) {
         return (
-         <Link to={`/profil/${item.userId}?search=${item.id}`} key={index} onClick={this.closeResultat}>
-             <Grid className={"description"} >
-                 <div className={"searchLeft"}>
-                     <Avatar  className="avatar-home-picture" aria-label="Description">D</Avatar>
-                 </div>
-                 <div className={"searchRight"}>
-                     <p>{item.userId}<br />
-                     <span>
+            <Link to={`/profil/${item.userId}?search=${item.id}`} key={index} onClick={this.closeResultat}>
+                <Grid className={"description"} >
+                    <div className={"searchLeft"}>
+                        <Avatar  className="avatar-home-picture" aria-label="Description">D</Avatar>
+                    </div>
+                    <div className={"searchRight"}>
+                        <p>{item.userId}<br />
+                            <span>
                          {item.description}
                      </span>
-                     </p>
-                 </div>
+                        </p>
+                    </div>
 
-             </Grid>
-         </Link>
-     )
+                </Grid>
+            </Link>
+        )
     }
 
 
@@ -161,13 +162,16 @@ class SearchComponent extends React.Component<Props,State> {
         )
     }
 
+    handleClickOutside = () => {
+        this.closeResultat();
+    };
+
 
     render() {
 
         return (
 
             <Grid item xs className={"searchbar"}>
-
                 <TextField
                     value={this.state.searchString}
                     variant="outlined"
@@ -209,4 +213,4 @@ class SearchComponent extends React.Component<Props,State> {
         );
     }
 }
-export default (SearchComponent);
+export default (onClickOutside(SearchComponent));

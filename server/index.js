@@ -14,6 +14,7 @@ const routes = require('./src/routes/routes');
 
 const port = process.env.PORT || 300;
 const app = express();
+
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 app.use(cors());
@@ -29,6 +30,13 @@ app.use(morgan('combined', {'stream': logger.stream}));
 
 app.use('/', routes);
 
-app.listen(port);
+let s = app.listen(port);
 
 logger.info(`App started on port ${port}`);
+
+const server = {
+    app : app,
+    server: s
+};
+
+module.exports = server;
