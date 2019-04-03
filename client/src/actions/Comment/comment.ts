@@ -49,6 +49,14 @@ export function updateComment(picture : Picture) : any {
 }
 
 export function deleteComment(comment : Comment, userId: string) : any {
+    return function(dispatch : Dispatch<IStateComment>) {
+        sdk.deleteComment(comment, userId).then( function (response) {
+            return dispatch(getComment());
+        })
+            .catch(function (error) {
+                return dispatch(errorStatus(error.response.status, error.response.data.message));
+            });
+    }
 }
 
 /*

@@ -63,12 +63,18 @@ export class sdk {
     }
 
     static addComment(comment: Comment) {
-        return axios.post(endpoint + "comment",
+        return axios.post(endpoint + "users/" + comment.userId + "/pictures/" + comment.pictureId + "/comment/",
             {
-                userId : comment.userId,
-                picturedId : comment.pictureId,
                 message : comment.message
             });
+    }
+
+    static deleteComment(comment : Comment, userId: string) {
+        return axios.delete(endpoint + "users/" + userId + "/pictures/" + comment.pictureId + "/comment/" + comment.id, {
+            headers: {
+                Authorization: "Bearer " + bearerToken
+            }
+        });
     }
 
 

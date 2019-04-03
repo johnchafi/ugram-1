@@ -33,7 +33,7 @@ app.use(morgan('combined', {'stream': logger.stream}));
 app.use('/', routes);
 io.on('connection', function (client) {
     client.emit('GET_COMMENTS');
-
+    console.log(io.sockets.server.httpServer._connections);
 });
 app.set('socket', io);
 
