@@ -89,6 +89,10 @@ export function authUserGoogle(googleObject: any): any {
         user.googleId = googleObject.profileObj.googleId;
         sdk.loginGoogle(user, googleObject.tokenId).then(function (response) {
             sdk.setToken(response.data.token);
+            let socket = io.connect('http://localhost:3000');
+            socket.on('GET_COMMENTS', function (data) {
+                console.log(data);
+            });
             dispatch(  {
                 type: ActionTypes.AUTHENTICATED,
                 payload: {
@@ -130,6 +134,10 @@ export function authUser(username: string, password:string): any {
         sdk.login(username, password)
             .then(function (response) {
                 sdk.setToken(response.data.token);
+                let socket = io.connect('http://localhost:3000');
+                socket.on('GET_COMMENTS', function (data) {
+                    console.log(data);
+                });
                 dispatch(  {
                     type: ActionTypes.AUTHENTICATED,
                     payload: {

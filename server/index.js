@@ -12,7 +12,7 @@ Sentry.init({ dsn: 'https://535ecc5a93654d4fab876372a40565e4@sentry.io/1419323' 
 
 const routes = require('./src/routes/routes');
 
-const port = process.env.PORT || 300;
+const port = process.env.PORT || 3000;
 const app = express();
 
 app.set('views', __dirname + '/views');
