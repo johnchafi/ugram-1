@@ -5,6 +5,7 @@ import {IStateAuthApp} from "../../reducers/Authentifcation/auth";
 import User from "../../models/User";
 import {errorStatus, successStatus} from "../Status/status";
 import {UserProfilAction} from "../Profil/profil";
+import io from "socket.io-client";
 
 export enum ActionTypes {
     AUTHENTICATED = "AUTH",

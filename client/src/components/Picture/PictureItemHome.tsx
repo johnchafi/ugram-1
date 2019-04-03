@@ -10,6 +10,7 @@ import User from "../../models/User";
 import PictureItem from "../../containers/Picture/PictureItem";
 import Dialog from "@material-ui/core/Dialog";
 import Helper from "../../helper/helper";
+import Comment from "../../containers/Comment/Comment";
 
 export interface Props{
     picture : Picture,
@@ -85,6 +86,9 @@ class PictureItemHome extends React.Component<Props,State> {
                             <p><span>{this.props.picture.user && this.props.picture.user.id}</span>
                                 {"\u00a0" + this.props.picture.description}</p>
                         </CardActions>
+                        <CardActions className={"action header"} disableActionSpacing>
+                            <Comment picture={this.props.picture}/>
+                        </CardActions>
                         <CardActions className={"action hashtags"} disableActionSpacing>
                             {this.props.picture.tags.map((item) => {
                                     if (item != "")
@@ -94,9 +98,9 @@ class PictureItemHome extends React.Component<Props,State> {
                         </CardActions>
                         <CardActions className={"action mentions"} disableActionSpacing>
                             {this.props.picture.mentions.length > 0 && this.props.picture.mentions.map((item) => {
-                                if (item != "")
-                                    return ("@" + item + " ")
-                            }
+                                    if (item != "")
+                                        return ("@" + item + " ")
+                                }
                             )}
                         </CardActions>
                         <CardActions className={"action date"} disableActionSpacing>
