@@ -427,21 +427,23 @@ exports.getComments = (req, res, next) => {
 exports.deleteUserComment = (req, res, next) => {
     let socket = req.app.get('socket');
     auth.isAuthenticated(req).then(user => {
-        CommentModel.findAll({
+        console.log(req.params.userId);
+        CommentModel.find({
             where : {
                 userId: req.params.userId,
                 id: req.params.id,
-                picturedId: req.params.picturedId
+                pictureId: req.params.pictureId
             }
         }).then(comment => {
             CommentModel.destroy({
                 where: {
                     userId: comment.userId,
                     id: comment.id,
-                    picturedId: comment.pictureId
+                    pictureId: comment.pictureId
                 }
             }).then(() => {
                 socket.emit('GET_COMMENTS');
+                console.log('je suis la');
                 return auth.sendSuccess(res, null, 204);
             })
                 .catch(err => {
