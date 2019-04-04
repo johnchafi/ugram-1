@@ -1,5 +1,5 @@
-import {Action, ActionTypes} from "../../actions/Comment/comment";
-import {Comment} from "../../models/Comment";
+import {Action, ActionTypes} from "../../../actions/Comment/comment";
+import {Comment} from "../../../models/Comment";
 
 
 export interface IStateComment {

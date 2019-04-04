@@ -7,4 +7,7 @@ export default interface Props {
     isHome:boolean,
     isMe:boolean,
     getComment : () => any
+    getLike : () => any
+    getNotifications : (userId : string) => any
+    me : string
 }

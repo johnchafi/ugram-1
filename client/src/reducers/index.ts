@@ -5,7 +5,9 @@ import * as fromUsers from "./Users/UserList";
 import * as fromHome from "./Picture/Picture";
 import * as fromStatus from "./Status/Status";
 import * as fromSearch from "./Search/Search";
-import * as fromComment from "./Comment/Comment";
+import * as fromComment from "./Picture/Comment/Comment";
+import * as fromLike from "./Picture/Like/Like";
+import * as fromNotification from "./Notification/Notification";
 /*
  * This is the root state of the app
  * It contains every substate of the app
@@ -18,6 +20,8 @@ export interface State {
     status: fromStatus.IStateStatusApp,
     search: fromSearch.IStateSearch
     comment: fromComment.IStateComment
+    like: fromLike.IStateLike
+    notification: fromNotification.IStateNotifications
 }
 
 /*
@@ -30,7 +34,9 @@ export const initialState: State = {
     picture: fromHome.initialState,
     status: fromStatus.initialState,
     search: fromSearch.initialState,
-    comment: fromComment.initialState
+    comment: fromComment.initialState,
+    like: fromLike.initialState,
+    notification: fromNotification.initialState
 };
 
 /*
@@ -44,5 +50,7 @@ export const reducer = combineReducers<State>({
     picture: fromHome.reducer,
     status: fromStatus.reducer,
     search: fromSearch.reducer,
-    comment: fromComment.reducer
+    comment: fromComment.reducer,
+    like : fromLike.reducer,
+    notification: fromNotification.reducer
 });

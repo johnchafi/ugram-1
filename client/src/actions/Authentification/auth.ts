@@ -7,6 +7,8 @@ import {errorStatus, successStatus} from "../Status/status";
 import {UserProfilAction} from "../Profil/profil";
 import * as io from "socket.io-client";
 import {getComment} from "../Comment/comment";
+import {getLike} from "../Like/like";
+import {getNotifications} from "../Notifications/notifications";
 let socket : SocketIOClient.Socket = null;
 export enum ActionTypes {
     AUTHENTICATED = "AUTH",
@@ -33,7 +35,7 @@ export function getUserWithToken(token: string): any {
         sdk.getUserByToken(token)
             .then(function (response) {
                 if (socket == null)
-                    initSocket(dispatch);
+                    initSocket(dispatch, response.data.userId);
                 sdk.setToken(response.data.token);
                 dispatch(  {
                     type: ActionTypes.AUTHENTICATED,
@@ -80,11 +82,16 @@ export function createUser(user: User): any {
 }
 
 
-function initSocket(dispatch) {
+function initSocket(dispatch, userId : string) {
     socket = io.connect('http://localhost:3000');
-    socket.on('GET_COMMENTS', function (data) {
-        console.log(data);
+    socket.on('GET_COMMENTS', function () {
         return dispatch(getComment());
+    });
+    socket.on('GET_LIKES', function () {
+        return dispatch(getLike());
+    });
+    socket.on(userId, function () {
+        return dispatch(getNotifications(userId));
     });
 }
 
@@ -100,7 +107,7 @@ export function authUserGoogle(googleObject: any): any {
         user.pictureUrl = googleObject.profileObj.imageUrl;
         user.googleId = googleObject.profileObj.googleId;
         sdk.loginGoogle(user, googleObject.tokenId).then(function (response) {
-            initSocket(dispatch);
+            initSocket(dispatch, user.id);
             sdk.setToken(response.data.token);
             dispatch(  {
                 type: ActionTypes.AUTHENTICATED,
@@ -142,7 +149,7 @@ export function authUser(username: string, password:string): any {
     return function(dispatch : Dispatch<IStateProfilApp>) {
         sdk.login(username, password)
             .then(function (response) {
-                initSocket(dispatch);
+                initSocket(dispatch, response.data.userId);
                 dispatch(  {
                     type: ActionTypes.AUTHENTICATED,
                     payload: {

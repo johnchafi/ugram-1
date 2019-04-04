@@ -9,6 +9,8 @@ const TokenModel = require('../models/token');
 const PictureModel = require('../models/picture');
 const TagModel = require('../models/tag');
 const MentionModel = require('../models/mention');
+const LikeModel = require('../models/like');
+const NotificationModel = require('../models/notifications');
 
 const multiparty = require('multiparty');
 const path = require('path');
@@ -418,23 +420,24 @@ exports.deleteUserPictures = (req, res, next) => {
 exports.deleteUserComment = (req, res, next) => {
     let socket = req.app.get('socket');
     auth.isAuthenticated(req).then(user => {
-        console.log(req.params.userId);
         CommentModel.find({
             where : {
-                userId: req.params.userId,
                 id: req.params.id,
                 pictureId: req.params.pictureId
             }
         }).then(comment => {
+            NotificationModel.destroy({
+                where: {
+                    userId: comment.ownerId
+                }
+            });
             CommentModel.destroy({
                 where: {
-                    userId: comment.userId,
                     id: comment.id,
                     pictureId: comment.pictureId
                 }
             }).then(() => {
                 socket.emit('GET_COMMENTS');
-                console.log('je suis la');
                 return auth.sendSuccess(res, null, 204);
             })
                 .catch(err => {
@@ -455,13 +458,95 @@ exports.addComment = (req, res, next) => {
         {
             userId: req.params.userId,
             pictureId : req.params.pictureId,
-            message : req.body.message
+            message : req.body.message,
+            ownerId : req.body.ownerId,
         })
         .then(comment => {
             socket.emit('GET_COMMENTS');
+            if (req.params.userId !== req.body.ownerId) {
+                NotificationModel.create({
+                        userId: req.body.ownerId,
+                        url: '/profil/' + req.body.ownerId + '?search=' + req.params.pictureId,
+                        message: req.params.userId + ' a commenté votre photo'
+                    }
+                );
+            }
+            socket.emit(req.body.ownerId);
             return auth.sendSuccess(res, {comment}, 200);
         })
         .catch(err => {
             return auth.sendError(res, err.errors[0].message, 400);
         });
+};
+exports.getNotifications = (req, res, next) => {
+    NotificationModel.findAll({ where: {
+            userId: req.params.userId
+        }}).then(notifications => {
+        return auth.sendSuccess(res, notifications, 200);
+    })
+        .catch(err => {
+            return auth.sendError(res, err, 400);
+        });
+};
+
+
+exports.addLike = (req, res, next) => {
+    let socket = req.app.get('socket');
+    LikeModel.create(
+        {
+            userId: req.params.userId,
+            pictureId : req.params.pictureId,
+            ownerId : req.body.ownerId
+        })
+        .then(comment => {
+            socket.emit('GET_LIKES');
+            if (req.params.userId !== req.body.ownerId) {
+                NotificationModel.create({
+                        userId: req.body.ownerId,
+                        url: '/profil/' + req.body.ownerId + '?search=' + req.params.pictureId,
+                        message: req.params.userId + ' a aimé votre photo'
+                    }
+                );
+            }
+            socket.emit(req.body.ownerId);
+            return auth.sendSuccess(res, {comment}, 200);
+        })
+        .catch(err => {
+            return auth.sendError(res, err.errors[0].message, 400);
+        });
+};
+
+exports.deleteUserLike = (req, res, next) => {
+    let socket = req.app.get('socket');
+    auth.isAuthenticated(req).then(user => {
+        LikeModel.find({
+            where : {
+                id: req.params.id,
+                pictureId: req.params.pictureId
+            }
+        }).then(comment => {
+            NotificationModel.destroy({
+                where: {
+                    userId: comment.ownerId
+                }
+            });
+            LikeModel.destroy({
+                where: {
+                    id: comment.id,
+                    pictureId: comment.pictureId
+                }
+            }).then(() => {
+                console.log(req.params);
+                socket.emit('GET_LIKES');
+                return auth.sendSuccess(res, null, 204);
+            })
+                .catch(err => {
+                    return auth.sendError(res, err, 500);
+                });
+        }).catch(err => {
+            return auth.sendError(res, "No pictures found for user '" + user.id + "'.", 204);
+        })
+    }).catch(err => {
+        return auth.sendError(res, err.message, err.code);
+    });
 };

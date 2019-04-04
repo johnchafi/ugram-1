@@ -2,6 +2,7 @@ import axios from "axios";
 import User from "../models/User";
 import Upload from "../models/Upload";
 import {Comment} from "../models/Comment";
+import {Like} from "../models/Like";
 
 let urlLocalhost = "http://localhost:3000/";
 let urlEB = "http://ugram-team02.pm9h7ckh7u.us-east-2.elasticbeanstalk.com/";
@@ -10,7 +11,7 @@ let CancelToken = axios.CancelToken;
 let call1 = CancelToken.source();
 let call2 = CancelToken.source();
 let picturesOfUser = CancelToken.source();
-const endpoint = urlEB;
+const endpoint = urlLocalhost;
 let bearerToken = "";
 
 export class sdk {
@@ -65,12 +66,38 @@ export class sdk {
     static addComment(comment: Comment) {
         return axios.post(endpoint + "users/" + comment.userId + "/pictures/" + comment.pictureId + "/comment/",
             {
-                message : comment.message
+                message : comment.message,
+                ownerId : comment.ownerId
             });
     }
 
-    static deleteComment(comment : Comment, userId: string) {
-        return axios.delete(endpoint + "users/" + userId + "/pictures/" + comment.pictureId + "/comment/" + comment.id, {
+    static deleteComment(comment : Comment) {
+        return axios.delete(endpoint + "users/" + comment.userId + "/pictures/" + comment.pictureId + "/comment/" + comment.id, {
+            headers: {
+                Authorization: "Bearer " + bearerToken
+            }
+        });
+    }
+
+    static getLike() {
+        return axios.get(endpoint + "like");
+    }
+
+    static getNotifications(userId: string) {
+        return axios.get(endpoint + "users/" + userId + "/notifications");
+    }
+
+    static addLike(like: Like) {
+        console.log(like);
+        return axios.post(endpoint + "users/" + like.userId + "/pictures/" + like.pictureId + "/like/",
+            {
+                ownerId : like.ownerId
+            });
+    }
+
+    static deleteLike(like : Like) {
+        console.log(like);
+        return axios.delete(endpoint + "users/" + like.userId + "/pictures/" + like.pictureId + "/like/" + like.id, {
             headers: {
                 Authorization: "Bearer " + bearerToken
             }

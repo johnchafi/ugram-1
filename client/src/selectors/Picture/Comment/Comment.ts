@@ -1,5 +1,5 @@
 import { createSelector } from "reselect";
-import {State} from "../../reducers";
+import {State} from "../../../reducers";
 
 const getPicturesComment = ((state: State) => state.comment);
 
