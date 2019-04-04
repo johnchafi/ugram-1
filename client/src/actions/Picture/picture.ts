@@ -89,7 +89,7 @@ export function uploadPicture(userId : string, file : File, model : UploadModel)
                 dispatch(successStatus(response.status, "Image ajoutée avec succès"));
                 return dispatch(getPictureForProfil(userId, 0, []));
             }).catch(error => {
-                return (dispatch(errorStatus(error.response.status, error.response.data.message)));
+                return (dispatch(errorStatus(400, "Il y a eu une erreur lors de l'upload de l'image")));
             });
         }
     }

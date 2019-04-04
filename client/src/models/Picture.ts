@@ -9,5 +9,8 @@ export default interface Picture {
     "url"?: string,
     "userId"?: string,
     user?: User,
-    file?: File
+    file?: File,
+    width?: number,
+    height?: number,
+    rotation?: number,
 }

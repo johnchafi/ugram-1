@@ -1,7 +1,8 @@
 @import "titles";
 
 .media-card {
-  width: 100%;
+  width: 600px;
+  max-width: 100%;
   max-height: 600px;
 }
 
@@ -393,6 +394,23 @@ body {
   }
 }
 
+.modalUpload {
+  > div {
+    background-color: white;
+  }
+  .imagePreview {
+    max-width: 100%;
+    padding: 50px;
+    img {
+      max-width: 600px;
+      max-height: 600px;
+    }
+  }
+
+  .stepContent {
+    padding: 60px;
+  }
+}
 
 
 @media screen and (max-width: 598px) {

@@ -132,11 +132,18 @@ export class sdk {
         fileUpload.append("description", model.description);
         fileUpload.append("tags", model.tags.toString());
         fileUpload.append("mentions", model.mentions.toString());
-        return axios.post(endpoint + "users/" + userId + "/pictures/",
-            fileUpload, {
-                headers: {
-                    Authorization: "Bearer " + bearerToken,
-                    "Content-Type": "multipart/form-data"
-                }});
+        try {
+            return axios.post(endpoint + "users/" + userId + "/pictures/",
+                fileUpload, {
+                    headers: {
+                        Authorization: "Bearer " + bearerToken,
+                        "Content-Type": "multipart/form-data"
+                    }});
+        } catch (error) {
+            return Promise.reject({
+                response: { status: 400, data: {message: "Il y a eu une erreur lors de l'upload de l'image"}}
+            });
+        }
+
     }
 }

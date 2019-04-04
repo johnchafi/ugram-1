@@ -54,6 +54,7 @@
     "react-cookie": "^3.0.8",
     "react-dom": "^16.2.0",
     "react-google-login": "^5.0.2",
+    "react-image-file-resizer": "^0.1.7",
     "react-on-screen": "^2.1.1",
     "react-onclickoutside": "^6.8.0",
     "react-redux": "^5.0.6",

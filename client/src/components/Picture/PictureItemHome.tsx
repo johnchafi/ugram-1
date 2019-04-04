@@ -58,7 +58,31 @@ class PictureItemHome extends React.Component<Props,State> {
     handleOpenEdit = event => {
         this.setState({open: true});
     };
+    getImageStyle() {
+        let width, height, rotation;
 
+        if (this.props.picture.width && this.props.picture.width != 0)
+            width = this.props.picture.width;
+        else
+            width = 600;
+
+        if (this.props.picture.height && this.props.picture.height != 0)
+            height = this.props.picture.height;
+        else
+            height = "auto";
+
+        if (this.props.picture.rotation && this.props.picture.rotation != 0)
+            rotation = "rotate(" + this.props.picture.rotation + "deg)";
+        else
+            rotation = "none";
+
+
+        return {
+            width: width,
+            height: height,
+            tranform: rotation
+        };
+    }
 
     render() {
         return (
@@ -68,7 +92,7 @@ class PictureItemHome extends React.Component<Props,State> {
                     <Link to={this.props.user ? `/profil/${this.props.user.id}` : ''}>
                         <CardHeader className="cardheader" avatar={this.renderAvatar()} title={this.props.user && this.props.user.firstName + " " + this.props.user.lastName || <LinearProgress />}/>
                     </Link>
-                    <img className="media-card" src={this.state.didLoad ? this.props.picture.url : "https://via.placeholder.com/500/f5f5f5"} alt={this.props.picture.description} onLoad={this.onLoad}/>
+                    <img style={this.getImageStyle()} className="media-card" src={this.state.didLoad ? this.props.picture.url : "https://via.placeholder.com/500/f5f5f5"} alt={this.props.picture.description} onLoad={this.onLoad}/>
                     <Grid className={"container"}>
                         <CardActions className={"icon-header"} disableActionSpacing>
                             <IconButton aria-label="Ajouter aux favoris">

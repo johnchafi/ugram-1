@@ -40,13 +40,40 @@ class PictureItem extends React.Component<Props,State> {
             return ( <Avatar aria-label="Recipe" ><CircularProgress disableShrink /></Avatar>)
     }
 
+    getImageStyle() {
+        let width, height, rotation;
+
+        if (this.props.picture.width && this.props.picture.width != 0)
+            width = this.props.picture.width;
+        else
+            width = 600;
+
+        if (this.props.picture.height && this.props.picture.height != 0)
+            height = this.props.picture.height;
+        else
+            height = "auto";
+
+
+        if (this.props.picture.rotation && this.props.picture.rotation != 0)
+            rotation = "rotate(" + this.props.picture.rotation + "deg)";
+        else
+            rotation = "none";
+
+
+        return {
+            width: width,
+            height: height,
+            tranform: rotation
+        };
+    }
+
     render() {
         return (
             <Card className={"container-picture"}>
                 <Link to={this.props.user ? `/profil/${this.props.user.id}` : ''}>
                     <CardHeader action={ !this.props.isHome && this.props.isMe && <EditPictureItem picture={this.props.picture}/>} className={"item"} avatar={this.renderAvatar()} title={this.props.user && this.props.user.firstName + " " + this.props.user.lastName || <LinearProgress />}/>
                 </Link>
-                <img className="media-card" src={this.props.picture.url} alt={this.props.picture.description}/>
+                <img style={this.getImageStyle()} className="media-card" src={this.props.picture.url} alt={this.props.picture.description}/>
                 <Grid className={"container"}>
                     <CardActions className={"icon-header"} disableActionSpacing>
                         <IconButton aria-label="Ajouter aux favoris">
