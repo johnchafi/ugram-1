@@ -276,6 +276,9 @@ body {
 }
 
 .container-picture {
+  border: 1px solid rgba(128, 128, 128, 0.26);
+  border-radius: 0 !important;
+  box-shadow: unset !important;
   a:-webkit-any-link {
     text-decoration: none !important;
   }
@@ -408,7 +411,6 @@ body {
     height: 140px;
   }
 }
-
 @media screen and (max-width: 320px) {
   .media-card {
     width: 100%;

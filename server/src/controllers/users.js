@@ -415,15 +415,6 @@ exports.deleteUserPictures = (req, res, next) => {
     });
 };
 
-exports.getComments = (req, res, next) => {
-    CommentModel.findAll().then(comments => {
-        return auth.sendSuccess(res, comments, 200);
-    })
-        .catch(err => {
-            return auth.sendError(res, err, 400);
-        });
-};
-
 exports.deleteUserComment = (req, res, next) => {
     let socket = req.app.get('socket');
     auth.isAuthenticated(req).then(user => {

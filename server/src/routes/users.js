@@ -63,7 +63,6 @@ router.delete('/:userId/pictures', users.deleteUserPictures);
 router.get('/:userId/pictures/:pictureId', users.getUserPicture);
 router.put('/:userId/pictures/:pictureId', users.editUserPicture);
 router.delete('/:userId/pictures/:pictureId', users.deleteUserPicture);
-router.get('/:userId/pictures/:pictureId', users.getComments);
 
 router.post('/:userId/pictures/:pictureId/comment', users.addComment);
 router.delete('/:userId/pictures/:pictureId/comment/:id', users.deleteUserComment);
