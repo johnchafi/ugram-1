@@ -87,7 +87,7 @@ class PictureItemHome extends React.Component<Props,State> {
                     </Link>
                     <img onClick={this.handleOpenEdit} className="media-card" src={this.state.didLoad ? this.props.picture.url : "https://via.placeholder.com/500/f5f5f5"} alt={this.props.picture.description} onLoad={this.onLoad}/>
                     <Grid>
-                            <Like picture={this.props.picture}/>
+                        <Like picture={this.props.picture}/>
                         <CardActions className={"action header"} disableActionSpacing>
                             <p><span>{this.props.picture.user && this.props.picture.user.id}</span>
                                 {"\u00a0" + this.props.picture.description}</p>
@@ -106,7 +106,7 @@ class PictureItemHome extends React.Component<Props,State> {
                                 }
                             )}
                         </CardActions>
-                        <CardActions className={"action header"} disableActionSpacing>
+                        <CardActions className={"action header"} disableActionSpacing style={{position: "relative"}}>
                             <Comment picture={this.props.picture}/>
                         </CardActions>
                         <CardActions className={"action date"} disableActionSpacing>

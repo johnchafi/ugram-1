@@ -2,9 +2,9 @@ import * as React from 'react'
 import {Link} from 'react-router-dom';
 import Picture from "../../../models/Picture";
 import {Like, LikeUser} from "../../../models/Like";
-import {CardActions, Grid, Icon, IconButton, Typography} from "@material-ui/core";
+import {CardActions, Grid, Icon, IconButton, Typography, WithStyles, withStyles} from "@material-ui/core";
 
-export interface Props{
+export interface Props extends WithStyles<typeof styles>{
     likes : Like[],
     user : string,
     picture : Picture
@@ -15,16 +15,35 @@ export interface Props{
 export  interface State {
     ownLikes: Like[]
     like : boolean
+    expanded: boolean
 }
+
+const styles = theme => ({
+    expand: {
+        transform: 'rotate(0deg)',
+        marginLeft: 'auto',
+        transition: theme.transitions.create('transform', {
+            duration: theme.transitions.duration.shortest,
+        }),
+    },
+    expandOpen: {
+        transform: 'rotate(180deg)',
+    },
+});
 
 class Likes extends React.Component<Props, State> {
 
     constructor(props : Props) {
         super(props);
         this.state = {
-            ownLikes : [],
-            like : false
+            ownLikes : this.props.likes.length === 0 ? [] : this.props.likes.filter(like => like.pictureId === this.props.picture.id),
+            like : false,
+            expanded: false
         }
+    }
+
+    componentDidMount(): void {
+        this.setState({like :  this.state.ownLikes.filter(like => like.userId === this.props.user).length > 0})
     }
 
     componentWillReceiveProps(nextProps: Readonly<Props>, nextContext: any): void {
@@ -53,7 +72,6 @@ class Likes extends React.Component<Props, State> {
 
     render() {
         return (
-
             <CardActions className={"icon-header"} disableActionSpacing>
                 <IconButton onClick={this.handleLike}>
                     <Icon style={{color: this.state.like === true ? 'red' : 'black'}}>favorite</Icon>
@@ -65,4 +83,4 @@ class Likes extends React.Component<Props, State> {
         );
     }
 }
-export default Likes;
+export default withStyles(styles)(Likes);
