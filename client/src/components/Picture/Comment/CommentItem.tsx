@@ -11,7 +11,7 @@ import User from "../../../models/User";
 export interface Props{
     comment : Comment,
     deleteComment : (comment : Comment) => any,
-    user: User
+    user: User,
 }
 
 export  interface State {

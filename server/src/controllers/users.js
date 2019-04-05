@@ -437,7 +437,7 @@ exports.deleteUserComment = (req, res, next) => {
                     pictureId: comment.pictureId
                 }
             }).then(() => {
-                socket.emit('GET_COMMENTS');
+                socket.emit('GET_COMMENTS', {data : comment.id, delete : true });
                 return auth.sendSuccess(res, null, 204);
             })
                 .catch(err => {
@@ -462,16 +462,17 @@ exports.addComment = (req, res, next) => {
             ownerId : req.body.ownerId,
         })
         .then(comment => {
-            socket.emit('GET_COMMENTS');
+            socket.emit('GET_COMMENTS', {data : comment.id, delete : false });
             if (req.params.userId !== req.body.ownerId) {
                 NotificationModel.create({
                         userId: req.body.ownerId,
                         url: '/profil/' + req.body.ownerId + '?search=' + req.params.pictureId,
-                        message: req.params.userId + ' a commenté votre photo'
+                        message: req.params.userId + ' a commenté votre photo',
+                        isRead : false
                     }
                 );
+                socket.emit(req.body.ownerId);
             }
-            socket.emit(req.body.ownerId);
             return auth.sendSuccess(res, {comment}, 200);
         })
         .catch(err => {
@@ -482,7 +483,7 @@ exports.getNotifications = (req, res, next) => {
     NotificationModel.findAll({ where: {
             userId: req.params.userId
         }}).then(notifications => {
-        return auth.sendSuccess(res, notifications, 200);
+        return auth.sendSuccess(res, {items : notifications}, 200);
     })
         .catch(err => {
             return auth.sendError(res, err, 400);
@@ -499,16 +500,17 @@ exports.addLike = (req, res, next) => {
             ownerId : req.body.ownerId
         })
         .then(comment => {
-            socket.emit('GET_LIKES');
+            socket.emit('GET_LIKES', {data : comment.id, delete : false });
             if (req.params.userId !== req.body.ownerId) {
                 NotificationModel.create({
                         userId: req.body.ownerId,
                         url: '/profil/' + req.body.ownerId + '?search=' + req.params.pictureId,
-                        message: req.params.userId + ' a aimé votre photo'
+                        message: req.params.userId + ' a aimé votre photo',
+                        isRead : false
                     }
                 );
+                socket.emit(req.body.ownerId);
             }
-            socket.emit(req.body.ownerId);
             return auth.sendSuccess(res, {comment}, 200);
         })
         .catch(err => {
@@ -536,8 +538,7 @@ exports.deleteUserLike = (req, res, next) => {
                     pictureId: comment.pictureId
                 }
             }).then(() => {
-                console.log(req.params);
-                socket.emit('GET_LIKES');
+                socket.emit('GET_LIKES', {data : comment.id, delete : true });
                 return auth.sendSuccess(res, null, 204);
             })
                 .catch(err => {

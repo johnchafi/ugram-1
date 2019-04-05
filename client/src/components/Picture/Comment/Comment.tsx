@@ -5,12 +5,6 @@ import {
     ListItem,
     Typography,
     IconButton,
-    Icon,
-    Button,
-    Dialog,
-    DialogTitle,
-    DialogContent,
-    DialogActions,
     CardActions,
     withStyles, WithStyles, Collapse
 } from "@material-ui/core";
@@ -24,13 +18,14 @@ export interface Props extends WithStyles<typeof styles>{
     comments : Comment[],
     user : string,
     picture : Picture
-    deleteComment : (comment : Comment) => any
+    deleteComment : (comment : Comment) => any,
+    load : boolean
 }
 
 export  interface State {
     ownComments: Comment[]
     open : boolean
-    expanded: boolean
+    expanded: boolean,
 }
 
 
@@ -55,7 +50,7 @@ class Comments extends React.Component<Props, State> {
         this.state = {
             ownComments : this.props.comments.length === 0 ? [] : this.props.comments.filter(comment => comment.pictureId === this.props.picture.id),
             open : false,
-            expanded: false
+            expanded: false,
         }
     }
     componentWillReceiveProps(nextProps: Readonly<Props>, nextContext: any): void {

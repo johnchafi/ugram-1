@@ -32,6 +32,12 @@ const notificationSchema = db.sequelize.define('notification', {
             defaultValue: null,
             field: 'message',
         },
+        isRead: {
+            type: db.Sequelize.INTEGER(1),
+            allowNull: false,
+            defaultValue: false,
+            field: 'read',
+        },
     },
     {
         freezeTableName: true,

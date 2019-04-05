@@ -32,7 +32,6 @@ app.use(morgan('combined', {'stream': logger.stream}));
 
 app.use('/', routes);
 io.on('connection', function (client) {
-    console.log(io.sockets.server.httpServer._connections);
 });
 app.set('socket', io);
 

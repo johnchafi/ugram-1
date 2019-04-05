@@ -2,11 +2,21 @@ import * as React from 'react'
 import {Link} from 'react-router-dom';
 import Picture from "../../../models/Picture";
 import {Like, LikeUser} from "../../../models/Like";
-import {CardActions, Grid, Icon, IconButton, Typography, WithStyles, withStyles} from "@material-ui/core";
+import {
+    CardActions,
+    CircularProgress,
+    Grid,
+    Icon,
+    IconButton,
+    Typography,
+    WithStyles,
+    withStyles
+} from "@material-ui/core";
 
 export interface Props extends WithStyles<typeof styles>{
     likes : Like[],
     user : string,
+    load : boolean,
     picture : Picture
     addLike : (like : Like) => any
     deleteLike : (like : Like) => any
@@ -15,7 +25,8 @@ export interface Props extends WithStyles<typeof styles>{
 export  interface State {
     ownLikes: Like[]
     like : boolean
-    expanded: boolean
+    expanded: boolean,
+    load  : boolean
 }
 
 const styles = theme => ({
@@ -38,7 +49,8 @@ class Likes extends React.Component<Props, State> {
         this.state = {
             ownLikes : this.props.likes.length === 0 ? [] : this.props.likes.filter(like => like.pictureId === this.props.picture.id),
             like : false,
-            expanded: false
+            expanded: false,
+            load : false
         }
     }
 
@@ -52,6 +64,7 @@ class Likes extends React.Component<Props, State> {
                 this.setState({ownLikes: []});
             else
                 this.setState({ownLikes: nextProps.likes.filter(like => like.pictureId === this.props.picture.id)});
+            this.setState({load : nextProps.load});
         }
     }
 
@@ -62,10 +75,14 @@ class Likes extends React.Component<Props, State> {
 
 
     handleLike = () => {
-        if (this.state.like)
-            this.props.deleteLike(this.state.ownLikes[0]);
-        else
+        if (this.state.like) {
+            this.props.deleteLike(this.state.ownLikes.filter(like => like.userId === this.props.user)[0]);
+            this.setState({load: true});
+        }
+        else {
             this.props.addLike(new LikeUser(this.props.user, this.props.picture.id, this.props.picture.userId));
+            this.setState({load : true});
+        }
 
     };
 
@@ -73,9 +90,9 @@ class Likes extends React.Component<Props, State> {
     render() {
         return (
             <CardActions className={"icon-header"} disableActionSpacing>
-                <IconButton onClick={this.handleLike}>
+                { this.state.load && <CircularProgress disableShrink /> || <IconButton onClick={this.handleLike}>
                     <Icon style={{color: this.state.like === true ? 'red' : 'black'}}>favorite</Icon>
-                </IconButton>
+                </IconButton>}
                 <Typography>
                     {this.state.ownLikes.length}   {this.state.ownLikes.length > 1  && "mentions" || "mention"} J'aime
                 </Typography>

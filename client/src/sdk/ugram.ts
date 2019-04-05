@@ -11,7 +11,7 @@ let CancelToken = axios.CancelToken;
 let call1 = CancelToken.source();
 let call2 = CancelToken.source();
 let picturesOfUser = CancelToken.source();
-const endpoint = urlEB;
+const endpoint = urlLocalhost;
 let bearerToken = "";
 
 export class sdk {
@@ -58,9 +58,15 @@ export class sdk {
             });
     }
 
+    static getCommentById(id) {
+        return axios.get(endpoint + "comment/" + id);
+    }
 
-    static getComment() {
-        return axios.get(endpoint + "comment");
+    static getComment(start = null, end = null) {
+        if (start == null && end == null) {
+            return axios.get(endpoint + "comment");
+        }
+        return axios.get(endpoint + "comment?start=" + start + "&end=" + end);
     }
 
     static addComment(comment: Comment) {
@@ -79,8 +85,15 @@ export class sdk {
         });
     }
 
-    static getLike() {
-        return axios.get(endpoint + "like");
+    static getLike(start = null, end = null) {
+        if (start == null && end == null) {
+            return axios.get(endpoint + "like");
+        }
+        return axios.get(endpoint + "like?start=" + start + "&end=" + end)
+    }
+
+    static getLikeById(id) {
+        return axios.get(endpoint + "like/" + id);
     }
 
     static getNotifications(userId: string) {
@@ -88,7 +101,6 @@ export class sdk {
     }
 
     static addLike(like: Like) {
-        console.log(like);
         return axios.post(endpoint + "users/" + like.userId + "/pictures/" + like.pictureId + "/like/",
             {
                 ownerId : like.ownerId
@@ -96,16 +108,12 @@ export class sdk {
     }
 
     static deleteLike(like : Like) {
-        console.log(like);
         return axios.delete(endpoint + "users/" + like.userId + "/pictures/" + like.pictureId + "/like/" + like.id, {
             headers: {
                 Authorization: "Bearer " + bearerToken
             }
         });
     }
-
-
-
 
     static createUser(user: User) {
         try {

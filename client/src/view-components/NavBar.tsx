@@ -7,11 +7,7 @@ import {
     Divider,
     Grid,
     Icon,
-    Hidden,
-    List,
-    ListItem,
-    ListItemText,
-    Typography, Menu, MenuItem
+    Hidden, Menu, MenuItem
 } from '@material-ui/core';
 import Search from "../containers/Search/Search";
 import {Notification} from "../models/Notification";
@@ -48,6 +44,7 @@ class NavBar extends React.Component<Props,State> {
 
     handleClick = event => {
         this.setState({ anchorEl: event.currentTarget });
+        this.setState({newNotfication : false});
     };
 
     handleClose = () => {
@@ -57,7 +54,10 @@ class NavBar extends React.Component<Props,State> {
     componentWillReceiveProps(nextProps: Readonly<Props>, nextContext: any): void {
         if(nextProps.notifications !== this.props.notifications)
         {
-            this.setState({newNotfication : true});
+            nextProps.notifications.map(function (notification : Notification) {
+                if (!notification.isRead)
+                    this.setState({newNotfication : true});
+            }.bind(this))
         }
     }
 

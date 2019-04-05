@@ -4,10 +4,12 @@ import { withRouter } from "react-router-dom";
 import {getAuthUser} from "../../../selectors/Authentification/auth";
 import {addComment} from "../../../actions/Comment/comment";
 import FormComment from "../../../components/Picture/Comment/FormComment";
+import {getLoadComment} from "../../../selectors/Picture/Comment/Comment";
 const mapStateToProps = (state: State, ownProps : any) => ({
     user: ownProps.user,
     me : getAuthUser(state),
-    picture : ownProps.picture
+    picture : ownProps.picture,
+    load : getLoadComment(state)
 });
 
 const mapDispatchToProps = {
