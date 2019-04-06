@@ -7,7 +7,7 @@ import {
     Divider,
     Grid,
     Icon,
-    Hidden, Menu, MenuItem
+    Hidden, Menu, MenuItem, Badge
 } from '@material-ui/core';
 import Search from "../containers/Search/Search";
 import {Notification} from "../models/Notification";
@@ -19,7 +19,8 @@ interface Props {
 }
 interface State {
     isOpen: boolean,
-    newNotfication : boolean,
+    numberNotifications : number,
+    new : boolean
     anchorEl: any,
 }
 
@@ -32,7 +33,8 @@ class NavBar extends React.Component<Props,State> {
         this.toggle = this.toggle.bind(this);
         this.state = {
             isOpen: false,
-            newNotfication : false,
+            numberNotifications : 0,
+            new : true,
             anchorEl: null
         };
     }
@@ -44,7 +46,8 @@ class NavBar extends React.Component<Props,State> {
 
     handleClick = event => {
         this.setState({ anchorEl: event.currentTarget });
-        this.setState({newNotfication : false});
+        this.setState({numberNotifications : 0});
+        this.setState({new : true});
     };
 
     handleClose = () => {
@@ -54,10 +57,14 @@ class NavBar extends React.Component<Props,State> {
     componentWillReceiveProps(nextProps: Readonly<Props>, nextContext: any): void {
         if(nextProps.notifications !== this.props.notifications)
         {
+            let i = 0;
             nextProps.notifications.map(function (notification : Notification) {
-                if (!notification.isRead)
-                    this.setState({newNotfication : true});
-            }.bind(this))
+                if (!notification.isRead) {
+                    this.setState({new : false});
+                    i++;
+                }
+            }.bind(this, i))
+            this.setState({numberNotifications: i});
         }
     }
 
@@ -86,7 +93,9 @@ class NavBar extends React.Component<Props,State> {
                         <Grid item className={"header-nav"}>
                             <Grid container justify="flex-end">
                                 <Link to={"/users/"}><Icon >explore_outlined</Icon></Link>
-                                {!this.state.newNotfication && <Icon aria-owns={this.state.anchorEl ? 'simple-menu' : undefined} aria-haspopup="true" onClick={this.handleClick} >favorite_border_rounded</Icon> || <Icon aria-owns={this.state.anchorEl ? 'simple-menu' : undefined} aria-haspopup="true" onClick={this.handleClick} style={{ color: 'red'}}>favorite_border_rounded</Icon>}
+                                <Badge badgeContent={this.state.numberNotifications} color="secondary" className={'badge'} invisible={this.state.new}>
+                                    <Icon aria-owns={this.state.anchorEl ? 'simple-menu' : undefined} aria-haspopup="true" onClick={this.handleClick} >favorite_border_rounded</Icon>
+                                </Badge>
                                 <Menu
                                     id="simple-menu"
                                     anchorEl={this.state.anchorEl}

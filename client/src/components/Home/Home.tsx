@@ -1,5 +1,5 @@
 import * as React from 'react'
-import {CircularProgress, Grid} from "@material-ui/core";
+import {Avatar, Card, CardActions, CardHeader, CircularProgress, Grid, LinearProgress} from "@material-ui/core";
 import PictureList from "../../containers/Picture/PictureList";
 import { Redirect } from 'react-router';
 import Props from "../../Props/Home";
