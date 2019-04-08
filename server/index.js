@@ -14,6 +14,8 @@ const routes = require('./src/routes/routes');
 
 const port = process.env.PORT || 80;
 const app = express();
+const s = require('http').createServer(app);
+const io = require('socket.io')(s);
 
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
@@ -29,14 +31,15 @@ app.use(errors.genericErrorHandler);
 app.use(morgan('combined', {'stream': logger.stream}));
 
 app.use('/', routes);
+io.on('connection', function (client) {
+});
+app.set('socket', io);
 
-let s = app.listen(port);
-
+s.listen(port);
 logger.info(`App started on port ${port}`);
 
-const server = {
+module.exports = {
     app : app,
-    server: s
+    server: s,
+    io: io
 };
-
-module.exports = server;

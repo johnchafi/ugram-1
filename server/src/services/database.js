@@ -17,7 +17,7 @@ AWS.config.update({
 });
 
 const sequelize = new Sequelize(process.env.db_name, process.env.db_user , process.env.db_password, {
-    host: process.env.db_host,
+    host: process.env.db_host_dev,
     dialect: 'mysql',
     operatorsAliases: false,
 });
