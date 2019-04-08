@@ -15,7 +15,8 @@ import {Notification} from "../models/Notification";
 interface Props {
     cookies : Cookies
     isAuthenticated: boolean
-    notifications : Notification[]
+    notifications : Notification[],
+    setNotificationRead :(userId : string, id : number) => any
 }
 interface State {
     isOpen: boolean,
@@ -48,22 +49,40 @@ class NavBar extends React.Component<Props,State> {
         this.setState({ anchorEl: event.currentTarget });
         this.setState({numberNotifications : 0});
         this.setState({new : true});
+        this.props.notifications.map(function (notification: Notification) {
+            if (!notification.isRead)
+                this.props.setNotificationRead(notification.userId, notification.id);
+
+        }.bind(this));
     };
 
     handleClose = () => {
         this.setState({ anchorEl: null });
     };
 
+    componentWillMount(): void {
+        let i = 0;
+        this.props.notifications.map(function (notification : Notification) {
+            if (!notification.isRead) {
+                this.setState({new : false});
+                i++;
+            }
+        }.bind(this, i));
+        this.setState({numberNotifications: i});
+    }
+
     componentWillReceiveProps(nextProps: Readonly<Props>, nextContext: any): void {
         if(nextProps.notifications !== this.props.notifications)
         {
             let i = 0;
             nextProps.notifications.map(function (notification : Notification) {
+                console.log(notification);
                 if (!notification.isRead) {
-                    this.setState({new : false});
                     i++;
                 }
-            }.bind(this, i))
+            }.bind(i));
+            if (i !== 0)
+                this.setState({new : false});
             this.setState({numberNotifications: i});
         }
     }

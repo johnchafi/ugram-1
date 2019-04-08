@@ -85,7 +85,7 @@ export function createUser(user: User): any {
 }
 
 function initSocket(dispatch, userId : string) {
-    socket = io.connect(urlEB, {'transports': ['websocket', 'polling']});
+    socket = io.connect(urlEB);
     socket.on("GET_COMMENTS", function (data) {
         if (data.delete) {
             return dispatch(deleteCommentbyId(data.data));

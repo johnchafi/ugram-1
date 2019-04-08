@@ -11,7 +11,7 @@ let CancelToken = axios.CancelToken;
 let call1 = CancelToken.source();
 let call2 = CancelToken.source();
 let picturesOfUser = CancelToken.source();
-const endpoint = urlEB;
+const endpoint = urlLocalhost;
 let bearerToken = "";
 
 export class sdk {
@@ -74,6 +74,10 @@ export class sdk {
             {
                 message : comment.message,
                 ownerId : comment.ownerId
+            }, {
+                headers: {
+                    Authorization: "Bearer " + bearerToken
+                }
             });
     }
 
@@ -100,10 +104,22 @@ export class sdk {
         return axios.get(endpoint + "users/" + userId + "/notifications");
     }
 
+    static setNotificationRead(userId: string, id: number) {
+        return axios.put(endpoint + "users/" + userId + "/notifications/" + id, {}, {
+            headers: {
+                Authorization: "Bearer " + bearerToken
+            }
+        });
+    }
+
     static addLike(like: Like) {
         return axios.post(endpoint + "users/" + like.userId + "/pictures/" + like.pictureId + "/like/",
             {
                 ownerId : like.ownerId
+            }, {
+                headers: {
+                    Authorization: "Bearer " + bearerToken
+                }
             });
     }
 
