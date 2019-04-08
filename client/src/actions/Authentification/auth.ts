@@ -85,7 +85,7 @@ export function createUser(user: User): any {
 }
 
 function initSocket(dispatch, userId : string) {
-    socket = io.connect(urlEB, {transports: ['websocket']});
+    socket = io.connect(urlEB, {transports: ['websocket'], secure: true});
     socket.on("GET_COMMENTS", function (data) {
         if (data.delete) {
             return dispatch(deleteCommentbyId(data.data));
