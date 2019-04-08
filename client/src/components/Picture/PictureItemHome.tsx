@@ -1,36 +1,52 @@
 import * as React from 'react'
-import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
-import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import {Link} from 'react-router-dom';
-import {Avatar, CardActions, CircularProgress, LinearProgress, Icon} from "@material-ui/core";
+import {
+    Avatar,
+    CardActions,
+    CircularProgress,
+    LinearProgress,
+    Icon,
+    TextField,
+    Button,
+    Grid,
+    Card,
+    Dialog,
+    Typography, WithStyles, withStyles, Theme
+} from "@material-ui/core";
 import Picture from "../../models/Picture";
 import User from "../../models/User";
 import PictureItem from "../../containers/Picture/PictureItem";
-import Dialog from "@material-ui/core/Dialog";
 import Helper from "../../helper/helper";
+import Comment from "../../containers/Comment/Comment";
+import {CommentUser, Comment as CommentType} from "../../models/Comment";
 
-export interface Props{
+export interface Props extends WithStyles<typeof styles>{
     picture : Picture,
-    user : User
+    user : User,
+    me : string
     isHome:boolean
+    addComment : (comment : CommentType) => any
     deletePicture : (string, number) => any
 }
 interface State {
     didLoad:boolean,
-    open: boolean
+    open: boolean,
+    message: string,
 }
 
-
+const styles = (theme: Theme) => ({
+});
 class PictureItemHome extends React.Component<Props,State> {
 
     constructor(props : Props) {
         super(props);
 
         this.state = {
-            didLoad:false,
-            open:false
+            didLoad: false,
+            open: false,
+            message: '',
         }
     }
 
@@ -49,10 +65,22 @@ class PictureItemHome extends React.Component<Props,State> {
     };
 
 
+
+    addComment = event => {
+        this.setState({message:  event.target.value});
+    };
+
+    handleSubmit = event => {
+        event.preventDefault();
+        this.props.addComment(new CommentUser(this.props.me, this.state.message, this.props.picture.id));
+        this.setState({message : ''});
+    };
+
+
     onLoad = () => {
         this.setState({
             didLoad: true
-        })
+        });
     };
 
     handleOpenEdit = event => {
@@ -85,14 +113,15 @@ class PictureItemHome extends React.Component<Props,State> {
     }
 
     render() {
+        // @ts-ignore
         return (
             <Grid item md={12} lg={12} xs={12} className="card">
-                <Card onClick={this.handleOpenEdit} className={"container-picture"}>
+                <Card className={"container-picture"}>
 
                     <Link to={this.props.user ? `/profil/${this.props.user.id}` : ''}>
                         <CardHeader className="cardheader" avatar={this.renderAvatar()} title={this.props.user && this.props.user.firstName + " " + this.props.user.lastName || <LinearProgress />}/>
                     </Link>
-                    <img style={this.getImageStyle()} className="media-card" src={this.state.didLoad ? this.props.picture.url : "https://via.placeholder.com/500/f5f5f5"} alt={this.props.picture.description} onLoad={this.onLoad}/>
+                    <img onClick={this.handleOpenEdit} style={this.getImageStyle()} className="media-card" src={this.state.didLoad ? this.props.picture.url : "https://via.placeholder.com/500/f5f5f5"} alt={this.props.picture.description} onLoad={this.onLoad}/>
                     <Grid className={"container"}>
                         <CardActions className={"icon-header"} disableActionSpacing>
                             <IconButton aria-label="Ajouter aux favoris">
@@ -118,13 +147,36 @@ class PictureItemHome extends React.Component<Props,State> {
                         </CardActions>
                         <CardActions className={"action mentions"} disableActionSpacing>
                             {this.props.picture.mentions.length > 0 && this.props.picture.mentions.map((item) => {
-                                if (item != "")
-                                    return ("@" + item + " ")
-                            }
+                                    if (item != "")
+                                        return ("@" + item + " ")
+                                }
                             )}
+                        </CardActions>
+                        <CardActions className={"action header"} disableActionSpacing>
+                            <Comment picture={this.props.picture}/>
                         </CardActions>
                         <CardActions className={"action date"} disableActionSpacing>
                             {"Il y a " + Helper.getElapsedTime(new Date(Number(this.props.picture.createdDate)))}
+                        </CardActions>
+                        <CardActions style={{borderTop: '1px solid #80808042', padding: 0}}>
+                            <form style={{display: "contents"}} onSubmit={this.handleSubmit}>
+                                <TextField
+                                    style={{ margin: 8}}
+                                    placeholder="Ajouter un commentaire"
+                                    fullWidth
+                                    margin="normal"
+                                    value={this.state.message}
+                                    InputProps={{disableUnderline: true }}
+                                    InputLabelProps={{
+                                        shrink: true,
+                                    }}
+                                    onChange={(e) => this.addComment(e)}
+                                />
+                                <Button disabled={this.state.message.length === 0} color="primary" onClick={this.handleSubmit} style={{backgroundColor: 'transparent'}}>
+                                    {this.state.message.length > 0 && <Typography style={{fontWeight: 600, color: "#3897f0", fontSize: 12}}>Publier</Typography>}
+                                    {this.state.message.length === 0 && <Typography style={{fontWeight: 600, color: "#c6c6c6", fontSize: 12}}>Publier</Typography>}
+                                </Button>
+                            </form>
                         </CardActions>
                     </Grid>
                 </Card>
@@ -135,4 +187,4 @@ class PictureItemHome extends React.Component<Props,State> {
         );
     }
 }
-export default PictureItemHome;
+export default withStyles(styles)(PictureItemHome);

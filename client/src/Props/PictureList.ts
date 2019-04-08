@@ -3,7 +3,8 @@ import User from "../models/User";
 
 export default interface Props {
     pictures: Picture[],
-    user: User
-    isHome:boolean
-    isMe:boolean
+    user: User,
+    isHome:boolean,
+    isMe:boolean,
+    getComment : () => any
 }

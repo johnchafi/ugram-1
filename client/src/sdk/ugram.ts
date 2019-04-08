@@ -1,14 +1,16 @@
 import axios from "axios";
 import User from "../models/User";
 import Upload from "../models/Upload";
-import {validate} from "validate-typescript";
-import schema from "validator";
+import {Comment} from "../models/Comment";
+
+let urlLocalhost = "http://localhost:3000/";
+let urlEB = "http://ugram-team02.pm9h7ckh7u.us-east-2.elasticbeanstalk.com/";
 
 let CancelToken = axios.CancelToken;
 let call1 = CancelToken.source();
 let call2 = CancelToken.source();
 let picturesOfUser = CancelToken.source();
-const endpoint = "http://ugram-team02.pm9h7ckh7u.us-east-2.elasticbeanstalk.com/";
+const endpoint = urlEB;
 let bearerToken = "";
 
 export class sdk {
@@ -20,7 +22,7 @@ export class sdk {
         picturesOfUser.cancel();
         picturesOfUser = CancelToken.source();
     }
-    
+
     static resetToken() {
         call1.cancel();
         call2.cancel();
@@ -54,6 +56,29 @@ export class sdk {
                 token : token
             });
     }
+
+
+    static getComment() {
+        return axios.get(endpoint + "comment");
+    }
+
+    static addComment(comment: Comment) {
+        return axios.post(endpoint + "users/" + comment.userId + "/pictures/" + comment.pictureId + "/comment/",
+            {
+                message : comment.message
+            });
+    }
+
+    static deleteComment(comment : Comment, userId: string) {
+        return axios.delete(endpoint + "users/" + userId + "/pictures/" + comment.pictureId + "/comment/" + comment.id, {
+            headers: {
+                Authorization: "Bearer " + bearerToken
+            }
+        });
+    }
+
+
+
 
     static createUser(user: User) {
         try {

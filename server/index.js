@@ -12,8 +12,10 @@ Sentry.init({ dsn: 'https://535ecc5a93654d4fab876372a40565e4@sentry.io/1419323' 
 
 const routes = require('./src/routes/routes');
 
-const port = process.env.PORT || 80;
+const port = process.env.PORT || 3000;
 const app = express();
+const s = require('http').createServer(app);
+const io = require('socket.io')(s);
 
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
@@ -29,14 +31,17 @@ app.use(errors.genericErrorHandler);
 app.use(morgan('combined', {'stream': logger.stream}));
 
 app.use('/', routes);
+io.on('connection', function (client) {
+    client.emit('GET_COMMENTS');
+    console.log(io.sockets.server.httpServer._connections);
+});
+app.set('socket', io);
 
-let s = app.listen(port);
-
+s.listen(port);
 logger.info(`App started on port ${port}`);
 
-const server = {
+module.exports = {
     app : app,
-    server: s
+    server: s,
+    io: io
 };
-
-module.exports = server;

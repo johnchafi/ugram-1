@@ -3,7 +3,7 @@ const logger = require('../common/logger');
 const service = require('../services/users');
 const pagination = require('../services/pagination');
 const auth = require('../services/auth');
-
+const CommentModel = require('../models/comment');
 const UserModel = require('../models/user');
 const TokenModel = require('../models/token');
 const PictureModel = require('../models/picture');
@@ -362,9 +362,9 @@ exports.deleteUserPicture = (req, res, next) => {
                 }).then(() => {
                     return auth.sendSuccess(res, null, 204);
                 })
-                .catch(err => {
-                    return auth.sendError(res, err, 500);
-                });
+                    .catch(err => {
+                        return auth.sendError(res, err, 500);
+                    });
             };
             service.deleteUserPicture(picture.userId, picture.id + picture.extension, errCallback, succCallback);
         }).catch(err => {
@@ -398,9 +398,9 @@ exports.deleteUserPictures = (req, res, next) => {
                 }).then(() => {
                     return auth.sendSuccess(res, null, 204);
                 })
-                .catch(err => {
-                    return auth.sendError(res, err, 500);
-                });
+                    .catch(err => {
+                        return auth.sendError(res, err, 500);
+                    });
             };
             pictureNames = [];
             pictures.forEach(picture => {
@@ -413,4 +413,55 @@ exports.deleteUserPictures = (req, res, next) => {
     }).catch(err => {
         return auth.sendError(res, err.message, err.code);
     });
+};
+
+exports.deleteUserComment = (req, res, next) => {
+    let socket = req.app.get('socket');
+    auth.isAuthenticated(req).then(user => {
+        console.log(req.params.userId);
+        CommentModel.find({
+            where : {
+                userId: req.params.userId,
+                id: req.params.id,
+                pictureId: req.params.pictureId
+            }
+        }).then(comment => {
+            CommentModel.destroy({
+                where: {
+                    userId: comment.userId,
+                    id: comment.id,
+                    pictureId: comment.pictureId
+                }
+            }).then(() => {
+                socket.emit('GET_COMMENTS');
+                console.log('je suis la');
+                return auth.sendSuccess(res, null, 204);
+            })
+                .catch(err => {
+                    return auth.sendError(res, err, 500);
+                });
+        }).catch(err => {
+            return auth.sendError(res, "No pictures found for user '" + user.id + "'.", 204);
+        })
+    }).catch(err => {
+        return auth.sendError(res, err.message, err.code);
+    });
+};
+
+
+exports.addComment = (req, res, next) => {
+    let socket = req.app.get('socket');
+    CommentModel.create(
+        {
+            userId: req.params.userId,
+            pictureId : req.params.pictureId,
+            message : req.body.message
+        })
+        .then(comment => {
+            socket.emit('GET_COMMENTS');
+            return auth.sendSuccess(res, {comment}, 200);
+        })
+        .catch(err => {
+            return auth.sendError(res, err.errors[0].message, 400);
+        });
 };
