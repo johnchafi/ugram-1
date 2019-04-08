@@ -78,8 +78,6 @@ class Upload extends React.Component<Props,State> {
                 },
                 openModal: true
             });
-
-
         }
 
     };
@@ -165,6 +163,7 @@ class Upload extends React.Component<Props,State> {
         this.setState({
             openModal: false
         });
+        this.setState(initialState)
     };
 
 
