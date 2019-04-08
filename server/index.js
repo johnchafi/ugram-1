@@ -15,7 +15,7 @@ const routes = require('./src/routes/routes');
 const port = process.env.PORT || 80;
 const app = express();
 const s = require('http').createServer(app);
-const io = require('socket.io')(s);
+const io = require('socket.io')(s, {'transports': ['websocket', 'polling']});
 
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
