@@ -9,6 +9,8 @@ import * as io from "socket.io-client";
 import {deleteCommentbyId, getComment, getCommentById} from "../Comment/comment";
 import {deleteLikebyId, getLike, getLikeById} from "../Like/like";
 import {getNotifications} from "../Notifications/notifications";
+let urlLocalhost = "http://localhost:3000";
+let urlEB = "http://ugram-team02.pm9h7ckh7u.us-east-2.elasticbeanstalk.com";
 let socket : SocketIOClient.Socket = null;
 export enum ActionTypes {
     AUTHENTICATED = "AUTH",
@@ -83,7 +85,7 @@ export function createUser(user: User): any {
 }
 
 function initSocket(dispatch, userId : string) {
-    socket = io.connect("http://localhost:3000");
+    socket = io.connect(urlEB);
     socket.on("GET_COMMENTS", function (data) {
         if (data.delete) {
             return dispatch(deleteCommentbyId(data.data));
