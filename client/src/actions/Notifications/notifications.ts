@@ -12,7 +12,22 @@ export interface NotificationAction { type: ActionTypes, payload: IStateNotifica
 export function getNotifications(userId : string) : any {
     return function(dispatch : Dispatch<IStateNotifications>) {
         sdk.getNotifications(userId).then( function (response) {
-            console.log(response.data.items);
+            return dispatch({
+                type: ActionTypes.UPDATE_NOTIF,
+                payload: {
+                    notifications: response.data.items,
+                }
+            });
+        })
+            .catch(function (error) {
+                return dispatch(errorStatus(error.response.status, error.response.data.message));
+            });
+    }
+}
+
+export function setNotificationRead(userId : string, id: number) : any {
+    return function(dispatch : Dispatch<IStateNotifications>) {
+        sdk.setNotificationRead(userId, id).then( function (response) {
             return dispatch({
                 type: ActionTypes.UPDATE_NOTIF,
                 payload: {

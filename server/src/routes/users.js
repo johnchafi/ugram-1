@@ -71,5 +71,6 @@ router.post('/:userId/pictures/:pictureId/like', users.addLike);
 router.delete('/:userId/pictures/:pictureId/like/:id', users.deleteUserLike);
 
 router.get('/:userId/notifications', users.getNotifications);
+router.put('/:userId/notifications/:id', users.setReadNotifications);
 
 module.exports = router;

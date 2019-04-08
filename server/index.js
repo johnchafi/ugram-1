@@ -12,10 +12,10 @@ Sentry.init({ dsn: 'https://535ecc5a93654d4fab876372a40565e4@sentry.io/1419323' 
 
 const routes = require('./src/routes/routes');
 
-const port = process.env.PORT || 80;
+const port = process.env.PORT || 3000;
 const app = express();
 const s = require('http').createServer(app);
-const io = require('socket.io')(s);
+const io = require('socket.io')(s, {'transports': ['websocket', 'polling']});
 
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
