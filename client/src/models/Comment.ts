@@ -3,6 +3,7 @@ export interface Comment {
     userId: string;
     id: number,
     pictureId: number
+    ownerId: string
 }
 
 export class CommentUser implements Comment {
@@ -10,10 +11,12 @@ export class CommentUser implements Comment {
     userId: string;
     id: number;
     pictureId: number;
+    ownerId: string;
 
-    constructor(userId : string, message : string, pictureId : number) {
+    constructor(userId : string, message : string, pictureId : number, ownerId : string) {
         this.userId = userId;
         this.message = message;
         this.pictureId = pictureId;
+        this.ownerId = ownerId;
     }
 }

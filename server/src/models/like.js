@@ -2,7 +2,7 @@ const db = require('../services/database');
 const User = require('./user');
 const Picture = require('./picture');
 // Setup schema
-const commentSchema = db.sequelize.define('comment', {
+const likeSchema = db.sequelize.define('like', {
         id: {
             type: db.Sequelize.INTEGER(11),
             primaryKey: true,
@@ -41,13 +41,6 @@ const commentSchema = db.sequelize.define('comment', {
                 key: 'id'
             }
         },
-        message: {
-            type: db.Sequelize.STRING(3000),
-            unique: false,
-            allowNull: false,
-            defaultValue: null,
-            field: 'message'
-        },
     },
     {
         freezeTableName: true,
@@ -56,4 +49,4 @@ const commentSchema = db.sequelize.define('comment', {
 );
 
 // Export Users model
-module.exports = commentSchema;
+module.exports = likeSchema;

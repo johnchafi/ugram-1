@@ -85,6 +85,7 @@ export function uploadPicture(userId : string, file : File, model : UploadModel)
             return dispatch(errorStatus(400, "La taille de l'image est trop grosse (3MO maximum)"))
         }
         else {
+
             sdk.uploadPictureByUser(userId, file, model).then(response => {
                 dispatch(successStatus(response.status, "Image ajoutée avec succès"));
                 return dispatch(getPictureForProfil(userId, 0, []));

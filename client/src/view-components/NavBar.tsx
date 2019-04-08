@@ -1,15 +1,27 @@
 import * as React from 'react';
 import {Cookies} from 'react-cookie';
 import {Link} from 'react-router-dom';
-import {Toolbar, AppBar, Divider, Grid, Icon, Hidden} from '@material-ui/core';
+import {
+    Toolbar,
+    AppBar,
+    Divider,
+    Grid,
+    Icon,
+    Hidden, Menu, MenuItem, Badge
+} from '@material-ui/core';
 import Search from "../containers/Search/Search";
+import {Notification} from "../models/Notification";
 
 interface Props {
     cookies : Cookies
     isAuthenticated: boolean
+    notifications : Notification[]
 }
 interface State {
-    isOpen: boolean
+    isOpen: boolean,
+    numberNotifications : number,
+    new : boolean
+    anchorEl: any,
 }
 
 const logo =
@@ -20,13 +32,40 @@ class NavBar extends React.Component<Props,State> {
         super(props);
         this.toggle = this.toggle.bind(this);
         this.state = {
-            isOpen: false
+            isOpen: false,
+            numberNotifications : 0,
+            new : true,
+            anchorEl: null
         };
     }
     toggle() {
         this.setState({
             isOpen: !this.state.isOpen
         });
+    }
+
+    handleClick = event => {
+        this.setState({ anchorEl: event.currentTarget });
+        this.setState({numberNotifications : 0});
+        this.setState({new : true});
+    };
+
+    handleClose = () => {
+        this.setState({ anchorEl: null });
+    };
+
+    componentWillReceiveProps(nextProps: Readonly<Props>, nextContext: any): void {
+        if(nextProps.notifications !== this.props.notifications)
+        {
+            let i = 0;
+            nextProps.notifications.map(function (notification : Notification) {
+                if (!notification.isRead) {
+                    this.setState({new : false});
+                    i++;
+                }
+            }.bind(this, i))
+            this.setState({numberNotifications: i});
+        }
     }
 
 
@@ -54,7 +93,19 @@ class NavBar extends React.Component<Props,State> {
                         <Grid item className={"header-nav"}>
                             <Grid container justify="flex-end">
                                 <Link to={"/users/"}><Icon >explore_outlined</Icon></Link>
-                                <Icon >favorite_border_rounded</Icon>
+                                <Badge badgeContent={this.state.numberNotifications} color="secondary" className={'badge'} invisible={this.state.new}>
+                                    <Icon aria-owns={this.state.anchorEl ? 'simple-menu' : undefined} aria-haspopup="true" onClick={this.handleClick} >favorite_border_rounded</Icon>
+                                </Badge>
+                                <Menu
+                                    id="simple-menu"
+                                    anchorEl={this.state.anchorEl}
+                                    open={Boolean(this.state.anchorEl)}
+                                    onClose={this.handleClose}
+                                >
+                                    {this.props.notifications.map(function (notification) {
+                                        return <Link key={notification.id} to={notification.url}><MenuItem>{notification.message}</MenuItem></Link>
+                                    })}
+                                </Menu>
                                 <Link to={"/profil/" + this.props.cookies.get("userid")}><Icon>person_outlined</Icon></Link>
                             </Grid>
                         </Grid>

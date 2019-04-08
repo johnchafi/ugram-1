@@ -10,7 +10,4 @@ export default interface Picture {
     "userId"?: string,
     user?: User,
     file?: File,
-    width?: number,
-    height?: number,
-    rotation?: number,
 }

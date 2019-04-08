@@ -8,19 +8,19 @@ import {
     CircularProgress,
     LinearProgress,
     Icon,
-    TextField,
-    Button,
     Grid,
     Card,
     Dialog,
-    Typography, WithStyles, withStyles, Theme
+    WithStyles, withStyles, Theme
 } from "@material-ui/core";
 import Picture from "../../models/Picture";
 import User from "../../models/User";
 import PictureItem from "../../containers/Picture/PictureItem";
 import Helper from "../../helper/helper";
-import Comment from "../../containers/Comment/Comment";
-import {CommentUser, Comment as CommentType} from "../../models/Comment";
+import Comment from "../../containers/Picture/Comment/Comment";
+import {Comment as CommentType} from "../../models/Comment";
+import FormComment from "../../containers/Picture/Comment/FormComment";
+import Like from "../../containers/Picture/Like/Like";
 
 export interface Props extends WithStyles<typeof styles>{
     picture : Picture,
@@ -64,19 +64,6 @@ class PictureItemHome extends React.Component<Props,State> {
         this.setState({open: false});
     };
 
-
-
-    addComment = event => {
-        this.setState({message:  event.target.value});
-    };
-
-    handleSubmit = event => {
-        event.preventDefault();
-        this.props.addComment(new CommentUser(this.props.me, this.state.message, this.props.picture.id));
-        this.setState({message : ''});
-    };
-
-
     onLoad = () => {
         this.setState({
             didLoad: true
@@ -86,47 +73,18 @@ class PictureItemHome extends React.Component<Props,State> {
     handleOpenEdit = event => {
         this.setState({open: true});
     };
-    getImageStyle() {
-        let width, height, rotation;
-
-        if (this.props.picture.width && this.props.picture.width != 0)
-            width = this.props.picture.width;
-        else
-            width = 600;
-
-        if (this.props.picture.height && this.props.picture.height != 0)
-            height = this.props.picture.height;
-        else
-            height = "auto";
-
-        if (this.props.picture.rotation && this.props.picture.rotation != 0)
-            rotation = "rotate(" + this.props.picture.rotation + "deg)";
-        else
-            rotation = "none";
-
-
-        return {
-            width: width,
-            height: height,
-            tranform: rotation
-        };
-    }
 
     render() {
-        // @ts-ignore
         return (
             <Grid item md={12} lg={12} xs={12} className="card">
                 <Card className={"container-picture"}>
-
                     <Link to={this.props.user ? `/profil/${this.props.user.id}` : ''}>
                         <CardHeader className="cardheader" avatar={this.renderAvatar()} title={this.props.user && this.props.user.firstName + " " + this.props.user.lastName || <LinearProgress />}/>
                     </Link>
-                    <img onClick={this.handleOpenEdit} style={this.getImageStyle()} className="media-card" src={this.state.didLoad ? this.props.picture.url : "https://via.placeholder.com/500/f5f5f5"} alt={this.props.picture.description} onLoad={this.onLoad}/>
+                    <img onClick={this.handleOpenEdit} className="media-card" src={this.state.didLoad ? this.props.picture.url : "https://via.placeholder.com/500/f5f5f5"} alt={this.props.picture.description} onLoad={this.onLoad}/>
                     <Grid className={"container"}>
                         <CardActions className={"icon-header"} disableActionSpacing>
-                            <IconButton aria-label="Ajouter aux favoris">
-                                <Icon>favorite_border</Icon>
-                            </IconButton>
+                            <Like picture={this.props.picture}/>
                             <IconButton aria-label="Commenter">
                                 <Icon>chat_bubble_outline</Icon>
                             </IconButton>
@@ -152,32 +110,13 @@ class PictureItemHome extends React.Component<Props,State> {
                                 }
                             )}
                         </CardActions>
-                        <CardActions className={"action header"} disableActionSpacing>
+                        <CardActions className={"action header"} disableActionSpacing style={{position: "relative"}}>
                             <Comment picture={this.props.picture}/>
                         </CardActions>
                         <CardActions className={"action date"} disableActionSpacing>
                             {"Il y a " + Helper.getElapsedTime(new Date(Number(this.props.picture.createdDate)))}
                         </CardActions>
-                        <CardActions style={{borderTop: '1px solid #80808042', padding: 0}}>
-                            <form style={{display: "contents"}} onSubmit={this.handleSubmit}>
-                                <TextField
-                                    style={{ margin: 8}}
-                                    placeholder="Ajouter un commentaire"
-                                    fullWidth
-                                    margin="normal"
-                                    value={this.state.message}
-                                    InputProps={{disableUnderline: true }}
-                                    InputLabelProps={{
-                                        shrink: true,
-                                    }}
-                                    onChange={(e) => this.addComment(e)}
-                                />
-                                <Button disabled={this.state.message.length === 0} color="primary" onClick={this.handleSubmit} style={{backgroundColor: 'transparent'}}>
-                                    {this.state.message.length > 0 && <Typography style={{fontWeight: 600, color: "#3897f0", fontSize: 12}}>Publier</Typography>}
-                                    {this.state.message.length === 0 && <Typography style={{fontWeight: 600, color: "#c6c6c6", fontSize: 12}}>Publier</Typography>}
-                                </Button>
-                            </form>
-                        </CardActions>
+                        <FormComment picture={this.props.picture} user={this.props.user}/>
                     </Grid>
                 </Card>
                 <Dialog onClose={this.handleCloseEdit} scroll="body" open={this.state.open} className={"dialogPicture"}>

@@ -2,6 +2,7 @@ import axios from "axios";
 import User from "../models/User";
 import Upload from "../models/Upload";
 import {Comment} from "../models/Comment";
+import {Like} from "../models/Like";
 
 let urlLocalhost = "http://localhost:3000/";
 let urlEB = "http://ugram-team02.pm9h7ckh7u.us-east-2.elasticbeanstalk.com/";
@@ -57,28 +58,62 @@ export class sdk {
             });
     }
 
+    static getCommentById(id) {
+        return axios.get(endpoint + "comment/" + id);
+    }
 
-    static getComment() {
-        return axios.get(endpoint + "comment");
+    static getComment(start = null, end = null) {
+        if (start == null && end == null) {
+            return axios.get(endpoint + "comment");
+        }
+        return axios.get(endpoint + "comment?start=" + start + "&end=" + end);
     }
 
     static addComment(comment: Comment) {
         return axios.post(endpoint + "users/" + comment.userId + "/pictures/" + comment.pictureId + "/comment/",
             {
-                message : comment.message
+                message : comment.message,
+                ownerId : comment.ownerId
             });
     }
 
-    static deleteComment(comment : Comment, userId: string) {
-        return axios.delete(endpoint + "users/" + userId + "/pictures/" + comment.pictureId + "/comment/" + comment.id, {
+    static deleteComment(comment : Comment) {
+        return axios.delete(endpoint + "users/" + comment.userId + "/pictures/" + comment.pictureId + "/comment/" + comment.id, {
             headers: {
                 Authorization: "Bearer " + bearerToken
             }
         });
     }
 
+    static getLike(start = null, end = null) {
+        if (start == null && end == null) {
+            return axios.get(endpoint + "like");
+        }
+        return axios.get(endpoint + "like?start=" + start + "&end=" + end)
+    }
 
+    static getLikeById(id) {
+        return axios.get(endpoint + "like/" + id);
+    }
 
+    static getNotifications(userId: string) {
+        return axios.get(endpoint + "users/" + userId + "/notifications");
+    }
+
+    static addLike(like: Like) {
+        return axios.post(endpoint + "users/" + like.userId + "/pictures/" + like.pictureId + "/like/",
+            {
+                ownerId : like.ownerId
+            });
+    }
+
+    static deleteLike(like : Like) {
+        return axios.delete(endpoint + "users/" + like.userId + "/pictures/" + like.pictureId + "/like/" + like.id, {
+            headers: {
+                Authorization: "Bearer " + bearerToken
+            }
+        });
+    }
 
     static createUser(user: User) {
         try {

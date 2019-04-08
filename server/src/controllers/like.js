@@ -1,26 +1,26 @@
-const CommentModel = require('../models/comment');
+const LikeModel = require('../models/like');
 const auth = require('../services/auth');
 const db = require('../services/database');
 const Op = db.Sequelize.Op;
-exports.getComments = (req, res, next) => {
+exports.getLikes = (req, res, next) => {
     if (req.query['end'] && req.query['start']) {
-        CommentModel.findAll({ where : {
+        LikeModel.findAll({ where : {
                 pictureId: {
                     [Op.gte]: parseInt(req.query['start']),
                     [Op.lte]: parseInt(req.query['end'])
                 }
             },
             raw: true,
-        }).then(comments => {
-            return auth.sendSuccess(res, {items : comments}, 200);
+        }).then(likes => {
+            return auth.sendSuccess(res, {items : likes}, 200);
         })
             .catch(err => {
                 return auth.sendError(res, err, 400);
             });
     }
     else {
-        CommentModel.findAll().then(comments => {
-            return auth.sendSuccess(res, {items : comments}, 200);
+        LikeModel.findAll().then(likes => {
+            return auth.sendSuccess(res, {items : likes}, 200);
         })
             .catch(err => {
                 return auth.sendError(res, err, 400);
@@ -28,9 +28,8 @@ exports.getComments = (req, res, next) => {
     }
 };
 
-
-exports.getCommentsById = (req, res, next) => {
-    CommentModel.find({ where : {
+exports.getLikeById = (req, res, next) => {
+    LikeModel.find({ where : {
             id: req.params.id
         }}).then(comments => {
         return auth.sendSuccess(res, comments, 200);
@@ -39,5 +38,3 @@ exports.getCommentsById = (req, res, next) => {
             return auth.sendError(res, err, 400);
         });
 };
-
-
