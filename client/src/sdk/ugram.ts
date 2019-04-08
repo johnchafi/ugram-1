@@ -11,7 +11,7 @@ let CancelToken = axios.CancelToken;
 let call1 = CancelToken.source();
 let call2 = CancelToken.source();
 let picturesOfUser = CancelToken.source();
-const endpoint = urlLocalhost;
+const endpoint = urlEB;
 let bearerToken = "";
 
 export class sdk {
