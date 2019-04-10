@@ -113,16 +113,29 @@ class NavBar extends React.Component<Props,State> {
                             <Grid container justify="flex-end">
                                 <Link to={"/users/"}><Icon >explore_outlined</Icon></Link>
                                 <Badge badgeContent={this.state.numberNotifications} color="secondary" className={'badge'} invisible={this.state.new}>
-                                    <Icon aria-owns={this.state.anchorEl ? 'simple-menu' : undefined} aria-haspopup="true" onClick={this.handleClick} >favorite_border_rounded</Icon>
+                                    <Icon style={{cursor: "pointer"}} aria-owns={this.state.anchorEl ? 'simple-menu' : undefined} aria-haspopup="true" onClick={this.handleClick} >favorite_border_rounded</Icon>
                                 </Badge>
                                 <Menu
                                     id="simple-menu"
                                     anchorEl={this.state.anchorEl}
                                     open={Boolean(this.state.anchorEl)}
                                     onClose={this.handleClose}
+                                    style={{top : 40}}
                                 >
                                     {this.props.notifications.map(function (notification) {
-                                        return <Link key={notification.id} to={notification.url}><MenuItem>{notification.message}</MenuItem></Link>
+                                        return (
+                                            <Link key={notification.id} to={notification.url}>
+                                                <MenuItem style={{height: 40, paddingTop: 5, paddingBottom: 5}}>
+                                                    <div style={{width: 40, height : 40, right: 'right'}}>
+                                                        <img style={{maxWidth: "100%", maxHeight : "100%",   borderRadius : "50%"}} src={notification.userPictureUrl}/>
+                                                    </div>
+                                                    <div style={{minWidth : 360, marginLeft : 10, marginRight: 10}}>{notification.message}</div>
+                                                    <div style={{width: 40, height : 40}}>
+                                                        <img style={{maxWidth: "100%", maxHeight : "100%"}} src={notification.pictureUrl}/>
+                                                    </div>
+                                                </MenuItem>
+                                                <Divider style={{margin: "auto", width: "90%"}}/>
+                                            </Link>)
                                     })}
                                 </Menu>
                                 <Link to={"/profil/" + this.props.cookies.get("userid")}><Icon>person_outlined</Icon></Link>

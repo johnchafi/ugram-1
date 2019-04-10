@@ -49,7 +49,7 @@ const userSchema = db.sequelize.define('user', {
             type: db.Sequelize.STRING,
             unique: false,
             allowNull: false,
-            defaultValue: "https://i.stack.imgur.com/l60Hf.png",
+            defaultValue: "http://i.pravatar.cc/40",
             field: 'picture_url'
         },
         googleId: {

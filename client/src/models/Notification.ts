@@ -4,4 +4,6 @@ export interface Notification {
     message: string,
     url : string,
     isRead : boolean,
+    pictureUrl : string,
+    userPictureUrl : string
 }
