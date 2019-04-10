@@ -455,8 +455,7 @@ exports.deleteUserComment = (req, res, next) => {
         }).then(comment => {
             NotificationModel.destroy({
                 where: {
-                    userId: comment.ownerId,
-                    url: '/profil/' + comment.ownerId + '?search=' + comment.pictureId,
+                    commentId: comment.id
                 }
             });
             CommentModel.destroy({
@@ -466,6 +465,7 @@ exports.deleteUserComment = (req, res, next) => {
                 }
             }).then(() => {
                 socket.emit('GET_COMMENTS', {data : comment.id, delete : true });
+                socket.emit(comment.ownerId);
                 return auth.sendSuccess(res, null, 204);
             })
                 .catch(err => {
@@ -482,7 +482,6 @@ exports.deleteUserComment = (req, res, next) => {
 exports.addComment = (req, res, next) => {
     let socket = req.app.get('socket');
     auth.isAuthenticated(req).then(user => {
-        console.log(user);
         CommentModel.create(
             {
                 userId: user.id,
@@ -493,14 +492,25 @@ exports.addComment = (req, res, next) => {
             .then(comment => {
                 socket.emit('GET_COMMENTS', {data: comment.id, delete: false});
                 if (req.params.userId !== req.body.ownerId) {
-                    NotificationModel.create({
-                            userId: req.body.ownerId,
-                            url: '/profil/' + req.body.ownerId + '?search=' + req.params.pictureId,
-                            message: req.params.userId + ' a commenté votre photo',
-                            isRead: false
+                    PictureModel.findOne({
+                        where: {
+                            id: req.params.pictureId
                         }
-                    );
-                    socket.emit(req.body.ownerId);
+                    }).then(picture => {
+                        PictureModel.formatToClient(picture, [], []);
+                        console.log(comment.id);
+                        NotificationModel.create({
+                                userId: req.body.ownerId,
+                                url: '/profil/' + req.body.ownerId + '?search=' + req.params.pictureId,
+                                message: req.params.userId + ' a commenté votre photo',
+                                isRead: false,
+                                pictureUrl :  picture.dataValues.url,
+                                userPictureUrl : user.pictureUrl,
+                                commentId : comment.id
+                            }
+                        );
+                        socket.emit(req.body.ownerId);
+                    });
                 }
                 return auth.sendSuccess(res, {comment}, 200);
             })
@@ -569,14 +579,24 @@ exports.addLike = (req, res, next) => {
             .then(comment => {
                 socket.emit('GET_LIKES', {data: comment.id, delete: false});
                 if (req.params.userId !== req.body.ownerId) {
-                    NotificationModel.create({
-                            userId: req.body.ownerId,
-                            url: '/profil/' + req.body.ownerId + '?search=' + req.params.pictureId,
-                            message: req.params.userId + ' a aimé votre photo',
-                            isRead: false
+                    PictureModel.findOne({
+                        where: {
+                            id: req.params.pictureId
                         }
-                    );
-                    socket.emit(req.body.ownerId);
+                    }).then(picture => {
+                        PictureModel.formatToClient(picture, [], []);
+                        console.log(picture.dataValues);
+                        NotificationModel.create({
+                                userId: req.body.ownerId,
+                                url: '/profil/' + req.body.ownerId + '?search=' + req.params.pictureId,
+                                message: req.params.userId + ' a aimé votre photo',
+                                isRead: false,
+                                pictureUrl : picture.dataValues.url,
+                                userPictureUrl : user.pictureUrl,
+                                likeId : comment.id
+                            });
+                        socket.emit(req.body.ownerId);
+                    });
                 }
                 return auth.sendSuccess(res, {comment}, 200);
             })
@@ -599,8 +619,7 @@ exports.deleteUserLike = (req, res, next) => {
         }).then(comment => {
             NotificationModel.destroy({
                 where: {
-                    userId: comment.ownerId,
-                    url: '/profil/' + comment.ownerId + '?search=' + comment.pictureId,
+                    likeId: comment.id
                 }
             });
             LikeModel.destroy({
@@ -610,6 +629,7 @@ exports.deleteUserLike = (req, res, next) => {
                 }
             }).then(() => {
                 socket.emit('GET_LIKES', {data : comment.id, delete : true });
+                socket.emit(comment.ownerId);
                 return auth.sendSuccess(res, null, 204);
             })
                 .catch(err => {

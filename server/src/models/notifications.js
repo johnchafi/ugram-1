@@ -1,5 +1,7 @@
 const db = require('../services/database');
 const User = require('./user');
+const Like = require('./like');
+const Comment = require('./comment');
 // Setup schema
 const notificationSchema = db.sequelize.define('notification', {
         id: {
@@ -20,11 +22,35 @@ const notificationSchema = db.sequelize.define('notification', {
                 key: 'id'
             }
         },
+        likeId: {
+            type: db.Sequelize.INTEGER(11),
+            allowNull: true,
+            defaultValue: null,
+            field: 'like_id',
+        },
+        commentId: {
+            type: db.Sequelize.INTEGER(11),
+            allowNull: true,
+            defaultValue: null,
+            field: 'comment_id',
+        },
         url: {
             type: db.Sequelize.STRING(256),
             allowNull: false,
             defaultValue: null,
             field: 'url',
+        },
+        userPictureUrl: {
+            type: db.Sequelize.STRING(256),
+            allowNull: false,
+            defaultValue: null,
+            field: 'user_picture_url',
+        },
+        pictureUrl: {
+            type: db.Sequelize.STRING(256),
+            allowNull: false,
+            defaultValue: null,
+            field: 'picture_url',
         },
         message: {
             type: db.Sequelize.STRING(256),
