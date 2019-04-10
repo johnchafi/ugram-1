@@ -150,8 +150,13 @@ export class sdk {
         }
     }
 
-    static getUsers() {
-        return axios.get(endpoint + "users/")
+    static getAllUsers() {
+        return axios.get(endpoint + "users/all");
+    }
+
+
+    static getUsers(pageNumber: number) {
+        return axios.get(endpoint + "users?page=" + pageNumber);
     }
 
     static editUser(userid : string, userObj : User) {

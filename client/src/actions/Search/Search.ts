@@ -50,7 +50,7 @@ export function handleSearch(search : string) : any {
                 });
                 picturesDescription = removeDuplicatePicture(picturesDescription);
                 picturesTags = removeDuplicatePicture(picturesTags);
-                sdk.getUsers()
+                sdk.getAllUsers()
                     .then(function (response) {
                         let users: User[] = [];
                         response.data.items.map(function (user: User) {

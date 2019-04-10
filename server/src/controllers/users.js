@@ -16,6 +16,19 @@ const multiparty = require('multiparty');
 const path = require('path');
 
 // Gets all the users
+
+exports.getAllUsers = (req, res, next) => {
+    logger.log('info', "[REQUEST : GET USERS] TRYING GET USERS.", {tags: 'request,get'});
+    UserModel.findAll().then(users => {
+        users.forEach(user => {
+            UserModel.formatToClient(user);
+        });
+        return auth.sendSuccess(res, {items : users}, 200);
+    }).catch(err => {
+        return auth.sendError(res, err.message, err.code);
+    });
+};
+
 exports.getUsers = (req, res, next) => {
     logger.log('info', "[REQUEST : GET USERS] TRYING GET USERS.", {tags: 'request,get'});
     UserModel.findAll().then(users => {

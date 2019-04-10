@@ -119,7 +119,7 @@ export function getUserForPicture(pictures: Picture[]): any {
         let results: Picture[] = [];
         let stop : boolean = false;
         let users : User[] = [];
-        users = await sdk.getUsers().then(function (response) {
+        users = await sdk.getAllUsers().then(function (response) {
             return response.data.items;
         }).catch(error => {
             if (axios.isCancel(error)) {
