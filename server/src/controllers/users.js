@@ -15,19 +15,6 @@ const NotificationModel = require('../models/notifications');
 const multiparty = require('multiparty');
 const path = require('path');
 
-// Gets all the users
-exports.getAllUsers = (req, res, next) => {
-    logger.log('info', "[REQUEST : GET USERS] TRYING GET USERS.", {tags: 'request,get'});
-    UserModel.findAll().then(users => {
-        users.forEach(user => {
-            UserModel.formatToClient(user);
-        });
-        return auth.sendSuccess(res, {items : users}, 200);
-    }).catch(err => {
-        return auth.sendError(res, err.message, err.code);
-    });
-};
-
 // Gets the users with pagination
 exports.getUsers = (req, res, next) => {
     logger.log('info', "[REQUEST : GET USERS] TRYING GET USERS.", {tags: 'request,get'});
@@ -141,49 +128,12 @@ exports.getUserPictures = (req, res, next) => {
                     ['created', 'DESC']
                 ]
             }).then(pictures => {
-                let ids = [];
-                pictures.forEach(picture => {
-                    ids.push(picture.id);
-                });
-                TagModel.findAll({
-                    where: {
-                        pictureId: ids
-                    },
-                    order: [
-                        ['id', 'ASC']
-                    ]
-                }).then(tags => {
-                    MentionModel.findAll({
-                        where: {
-                            pictureId: ids
-                        },
-                        order: [
-                            ['id', 'ASC']
-                        ]
-                    }).then(mentions => {
-                        pictures.forEach(picture => {
-                            let finalTags = [];
-                            tags.forEach(tag => {
-                                if (tag.pictureId == picture.id) {
-                                    finalTags.push(tag);
-                                }
-                            });
-                            let finalMentions = [];
-                            mentions.forEach(mention => {
-                                if (mention.pictureId == picture.id) {
-                                    finalMentions.push(mention);
-                                }
-                            });
-                            PictureModel.formatToClient(picture, finalMentions, finalTags);
-                        })
-                        return auth.sendSuccess(
-                            res,
-                            pagination.formatPagination(pictures, req.query.page, req.query.perPage),
-                            200
-                        );
-                    }).catch(err => {
-                        return auth.sendError(res, err, 500);
-                    });
+                PictureModel.assignPicturesDetails(pictures).then(pictures => {
+                    return auth.sendSuccess(
+                        res,
+                        pagination.formatPagination(pictures, req.query.page, req.query.perPage),
+                        200
+                    );
                 }).catch(err => {
                     return auth.sendError(res, err, 500);
                 });
@@ -259,27 +209,12 @@ exports.getUserPicture = (req, res, next) => {
         if (isNaN(req.params.pictureId)) {
             return auth.sendError(res, "Provided type for pictureId is invalid.", 400)
         }
-        if (picture === null ||picture.userId !== req.params.userId) {
+        if (picture === null || picture.userId !== req.params.userId) {
             return auth.sendError(res, "Picture '" + req.params.pictureId + "' does not exist for user '" + req.params.userId + "'.", 404);
         } else {
-            MentionModel.findAll({
-                where: {
-                    pictureId: picture.id
-                }
-            }).then(mentions => {
-                TagModel.findAll({
-                    where: {
-                        pictureId: picture.id
-                    }
-                }).then(tags => {
-                    PictureModel.formatToClient(picture, mentions, tags);
-                    return auth.sendSuccess(res, picture, 200);
-                }).catch(err => {
-                    // Server error
-                    return auth.sendError(res, err, 500);
-                })
+            PictureModel.assignPictureDetails(picture).then(picture => {
+                return auth.sendSuccess(res, picture, 200);
             }).catch(err => {
-                // Server error
                 return auth.sendError(res, err, 500);
             });
         }
@@ -390,10 +325,9 @@ exports.deleteUserPicture = (req, res, next) => {
                 }).then(() => {
                     return auth.sendSuccess(res, null, 204);
                 })
-                    .catch(err => {
-                        console.log(err);
-                        return auth.sendError(res, err, 500);
-                    });
+                .catch(err => {
+                    return auth.sendError(res, err, 500);
+                });
             };
             service.deleteUserPicture(picture.userId, picture.id + picture.extension, errCallback, succCallback);
         }).catch(err => {
@@ -482,7 +416,6 @@ exports.deleteUserComment = (req, res, next) => {
 exports.addComment = (req, res, next) => {
     let socket = req.app.get('socket');
     auth.isAuthenticated(req).then(user => {
-        console.log(user);
         CommentModel.create(
             {
                 userId: user.id,
@@ -534,7 +467,6 @@ exports.setReadNotifications = (req, res, next) => {
                 id: req.params.id
             }
         }).then(notification => {
-            console.log(notification);
             notification.update({isRead: 1}).then(function () {
                 NotificationModel.findAll({ where: {
                         userId: user.id
@@ -548,10 +480,9 @@ exports.setReadNotifications = (req, res, next) => {
                     });
             });
         })
-            .catch(err => {
-                console.log(err);
-                return auth.sendError(res, err, 400);
-            });
+        .catch(err => {
+            return auth.sendError(res, err, 400);
+        });
     }).catch(err => {
         return auth.sendError(res, err.message, err.code);
     });
