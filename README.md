@@ -7,6 +7,10 @@ Réalisation d'un projet "Instagram-like", disponlible sur ce [site](http://ugra
 * [Client](./client/)
 * [Serveur](./server/)
 
+## Fonctionnalités additionnelles
+
+[Documentation](./client/documentation/DOCUMENTATION.md#fonctionnalit%C3%A9s-additionnelles)
+
 ## Auteur
 
 * **[Maxime Leroy](https://github.com/maximeleroylaval)**
