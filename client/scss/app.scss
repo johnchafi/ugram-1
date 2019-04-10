@@ -436,6 +436,30 @@ body {
   }
 }
 
+.modalWebcam {
+  position: relative;
+  .inModalWebcam {
+    padding: 50px;
+
+    .imgPreview {
+      margin: 50px;
+    }
+    button {
+      margin: 10px;
+    }
+  }
+  .closeModal {
+    position: absolute;
+    top: 10px;
+    right: 25px;
+    width: 40px;
+    z-index: 99;
+    img {
+      max-width: 100%;
+    }
+  }
+}
+
 
 @media screen and (max-width: 598px) {
 }

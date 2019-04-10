@@ -9,7 +9,7 @@ import UploadModel from "../../models/Upload";
 import PictureItem from "../../containers/Picture/PictureItem";
 import ProcessImage from 'react-imgpro';
 import Resizer from 'react-image-file-resizer';
-import Webcam from "react-webcam";
+import * as Webcam from "react-webcam";
 import Helper from "../../helper/helper";
 
 export interface Props{
@@ -22,6 +22,7 @@ interface State {
     picture : Picture,
     errorImage: string,
     openModal: boolean,
+    openModalWebcam: boolean,
     activeStep: number,
     steps: string[],
     errorDescription: string,
@@ -31,6 +32,7 @@ interface State {
         sepia: boolean,
     },
     imgTemp: string,
+    imgWebcam: string,
     webcam: Webcam,
 }
 
@@ -54,7 +56,9 @@ const initialState = {
         userId: ""
     },
     imgTemp: "",
+    imgWebcam: "",
     openModal: false,
+    openModalWebcam: false,
     activeStep: 0,
     steps: ["Aperçu","Ajouter contenu","Valider"],
     imageFilter: {
@@ -105,6 +109,23 @@ class Upload extends React.Component<Props,State> {
                 imgTemp: URL.createObjectURL(file[0]),
             });
         }
+
+    };
+
+    handleUploadPhotoWebcam = () => {
+        let file : File = Helper.dataURLtoFile(this.state.imgWebcam, "test.jpg");
+
+        this.setState({
+            imgTemp : URL.createObjectURL(file),
+            picture: {
+                ...this.state.picture,
+                createdDate: Date.now(),
+                file: file
+            },
+            imgWebcam: "",
+            openModal: true,
+            openModalWebcam: false
+        });
 
     };
 
@@ -209,6 +230,12 @@ class Upload extends React.Component<Props,State> {
         })
         this.setState(initialState)
     };
+    handleCloseModalWebcam = () => {
+        this.setState({
+            openModalWebcam: false
+        })
+        this.setState(initialState)
+    };
 
     handleChangeFilter = (src) => {
         let file : File = Helper.dataURLtoFile(src, "test.jpg");
@@ -254,7 +281,6 @@ class Upload extends React.Component<Props,State> {
                                 this.state.picture.url == "" &&
                                 <img onLoad={this.onImgLoad.bind(this)} src={this.state.imgTemp} alt={"Preview image"}/>
                             }
-
                             <Typography>{this.state.errorImage}</Typography>
                         </Grid>
                     </Grid>
@@ -314,6 +340,18 @@ class Upload extends React.Component<Props,State> {
         }
     }
 
+    handleOpenWebcam = () => {
+        this.setState({
+            openModalWebcam: true
+        })
+    };
+
+    setRefWebcam = webcam => {
+        this.setState({
+            webcam: webcam
+        });
+    };
+
     render() {
         const { activeStep } = this.state;
 
@@ -322,25 +360,62 @@ class Upload extends React.Component<Props,State> {
                 <FormControl className={"formUpload"}>
                     <Grid container direction="row" justify="center" alignItems="center">
                         <Grid container direction="row" justify="center" alignItems="center">
-                            <label className={"uploadButton"}>
-                                <p>Téléverser une image</p>
-                                <Icon>cloud_upload</Icon>
-                                <input type='file' onChange={(e) => this.handleUploadFile(e.target.files)} style={{ display: 'none'}}/>
-                            </label>
+                            <Button>
+                                <label className={"uploadButton"}>
+                                    <p>Téléverser une image</p>
+                                    <Icon>cloud_upload</Icon>
+                                    <input type='file' onChange={(e) => this.handleUploadFile(e.target.files)} style={{ display: 'none'}}/>
+                                </label>
+                            </Button>
+
                         </Grid>
                         <Grid container direction="row" justify="center" alignItems="center">
                             <Typography>OU</Typography>
                         </Grid>
                         <Grid container direction="row" justify="center" alignItems="center">
-                            <label className={"uploadButton"}>
-                                <p>Utiliser sa webcam</p>
-                                <Icon>photo_camera</Icon>
-                            </label>
+                            <Button onClick={this.handleOpenWebcam}>
+                                <label className={"uploadButton"} >
+                                    <p>Utiliser sa webcam</p>
+                                    <Icon>photo_camera</Icon>
+                                </label>
+                            </Button>
+
                         </Grid>
-
-
-
                     </Grid>
+                    <Dialog maxWidth={"lg"} scroll="body" open={this.state.openModalWebcam} onClose={this.handleCloseModalWebcam}   className={"modalWebcam"}>
+                        <Button className={"closeModal"} onClick={this.handleCloseModal}>
+                            <img alt={"close modal"} src='https://d30y9cdsu7xlg0.cloudfront.net/png/53504-200.png'/>
+                        </Button>
+                        <Grid container direction="row" justify="center" alignItems="center">
+                            {
+                                this.state.imgWebcam == "" &&
+                                <Grid container direction="row" justify="center" alignItems="center" className={"inModalWebcam"}>
+                                    <Webcam
+                                        style={{
+                                            margin:"50px"
+                                        }}
+                                        ref={this.setRefWebcam}
+                                        audio={false}
+                                        screenshotFormat="image/jpeg"
+                                    />
+                                    <Grid container direction="row" justify="center" alignItems="center">
+                                        <Button variant="contained" color="primary" onClick={() => { this.setState({imgWebcam: this.state.webcam.getScreenshot()})}}>Prendre la photo</Button>
+                                    </Grid>
+                                </Grid>
+                            }
+                            {
+                                this.state.imgWebcam != "" &&
+                                <Grid container direction="row" justify="center" alignItems="center" className={"inModalWebcam"}>
+                                   <img src={this.state.imgWebcam} alt={"Image preview"} className={"imgPreview"}/>
+                                    <Grid container direction="row" justify="center" alignItems="center">
+                                        <Button variant="contained" color="primary" onClick={() => { this.setState({imgWebcam: ""})}}>Revenir en arrière</Button>
+                                        <Button variant="contained" color="primary" onClick={this.handleUploadPhotoWebcam}>Valider</Button>
+                                    </Grid>
+                                </Grid>
+                            }
+
+                        </Grid>
+                    </Dialog>
                     <Dialog maxWidth={"lg"} scroll="body" open={this.state.openModal} onClose={this.handleCloseModal}  className={"modalUpload"}>
                         <Button className={"closeModal"} onClick={this.handleCloseModal}>
                             <img alt={"close modal"} src='https://d30y9cdsu7xlg0.cloudfront.net/png/53504-200.png'/>
@@ -388,4 +463,4 @@ class Upload extends React.Component<Props,State> {
         );
     }
 }
-export default (Upload);
+export default Upload;
