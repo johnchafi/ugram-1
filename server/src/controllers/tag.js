@@ -26,9 +26,14 @@ exports.getPopularTags = (req, res, next) => {
     if (req.query.q !== undefined && req.query.q !== "") {
         filter = req.query.q;
     }
-    TagModel.count({
+    const countName = 'count';
+    TagModel.findAll({
         attributes: [
             TagModel.rawAttributes.value.field,
+            [db.sequelize.literal("COUNT(*)"), countName]
+        ],
+        order: [
+            [db.sequelize.literal(countName), 'DESC']
         ],
         where: {
            value: {
