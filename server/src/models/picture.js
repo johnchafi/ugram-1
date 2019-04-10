@@ -50,10 +50,22 @@ const pictureSchema = db.sequelize.define('picture', {
     }
 );
 
+pictureSchema.getAvailableSizes = () => {
+    return [40, 50, 150, 300, "original"];
+};
+
+pictureSchema.formatUrlBySizes = (picture) => {
+    let url = {};
+    pictureSchema.getAvailableSizes().forEach(size => {
+        url[size] = "http://" + db.bucketEndpoint + "." + db.bucketDomain + "/" + db.bucketRootUpload + 
+            "/" + picture.dataValues.userId + "/" + picture.dataValues.id + "_" + size + picture.dataValues.extension;
+        url[size] = encodeURI(url[size]);
+    });
+    return url;
+};
+
 pictureSchema.formatToClient = (picture, mentions, tags) => {
-    picture.dataValues.url  = "http://" + db.bucketEndpoint + "." + db.bucketDomain + "/" +
-        db.bucketRootUpload + "/" + picture.dataValues.userId + "/" + picture.dataValues.id + picture.dataValues.extension;
-    picture.dataValues.url = encodeURI(picture.dataValues.url);
+    picture.dataValues.url = pictureSchema.formatUrlBySizes(picture);
     picture.dataValues.tags = [];
     picture.dataValues.mentions = [];
     picture.dataValues.createdDate = new Date(picture.dataValues.createdDate).getTime();

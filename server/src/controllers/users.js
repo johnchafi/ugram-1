@@ -183,7 +183,7 @@ exports.addUserPicture = (req, res, next) => {
                             const succCallback = (url) => {
                                 return auth.sendSuccess(res, {id: picture.id}, 200);
                             }
-                            service.addUserPicture(req.params.userId, fields, files.file[0], errCallback, succCallback);
+                            service.addUserPicture(picture, files.file[0], fields, errCallback, succCallback);
                         }).catch(err => {
                             return auth.sendError(res, 'Cannot insert mentions', 500);
                         })
@@ -329,7 +329,7 @@ exports.deleteUserPicture = (req, res, next) => {
                     return auth.sendError(res, err, 500);
                 });
             };
-            service.deleteUserPicture(picture.userId, picture.id + picture.extension, errCallback, succCallback);
+            service.deleteUserPicture(picture, errCallback, succCallback);
         }).catch(err => {
             return auth.sendError(res, "Picture '" + req.params.pictureId + "' does not exist for user '" + req.params.userId + "'.", 404);
         })
@@ -365,11 +365,7 @@ exports.deleteUserPictures = (req, res, next) => {
                         return auth.sendError(res, err, 500);
                     });
             };
-            pictureNames = [];
-            pictures.forEach(picture => {
-                pictureNames.push(picture.id + picture.extension)
-            });
-            service.deleteUserPictures(user.id, pictureNames, errCallback, succCallback);
+            service.deleteUserPictures(pictures, errCallback, succCallback);
         }).catch(err => {
             return auth.sendError(res, "No pictures found for user '" + user.id + "'.", 204);
         })
