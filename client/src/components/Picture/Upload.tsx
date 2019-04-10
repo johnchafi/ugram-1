@@ -76,7 +76,6 @@ class Upload extends React.Component<Props,State> {
         super(props);
         this.state = initialState;
 
-        console.log(Webcam);
     }
 
     componentWillReceiveProps(nextProps: Readonly<Props>, nextContext: any): void {
