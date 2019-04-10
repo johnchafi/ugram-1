@@ -10,6 +10,8 @@ import User from "../src/models/User";
 
 export const mockStore = configureMockStore([thunk]);
 
+const uniqueUserId = "TheWeed78Rhey1049";
+
 // using CommonJS modules
 describe('actions', () => {
 
@@ -38,9 +40,9 @@ describe('actions', () => {
 
     it('should get picture for profil page', async () => {
         const store = mockStore();
-        await store.dispatch(Actions.getPictureForProfil("HenriLongle1012", 0, []));
+        await store.dispatch(Actions.getPictureForProfil(uniqueUserId, 0, []));
 
-        let response = await sdk.getPicturesByUser('HenriLongle1012', 0)
+        let response = await sdk.getPicturesByUser(uniqueUserId, 0)
             .then(function (response) {
                 return response;
             });
@@ -138,8 +140,8 @@ describe('actions', () => {
     });
     it('should display good for getting real user', async () => {
         const store = mockStore();
-        await store.dispatch(ActionsProfil.profilData('HenriLongle1012'));
-        let response = await sdk.getUser('HenriLongle1012')
+        await store.dispatch(ActionsProfil.profilData(uniqueUserId));
+        let response = await sdk.getUser(uniqueUserId)
             .then(function (response) {
                 return response;
             }).catch(error => {
