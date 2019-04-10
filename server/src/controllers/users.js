@@ -16,7 +16,6 @@ const multiparty = require('multiparty');
 const path = require('path');
 
 // Gets all the users
-
 exports.getAllUsers = (req, res, next) => {
     logger.log('info', "[REQUEST : GET USERS] TRYING GET USERS.", {tags: 'request,get'});
     UserModel.findAll().then(users => {
@@ -29,6 +28,7 @@ exports.getAllUsers = (req, res, next) => {
     });
 };
 
+// Gets the users with pagination
 exports.getUsers = (req, res, next) => {
     logger.log('info', "[REQUEST : GET USERS] TRYING GET USERS.", {tags: 'request,get'});
     UserModel.findAll().then(users => {
