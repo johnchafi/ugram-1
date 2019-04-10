@@ -95,4 +95,18 @@ Une fois dans le panel d'administration du profil, l'utisateur aura la possibili
 * Suppression du compte
 ![Suppression du compte](./img/suppression_compte.png "Suppression compte")
 
+## Fonctionnalités additionnelles
 
+### (3) L'usager doit pouvoir envoyer un message privé à un autre usager
+
+### (5) L'usager doit pouvoir rechercher par mot clé ou description avec autocomplétion
+![Filtre par mot clé](./img/filter_tag.png "Filtre tag")
+![Filtre par description](./img/filter_description.png "Filtre description")
+### (8) L'usager doit pouvoir discuter en temps réel avec un autre usager
+
+### (5) L'usager doit pouvoir consulter les mots-clés les plus populaires
+
+### (5) L'usager doit pouvoir appliquer des filtres sur ses photos lors du téléversement
+![Appliquer des filtres](./img/upload_filter.png "Filtre photo")
+### (5) L'usager doit pouvoir prendre une photo avec sa webcam
+![Prise de photo avec sa webcam](./img/upload_webcam.png "Photo avec webcam")
