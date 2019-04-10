@@ -58,7 +58,7 @@
     "react-dom": "^16.2.0",
     "react-google-login": "^5.0.2",
     "react-image-file-resizer": "^0.1.7",
-    "react-image-filter": "^0.1.2",
+    "react-imgpro": "^1.4.1",
     "react-on-screen": "^2.1.1",
     "react-onclickoutside": "^6.8.0",
     "react-redux": "^5.0.6",

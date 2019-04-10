@@ -7,9 +7,10 @@ import Picture from "../../models/Picture";
 import User from "../../models/User";
 import UploadModel from "../../models/Upload";
 import PictureItem from "../../containers/Picture/PictureItem";
-import ImageFilter from 'react-image-filter';
+import ProcessImage from 'react-imgpro';
 import Resizer from 'react-image-file-resizer';
 import Webcam from "react-webcam";
+import Helper from "../../helper/helper";
 
 export interface Props{
     user: User,
@@ -24,7 +25,12 @@ interface State {
     activeStep: number,
     steps: string[],
     errorDescription: string,
-    imageFilter:string,
+    imageFilter: {
+        greyscale: boolean,
+        invert: boolean,
+        sepia: boolean,
+    },
+    imgTemp: string,
     webcam: Webcam,
 }
 
@@ -47,13 +53,17 @@ const initialState = {
         user: {},
         userId: ""
     },
+    imgTemp: "",
     openModal: false,
     activeStep: 0,
     steps: ["Aperçu","Ajouter contenu","Valider"],
-    imageFilter:"",
+    imageFilter: {
+        greyscale: false,
+        invert: false,
+        sepia: false,
+    },
     webcam: null
 }
-
 
 
 class Upload extends React.Component<Props,State> {
@@ -63,26 +73,6 @@ class Upload extends React.Component<Props,State> {
         this.state = initialState;
 
     }
-
-
-
-    handleUploadFile = (file) => {
-        if (file.length > 0) {
-            this.state.picture.url = URL.createObjectURL(file[0]);
-            this.setState({
-                picture: {
-                    ...this.state.picture,
-                    url: URL.createObjectURL(file[0]),
-                    createdDate: Date.now(),
-                    file: file[0]
-                },
-                openModal: true
-            });
-        }
-
-    };
-
-
 
     componentWillReceiveProps(nextProps: Readonly<Props>, nextContext: any): void {
         if (nextProps.open) {
@@ -103,29 +93,44 @@ class Upload extends React.Component<Props,State> {
         return error;
     }
 
+    handleUploadFile = (file) => {
+        if (file.length > 0) {
+            this.setState({
+                picture: {
+                    ...this.state.picture,
+                    createdDate: Date.now(),
+                    file: file[0]
+                },
+                openModal: true,
+                imgTemp: URL.createObjectURL(file[0]),
+            });
+        }
+
+    };
+
     onImgLoad({target:img}) {
         if (img.offsetWidth > 600 || img.offsetHeight > 600) {
             this.setState({
                 errorImage: "l'image sélectionnée a été recadrée pour respecter la taille maximale autorisée (600x600)",
             });
-            Resizer.imageFileResizer(
-                this.state.picture.file,
-                600,
-                600,
-                'JPEG',
-                100,
-                0,
-                uri => {
-                    this.setState({
-                        picture:{
-                            ...this.state.picture,
-                            url: uri
-                        }
-                    });
-                },
-                'base64'
-            );
         }
+        Resizer.imageFileResizer(
+            this.state.picture.file,
+            600,
+            600,
+            'JPEG',
+            100,
+            0,
+            uri => {
+                this.setState({
+                    picture:{
+                        ...this.state.picture,
+                        url: uri
+                    }
+                });
+            },
+            'base64'
+        );
     }
 
     handleChangeDescription = (event) => {
@@ -175,6 +180,14 @@ class Upload extends React.Component<Props,State> {
             if (!this.validate(this.state.picture)) {
                 return;
             }
+            else {
+                this.setState({
+                    picture: {
+                        ...this.state.picture,
+                        url: this.state.imgTemp
+                    }
+                });
+            }
         }
         this.setState({
             activeStep: activeStep + 1
@@ -197,10 +210,16 @@ class Upload extends React.Component<Props,State> {
         this.setState(initialState)
     };
 
-    handleChangefilter = (m) => {
-
-        //this.state.picture.url = URL.createObjectURL(this.state.img.src);
-
+    handleChangeFilter = (src) => {
+        let file : File = Helper.dataURLtoFile(src, "test.jpg");
+        this.setState({
+            imgTemp : URL.createObjectURL(file),
+            picture: {
+                ...this.state.picture,
+                createdDate: Date.now(),
+                file: file
+            }
+        });
     }
 
     getStepContent(step) {
@@ -211,35 +230,29 @@ class Upload extends React.Component<Props,State> {
                         <Grid container direction="row" justify="center" alignItems="center" className={"containerFilter"}>
                             <Typography>Appliquer un filtre:</Typography>
                             <Grid container direction="row" justify="center" alignItems="center">
-                                <Button variant="contained" color="primary" onClick={() => { this.setState({imageFilter:""}) }}>Aucun</Button>
-                                <Button variant="contained" color="primary" onClick={() => { this.setState({imageFilter:"sepia"}) }}>Sepia</Button>
-                                <Button variant="contained" color="primary" onClick={() => { this.setState({imageFilter:"invert"}) }}>Inversion</Button>
-                                <Button variant="contained" color="primary" onClick={() => { this.setState({imageFilter:"grayscale"}) }}>Nuances de gris</Button>
+                                <Button variant="contained" color="primary" onClick={() => { this.setState({imageFilter: {...this.state.imageFilter, sepia: false, invert: false, greyscale: false}})}}>Aucun</Button>
+                                <Button variant="contained" color="primary" onClick={() => { this.setState({imageFilter: {...this.state.imageFilter, sepia: true, invert: false, greyscale: false}}) }}>Sépia</Button>
+                                <Button variant="contained" color="primary" onClick={() => { this.setState({imageFilter: {...this.state.imageFilter, invert: true, greyscale: false, sepia: false}}) }}>Inversion</Button>
+                                <Button variant="contained" color="primary" onClick={() => { this.setState({imageFilter: {...this.state.imageFilter, greyscale:true , invert: false,sepia: false }}) }}>Nuances de gris</Button>
                             </Grid>
                         </Grid>
                         <Grid container direction="row" justify="center" alignItems="center" className={"imagePreview"}>
                             {
-                                this.state.imageFilter == "" &&
-                                <ImageFilter
+                                this.state.picture.url != "" &&
+                                <ProcessImage
                                     image={this.state.picture.url}
-                                    svgProps={{
-                                        alt:"Image preview",
+                                    sepia={this.state.imageFilter.sepia}
+                                    greyscale={this.state.imageFilter.greyscale}
+                                    invert={this.state.imageFilter.invert}
+
+                                    processedImage={(src, err) => {
+                                        this.handleChangeFilter(src);
                                     }}
-                                    onLoad={this.onImgLoad.bind(this)}
-                                    onChange={this.handleChangefilter}
                                 />
                             }
                             {
-                                this.state.imageFilter != "" &&
-                                <ImageFilter
-                                    image={this.state.picture.url}
-                                    filter={this.state.imageFilter}
-                                    svgProps={{
-                                        alt:"Image preview",
-                                    }}
-                                    onLoad={this.onImgLoad.bind(this)}
-                                    onChange={this.handleChangefilter}
-                                />
+                                this.state.picture.url == "" &&
+                                <img onLoad={this.onImgLoad.bind(this)} src={this.state.imgTemp} alt={"Preview image"}/>
                             }
 
                             <Typography>{this.state.errorImage}</Typography>
@@ -329,9 +342,9 @@ class Upload extends React.Component<Props,State> {
 
                     </Grid>
                     <Dialog maxWidth={"lg"} scroll="body" open={this.state.openModal} onClose={this.handleCloseModal}  className={"modalUpload"}>
-                            <Button className={"closeModal"} onClick={this.handleCloseModal}>
-                                <img alt={"close modal"} src='https://d30y9cdsu7xlg0.cloudfront.net/png/53504-200.png'/>
-                            </Button>
+                        <Button className={"closeModal"} onClick={this.handleCloseModal}>
+                            <img alt={"close modal"} src='https://d30y9cdsu7xlg0.cloudfront.net/png/53504-200.png'/>
+                        </Button>
                         <Grid>
                             <Stepper activeStep={activeStep} alternativeLabel>
                                 {this.state.steps.map((label, index) => {

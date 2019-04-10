@@ -30,9 +30,18 @@ exports.getPages = (array, perPage) => {
 }
 
 exports.formatPagination = (array, page, perPage) => {
+    let items;
+    let totalPages;
+    if (perPage === -1 || perPage === "-1") {
+        items = array;
+        totalPages = 1;
+    } else {
+        items = this.formatPages(array, page, perPage);
+        totalPages = this.getPages(array, perPage);
+    }
     return {
-        items : this.formatPages(array, page, perPage),
-        totalPages: this.getPages(array, perPage),
+        items : items,
+        totalPages: totalPages,
         totalEntries: Object.keys(array).length
     };
 }

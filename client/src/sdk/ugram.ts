@@ -11,7 +11,7 @@ let CancelToken = axios.CancelToken;
 let call1 = CancelToken.source();
 let call2 = CancelToken.source();
 let picturesOfUser = CancelToken.source();
-const endpoint = urlEB;
+const endpoint = urlLocalhost;
 let bearerToken = "";
 
 export class sdk {
@@ -151,9 +151,8 @@ export class sdk {
     }
 
     static getAllUsers() {
-        return axios.get(endpoint + "users/all");
+        return axios.get(endpoint + "users?perPage=-1");
     }
-
 
     static getUsers(pageNumber: number) {
         return axios.get(endpoint + "users?page=" + pageNumber);
