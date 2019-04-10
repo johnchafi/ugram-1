@@ -1,5 +1,7 @@
 const db = require('../services/database');
 const User = require('./user');
+const MentionModel = require('./mention');
+const TagModel = require('./tag');
 
 // Setup schema
 const pictureSchema = db.sequelize.define('picture', {
@@ -63,6 +65,72 @@ pictureSchema.formatToClient = (picture, mentions, tags) => {
     });
     delete picture.dataValues.extension;
 };
+
+pictureSchema.assignPicturesDetails = (pictures) => {
+    let ids = [];
+    pictures.forEach(picture => {
+        ids.push(picture.id);
+    });
+    return TagModel.findAll({
+        where: {
+            pictureId: ids
+        },
+        order: [
+            ['id', 'ASC']
+        ]
+    }).then(tags => {
+        return MentionModel.findAll({
+            where: {
+                pictureId: ids
+            },
+            order: [
+                ['id', 'ASC']
+            ]
+        }).then(mentions => {
+            pictures.forEach(picture => {
+                let finalTags = [];
+                tags.forEach(tag => {
+                    if (tag.pictureId == picture.id) {
+                        finalTags.push(tag);
+                    }
+                });
+                let finalMentions = [];
+                mentions.forEach(mention => {
+                    if (mention.pictureId == picture.id) {
+                        finalMentions.push(mention);
+                    }
+                });
+                pictureSchema.formatToClient(picture, finalMentions, finalTags);
+            });
+            return pictures;
+        }).catch(err => {
+            throw err;
+        });
+    }).catch(err => {
+        throw err;
+    });
+};
+
+pictureSchema.assignPictureDetails = (picture) => {
+    return MentionModel.findAll({
+        where: {
+            pictureId: picture.id
+        }
+    }).then(mentions => {
+        return TagModel.findAll({
+            where: {
+                pictureId: picture.id
+            }
+        }).then(tags => {
+            pictureSchema.formatToClient(picture, mentions, tags);
+            return picture;
+        }).catch(err => {
+            throw err;
+        });
+    }).catch(err => {
+        throw err;
+    });
+}
 
 // Export Users model
 module.exports = pictureSchema;

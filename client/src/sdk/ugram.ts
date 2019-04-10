@@ -151,9 +151,8 @@ export class sdk {
     }
 
     static getAllUsers() {
-        return axios.get(endpoint + "users/all");
+        return axios.get(endpoint + "users?perPage=-1");
     }
-
 
     static getUsers(pageNumber: number) {
         return axios.get(endpoint + "users?page=" + pageNumber);

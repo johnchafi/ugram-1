@@ -51,7 +51,6 @@ const users = require('../controllers/users');
  *             description: Mail of the owner
  */
 router.get('/', users.getUsers);
-router.get('/all', users.getAllUsers);
 router.post('/', users.createUser);
 router.get('/:userId', users.getUser);
 router.put('/:userId', users.editUser);
