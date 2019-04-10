@@ -60,7 +60,6 @@ function createUser(user, res, token) {
     });
 }
 
-
 exports.loginUserGoogle = (req, res, next) => {
         UserModel.findOne({where: {
                 googleId: req.body.user.googleId

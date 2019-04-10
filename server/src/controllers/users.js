@@ -27,6 +27,8 @@ exports.getUsers = (req, res, next) => {
             pagination.formatPagination(users, req.query.page, req.query.perPage),
             200
         );
+    }).catch(err => {
+        return auth.sendError(res, err.message, err.code);
     });
 };
 
@@ -464,7 +466,6 @@ exports.deleteUserComment = (req, res, next) => {
     });
 };
 
-
 exports.addComment = (req, res, next) => {
     let socket = req.app.get('socket');
     auth.isAuthenticated(req).then(user => {
@@ -497,6 +498,7 @@ exports.addComment = (req, res, next) => {
         return auth.sendError(res, err.message, err.code);
     });
 };
+
 exports.getNotifications = (req, res, next) => {
     NotificationModel.findAll({ where: {
             userId: req.params.userId,
@@ -541,8 +543,6 @@ exports.setReadNotifications = (req, res, next) => {
         return auth.sendError(res, err.message, err.code);
     });
 };
-
-
 
 exports.addLike = (req, res, next) => {
     let socket = req.app.get('socket');

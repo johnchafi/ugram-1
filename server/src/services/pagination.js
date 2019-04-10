@@ -31,7 +31,7 @@ exports.getPages = (array, perPage) => {
 
 exports.formatPagination = (array, page, perPage) => {
     return {
-        items : this.formatPages(array, page,perPage),
+        items : this.formatPages(array, page, perPage),
         totalPages: this.getPages(array, perPage),
         totalEntries: Object.keys(array).length
     };

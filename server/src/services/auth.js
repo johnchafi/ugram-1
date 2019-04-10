@@ -4,6 +4,7 @@ const UserModel = require('../models/user');
 const TokenModel = require('../models/token');
 const Sentry = require('@sentry/node');
 Sentry.init({ dsn: 'https://535ecc5a93654d4fab876372a40565e4@sentry.io/1419323' });
+
 exports.getToken = (req) => {
     let token = req.headers['x-access-token'] || req.headers['authorization'];
     if (token && token.startsWith('Bearer ')) {

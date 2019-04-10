@@ -2,6 +2,7 @@ const CommentModel = require('../models/comment');
 const auth = require('../services/auth');
 const db = require('../services/database');
 const Op = db.Sequelize.Op;
+
 exports.getComments = (req, res, next) => {
     if (req.query['end'] && req.query['start']) {
         CommentModel.findAll({ where : {
@@ -28,7 +29,6 @@ exports.getComments = (req, res, next) => {
     }
 };
 
-
 exports.getCommentsById = (req, res, next) => {
     CommentModel.find({ where : {
             id: req.params.id
@@ -39,5 +39,3 @@ exports.getCommentsById = (req, res, next) => {
             return auth.sendError(res, err, 400);
         });
 };
-
-

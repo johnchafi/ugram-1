@@ -2,6 +2,7 @@ const LikeModel = require('../models/like');
 const auth = require('../services/auth');
 const db = require('../services/database');
 const Op = db.Sequelize.Op;
+
 exports.getLikes = (req, res, next) => {
     if (req.query['end'] && req.query['start']) {
         LikeModel.findAll({ where : {

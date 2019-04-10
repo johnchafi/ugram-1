@@ -10,19 +10,19 @@ const users = require('./users');
 const login = require('./login');
 const like = require('./like');
 const comment = require('./comment');
+const tag = require('./tag');
 
 router.use('/pictures', pictures);
 router.use('/users', users);
 router.use('/login', login);
 router.use('/comment', comment);
 router.use('/like', like);
+router.use('/tag', tag);
 
 router.get('/info', root.getInfo);
 
 // Tricky part to change default swagger url
-//router.get('/', root.get);
 router.get('/index.html', root.get);
-//router.use('/', express.static(swaggerUiAssetPath));
 router.use('/', swaggerUi.serve);
 router.get('/', swaggerUi.setup(swaggerDocument));
 
