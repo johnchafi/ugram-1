@@ -5,7 +5,7 @@ import {Comment} from "../models/Comment";
 import {Like} from "../models/Like";
 
 let urlLocalhost = "http://localhost:3000/";
-let urlEB = "http://ugram-team02.pm9h7ckh7u.us-east-2.elasticbeanstalk.com/";
+let urlEB = "https://d3m64udsl8l7sh.cloudfront.net/";
 
 let CancelToken = axios.CancelToken;
 let call1 = CancelToken.source();
