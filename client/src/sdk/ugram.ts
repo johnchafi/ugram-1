@@ -5,11 +5,9 @@ import {Comment} from "../models/Comment";
 import {Like} from "../models/Like";
 
 let urlLocalhost = "http://localhost:3000/";
-let urlEB = "https://d3m64udsl8l7sh.cloudfront.net/";
+let urlEB = "http://ugram-team02.pm9h7ckh7u.us-east-2.elasticbeanstalk.com/";
 
 let CancelToken = axios.CancelToken;
-axios.defaults.headers.post['Content-Type'] ='application/json;charset=utf-8';
-axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
 let call1 = CancelToken.source();
 let call2 = CancelToken.source();
 let picturesOfUser = CancelToken.source();
