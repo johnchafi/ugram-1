@@ -19,7 +19,7 @@ const io = require('socket.io')(s, {'transports': ['websocket', 'polling']});
 
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
-g
+app.use(cors());
 app.use(bodyParser.json({limit:'50mb'}));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
