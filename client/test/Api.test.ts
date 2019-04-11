@@ -10,7 +10,7 @@ import User from "../src/models/User";
 
 export const mockStore = configureMockStore([thunk]);
 
-const uniqueUserId = "TheWeed78Rhey1049";
+const uniqueUserId = "toto974";
 
 // using CommonJS modules
 describe('actions', () => {
