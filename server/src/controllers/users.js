@@ -428,18 +428,16 @@ exports.addComment = (req, res, next) => {
                         }
                     }).then(picture => {
                         PictureModel.formatToClient(picture, [], []);
-                        console.log(comment.id);
                         NotificationModel.create({
                                 userId: req.body.ownerId,
                                 url: '/profil/' + req.body.ownerId + '?search=' + req.params.pictureId,
                                 message: req.params.userId + ' a commenté votre photo',
                                 isRead: false,
-                                pictureUrl :  picture.dataValues.url,
+                                pictureUrl :  picture.dataValues.url["40"],
                                 userPictureUrl : user.pictureUrl,
                                 commentId : comment.id
                             }
-                        );
-                        socket.emit(req.body.ownerId);
+                        ).then(response => { socket.emit(req.body.ownerId) });
                     });
                 }
                 return auth.sendSuccess(res, {comment}, 200);
@@ -519,11 +517,10 @@ exports.addLike = (req, res, next) => {
                                 url: '/profil/' + req.body.ownerId + '?search=' + req.params.pictureId,
                                 message: req.params.userId + ' a aimé votre photo',
                                 isRead: false,
-                                pictureUrl : picture.dataValues.url,
+                                pictureUrl : picture.dataValues.url["40"],
                                 userPictureUrl : user.pictureUrl,
                                 likeId : comment.id
-                            });
-                        socket.emit(req.body.ownerId);
+                            }).then(response => { socket.emit(req.body.ownerId) });
                     });
                 }
                 return auth.sendSuccess(res, {comment}, 200);

@@ -49,7 +49,7 @@ class PictureItem extends React.Component<Props,State> {
                 <Link to={this.props.user ? `/profil/${this.props.user.id}` : ''}>
                     <CardHeader action={ !this.props.isHome && this.props.isMe && <EditPictureItem picture={this.props.picture}/>} className={"item"} avatar={this.renderAvatar()} title={this.props.user && this.props.user.firstName + " " + this.props.user.lastName || <LinearProgress />}/>
                 </Link>
-                <img className="media-card" src={this.props.picture.url} alt={this.props.picture.description}/>
+                <img className="media-card" src={this.props.picture.url.original} alt={this.props.picture.description}/>
                 <Grid className={"container"}>
                     <Like picture={this.props.picture}/>
                     <CardActions className={"action header"} disableActionSpacing>

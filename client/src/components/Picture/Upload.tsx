@@ -51,7 +51,7 @@ const initialState = {
         id: 0,
         mentions: [],
         tags: [],
-        url: "",
+        url: {original : ""},
         user: {},
         userId: ""
     },
@@ -115,6 +115,7 @@ class Upload extends React.Component<Props,State> {
     handleUploadPhotoWebcam = () => {
         let file : File = Helper.dataURLtoFile(this.state.imgWebcam, "test.jpg");
 
+        console.log(file);
         this.setState({
             imgTemp : URL.createObjectURL(file),
             picture: {
@@ -126,11 +127,11 @@ class Upload extends React.Component<Props,State> {
             openModal: true,
             openModalWebcam: false
         });
-
+        console.log(file);
     };
 
     onImgLoad({target:img}) {
-        if (img.offsetWidth > 600 || img.offsetHeight > 600) {
+        if (img.offsetWidth > 600 || img.offsetHeight > 400) {
             this.setState({
                 errorImage: "l'image sélectionnée a été recadrée pour respecter la taille maximale autorisée (600x600)",
             });
@@ -138,7 +139,7 @@ class Upload extends React.Component<Props,State> {
         Resizer.imageFileResizer(
             this.state.picture.file,
             600,
-            600,
+            400,
             'JPEG',
             100,
             0,
@@ -146,7 +147,7 @@ class Upload extends React.Component<Props,State> {
                 this.setState({
                     picture:{
                         ...this.state.picture,
-                        url: uri
+                        url: {original : uri}
                     }
                 });
             },
@@ -205,7 +206,9 @@ class Upload extends React.Component<Props,State> {
                 this.setState({
                     picture: {
                         ...this.state.picture,
-                        url: this.state.imgTemp
+                        url: {
+                            original : this.state.imgTemp,
+                        }
                     }
                 });
             }
@@ -265,9 +268,9 @@ class Upload extends React.Component<Props,State> {
                         </Grid>
                         <Grid container direction="row" justify="center" alignItems="center" className={"imagePreview"}>
                             {
-                                this.state.picture.url != "" &&
+                                this.state.picture.url.original != "" &&
                                 <ProcessImage
-                                    image={this.state.picture.url}
+                                    image={this.state.picture.url.original}
                                     sepia={this.state.imageFilter.sepia}
                                     greyscale={this.state.imageFilter.greyscale}
                                     invert={this.state.imageFilter.invert}
@@ -278,7 +281,7 @@ class Upload extends React.Component<Props,State> {
                                 />
                             }
                             {
-                                this.state.picture.url == "" &&
+                                this.state.picture.url.original == "" &&
                                 <img onLoad={this.onImgLoad.bind(this)} src={this.state.imgTemp} alt={"Preview image"}/>
                             }
                             <Typography>{this.state.errorImage}</Typography>
@@ -406,7 +409,7 @@ class Upload extends React.Component<Props,State> {
                             {
                                 this.state.imgWebcam != "" &&
                                 <Grid container direction="row" justify="center" alignItems="center" className={"inModalWebcam"}>
-                                   <img src={this.state.imgWebcam} alt={"Image preview"} className={"imgPreview"}/>
+                                    <img src={this.state.imgWebcam} alt={"Image preview"} className={"imgPreview"}/>
                                     <Grid container direction="row" justify="center" alignItems="center">
                                         <Button variant="contained" color="primary" onClick={() => { this.setState({imgWebcam: ""})}}>Revenir en arrière</Button>
                                         <Button variant="contained" color="primary" onClick={this.handleUploadPhotoWebcam}>Valider</Button>

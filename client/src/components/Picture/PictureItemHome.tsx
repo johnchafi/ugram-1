@@ -81,7 +81,7 @@ class PictureItemHome extends React.Component<Props,State> {
                     <Link to={this.props.user ? `/profil/${this.props.user.id}` : ''}>
                         <CardHeader className="cardheader" avatar={this.renderAvatar()} title={this.props.user && this.props.user.firstName + " " + this.props.user.lastName || <LinearProgress />}/>
                     </Link>
-                    <img onClick={this.handleOpenEdit} className="media-card" src={this.state.didLoad ? this.props.picture.url : "https://via.placeholder.com/500/f5f5f5"} alt={this.props.picture.description} onLoad={this.onLoad}/>
+                    <img onClick={this.handleOpenEdit} className="media-card" src={this.state.didLoad ? this.props.picture.url.original : "https://via.placeholder.com/500/f5f5f5"} alt={this.props.picture.description} onLoad={this.onLoad}/>
                     <Grid className={"container"}>
                         <CardActions className={"icon-header"} disableActionSpacing>
                             <Like picture={this.props.picture}/>

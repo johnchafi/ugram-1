@@ -124,19 +124,24 @@ class NavBar extends React.Component<Props,State> {
                                 >
                                     {this.props.notifications.map(function (notification) {
                                         return (
-                                            <Link key={notification.id} to={notification.url}>
+                                            <Link key={notification.id} to={notification.url} style={{textDecoration: "none"}}>
                                                 <MenuItem style={{height: 40, paddingTop: 5, paddingBottom: 5}}>
                                                     <div style={{width: 40, height : 40, right: 'right'}}>
                                                         <img style={{maxWidth: "100%", maxHeight : "100%",   borderRadius : "50%"}} src={notification.userPictureUrl}/>
                                                     </div>
-                                                    <div style={{minWidth : 360, marginLeft : 10, marginRight: 10}}>{notification.message}</div>
+                                                    <div style={{minWidth : 360, marginLeft : 10, marginRight: 10}}>{notification.message.split(' ').map(function (message : string, index : number) {
+                                                        if (index === 0)
+                                                            return <strong key={index}>{message}</strong>;
+                                                        else
+                                                            return " " + message;
+                                                    })}</div>
                                                     <div style={{width: 40, height : 40}}>
                                                         <img style={{maxWidth: "100%", maxHeight : "100%"}} src={notification.pictureUrl}/>
                                                     </div>
                                                 </MenuItem>
                                                 <Divider style={{margin: "auto", width: "90%"}}/>
                                             </Link>)
-                                    })}
+                                    }.bind(this))}
                                 </Menu>
                                 <Link to={"/profil/" + this.props.cookies.get("userid")}><Icon>person_outlined</Icon></Link>
                             </Grid>

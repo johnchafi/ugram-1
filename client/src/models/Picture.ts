@@ -6,7 +6,13 @@ export default interface Picture {
     "description"?: string,
     "mentions"?: string[],
     "tags"?: string[],
-    "url"?: string,
+    "url"?: {
+        150? : string
+        40? : string
+        50? : string
+        "300"? : string
+        original? : string
+    },
     "userId"?: string,
     user?: User,
     file?: File,
