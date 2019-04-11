@@ -10,7 +10,7 @@ import {deleteCommentbyId, getComment, getCommentById} from "../Comment/comment"
 import {deleteLikebyId, getLike, getLikeById} from "../Like/like";
 import {getNotifications} from "../Notifications/notifications";
 let urlLocalhost = "http://localhost:3000";
-let urlEB = "http://ugram-team02.pm9h7ckh7u.us-east-2.elasticbeanstalk.com";
+let urlEB = "https://d3m64udsl8l7sh.cloudfront.net";
 let socket : SocketIOClient.Socket = null;
 export enum ActionTypes {
     AUTHENTICATED = "AUTH",

@@ -5,7 +5,7 @@ import {Comment} from "../models/Comment";
 import {Like} from "../models/Like";
 
 let urlLocalhost = "http://localhost:3000/";
-let urlEB = "http://ugram-team02.pm9h7ckh7u.us-east-2.elasticbeanstalk.com/";
+let urlEB = "https://d3m64udsl8l7sh.cloudfront.net/";
 
 let CancelToken = axios.CancelToken;
 let call1 = CancelToken.source();
@@ -35,11 +35,11 @@ export class sdk {
         return axios.post(endpoint + "login/token/",
             {
                 token:token,
-            });
+            }, {headers: {"Access-Control-Allow-Origin": "*"}});
     }
 
     static getUser(username : string) {
-        return axios.get(endpoint + "users/" + username);
+        return axios.get(endpoint + "users/" + username, {headers: {"Access-Control-Allow-Origin": "*"}});
     }
 
     static login(username : string, password: string) {
@@ -47,7 +47,7 @@ export class sdk {
             {
                 email:username,
                 password:password
-            });
+            }, {headers: {"Access-Control-Allow-Origin": "*"}});
     }
 
     static loginGoogle(user: User, token:string) {
@@ -55,7 +55,7 @@ export class sdk {
             {
                 user : user,
                 token : token
-            });
+            }, {headers: {"Access-Control-Allow-Origin": "*"}});
     }
 
     static getCommentById(id) {
@@ -175,11 +175,11 @@ export class sdk {
     }
 
     static getPicturesByUser(userid : string, pageNumber : number) {
-        return axios.get(endpoint + "users/" + userid + "/pictures?page=" + pageNumber, {cancelToken:picturesOfUser.token})
+        return axios.get(endpoint + "users/" + userid + "/pictures?page=" + pageNumber, {cancelToken:picturesOfUser.token, headers: {"Access-Control-Allow-Origin": "*"}})
     }
 
     static getPictures(pageNumber) {
-        return axios.get(endpoint + "pictures/?page=" + pageNumber, {cancelToken:call1.token})
+        return axios.get(endpoint + "pictures/?page=" + pageNumber, {cancelToken:call1.token, headers: {"Access-Control-Allow-Origin": "*"}})
     }
 
     static updatePictureByUser(userid : string, pictureid : number, pictureObj : any) {
