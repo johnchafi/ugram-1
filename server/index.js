@@ -8,8 +8,6 @@ const logger = require('./src/common/logger');
 const Sentry = require('@sentry/node');
 Sentry.init({ dsn: 'https://535ecc5a93654d4fab876372a40565e4@sentry.io/1419323' });
 
-// The request handler must be the first middleware on the app
-
 const routes = require('./src/routes/routes');
 
 const port = process.env.PORT || 3000;
