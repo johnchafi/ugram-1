@@ -172,11 +172,19 @@ class Upload extends React.Component<Props,State> {
     };
 
     handleChangeTags = (event) => {
-        this.state.picture.tags = event.target.value.replace(/\s+/g,' ').trim().split(' ')
+        // REMOVE BLANK TAG
+        let tags : string[] = event.target.value.replace(/\s+/g,' ').trim().split(' ');
+        for (let i = 0; i < tags.length; i++) {
+            if (tags[i] == "") {
+                tags.splice(i, 1);
+            }
+        }
+
+        this.state.picture.tags = tags;
         this.setState({
             upload: {
                 ...this.state.upload,
-                tags: event.target.value.replace(/\s+/g,' ').trim().split(' ')
+                tags: tags
             }
         });
     };

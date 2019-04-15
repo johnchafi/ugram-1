@@ -1,23 +1,24 @@
 import {Action, ActionTypes} from "../../actions/Explore/tag";
 import Picture from "../../models/Picture";
-
-export interface IStateProfilApp {
-    isAuthenticated: boolean,
+export interface IStateTags {
+    pictures: Picture[],
     tag: string,
-    pictures: Picture[]
 }
 
-export const initialState: IStateProfilApp = {
-    isAuthenticated: false,
-    tag: "",
-    pictures: null
+// Define our initialState
+export const initialState: IStateTags = {
+    pictures: [],
+    tag: null,
 };
 
-export function reducer(state: IStateProfilApp = initialState, action: Action) : IStateProfilApp {
+export function reducer(state: IStateTags = initialState, action: Action) : IStateTags {
     switch (action.type) {
         case ActionTypes.GET_PICTURES:
+            const {pictures, tag} = action.payload;
             return {
                 ...state,
+                pictures: pictures,
+                tag: tag
             };
         case ActionTypes.ERROR:
             return {

@@ -97,9 +97,9 @@ class PictureItemHome extends React.Component<Props,State> {
                                 {"\u00a0" + this.props.picture.description}</p>
                         </CardActions>
                         <CardActions className={"action hashtags"} disableActionSpacing>
-                            {this.props.picture.tags.map((item) => {
+                            {this.props.picture.tags.map((item, key) => {
                                     if (item != "")
-                                        return ("#" + item + " ")
+                                        return <Link to={`/tag/${item}`} key={key}>{"#" + item + " "}</Link>
                                 }
                             )}
                         </CardActions>

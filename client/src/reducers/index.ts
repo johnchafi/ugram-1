@@ -8,6 +8,7 @@ import * as fromSearch from "./Search/Search";
 import * as fromComment from "./Picture/Comment/Comment";
 import * as fromLike from "./Picture/Like/Like";
 import * as fromNotification from "./Notification/Notification";
+import * as fromTags from "./Explore/Tag";
 /*
  * This is the root state of the app
  * It contains every substate of the app
@@ -18,10 +19,11 @@ export interface State {
     users: fromUsers.IStateUsersApp,
     picture: fromHome.IStatePictureApp,
     status: fromStatus.IStateStatusApp,
-    search: fromSearch.IStateSearch
-    comment: fromComment.IStateComment
-    like: fromLike.IStateLike
-    notification: fromNotification.IStateNotifications
+    search: fromSearch.IStateSearch,
+    comment: fromComment.IStateComment,
+    like: fromLike.IStateLike,
+    notification: fromNotification.IStateNotifications,
+    tags: fromTags.IStateTags,
 }
 
 /*
@@ -36,7 +38,8 @@ export const initialState: State = {
     search: fromSearch.initialState,
     comment: fromComment.initialState,
     like: fromLike.initialState,
-    notification: fromNotification.initialState
+    notification: fromNotification.initialState,
+    tags: fromTags.initialState
 };
 
 /*
@@ -52,5 +55,6 @@ export const reducer = combineReducers<State>({
     search: fromSearch.reducer,
     comment: fromComment.reducer,
     like : fromLike.reducer,
-    notification: fromNotification.reducer
+    notification: fromNotification.reducer,
+    tags: fromTags.reducer
 });

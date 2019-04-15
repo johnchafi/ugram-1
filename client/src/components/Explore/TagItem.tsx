@@ -35,7 +35,7 @@ class UserItem extends React.Component<Props,State> {
         const {classes} = this.props;
         return (
             <Card className={"itemUser"}>
-                <Link to={`/tag/${this.props.tag.tag}`}>
+                <Link to={`/tag/${this.props.tag.tag.toLowerCase()}`}>
                     <CardActionArea>
                         <CardHeader
                             className={"avatarUserItem"}

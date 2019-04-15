@@ -1,9 +1,7 @@
 import { createSelector } from "reselect";
 import {State} from "../../reducers";
 
-const getUserProfilData = ((state: State) => state.profil);
+const getTagsData = ((state: State) => state.tags);
 
-const getStatusApp = ((state: State) => state.status);
-
-
-export const getPictures = createSelector([getUserProfilData], s => s.pictures);
+export const getPictures = createSelector([getTagsData], s => s.pictures);
+export const getTagName = createSelector([getTagsData], s => s.tag);

@@ -8,7 +8,7 @@ import { createHistory } from 'history';
 import store from '../store';
 import { Provider } from 'react-redux';
 import Home from "../containers/Home/Home";
-import Tag from "../containers/Explore/Tags";
+import Tags from "../containers/Explore/Tags";
 import {Component} from "react";
 import {withCookies} from "react-cookie";
 import ProtectedRoute from "../containers/Authentifcation/ProtectedRoute";
@@ -41,7 +41,7 @@ class RouterConfig extends Component<Props, State> {
                             <ProtectedRoute  cookies={this.props.cookies} exact path='/' render={() => (<Home/>)}/>
                             <ProtectedRoute cookies={this.props.cookies} exact path="/profil/:id/" render={() => (<Profil  cookies={this.props.cookies}/>)}/>
                             <ProtectedRoute cookies={this.props.cookies} path='/explore' render={() => (<Explore/>)}/>
-                            <ProtectedRoute cookies={this.props.cookies} exact path='/tags/:tag' render={() => (<Tag/>)}/>
+                            <ProtectedRoute cookies={this.props.cookies} exact path='/tag/:tag' render={() => (<Tags />)}/>
                         </Switch>
                     </React.Fragment>
                     </LastLocationProvider>
