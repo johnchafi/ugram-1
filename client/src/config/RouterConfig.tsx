@@ -4,7 +4,7 @@ import AuthForm from "../containers/Authentifcation/AuthForm";
 import Profil from "../containers/Profil/Profil";
 import Users from "../containers/Users/UserList";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
-import { createHistory } from 'history';
+import { createBrowserHistory } from 'history';
 import store from '../store';
 import { Provider } from 'react-redux';
 import Home from "../containers/Home/Home";
@@ -13,6 +13,7 @@ import {withCookies} from "react-cookie";
 import ProtectedRoute from "../containers/Authentifcation/ProtectedRoute";
 import { LastLocationProvider } from 'react-router-last-location';
 import AccountForm from "../containers/Authentifcation/AccountForm";
+import * as ReactGA from 'react-ga';
 
 interface Props {
     cookies? : any
@@ -22,9 +23,15 @@ interface State {
     token : string
 }
 
+
 class RouterConfig extends Component<Props, State> {
     constructor(props : Props) {
         super(props);
+    }
+
+
+    componentDidMount() {
+        ReactGA.pageview(window.location.pathname)
     }
 
     render() {

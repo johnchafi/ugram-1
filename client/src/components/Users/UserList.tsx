@@ -3,6 +3,7 @@ import User from "../../models/User";
 import {Grid} from "@material-ui/core";
 import UserItem from "../../containers/Users/UserItem";
 import {Card} from "@material-ui/core";
+import * as ReactGA from "react-ga";
 
 export interface Props {
     isAuthenticated: boolean
@@ -24,6 +25,7 @@ class UserList extends React.Component<Props,State> {
     }
 
     componentWillMount(): void {
+        ReactGA.pageview(window.location.pathname);
         this.props.getUsers(0, []);
         document.addEventListener('scroll', this.trackScrolling);
     }

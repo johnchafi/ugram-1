@@ -17,6 +17,7 @@ import {
 import Picture from "../../../models/Picture";
 import {Comment as CommentType, Comment, CommentUser} from "../../../models/Comment";
 import User from "../../../models/User";
+import * as ReactGA from "react-ga";
 
 export interface Props {
     picture : Picture,
@@ -56,6 +57,12 @@ class FormComment extends React.Component<Props, State> {
     handleSubmit = event => {
         event.preventDefault();
         this.props.addComment(new CommentUser(this.props.me, this.state.message, this.props.picture.id, this.props.picture.userId));
+        ReactGA.event({
+            category: 'Social',
+            action: 'Comment',
+            label: 'User commented a picture',
+            value : this.props.picture.id
+        });
         this.setState({message : ''});
         this.setState({load : true});
     };

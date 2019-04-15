@@ -12,6 +12,7 @@ import {
     WithStyles,
     withStyles
 } from "@material-ui/core";
+import * as ReactGA from "react-ga";
 
 export interface Props extends WithStyles<typeof styles>{
     likes : Like[],
@@ -78,10 +79,22 @@ class Likes extends React.Component<Props, State> {
         if (this.state.like) {
             this.props.deleteLike(this.state.ownLikes.filter(like => like.userId === this.props.user)[0]);
             this.setState({load: true});
+            ReactGA.event({
+                category: 'Social',
+                action: 'Unlike',
+                label: 'User unliked a picture',
+                value : this.props.picture.id
+            });
         }
         else {
             this.props.addLike(new LikeUser(this.props.user, this.props.picture.id, this.props.picture.userId));
             this.setState({load : true});
+            ReactGA.event({
+                category: 'Social',
+                action: 'Like',
+                label: 'User liked a picture',
+                value : this.props.picture.id
+            });
         }
 
     };

@@ -9,6 +9,7 @@ import Props from "../../Props/Profil";
 import Upload from "../../containers/Picture/Upload";
 import {Link} from 'react-router-dom';
 import * as queryString from "querystring";
+import * as ReactGA from "react-ga";
 
 
 interface State {
@@ -30,6 +31,7 @@ class Profil extends React.Component<Props,State> {
     }
 
     componentWillMount(): void {
+        ReactGA.pageview(window.location.pathname);
         this.props.getProfil(this.props.match.params.id);
         this.props.getPicture(this.props.match.params.id, 0, []);
     }

@@ -6,6 +6,7 @@ import Picture from "../../models/Picture";
 import {Link} from 'react-router-dom';
 import User from "../../models/User";
 import onClickOutside from "react-onclickoutside";
+import * as ReactGA from "react-ga";
 
 
 export interface Props{
@@ -52,6 +53,12 @@ class SearchComponent extends React.Component<Props,State> {
             typingTimeout: window.setTimeout(function () {
                 if (this.state.searchString != "") {
                     this.props.handleSearch(this.state.searchString);
+                    ReactGA.event({
+                        category: 'Social',
+                        action: 'Search',
+                        label: 'User search for a value:',
+                        value : this.state.searchString
+                    });
                 }
                 else {
                     this.setState({

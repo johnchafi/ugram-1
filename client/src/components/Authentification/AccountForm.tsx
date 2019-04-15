@@ -5,6 +5,7 @@ import User from "../../models/User";
 import MySnackbarContentWrapper from "../../view-components/MySnackBarContentWrapper";
 import {Link} from 'react-router-dom';
 import {Cookies} from "react-cookie";
+import * as ReactGA from 'react-ga';
 
 interface Props{
     createUser: (user: User) => any,
@@ -114,8 +115,13 @@ class AccountForm extends React.Component<Props,State> {
 
     _handleSubmit = event => {
         event.preventDefault();
-        if (this.validate())
+        if (this.validate()) {
             this.props.createUser(this.state.user);
+            ReactGA.event({
+                category: 'User',
+                action: 'Created an Account'
+            });
+        }
     };
 
     handleClose = (event, reason) : void => {

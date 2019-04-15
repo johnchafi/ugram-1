@@ -3,6 +3,7 @@ import {Avatar, Card, CardActions, CardHeader, CircularProgress, Grid, LinearPro
 import PictureList from "../../containers/Picture/PictureList";
 import { Redirect } from 'react-router';
 import Props from "../../Props/Home";
+import * as ReactGA from "react-ga";
 
 interface State {
     isLoading: boolean,
@@ -18,6 +19,7 @@ class Home extends React.Component<Props,State> {
     }
 
     componentWillMount(): void {
+        ReactGA.pageview(window.location.pathname);
         this.props.getPicturesByDate(0, []);
     }
 
