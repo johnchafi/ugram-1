@@ -35,7 +35,6 @@ interface State {
     imgWebcam: string,
     webcam: Webcam,
 }
-
 const initialState = {
     errorDescription: null,
     errorImage: "",
@@ -67,11 +66,8 @@ const initialState = {
         sepia: false,
     },
     webcam: null
-}
-
-
+};
 class Upload extends React.Component<Props,State> {
-
     constructor(props : Props) {
         super(props);
         this.state = initialState;
@@ -140,7 +136,7 @@ class Upload extends React.Component<Props,State> {
             this.state.picture.file,
             600,
             400,
-            'JPEG',
+            "JPEG",
             100,
             0,
             uri => {
@@ -151,7 +147,7 @@ class Upload extends React.Component<Props,State> {
                     }
                 });
             },
-            'base64'
+            "base64"
         );
     }
 
@@ -192,8 +188,6 @@ class Upload extends React.Component<Props,State> {
         });
         this.setState(initialState)
     };
-
-
 
     handleNext = () => {
         const { activeStep } = this.state;
@@ -303,8 +297,7 @@ class Upload extends React.Component<Props,State> {
                                 helperText={this.state.errorDescription}
                                 defaultValue={this.state.picture.description}
                                 label="Description"
-                                onChange={(e) => this.handleChangeDescription(e)}
-                            />
+                                onChange={(e) => this.handleChangeDescription(e)}/>
                         </Grid>
                         <Grid container direction="row" justify="center" alignItems="center">
                             <TextField
@@ -315,8 +308,7 @@ class Upload extends React.Component<Props,State> {
                                 defaultValue={this.state.picture.mentions.toString()}
                                 fullWidth
                                 label="Mentions"
-                                onChange={(e) => this.handleChangeMentions(e)}
-                            />
+                                onChange={(e) => this.handleChangeMentions(e)}/>
                         </Grid>
                         <Grid container direction="row" justify="center" alignItems="center">
                             <TextField
@@ -327,8 +319,7 @@ class Upload extends React.Component<Props,State> {
                                 defaultValue={this.state.picture.tags.toString()}
                                 fullWidth
                                 label="Tags"
-                                onChange={(e) => this.handleChangeTags(e)}
-                            />
+                                onChange={(e) => this.handleChangeTags(e)}/>
                         </Grid>
                     </Grid>
                 );
@@ -342,13 +333,11 @@ class Upload extends React.Component<Props,State> {
                 return ;
         }
     }
-
     handleOpenWebcam = () => {
         this.setState({
             openModalWebcam: true
         })
     };
-
     setRefWebcam = webcam => {
         this.setState({
             webcam: webcam
@@ -357,7 +346,6 @@ class Upload extends React.Component<Props,State> {
 
     render() {
         const { activeStep } = this.state;
-
         return (
             <Grid item>
                 <FormControl className={"formUpload"}>
@@ -367,10 +355,9 @@ class Upload extends React.Component<Props,State> {
                                 <label className={"uploadButton"}>
                                     <p>Téléverser une image</p>
                                     <Icon>cloud_upload</Icon>
-                                    <input type='file' onChange={(e) => this.handleUploadFile(e.target.files)} style={{ display: 'none'}}/>
+                                    <input type="file" onChange={(e) => this.handleUploadFile(e.target.files)} style={{ display: "none"}}/>
                                 </label>
                             </Button>
-
                         </Grid>
                         <Grid container direction="row" justify="center" alignItems="center">
                             <Typography>OU</Typography>
@@ -382,21 +369,18 @@ class Upload extends React.Component<Props,State> {
                                     <Icon>photo_camera</Icon>
                                 </label>
                             </Button>
-
                         </Grid>
                     </Grid>
                     <Dialog maxWidth={"lg"} scroll="body" open={this.state.openModalWebcam} onClose={this.handleCloseModalWebcam}   className={"modalWebcam"}>
                         <Button className={"closeModal"} onClick={this.handleCloseModal}>
-                            <img alt={"close modal"} src='https://d30y9cdsu7xlg0.cloudfront.net/png/53504-200.png'/>
+                            <img alt={"close modal"} src="https://d30y9cdsu7xlg0.cloudfront.net/png/53504-200.png"/>
                         </Button>
                         <Grid container direction="row" justify="center" alignItems="center">
                             {
                                 this.state.imgWebcam == "" &&
                                 <Grid container direction="row" justify="center" alignItems="center" className={"inModalWebcam"}>
                                     <Webcam
-                                        style={{
-                                            margin:"50px"
-                                        }}
+                                        style={{margin:"50px"}}
                                         ref={this.setRefWebcam}
                                         audio={false}
                                         screenshotFormat="image/jpeg"
@@ -416,12 +400,11 @@ class Upload extends React.Component<Props,State> {
                                     </Grid>
                                 </Grid>
                             }
-
                         </Grid>
                     </Dialog>
                     <Dialog maxWidth={"lg"} scroll="body" open={this.state.openModal} onClose={this.handleCloseModal}  className={"modalUpload"}>
                         <Button className={"closeModal"} onClick={this.handleCloseModal}>
-                            <img alt={"close modal"} src='https://d30y9cdsu7xlg0.cloudfront.net/png/53504-200.png'/>
+                            <img alt={"close modal"} src="https://d30y9cdsu7xlg0.cloudfront.net/png/53504-200.png"/>
                         </Button>
                         <Grid>
                             <Stepper activeStep={activeStep} alternativeLabel>
@@ -434,10 +417,8 @@ class Upload extends React.Component<Props,State> {
                                 })}
                             </Stepper>
                             <div>
-                                {activeStep === this.state.steps.length ? (
-                                    {
-                                    }
-                                ) : (
+                                {
+                                    activeStep === this.state.steps.length &&
                                     <Grid className={"stepContent"}>
                                         {this.getStepContent(activeStep)}
                                         <Grid container direction="row" justify="center" alignItems="center">
@@ -452,17 +433,16 @@ class Upload extends React.Component<Props,State> {
                                                 color="primary"
                                                 onClick={this.handleNext}
                                             >
-                                                {activeStep === this.state.steps.length - 1 ? 'Terminer' : 'Suivant'}
+                                                {activeStep === this.state.steps.length - 1 ? "Terminer" : "Suivant"}
                                             </Button>
                                         </Grid>
                                     </Grid>
-                                )}
+                                }
                             </div>
                         </Grid>
                     </Dialog>
                 </FormControl>
             </Grid>
-
         );
     }
 }

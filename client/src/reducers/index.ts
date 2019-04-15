@@ -1,7 +1,7 @@
 import { combineReducers } from "redux";
 import * as fromAuth from "./Authentifcation/auth";
 import * as fromProfil from "./Profil/Profil";
-import * as fromUsers from "./Users/UserList";
+import * as fromUsers from "./Explore/Explore";
 import * as fromHome from "./Picture/Picture";
 import * as fromStatus from "./Status/Status";
 import * as fromSearch from "./Search/Search";

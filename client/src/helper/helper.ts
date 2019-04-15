@@ -28,9 +28,20 @@ class Helper {
         }
     }
 
+    static getPrettyDate(registerDate) : string {
+        let date : Date = new Date(Number(registerDate));
 
+        let monthNames : string[] = [
+            "Janvier", "Fevrier", "Mars",
+            "Avril", "Mai", "Juin", "Juillet",
+            "Aout", "Septembre", "Octobre",
+            "Novembre", "Decembre"
+        ];
+
+        return date.getDate() + " " + monthNames[date.getMonth()] + " " + date.getFullYear();
+    }
     static dataURLtoFile(dataurl, filename) : File {
-        var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+        var arr = dataurl.split(","), mime = arr[0].match(/:(.*?);/)[1],
             bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
         while(n--){
             u8arr[n] = bstr.charCodeAt(n);

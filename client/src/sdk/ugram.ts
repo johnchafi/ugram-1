@@ -226,4 +226,15 @@ export class sdk {
         }
 
     }
+
+    static getPopularTag() {
+        try {
+            return axios.get(endpoint + "tag/popular", {cancelToken:call1.token, headers: {"Access-Control-Allow-Origin": "*"}})
+        } catch (error) {
+            return Promise.reject({
+                response: { status: 400, data: {message: "Impossible de récuperer les tags les plus populaires"}}
+            });
+        }
+
+    }
 }

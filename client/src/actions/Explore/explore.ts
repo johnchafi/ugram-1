@@ -1,4 +1,4 @@
-import {IStateUsersApp} from "../../reducers/Users/UserList";
+import {IStateUsersApp} from "../../reducers/Explore/Explore";
 import {Dispatch} from "redux";
 import { sdk } from "../../sdk/ugram";
 import User from "../../models/User";
@@ -6,6 +6,7 @@ import Picture from "../../models/Picture";
 
 export enum ActionTypes {
     GET_USERS = "GET_USERS",
+    GET_TAGS = "GET_TAGS",
     ERROR = "ERROR",
 }
 export interface AuthenticatedAction { type: ActionTypes, payload: IStateUsersApp }
@@ -33,6 +34,28 @@ export function getAllUsers(pageNumber : number, users: User[]): any {
                     type: ActionTypes.ERROR,
                     payload: {
                         users: null,
+                    }
+                })
+            });
+    }
+}
+
+export function getPopularTags(): any {
+    return function(dispatch : Dispatch<IStateUsersApp>) {
+        sdk.getPopularTag()
+            .then(function (response) {
+                dispatch(  {
+                    type: ActionTypes.GET_TAGS,
+                    payload: {
+                        tags: response.data.items
+                    }
+                })
+            })
+            .catch(function (error) {
+                dispatch( {
+                    type: ActionTypes.ERROR,
+                    payload: {
+                        tags: null
                     }
                 })
             });

@@ -178,8 +178,47 @@ body {
   margin: 8px 0 15px;
 }
 
-.listUsersContainer {
-  padding-top: 30px;
+.containerExplore {
+  width: 900px !important;
+  max-width: 100%;
+  margin: 40px auto 0;
+
+  .containerUserList {
+    width: 100%;
+    overflow-x: auto;
+    display: flex;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    .itemUser {
+      margin: 20px 15px 20px 10px;
+      display: inline-block;
+      min-width: 260px;
+      span {
+        text-decoration: none;
+      }
+      a {
+        text-decoration: none;
+      }
+      .avatarUserItem {
+        align-items: center;
+        justify-content: center;
+        > div {
+          width: 100%;
+          margin-right: 0;
+          > div {
+            margin: 0 auto;
+          }
+        }
+      }
+      .cardBody {
+        padding-top: 0 !important;
+        text-align: center !important;
+      }
+    }
+  }
+
+
 }
 
 .LoginPage {
