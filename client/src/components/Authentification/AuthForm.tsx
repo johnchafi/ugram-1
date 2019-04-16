@@ -7,6 +7,7 @@ import {Link} from 'react-router-dom';
 import { withLastLocation } from 'react-router-last-location';
 import {Redirect, Route, RouteProps} from 'react-router';
 import MySnackbarContentWrapper from "../../view-components/MySnackBarContentWrapper";
+import * as ReactGA from "react-ga";
 interface Props extends WithLastLocationProps{
     isAuthenticated: boolean,
     user: string
@@ -98,6 +99,11 @@ class AuthForm extends React.Component<Props,State> {
         event.preventDefault();
         if (this.validate()) {
             this.props.authUser(this.state.username, this.state.password);
+            ReactGA.event({
+                category: 'User',
+                action: 'User Connected'
+            });
+
         }
     };
 

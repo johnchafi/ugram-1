@@ -37,7 +37,6 @@ export function getUserWithToken(token: string): any {
         sdk.getUserByToken(token)
             .then(function (response) {
                 if (socket == null) {
-                    console.log('test');
                     initSocket(dispatch, response.data.userId);
                 }
                 sdk.setToken(response.data.token);

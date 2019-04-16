@@ -14,6 +14,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import DialogContent from "@material-ui/core/DialogContent";
 import FormGroup from "@material-ui/core/FormGroup";
 import {Cookies} from "react-cookie";
+import * as ReactGA from "react-ga";
 
 export interface Props{
     editUser: (User) => any
@@ -119,6 +120,11 @@ class EditProfil extends React.Component<Props,State> {
 
         if (errors === 0) {
             this.props.editUser(this.state.profil);
+            ReactGA.event({
+                category: 'User',
+                action: 'User Edited'
+            });
+
             this.setState({open: false});
         }
     };
@@ -132,6 +138,10 @@ class EditProfil extends React.Component<Props,State> {
 
     disconnectUser = () : void => {
         this.props.disconnectUser();
+        ReactGA.event({
+            category: 'User',
+            action: 'User Disconnected'
+        });
     };
 
 
@@ -139,6 +149,10 @@ class EditProfil extends React.Component<Props,State> {
         this.props.cookies.remove('token');
         this.props.cookies.remove('userid');
         this.props.deleteUser(this.props.profil.id);
+        ReactGA.event({
+            category: 'User',
+            action: 'Deleted Account'
+        });
     };
 
 

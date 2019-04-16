@@ -10,6 +10,8 @@ import Upload from "../../containers/Picture/Upload";
 import {Link} from 'react-router-dom';
 import * as queryString from "querystring";
 import * as ReactGA from "react-ga";
+import Helper from "../../helper/helper";
+
 
 
 interface State {
@@ -81,18 +83,6 @@ class Profil extends React.Component<Props,State> {
         });
     };
 
-    getPrettyDate() : string {
-        let date : Date = new Date(Number(this.props.user.registrationDate));
-
-        let monthNames : string[] = [
-            "Janvier", "Fevrier", "Mars",
-            "Avril", "Mai", "Juin", "Juillet",
-            "Aout", "Septembre", "Octobre",
-            "Novembre", "Decembre"
-        ];
-
-        return date.getDate() + ' ' + monthNames[date.getMonth()] + ' ' + date.getFullYear();
-    }
     render(): React.ReactNode {
         if (!this.props.user)
             return ( <React.Fragment>
@@ -128,7 +118,7 @@ class Profil extends React.Component<Props,State> {
                             <Typography variant="subtitle2">
                                 {this.props.user && this.props.user.firstName + " " + this.props.user.lastName}
                             </Typography>
-                            <Typography className={"el"} variant="overline">Inscrit depuis le {this.props.user && this.getPrettyDate()}</Typography>
+                            <Typography className={"el"} variant="overline">Inscrit depuis le {this.props.user && Helper.getPrettyDate(this.props.user.registrationDate)}</Typography>
                             <Typography className={"el"} variant="overline">Email : {this.props.user && this.props.user.email}</Typography>
                         </Grid>
                          || <CircularProgress/>}

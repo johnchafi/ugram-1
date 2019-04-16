@@ -81,9 +81,7 @@ class Likes extends React.Component<Props, State> {
             this.setState({load: true});
             ReactGA.event({
                 category: 'Social',
-                action: 'Unlike',
-                label: 'User unliked a picture',
-                value : this.props.picture.id
+                action: 'Deliked Picture'
             });
         }
         else {
@@ -91,9 +89,7 @@ class Likes extends React.Component<Props, State> {
             this.setState({load : true});
             ReactGA.event({
                 category: 'Social',
-                action: 'Like',
-                label: 'User liked a picture',
-                value : this.props.picture.id
+                action: 'Liked Picture'
             });
         }
 

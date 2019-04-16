@@ -1,9 +1,11 @@
-import {Action, ActionTypes} from "../../actions/User/users";
-import UserList from "../../components/Users/UserList";
+import {Action, ActionTypes} from "../../actions/Explore/explore";
+import User from "../../models/User";
+import PopularTag from "../../models/PopularTag";
 
 export interface IStateUsersApp {
     isAuthenticated: boolean
-    users: UserList[],
+    users: User[],
+    tags: PopularTag[],
     pageNumber : number
 }
 
@@ -11,6 +13,7 @@ export interface IStateUsersApp {
 export const initialState: IStateUsersApp = {
     isAuthenticated: false,
     users: [],
+    tags: [],
     pageNumber : 0
 };
 
@@ -22,6 +25,12 @@ export function reducer(state: IStateUsersApp = initialState, action: Action) : 
                 ...state,
                 users: users,
                 pageNumber : pageNumber
+            };
+        case ActionTypes.GET_TAGS:
+            const {tags} = action.payload;
+            return {
+                ...state,
+                tags: tags
             };
         default:
             return state

@@ -226,4 +226,26 @@ export class sdk {
         }
 
     }
+
+    static getPopularTag() {
+        try {
+            return axios.get(endpoint + "tag/popular", {headers: {"Access-Control-Allow-Origin": "*"}})
+        } catch (error) {
+            return Promise.reject({
+                response: { status: 400, data: {message: "Impossible de récuperer les tags les plus populaires"}}
+            });
+        }
+
+    }
+
+    static getPicturesByTag(tag : string) {
+        try {
+            return axios.get(endpoint + "pictures?tag=" + tag, {headers: {"Access-Control-Allow-Origin": "*"}})
+        } catch (error) {
+            return Promise.reject({
+                response: { status: 400, data: {message: "Impossible de récuperer les tags les plus populaires"}}
+            });
+        }
+
+    }
 }

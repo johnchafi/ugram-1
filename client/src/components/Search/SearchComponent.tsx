@@ -13,8 +13,9 @@ export interface Props{
     handleSearch: (search : string) => any,
     picturesDescription : Picture[],
     picturesTags : Picture[],
-    users : User[]
+    users : User[],
 }
+
 interface State {
     typingTimeout: number,
     descriptions: Picture[],
@@ -23,9 +24,18 @@ interface State {
     users : User[]
 }
 
+enum SearchType {
+    User,
+    Tag,
+    Mention,
+    Description,
+    Unknown
+}
 
 
 class SearchComponent extends React.Component<Props,State> {
+
+
 
     constructor(props: Props)
     {
@@ -35,7 +45,7 @@ class SearchComponent extends React.Component<Props,State> {
             typingTimeout: 0,
             descriptions: null,
             picturesTags: null,
-            users: null
+            users: null,
         }
     }
 
@@ -54,10 +64,8 @@ class SearchComponent extends React.Component<Props,State> {
                 if (this.state.searchString != "") {
                     this.props.handleSearch(this.state.searchString);
                     ReactGA.event({
-                        category: 'Social',
-                        action: 'Search',
-                        label: 'User search for a value:',
-                        value : this.state.searchString
+                        category: 'Search',
+                        action: 'Global search'
                     });
                 }
                 else {
@@ -95,6 +103,7 @@ class SearchComponent extends React.Component<Props,State> {
     }
 
     closeResultat = () : void => {
+
         this.setState({
                 descriptions: null,
                 picturesTags: null,

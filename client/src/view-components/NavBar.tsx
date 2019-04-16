@@ -111,7 +111,7 @@ class NavBar extends React.Component<Props,State> {
                         </Hidden>
                         <Grid item className={"header-nav"}>
                             <Grid container justify="flex-end">
-                                <Link to={"/users/"}><Icon >explore_outlined</Icon></Link>
+                                <Link to={"/explore/"}><Icon >explore_outlined</Icon></Link>
                                 <Badge badgeContent={this.state.numberNotifications} color="secondary" className={'badge'} invisible={this.state.new}>
                                     <Icon style={{cursor: "pointer"}} aria-owns={this.state.anchorEl ? 'simple-menu' : undefined} aria-haspopup="true" onClick={this.handleClick} >favorite_border_rounded</Icon>
                                 </Badge>

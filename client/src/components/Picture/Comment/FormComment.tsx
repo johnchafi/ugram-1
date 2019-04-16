@@ -59,9 +59,7 @@ class FormComment extends React.Component<Props, State> {
         this.props.addComment(new CommentUser(this.props.me, this.state.message, this.props.picture.id, this.props.picture.userId));
         ReactGA.event({
             category: 'Social',
-            action: 'Comment',
-            label: 'User commented a picture',
-            value : this.props.picture.id
+            action: 'Commented Picture'
         });
         this.setState({message : ''});
         this.setState({load : true});

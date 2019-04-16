@@ -1,4 +1,3 @@
-
 import * as React from 'react'
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
@@ -12,7 +11,6 @@ import Helper from "../../helper/helper";
 import Like from "../../containers/Picture/Like/Like";
 import Comment from "../../containers/Picture/Comment/Comment";
 import FormComment from "../../containers/Picture/Comment/FormComment";
-
 export interface Props{
     picture : Picture,
     user : User
@@ -22,17 +20,11 @@ export interface Props{
 }
 interface State {
 }
-
-
-
 class PictureItem extends React.Component<Props,State> {
-
     constructor(props : Props)
     {
         super(props);
     }
-
-
     renderAvatar()
     {
         if (this.props.user != null && this.props.user.pictureUrl)
@@ -42,7 +34,6 @@ class PictureItem extends React.Component<Props,State> {
         else
             return ( <Avatar aria-label="Recipe" ><CircularProgress disableShrink /></Avatar>)
     }
-
     render() {
         return (
             <Card className={"container-picture"}>
@@ -58,9 +49,9 @@ class PictureItem extends React.Component<Props,State> {
                     </CardActions>
                     <CardActions className={"action hashtags"} disableActionSpacing>
                         {this.props.picture.tags.length > 0 &&
-                        this.props.picture.tags.map((item) => {
+                        this.props.picture.tags.map((item, key) => {
                                 if (item != "")
-                                    return "#" + item + " "
+                                    return  <Link to={`/tag/${item}`} key={key}>{"#" + item + " "}</Link>
                             }
                         )}
                     </CardActions>
@@ -81,7 +72,6 @@ class PictureItem extends React.Component<Props,State> {
                     {
                         !this.props.preview &&  <FormComment picture={this.props.picture} user={this.props.user}/>
                     }
-
                 </Grid>
             </Card>
         );
