@@ -7,7 +7,7 @@
   },
   "servers": [
     {
-      "url": "http://ugram-team02.pm9h7ckh7u.us-east-2.elasticbeanstalk.com",
+      "url": "https://d3m64udsl8l7sh.cloudfront.net",
       "description": "API-URL"
     }
   ],
@@ -23,6 +23,18 @@
     {
       "name": "user-pictures",
       "description": "User's pictures management endpoints"
+    },
+    {
+      "name": "tags",
+      "description": "Tag's endpoints"
+    },
+    {
+      "name": "likes",
+      "description": "like's endpoints"
+    },
+    {
+      "name": "comments",
+      "description": "Comment's endpoints"
     }
   ],
   "paths": {
@@ -599,6 +611,450 @@
           }
         ]
       }
+    },
+    "/users/{userId}/pictures/{pictureId}/like": {
+      "post": {
+        "tags": [
+          "user-pictures"
+        ],
+        "summary": "like a picture",
+        "description": "like a picture",
+        "operationId": "likePicture",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "user's id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "pictureId",
+            "in": "path",
+            "description": "user\\'s picture\\'s id (to like)",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "ownerId": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LikeObject"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing parameter or unexisting picture for user"
+          },
+          "401": {
+            "description": "No provided authentication"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/users/{userId}/pictures/{pictureId}/like/{likeId}": {
+      "delete": {
+        "tags": [
+          "user-pictures"
+        ],
+        "summary": "Delike a picture",
+        "description": "Delike a picture",
+        "operationId": "delikePicture",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "user's id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "pictureId",
+            "in": "path",
+            "description": "user\\'s picture\\'s id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "likeId",
+            "in": "path",
+            "description": "like id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Missing parameter or unexisting picture for user"
+          },
+          "401": {
+            "description": "No provided authentication"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Unexisting picture for user"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/users/{userId}/pictures/{pictureId}/comment": {
+      "post": {
+        "tags": [
+          "user-pictures"
+        ],
+        "summary": "comment a picture",
+        "description": "comment a picture",
+        "operationId": "commentPicture",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "user's id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "pictureId",
+            "in": "path",
+            "description": "user\\'s picture\\'s id (to comment)",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "ownerId": {
+                    "type": "string"
+                  },
+                  "message": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LikeObject"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing parameter or unexisting picture for user"
+          },
+          "401": {
+            "description": "No provided authentication"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/users/{userId}/pictures/{pictureId}/comment/{commentId}": {
+      "delete": {
+        "tags": [
+          "user-pictures"
+        ],
+        "summary": "Delete comment",
+        "description": "Delete a comment",
+        "operationId": "uncommentPicture",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "user's id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "pictureId",
+            "in": "path",
+            "description": "user\\'s picture\\'s id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "commentId",
+            "in": "path",
+            "description": "like id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LikeObject"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Missing parameter or unexisting picture for user"
+          },
+          "401": {
+            "description": "No provided authentication"
+          },
+          "404": {
+            "description": "Unexisting picture for user"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/tag": {
+      "get": {
+        "tags": [
+          "tags"
+        ],
+        "summary": "Get all tags",
+        "description": "Get all tags",
+        "operationId": "getAllTags",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TagObject"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tag/popular": {
+      "get": {
+        "tags": [
+          "tags"
+        ],
+        "summary": "Get popular tags",
+        "description": "Get popular tags",
+        "operationId": "getPopularTags",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TagObject"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/like": {
+      "get": {
+        "tags": [
+          "likes"
+        ],
+        "summary": "Get all likes",
+        "description": "Get all likes",
+        "operationId": "getLikes",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LikeObject"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/like/{id}": {
+      "get": {
+        "tags": [
+          "likes"
+        ],
+        "summary": "Get like by id",
+        "description": "Get like by id",
+        "operationId": "getLikeById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Like Id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LikeObject"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/comment": {
+      "get": {
+        "tags": [
+          "comments"
+        ],
+        "summary": "Get all comments",
+        "description": "Get all comments",
+        "operationId": "getComments",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CommentObject"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/comment/{id}": {
+      "get": {
+        "tags": [
+          "comments"
+        ],
+        "summary": "Get comment by id",
+        "description": "Get comment by id",
+        "operationId": "getCommentById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Comment Id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommentObject"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -703,13 +1159,13 @@
           "mentions": {
             "type": "array",
             "items": {
-              "type": "string"
+              "type": "integer"
             }
           },
           "tags": {
             "type": "array",
             "items": {
-              "type": "string"
+              "type": "integer"
             }
           },
           "url": {
@@ -759,6 +1215,57 @@
           },
           "equalNow": {
             "type": "boolean"
+          }
+        }
+      },
+      "TagObject": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "value": {
+            "type": "string"
+          },
+          "pictureId": {
+            "type": "integer"
+          }
+        }
+      },
+      "LikeObject": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "userId": {
+            "type": "string"
+          },
+          "ownedId": {
+            "type": "string"
+          },
+          "pictureId": {
+            "type": "integer"
+          }
+        }
+      },
+      "CommentObject": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "userId": {
+            "type": "string"
+          },
+          "ownerId": {
+            "type": "string"
+          },
+          "pictureId": {
+            "type": "integer"
+          },
+          "message": {
+            "type": "string"
           }
         }
       }

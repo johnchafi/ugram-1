@@ -561,7 +561,7 @@ exports.deleteUserLike = (req, res, next) => {
                     return auth.sendError(res, err, 500);
                 });
         }).catch(err => {
-            return auth.sendError(res, "No pictures found for user '" + user.id + "'.", 204);
+            return auth.sendError(res, "No pictures found for user '" + user.id + "'.", 404);
         })
     }).catch(err => {
         return auth.sendError(res, err.message, err.code);
