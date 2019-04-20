@@ -124,9 +124,11 @@ Si l'utilisateur connecté consulte une de ses images, il aura accès aux outils
 Une fois dans le panel d'administration du profil, l'utisateur aura la possibilité de se déconnecter et de supprimer son compte
 
 * Deconnexion
+
 ![Deconnexion du compte](./img/deconnexion_compte.png "Deconnexion compte")
 
 * Suppression du compte
+
 ![Suppression du compte](./img/suppression_compte.png "Suppression compte")
 
 #### Fonctionnalités additionnelles
