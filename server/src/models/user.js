@@ -1,5 +1,9 @@
 const db = require('../services/database');
 
+function generateRandomNumber() {
+    return Math.floor(Math.random() * 999999999) + 1;
+}
+
 // Setup schema
 const userSchema = db.sequelize.define('user', {
         id: {
@@ -49,7 +53,7 @@ const userSchema = db.sequelize.define('user', {
             type: db.Sequelize.STRING,
             unique: false,
             allowNull: false,
-            defaultValue: "http://i.pravatar.cc/40",
+            defaultValue: "https://avatars.dicebear.com/v2/male/" + generateRandomNumber() + ".svg",
             field: 'picture_url'
         },
         googleId: {
