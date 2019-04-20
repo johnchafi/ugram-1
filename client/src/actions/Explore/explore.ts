@@ -25,7 +25,7 @@ export function getAllUsers(pageNumber : number, users: User[]): any {
                     type: ActionTypes.GET_USERS,
                     payload: {
                         users: results,
-                        pageNumber: pageNumber,
+                        pageUsersNumber: pageNumber,
                     }
                 })
             })

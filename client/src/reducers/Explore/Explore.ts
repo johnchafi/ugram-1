@@ -6,7 +6,7 @@ export interface IStateUsersApp {
     isAuthenticated: boolean
     users: User[],
     tags: PopularTag[],
-    pageNumber : number
+    pageUsersNumber : number
 }
 
 // Define our initialState
@@ -14,17 +14,17 @@ export const initialState: IStateUsersApp = {
     isAuthenticated: false,
     users: [],
     tags: [],
-    pageNumber : 0
+    pageUsersNumber : 0
 };
 
 export function reducer(state: IStateUsersApp = initialState, action: Action) : IStateUsersApp {
     switch (action.type) {
         case ActionTypes.GET_USERS:
-            const {users, pageNumber} = action.payload;
+            const {users, pageUsersNumber} = action.payload;
             return {
                 ...state,
                 users: users,
-                pageNumber : pageNumber
+                pageUsersNumber : pageUsersNumber
             };
         case ActionTypes.GET_TAGS:
             const {tags} = action.payload;

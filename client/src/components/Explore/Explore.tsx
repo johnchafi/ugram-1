@@ -12,7 +12,7 @@ export interface Props {
     tags: PopularTag[],
     getUsers: (pageNumber : number, users: User[]) => any,
     getTags: () => any,
-    pageNumber: number
+    pageUsersNumber: number
 }
 interface State {
 }
@@ -35,6 +35,12 @@ class Explore extends React.Component<Props,State> {
     componentWillReceiveProps(nextProps: Readonly<Props>, nextContext: any): void {
     }
 
+    handleScrollUserList(event : any) : void {
+        if (event.target.scrollWidth - event.target.offsetWidth < event.target.scrollLeft){ // SCROLL RIGHT
+            this.props.getUsers(this.props.pageUsersNumber, this.props.users);
+        }
+    }
+
     render() {
         return (
             <Grid className={"containerExplore"} container direction="row" alignItems="center">
@@ -42,7 +48,7 @@ class Explore extends React.Component<Props,State> {
                     <Grid container direction="row" justify="flex-start">
                         <Typography>Contacts à découvrir</Typography>
                     </Grid>
-                    <div className={"containerUserList"}>
+                    <div className={"containerUserList"} onScroll={(e) => this.handleScrollUserList(e)}>
                         {this.props.users.map(function(user, i){
                             return <UserItem user={user} key={i}/>;
                         })}

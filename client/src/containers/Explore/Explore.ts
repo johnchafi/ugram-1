@@ -8,7 +8,7 @@ import { withRouter } from "react-router-dom";
 const mapStateToProps = (state: State) => ({
     users: getUsers(state),
     tags: getTags(state),
-    pageNumber : getPageNumber(state)
+    pageUsersNumber : getPageNumber(state)
 });
 
 const mapDispatchToProps = {
