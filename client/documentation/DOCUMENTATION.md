@@ -64,28 +64,35 @@ Lorsqu'un utilisateur téléverse une image il est possible:
 Il est possible de réagir aux images via un système de like et de commentaire
 
 * Like d'une image
+
 ![Picture_Like](./img/picture_like.png "Like une image")
 
 * Commenter une image
+
 ![Picture_Comment](./img/picture_comment.png "Commenter une image")
 
 * Consultation des réactions d'une image
+
 ![Picture_ReactShow](./img/picture_show_react.png "Afficher les réactions")
+
 ![Picture_CommentShow](./img/picture_comment_show.png "Afficher les commentaires")
 
 ## Administration réactions
 Il est possible de retirer sa réactions (like ou commentaire) voir-ci dessous
 
 * Suppression d'un like, il suffit de recliquer sur le bouton
+
 ![Picture_Delete_Like](./img/picture_delete_like.png "Delike une image")
 
 * Suppression d'un commentaire
+
 ![Picture_Delete_Comment](./img/picture_delete_comment.png "Supprimer commentaire")
 
 ## Notifications
 Les réactions des autres utilisateurs à vos images envoient des notifications
 
 * Elles sont disponibles dans la barre de navigation
+
 ![Notifications](./img/notifications.png "Notifications")
 
 ## Administration
@@ -124,21 +131,25 @@ Une fois dans le panel d'administration du profil, l'utisateur aura la possibili
 
 #### Fonctionnalités additionnelles
 
-* Recherche par mot clé/description avec autocomplétion 
+* Recherche par mot clé/description avec autocomplétion
+ 
 ![Filtre autocomplete](./img/filter_tag.png "Autocomplete search")
 
 Il suffit de taper le mot clé/la description dans la barre de recherche
 
 
 * Mots clé populaires
+
 ![Popular_tags](./img/popular_tags.png "Tag populaires")
 
 Il suffit d'accèder à l'onglet exploration via la barre de navigation (voir image ci-dessus) et les tags les plus populaires s'affichent
 
 * Filtres sur les photos au moment du téléversement
+
 ![Appliquer des filtres](./img/upload_filter.png "Filtre photo")
 
 * Téléversement d'une image via webcam
+
 ![Prise de photo avec sa webcam](./img/upload_webcam.png "Photo avec webcam")
 
 
