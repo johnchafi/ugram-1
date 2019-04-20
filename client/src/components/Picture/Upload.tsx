@@ -103,7 +103,7 @@ class Upload extends React.Component<Props,State> {
                 },
                 openModal: true,
                 imgTemp: URL.createObjectURL(file[0]),
-            });
+            },() => console.log(this.state));
         }
 
     };
@@ -127,7 +127,7 @@ class Upload extends React.Component<Props,State> {
     };
 
     onImgLoad({target:img}) {
-        if (img.offsetWidth > 600 || img.offsetHeight > 400) {
+        if (img.offsetWidth > 600 || img.offsetHeight > 600) {
             this.setState({
                 errorImage: "l'image sélectionnée a été recadrée pour respecter la taille maximale autorisée (600x600)",
             });
@@ -135,7 +135,7 @@ class Upload extends React.Component<Props,State> {
         Resizer.imageFileResizer(
             this.state.picture.file,
             600,
-            400,
+            600,
             "JPEG",
             100,
             0,
@@ -271,20 +271,22 @@ class Upload extends React.Component<Props,State> {
                         <Grid container direction="row" justify="center" alignItems="center" className={"imagePreview"}>
                             {
                                 this.state.picture.url.original != "" &&
-                                <ProcessImage
-                                    image={this.state.picture.url.original}
-                                    sepia={this.state.imageFilter.sepia}
-                                    greyscale={this.state.imageFilter.greyscale}
-                                    invert={this.state.imageFilter.invert}
+                                    <ProcessImage
+                                        image={this.state.picture.url.original}
+                                        sepia={this.state.imageFilter.sepia}
+                                        greyscale={this.state.imageFilter.greyscale}
+                                        invert={this.state.imageFilter.invert}
 
-                                    processedImage={(src, err) => {
-                                        this.handleChangeFilter(src);
-                                    }}
-                                />
+                                        processedImage={(src, err) => {
+                                            this.handleChangeFilter(src);
+                                        }}
+                                    />
+
                             }
                             {
                                 this.state.picture.url.original == "" &&
-                                <img onLoad={this.onImgLoad.bind(this)} src={this.state.imgTemp} alt={"Preview image"}/>
+                                    <img onLoad={this.onImgLoad.bind(this)} src={this.state.imgTemp} alt={"Preview image"}/>
+
                             }
                             <Typography>{this.state.errorImage}</Typography>
                         </Grid>
@@ -425,27 +427,24 @@ class Upload extends React.Component<Props,State> {
                                 })}
                             </Stepper>
                             <div>
-                                {
-                                    activeStep === this.state.steps.length &&
-                                    <Grid className={"stepContent"}>
-                                        {this.getStepContent(activeStep)}
-                                        <Grid container direction="row" justify="center" alignItems="center">
-                                            <Button
-                                                disabled={activeStep === 0}
-                                                onClick={this.handleBack}
-                                            >
-                                                Précédent
-                                            </Button>
-                                            <Button
-                                                variant="contained"
-                                                color="primary"
-                                                onClick={this.handleNext}
-                                            >
-                                                {activeStep === this.state.steps.length - 1 ? "Terminer" : "Suivant"}
-                                            </Button>
-                                        </Grid>
+                                <Grid className={"stepContent"}>
+                                    {this.getStepContent(activeStep)}
+                                    <Grid container direction="row" justify="center" alignItems="center">
+                                        <Button
+                                            disabled={activeStep === 0}
+                                            onClick={this.handleBack}
+                                        >
+                                            Précédent
+                                        </Button>
+                                        <Button
+                                            variant="contained"
+                                            color="primary"
+                                            onClick={this.handleNext}
+                                        >
+                                            {activeStep === this.state.steps.length - 1 ? "Terminer" : "Suivant"}
+                                        </Button>
                                     </Grid>
-                                }
+                                </Grid>
                             </div>
                         </Grid>
                     </Dialog>
