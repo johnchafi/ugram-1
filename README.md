@@ -9,7 +9,7 @@ Réalisation d'un projet "Instagram-like", disponlible sur ce [site](http://ugra
 
 ## Google Analytics
 
-[Dashboard]()
+[Dashboard](./client/documentation/Analytics.pdf)
 
 ## Fonctionnalités additionnelles
 
