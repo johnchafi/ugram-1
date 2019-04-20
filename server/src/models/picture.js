@@ -57,7 +57,7 @@ pictureSchema.getAvailableSizes = () => {
 pictureSchema.formatUrlBySizes = (picture) => {
     let url = {};
     pictureSchema.getAvailableSizes().forEach(size => {
-        url[size] = "http://" + db.bucketEndpoint + "." + db.bucketDomain + "/" + db.bucketRootUpload + 
+        url[size] = "https://" + db.bucketEndpoint + "." + db.bucketDomain + "/" + db.bucketRootUpload +
             "/" + picture.dataValues.userId + "/" + picture.dataValues.id + "_" + size + picture.dataValues.extension;
         url[size] = encodeURI(url[size]);
     });
