@@ -2,7 +2,7 @@
 
 Réalisation d'une API "Instagram-like" en NodeJS
 
-[Documentation](http://ugram-team02.pm9h7ckh7u.us-east-2.elasticbeanstalk.com/)
+[Documentation](https://d3m64udsl8l7sh.cloudfront.net/)
 
 ## Démarrage
 
