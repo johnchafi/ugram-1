@@ -77,7 +77,7 @@ Il est possible de réagir aux images via un système de like et de commentaire
 
 ![Picture_CommentShow](./img/picture_comment_show.png "Afficher les commentaires")
 
-** L'affichage des réactions est mis à jour en temps réel **
+**L'affichage des réactions est mis à jour en temps réel**
 
 ## Administration réactions
 Il est possible de retirer sa réaction (like ou commentaire) voir-ci dessous
