@@ -76,7 +76,6 @@ class NavBar extends React.Component<Props,State> {
         {
             let i = 0;
             nextProps.notifications.map(function (notification : Notification) {
-                console.log(notification);
                 if (!notification.isRead) {
                     i++;
                 }

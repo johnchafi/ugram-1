@@ -103,7 +103,7 @@ class Upload extends React.Component<Props,State> {
                 },
                 openModal: true,
                 imgTemp: URL.createObjectURL(file[0]),
-            },() => console.log(this.state));
+            })
         }
 
     };
@@ -111,7 +111,6 @@ class Upload extends React.Component<Props,State> {
     handleUploadPhotoWebcam = () => {
         let file : File = Helper.dataURLtoFile(this.state.imgWebcam, "test.jpg");
 
-        console.log(file);
         this.setState({
             imgTemp : URL.createObjectURL(file),
             picture: {
@@ -123,7 +122,6 @@ class Upload extends React.Component<Props,State> {
             openModal: true,
             openModalWebcam: false
         });
-        console.log(file);
     };
 
     onImgLoad({target:img}) {
