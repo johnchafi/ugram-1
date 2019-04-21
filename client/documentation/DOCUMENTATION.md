@@ -2,7 +2,7 @@
 
 ## URL
 
-``http://ugram-team02.s3-website.ca-central-1.amazonaws.com/``
+``https://d3oh6f403qb3v4.cloudfront.net/``
 
 ## Connexion
 Deux possibilités:
@@ -24,7 +24,7 @@ Deux possibilités:
 ## Home
 Regroupe toutes les photos publiées ordonnées par dates (tous utilisateurs confondus) 
 
-``http://ugram-team02.s3-website.ca-central-1.amazonaws.com/``
+``https://d3oh6f403qb3v4.cloudfront.net/``
 
 
 ## Profil d'utilisateur
@@ -35,7 +35,7 @@ Sur ce profil est regroupé:
 
 * Toutes les photos publiées par cet utilisateur  
  
-``http://ugram-team02.s3-website.ca-central-1.amazonaws.com/profil/<nom_utilisateur>``
+``https://d3oh6f403qb3v4.cloudfront.net/profil/<nom_utilisateur>``
 
 ## Recherche
 Possibilité de chercher par tag/identification/nom d'utilisateur
@@ -52,7 +52,7 @@ Possibilité de chercher par tag/identification/nom d'utilisateur
 
 ## Liste des utilisateurs
 
-``http://ugram-team02.s3-website.ca-central-1.amazonaws.com/explore/``
+``https://d3oh6f403qb3v4.cloudfront.net/explore/``
 
 ## Image
 Lorsqu'un utilisateur téléverse une image il est possible:
@@ -76,6 +76,8 @@ Il est possible de réagir aux images via un système de like et de commentaire
 ![Picture_ReactShow](./img/picture_show_react.png "Afficher les réactions")
 
 ![Picture_CommentShow](./img/picture_comment_show.png "Afficher les commentaires")
+
+Les réactions sont mises-à-jour en temps réel
 
 ## Administration réactions
 Il est possible de retirer sa réaction (like ou commentaire) voir-ci dessous
