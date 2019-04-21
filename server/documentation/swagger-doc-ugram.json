@@ -251,6 +251,15 @@
         "operationId": "getAllPictures",
         "parameters": [
           {
+            "name": "tag",
+            "in": "query",
+            "description": "filter by tag",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "page",
             "in": "query",
             "description": "Page number",
@@ -895,6 +904,35 @@
         "tags": [
           "tags"
         ],
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "description": "filter by tag",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "perPage",
+            "in": "query",
+            "description": "Number of result",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
         "summary": "Get all tags",
         "description": "Get all tags",
         "operationId": "getAllTags",
@@ -1055,6 +1093,47 @@
           }
         }
       }
+    },
+    "/users/{userId}/notifications": {
+      "get": {
+        "tags": [
+          "notifications"
+        ],
+        "summary": "Get all notifications",
+        "description": "Get all notifications",
+        "operationId": "getNotifications",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "User Id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Notification"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
     }
   },
   "components": {
@@ -1169,7 +1248,10 @@
             }
           },
           "url": {
-            "type": "string"
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           },
           "userId": {
             "type": "string"
@@ -1266,6 +1348,35 @@
           },
           "message": {
             "type": "string"
+          }
+        }
+      },
+      "Notification": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "userId": {
+            "type": "string"
+          },
+          "likeId": {
+            "type": "integer"
+          },
+          "commentId": {
+            "type": "integer"
+          },
+          "userPictureUrl": {
+            "type": "string"
+          },
+          "pictureUrl": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "isRead": {
+            "type": "integer"
           }
         }
       }
