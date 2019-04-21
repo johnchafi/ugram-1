@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.com/GLO3112-H19/ugram-team-2.svg?token=qkZrcjjGhbW5zaQAueky&branch=master)](https://travis-ci.com/GLO3112-H19/ugram-team-2)
 
-Réalisation d'un projet "Instagram-like", disponlible sur ce [site](d3oh6f403qb3v4.cloudfront.net)
+Réalisation d'un projet "Instagram-like", disponlible sur ce [site](https://d3oh6f403qb3v4.cloudfront.net/)
 
 * [Client](./client/)
 * [Serveur](./server/)
