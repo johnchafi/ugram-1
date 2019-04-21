@@ -42,12 +42,16 @@ exports.addUserPicture = (picture, file, field, errorCallback, successCallback) 
                     uploadsRemaining, errorCallback, doneCallback);
             } else {
                 const realSize = parseInt(size, 10);
-                sharp(data).resize(realSize, realSize).toBuffer().then(dataResized => {
+                sharp(data).resize(realSize, realSize, {
+                    kernel: sharp.kernel.nearest,
+                    fit: 'contain',
+                    background: { r: 250, g: 250, b: 250, alpha: 1.0 }
+                  }).toBuffer().then(dataResized => {
                     this.uploadFile(s3bucket, picture, dataResized, path.basename(originalFilenames[size]), 
                         uploadsRemaining, errorCallback, doneCallback);
                 }).catch(err => {
                     return errorCallback(err);
-                });    
+                });
             }
         });
     });
