@@ -18,17 +18,17 @@ Deux possibilités:
 
 **ou**
 
-* Inscription via OAUth2.0 via les services Google (gènère un userId) 
+* Inscription via OAUth2.0 via les services Google (génère un userId) 
 ![Création de compte google](./img/creation_compte_google.png "Création de compte Google")
 
 ## Home
-Regroupe toutes les photos publiées ordonnées par date (tout utilisateur confondu) 
+Regroupe toutes les photos publiées ordonnées par dates (tous utilisateurs confondus) 
 
 ``http://ugram-team02.s3-website.ca-central-1.amazonaws.com/``
 
 
 ## Profil d'utilisateur
-Permet d'afficher le profil d'un utilisateur spécifiquue
+Permets d'afficher le profil d'un utilisateur spécifique
 Sur ce profil est regroupé:
  
 * Les informations de l'utilisateur
@@ -38,7 +38,7 @@ Sur ce profil est regroupé:
 ``http://ugram-team02.s3-website.ca-central-1.amazonaws.com/profil/<nom_utilisateur>``
 
 ## Recherche
-Possibilité de chercher par tags/identification/nom d'utilisateur
+Possibilité de chercher par tag/identification/nom d'utilisateur
 
 * Tags/Identifications:
 
@@ -78,7 +78,7 @@ Il est possible de réagir aux images via un système de like et de commentaire
 ![Picture_CommentShow](./img/picture_comment_show.png "Afficher les commentaires")
 
 ## Administration réactions
-Il est possible de retirer sa réactions (like ou commentaire) voir-ci dessous
+Il est possible de retirer sa réaction (like ou commentaire) voir-ci dessous
 
 * Suppression d'un like, il suffit de recliquer sur le bouton
 
@@ -107,7 +107,7 @@ Si l'utilisateur connecté consulte son profil il aura accès aux outils d'admin
 ![Administrations toutes images](./img/administration_toutes_images.png "Administrations toutes images")
 
 * Téléversement d'une image
-![Téléversement Image](./img/televersement_image.png "Téleversement Image")
+![Téléversement Image](./img/televersement_image.png "Téléversement Image")
 
 
 
@@ -120,12 +120,12 @@ Si l'utilisateur connecté consulte une de ses images, il aura accès aux outils
 * Gestion de la description, des mots-clés et des identifications:
 ![Administration Image](./img/administration_image.png "Administration Image")
 
-#### Deconnexion et suppression du compte
+#### Déconnexion et suppression du compte
 Une fois dans le panel d'administration du profil, l'utisateur aura la possibilité de se déconnecter et de supprimer son compte
 
-* Deconnexion
+* Déconnexion
 
-![Deconnexion du compte](./img/deconnexion_compte.png "Deconnexion compte")
+![Déconnexion du compte](./img/deconnexion_compte.png "Déconnexion compte")
 
 * Suppression du compte
 
@@ -133,18 +133,18 @@ Une fois dans le panel d'administration du profil, l'utisateur aura la possibili
 
 #### Fonctionnalités additionnelles
 
-* Recherche par mot clé/description avec autocomplétion
+* Recherche par mot-clé/description avec auto-complétion
  
 ![Filtre autocomplete](./img/filter_tag.png "Autocomplete search")
 
-Il suffit de taper le mot clé/la description dans la barre de recherche
+Il suffit de taper le mot-clé/la description dans la barre de recherche
 
 
-* Mots clé populaires
+* Mots-clés populaires
 
 ![Popular_tags](./img/popular_tags.png "Tag populaires")
 
-Il suffit d'accèder à l'onglet exploration via la barre de navigation (voir image ci-dessus) et les tags les plus populaires s'affichent
+Il suffit d'accéder à l'onglet exploration via la barre de navigation (voir image ci-dessus) et les tags les plus populaires s'affichent
 
 * Filtres sur les photos au moment du téléversement
 
