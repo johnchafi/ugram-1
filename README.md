@@ -4,6 +4,8 @@
 
 Réalisation d'un projet "Instagram-like", disponlible sur ce [site](https://d3oh6f403qb3v4.cloudfront.net/)
 
+## Détails
+
 * [Client](./client/)
 * [Serveur](./server/)
 
