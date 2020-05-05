@@ -1,4 +1,4 @@
-﻿# Ugram-team2
+# UGram
 
 Réalisation d'un "Instagram-like" réalisé en TypeScript et construit en React sous Redux
 
