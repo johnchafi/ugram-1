@@ -1,4 +1,4 @@
-# Ugram-team2
+# UGram
 
 Réalisation d'une API "Instagram-like" en NodeJS
 
