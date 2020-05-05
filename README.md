@@ -1,4 +1,4 @@
-# Ugram-team2
+# UGram
 
 [![Build Status](https://travis-ci.com/GLO3112-H19/ugram-team-2.svg?token=qkZrcjjGhbW5zaQAueky&branch=master)](https://travis-ci.com/GLO3112-H19/ugram-team-2)
 
